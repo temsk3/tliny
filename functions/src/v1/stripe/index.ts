@@ -6,11 +6,11 @@ const domains = [
   'account',
   'customer',
   // 'extrenal_accounts',
-  'paymentIntent',
-  'paymentMethod',
+  // 'paymentIntent',
+  // 'paymentMethod',
   // 'checkout',
   // 'persons',
-  'setupIntent',
+  // 'setupIntent',
   'webhook',
 ]
 

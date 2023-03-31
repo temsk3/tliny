@@ -2,10 +2,10 @@ import { exportFunctionsModule } from '../../utils/deploy'
 import * as P from '../../utils/function_paths'
 
 const domains = [
-  'payment',
+  // 'payment',
   'stripeAccount',
-  'product',
-  'invoiceSetting',
+  // 'product',
+  // 'invoiceSetting',
   'checkout',
 ]
 
