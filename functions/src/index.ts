@@ -1,22 +1,29 @@
-import * as functions from 'firebase-functions'
+import * as firebaseAdmin from 'firebase-admin'
 
-// Start writing Firebase Functions
-// https://firebase.google.com/docs/functions/typescript
+// import * as functions from "firebase-functions";
 
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info('Hello logs!', { structuredData: true })
-  response.send('Hello from Firebase!')
-})
+// // Start writing Firebase Functions
+// // https://firebase.google.com/docs/functions/typescript
+//
+// export const helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info('Hello logs!', {structuredData: true});
+//   response.send('Hello from Firebase!');
+// });
 
 // firebaseAdmin.initializeApp(functions.config().firebase);
+firebaseAdmin.initializeApp()
 
-// import * as firebaseAdmin from 'firebase-admin'
+// import * as order from "./order";
+// import * as purchase from "./purchase";
+// import * as stripe from "./stripe";
+// import * as user from "./user";
 
-// firebaseAdmin.initializeApp()
-// //
-// import { exportFunctionsModule } from './utils/deploy'
-// import * as P from './utils/function_paths'
+// export { stripe, user, purchase, order };
 
-// const domains = [P.v1]
+//
+import { exportFunctionsModule } from './utils/deploy'
+import * as P from './utils/function_paths'
 
-// domains.forEach((d) => exportFunctionsModule([d], exports))
+const domains = [P.v1]
+
+domains.forEach((d) => exportFunctionsModule([d], exports))
