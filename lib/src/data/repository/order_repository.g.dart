@@ -1,0 +1,26 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// ignore_for_file: type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type
+
+part of 'order_repository.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$orderRepositoryHash() => r'48e987e7a2168453611640a03871f4048e3f3c7d';
+
+/// See also [orderRepository].
+@ProviderFor(orderRepository)
+final orderRepositoryProvider = Provider<OrderRepository>.internal(
+  orderRepository,
+  name: r'orderRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$orderRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef OrderRepositoryRef = ProviderRef<OrderRepository>;
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

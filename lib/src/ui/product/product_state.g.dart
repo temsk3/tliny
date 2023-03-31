@@ -1,0 +1,371 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// ignore_for_file: type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type
+
+part of 'product_state.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$productsStateHash() => r'db49befb7a5e0b9f8ac325d0d8750735b254ccc5';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+typedef ProductsStateRef = AutoDisposeStreamProviderRef<List<Product>>;
+
+/// See also [productsState].
+@ProviderFor(productsState)
+const productsStateProvider = ProductsStateFamily();
+
+/// See also [productsState].
+class ProductsStateFamily extends Family<AsyncValue<List<Product>>> {
+  /// See also [productsState].
+  const ProductsStateFamily();
+
+  /// See also [productsState].
+  ProductsStateProvider call(
+    String programId,
+    GenreType? genre,
+  ) {
+    return ProductsStateProvider(
+      programId,
+      genre,
+    );
+  }
+
+  @override
+  ProductsStateProvider getProviderOverride(
+    covariant ProductsStateProvider provider,
+  ) {
+    return call(
+      provider.programId,
+      provider.genre,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'productsStateProvider';
+}
+
+/// See also [productsState].
+class ProductsStateProvider extends AutoDisposeStreamProvider<List<Product>> {
+  /// See also [productsState].
+  ProductsStateProvider(
+    this.programId,
+    this.genre,
+  ) : super.internal(
+          (ref) => productsState(
+            ref,
+            programId,
+            genre,
+          ),
+          from: productsStateProvider,
+          name: r'productsStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productsStateHash,
+          dependencies: ProductsStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProductsStateFamily._allTransitiveDependencies,
+        );
+
+  final String programId;
+  final GenreType? genre;
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProductsStateProvider &&
+        other.programId == programId &&
+        other.genre == genre;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, programId.hashCode);
+    hash = _SystemHash.combine(hash, genre.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$productStateHash() => r'beab3e049af6fcc799183350ed8c9bbe7b6d9249';
+typedef ProductStateRef = AutoDisposeStreamProviderRef<Product>;
+
+/// See also [productState].
+@ProviderFor(productState)
+const productStateProvider = ProductStateFamily();
+
+/// See also [productState].
+class ProductStateFamily extends Family<AsyncValue<Product>> {
+  /// See also [productState].
+  const ProductStateFamily();
+
+  /// See also [productState].
+  ProductStateProvider call(
+    String productId,
+  ) {
+    return ProductStateProvider(
+      productId,
+    );
+  }
+
+  @override
+  ProductStateProvider getProviderOverride(
+    covariant ProductStateProvider provider,
+  ) {
+    return call(
+      provider.productId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'productStateProvider';
+}
+
+/// See also [productState].
+class ProductStateProvider extends AutoDisposeStreamProvider<Product> {
+  /// See also [productState].
+  ProductStateProvider(
+    this.productId,
+  ) : super.internal(
+          (ref) => productState(
+            ref,
+            productId,
+          ),
+          from: productStateProvider,
+          name: r'productStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productStateHash,
+          dependencies: ProductStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProductStateFamily._allTransitiveDependencies,
+        );
+
+  final String productId;
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProductStateProvider && other.productId == productId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, productId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$addProductButtonStateHash() =>
+    r'8edf621cea0b636cab64308f0450a99a623d16fc';
+typedef AddProductButtonStateRef = AutoDisposeStreamProviderRef<bool>;
+
+/// See also [addProductButtonState].
+@ProviderFor(addProductButtonState)
+const addProductButtonStateProvider = AddProductButtonStateFamily();
+
+/// See also [addProductButtonState].
+class AddProductButtonStateFamily extends Family<AsyncValue<bool>> {
+  /// See also [addProductButtonState].
+  const AddProductButtonStateFamily();
+
+  /// See also [addProductButtonState].
+  AddProductButtonStateProvider call(
+    Program program,
+  ) {
+    return AddProductButtonStateProvider(
+      program,
+    );
+  }
+
+  @override
+  AddProductButtonStateProvider getProviderOverride(
+    covariant AddProductButtonStateProvider provider,
+  ) {
+    return call(
+      provider.program,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'addProductButtonStateProvider';
+}
+
+/// See also [addProductButtonState].
+class AddProductButtonStateProvider extends AutoDisposeStreamProvider<bool> {
+  /// See also [addProductButtonState].
+  AddProductButtonStateProvider(
+    this.program,
+  ) : super.internal(
+          (ref) => addProductButtonState(
+            ref,
+            program,
+          ),
+          from: addProductButtonStateProvider,
+          name: r'addProductButtonStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$addProductButtonStateHash,
+          dependencies: AddProductButtonStateFamily._dependencies,
+          allTransitiveDependencies:
+              AddProductButtonStateFamily._allTransitiveDependencies,
+        );
+
+  final Program program;
+
+  @override
+  bool operator ==(Object other) {
+    return other is AddProductButtonStateProvider && other.program == program;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, program.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$editProductButtonStateHash() =>
+    r'a9ae69b578f36ba831334f0067dc14d53ea4b8e5';
+typedef EditProductButtonStateRef = AutoDisposeStreamProviderRef<bool>;
+
+/// See also [editProductButtonState].
+@ProviderFor(editProductButtonState)
+const editProductButtonStateProvider = EditProductButtonStateFamily();
+
+/// See also [editProductButtonState].
+class EditProductButtonStateFamily extends Family<AsyncValue<bool>> {
+  /// See also [editProductButtonState].
+  const EditProductButtonStateFamily();
+
+  /// See also [editProductButtonState].
+  EditProductButtonStateProvider call(
+    Product product,
+  ) {
+    return EditProductButtonStateProvider(
+      product,
+    );
+  }
+
+  @override
+  EditProductButtonStateProvider getProviderOverride(
+    covariant EditProductButtonStateProvider provider,
+  ) {
+    return call(
+      provider.product,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'editProductButtonStateProvider';
+}
+
+/// See also [editProductButtonState].
+class EditProductButtonStateProvider extends AutoDisposeStreamProvider<bool> {
+  /// See also [editProductButtonState].
+  EditProductButtonStateProvider(
+    this.product,
+  ) : super.internal(
+          (ref) => editProductButtonState(
+            ref,
+            product,
+          ),
+          from: editProductButtonStateProvider,
+          name: r'editProductButtonStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$editProductButtonStateHash,
+          dependencies: EditProductButtonStateFamily._dependencies,
+          allTransitiveDependencies:
+              EditProductButtonStateFamily._allTransitiveDependencies,
+        );
+
+  final Product product;
+
+  @override
+  bool operator ==(Object other) {
+    return other is EditProductButtonStateProvider && other.product == product;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, product.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

@@ -1,0 +1,129 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// ignore_for_file: type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type
+
+part of 'user_repository.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$userRepositoryHash() => r'e31ca2e76ac0456c799c355f4f47d726dcb95870';
+
+/// See also [userRepository].
+@ProviderFor(userRepository)
+final userRepositoryProvider = Provider<UserRepository>.internal(
+  userRepository,
+  name: r'userRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserRepositoryRef = ProviderRef<UserRepository>;
+String _$userStreamHash() => r'a03886bd1d55ad26efa4557d3bf0b9e98f18b1b2';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+typedef UserStreamRef = AutoDisposeStreamProviderRef<User>;
+
+/// See also [userStream].
+@ProviderFor(userStream)
+const userStreamProvider = UserStreamFamily();
+
+/// See also [userStream].
+class UserStreamFamily extends Family<AsyncValue<User>> {
+  /// See also [userStream].
+  const UserStreamFamily();
+
+  /// See also [userStream].
+  UserStreamProvider call(
+    String uid,
+  ) {
+    return UserStreamProvider(
+      uid,
+    );
+  }
+
+  @override
+  UserStreamProvider getProviderOverride(
+    covariant UserStreamProvider provider,
+  ) {
+    return call(
+      provider.uid,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'userStreamProvider';
+}
+
+/// See also [userStream].
+class UserStreamProvider extends AutoDisposeStreamProvider<User> {
+  /// See also [userStream].
+  UserStreamProvider(
+    this.uid,
+  ) : super.internal(
+          (ref) => userStream(
+            ref,
+            uid,
+          ),
+          from: userStreamProvider,
+          name: r'userStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$userStreamHash,
+          dependencies: UserStreamFamily._dependencies,
+          allTransitiveDependencies:
+              UserStreamFamily._allTransitiveDependencies,
+        );
+
+  final String uid;
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserStreamProvider && other.uid == uid;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uid.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

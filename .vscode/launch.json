@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "run dev",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=FLAVOR=dev"]
+    },
+    {
+      "name": "run html dev",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--web-renderer html", "--dart-define=FLAVOR=dev"]
+    },
+    {
+      "name": "run dev (with Device Preview)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=FLAVOR=dev", "--dart-define=PREVIEW=true"]
+    },
+    {
+      "name": "Attach (firebase emulator functions)",
+      "request": "attach",
+      "type": "node",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "run prod",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define=FLAVOR=prod"]
+    }
+  ]
+}

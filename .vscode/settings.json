@@ -1,0 +1,51 @@
+{
+  "files.exclude": {
+    ".dart_tool": true,
+    ".idea": true,
+    "build": true,
+    "node_modules": true,
+    ".flutter-plugins": false,
+    ".flutter-plugins-dependencies": false,
+    ".metadata": false,
+    ".packages": false,
+    "yarn.lock": true,
+    "pubspec.lock": false,
+    "**/*.freezed.dart": false,
+    "**/*.g.dart": false,
+    "package.json": true,
+    "package-lock.json": true,
+    "*.iml": true
+  },
+  "workbench.colorCustomizations": {
+    "editorStickyScroll.background": "#332765",
+    "editorStickyScrollHover.background": "#504083"
+  },
+  "cSpell.words": [
+    "ARGB",
+    "autofocus",
+    "cupertino",
+    "firestore",
+    "Fluttertoast",
+    "fullscreen",
+    "idempotency",
+    "impal",
+    "Melanthios",
+    "noto",
+    "nullsafety",
+    "prefcode",
+    "prefs",
+    "repositoty",
+    "Scaned",
+    "signin",
+    "Spel",
+    "stripesdk",
+    "stripeversion",
+    "timestampkey",
+    "tliny",
+    "usecase",
+    "uuidv",
+    "zipcode"
+  ],
+  "dart.flutterGenerateLocalizationsOnSave": "manual"
+  // "audioCues.lineHasError": "off"
+}

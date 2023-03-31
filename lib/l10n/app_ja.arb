@@ -1,0 +1,84 @@
+{
+  "@@locale": "ja",
+  "home": "ホーム",
+  "hello": "こんにちは",
+  "profile": "ユーザー情報",
+  "usageHistory": "チケット使用履歴",
+  "ok": "ok",
+  "yes": "yes",
+  "no": "no",
+  "title": "トリニィ",
+  "signUpNow": "アカウントをお持ちでない場合  ",
+  "signUp": "新規登録",
+  "haveAnAccount": "すでにアカウントをお持ちの場合  ",
+  "login": "Login",
+  "register": "登録",
+  "update": "更新",
+  "delete": "削除",
+  "buy": "購入",
+  "quantity": "数量",
+  "product": "商品",
+  "productList": "商品一覧",
+  "productDetails": "商品詳細",
+  "event": "イベント",
+  "eventList": "イベント一覧",
+  "salesPeriod": "販売期間",
+  "periods": "開催期間",
+  "place": "開催場所",
+  "staffCode": "スタッフ登録コード",
+  "favorite": "お気に入り",
+  "cart": "買い物かご",
+  "ticket": "チケット",
+  "ticketList": "チケット一覧",
+  "email": "メールアドレス",
+  "displayName": "表示名",
+  "name": "名前",
+  "phone": "電話番号",
+  "pleaseEnterSomeText": "テキストを入力してください",
+  "edit": "編集",
+  "cancel": "キャンセル",
+  "message": "メッセージ",
+  "pleaseEnterADateAfterTheSpecifiedDate": "指定した日付より後の日付を入力してください",
+  "eventName": "名称",
+  "detail": "詳細",
+  "dataTime": "{date}",
+  "@dataTime": {
+    "description": "date parameter",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMEd"
+      }
+    }
+  },
+  "time": "{date}",
+  "@time": {
+    "description": "date parameter",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "Hm"
+      }
+    }
+  },
+  "decimalPattern": "{value}",
+  "@decimalPattern": {
+    "description": "DecimalPattern",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "currency": "{value}",
+  "@currency": {
+    "description": "Currency",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "simpleCurrency"
+      }
+    }
+  }
+}

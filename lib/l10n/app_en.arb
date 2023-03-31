@@ -1,0 +1,84 @@
+{
+  "@@locale": "en",
+  "home": "Home",
+  "hello": "Hello",
+  "profile": "Profile",
+  "usageHistory": "Ticket usage history",
+  "ok": "ok",
+  "yes": "yes",
+  "no": "no",
+  "title": "TLINY",
+  "signUpNow": "アカウントをお持ちでない場合  ",
+  "signUp": "SignUp",
+  "haveAnAccount": "すでにアカウントをお持ちの場合  ",
+  "login": "Login",
+  "register": "register",
+  "update": "Update",
+  "delete": "Delete",
+  "buy": "Buy",
+  "quantity": "Quantity",
+  "product": "Product",
+  "productList": "Product List",
+  "productDetails": "Product Details",
+  "event": "Event",
+  "eventList": "Event List",
+  "salesPeriod": "販売期間",
+  "periods": "開催期間",
+  "place": "開催場所",
+  "staffCode": "Staff register Code",
+  "favorite": "Favorite",
+  "cart": "Cart",
+  "ticket": "Ticket",
+  "ticketList": "Ticket List",
+  "email": "E-mail",
+  "displayName": "Display Name",
+  "name": "Name",
+  "phone": "Phone",
+  "pleaseEnterSomeText": "Please enter some text",
+  "edit": "Edit",
+  "cancel": "Cancel",
+  "message": "message",
+  "pleaseEnterADateAfterTheSpecifiedDate": "Please enter a date after the specified date",
+  "eventName": "Name",
+  "detail": "Detail",
+  "dataTime": "{date}",
+  "@dataTime": {
+    "description": "date parameter",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "yMMMEd"
+      }
+    }
+  },
+  "time": "{date}",
+  "@time": {
+    "description": "date parameter",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "Hm"
+      }
+    }
+  },
+  "decimalPattern": "{value}",
+  "@decimalPattern": {
+    "description": "DecimalPattern",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "currency": "{value}",
+  "@currency": {
+    "description": "Currency",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "simpleCurrency"
+      }
+    }
+  }
+}
