@@ -1,0 +1,25 @@
+2023/03/31-08:27:40.275 1913b Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.pIFZXQ/flutter_tools_chrome_device.Q5QrYL/Default/IndexedDB/http_localhost_49971.indexeddb.leveldb/MANIFEST-000001
+2023/03/31-08:27:40.276 1913b Recovering log #173
+2023/03/31-08:27:40.276 1913b Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.pIFZXQ/flutter_tools_chrome_device.Q5QrYL/Default/IndexedDB/http_localhost_49971.indexeddb.leveldb/000173.log 
+2023/03/31-08:27:40.276 1913b Delete type=2 #172
+2023/03/31-08:27:40.300 1913b Level-0 table #178: started
+2023/03/31-08:27:40.303 1913b Level-0 table #178: 2105 bytes OK
+2023/03/31-08:27:40.312 1913b Delete type=0 #173
+2023/03/31-08:27:40.312 a907 Manual compaction at level-0 from '\x005\x00\x00\x00' @ 72057594037927935 : 1 .. '\x006\x00\x00\x00' @ 0 : 0; will stop at '\x005\x00\x00\x05' @ 2526 : 1
+2023/03/31-08:27:40.312 a907 Compacting 1@0 + 1@1 files
+2023/03/31-08:27:40.315 a907 Generated table #179@0: 35 keys, 2836 bytes
+2023/03/31-08:27:40.315 a907 Compacted 1@0 + 1@1 files => 2836 bytes
+2023/03/31-08:27:40.321 a907 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/31-08:27:40.321 a907 Delete type=2 #178
+2023/03/31-08:27:40.321 a907 Manual compaction at level-0 from '\x005\x00\x00\x05' @ 2526 : 1 .. '\x006\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/31-08:27:41.531 217bb Level-0 table #181: started
+2023/03/31-08:27:41.534 217bb Level-0 table #181: 2660 bytes OK
+2023/03/31-08:27:41.539 217bb Delete type=0 #177
+2023/03/31-08:27:41.539 217bb Delete type=2 #175
+2023/03/31-08:27:41.539 a907 Manual compaction at level-0 from '\x006\x00\x00\x00' @ 72057594037927935 : 1 .. '\x007\x00\x00\x00' @ 0 : 0; will stop at '\x006\x00\x00\x05' @ 2571 : 1
+2023/03/31-08:27:41.539 a907 Compacting 1@0 + 1@1 files
+2023/03/31-08:27:41.542 a907 Generated table #182@0: 39 keys, 2851 bytes
+2023/03/31-08:27:41.542 a907 Compacted 1@0 + 1@1 files => 2851 bytes
+2023/03/31-08:27:41.548 a907 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/31-08:27:41.548 a907 Delete type=2 #181
+2023/03/31-08:27:41.549 a907 Manual compaction at level-0 from '\x006\x00\x00\x05' @ 2571 : 1 .. '\x007\x00\x00\x00' @ 0 : 0; will stop at (end)

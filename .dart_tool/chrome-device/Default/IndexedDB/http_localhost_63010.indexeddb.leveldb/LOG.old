@@ -1,0 +1,24 @@
+2023/03/19-07:03:29.257 a603 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.5rIGcV/flutter_tools_chrome_device.cWNR8k/Default/IndexedDB/http_localhost_63010.indexeddb.leveldb/MANIFEST-000001
+2023/03/19-07:03:29.257 a603 Recovering log #134
+2023/03/19-07:03:29.258 a603 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.5rIGcV/flutter_tools_chrome_device.cWNR8k/Default/IndexedDB/http_localhost_63010.indexeddb.leveldb/000134.log 
+2023/03/19-07:03:29.272 a907 Level-0 table #140: started
+2023/03/19-07:03:29.275 a907 Level-0 table #140: 2088 bytes OK
+2023/03/19-07:03:29.283 a907 Delete type=0 #134
+2023/03/19-07:03:29.283 a907 Manual compaction at level-0 from '\x00*\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00+\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/19-07:03:30.545 f2f3 Level-0 table #142: started
+2023/03/19-07:03:30.549 f2f3 Level-0 table #142: 2621 bytes OK
+2023/03/19-07:03:30.553 f2f3 Delete type=0 #139
+2023/03/19-07:03:30.553 a907 Manual compaction at level-0 from '\x00+\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00,\x00\x00\x00' @ 0 : 0; will stop at '\x00+\x00\x00\x05' @ 1896 : 1
+2023/03/19-07:03:30.553 a907 Compacting 1@0 + 1@1 files
+2023/03/19-07:03:30.556 a907 Generated table #143@0: 35 keys, 2772 bytes
+2023/03/19-07:03:30.556 a907 Compacted 1@0 + 1@1 files => 2772 bytes
+2023/03/19-07:03:30.562 a907 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/19-07:03:30.562 a907 Delete type=2 #142
+2023/03/19-07:03:30.562 a907 Manual compaction at level-0 from '\x00+\x00\x00\x05' @ 1896 : 1 .. '\x00,\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/19-07:04:10.089 a603 Compacting 1@1 + 1@2 files
+2023/03/19-07:04:10.093 a603 Generated table #144@1: 53 keys, 3093 bytes
+2023/03/19-07:04:10.093 a603 Compacted 1@1 + 1@2 files => 3093 bytes
+2023/03/19-07:04:10.099 a603 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/19-07:04:10.099 a603 Delete type=2 #140
+2023/03/19-07:04:10.099 a603 Delete type=2 #143
+2023/03/19-07:04:10.099 a603 Delete type=2 #137

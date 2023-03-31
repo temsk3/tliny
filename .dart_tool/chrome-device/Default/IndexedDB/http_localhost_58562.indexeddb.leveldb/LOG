@@ -1,0 +1,24 @@
+2023/03/17-06:17:42.518 a707 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.vonZvB/flutter_tools_chrome_device.kkAQdL/Default/IndexedDB/http_localhost_58562.indexeddb.leveldb/MANIFEST-000001
+2023/03/17-06:17:42.518 a707 Recovering log #40
+2023/03/17-06:17:42.518 a707 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.vonZvB/flutter_tools_chrome_device.kkAQdL/Default/IndexedDB/http_localhost_58562.indexeddb.leveldb/000040.log 
+2023/03/17-06:17:42.536 12973 Level-0 table #46: started
+2023/03/17-06:17:42.541 12973 Level-0 table #46: 2104 bytes OK
+2023/03/17-06:17:42.553 12973 Delete type=0 #40
+2023/03/17-06:17:42.553 a707 Manual compaction at level-0 from '\x00\x10\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/17-06:17:43.625 12973 Level-0 table #48: started
+2023/03/17-06:17:43.629 12973 Level-0 table #48: 2622 bytes OK
+2023/03/17-06:17:43.636 12973 Delete type=0 #45
+2023/03/17-06:17:43.636 a707 Manual compaction at level-0 from '\x00\x11\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at '\x00\x11\x00\x00\x05' @ 724 : 1
+2023/03/17-06:17:43.636 a707 Compacting 1@0 + 1@1 files
+2023/03/17-06:17:43.639 a707 Generated table #49@0: 35 keys, 2766 bytes
+2023/03/17-06:17:43.639 a707 Compacted 1@0 + 1@1 files => 2766 bytes
+2023/03/17-06:17:43.648 a707 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/17-06:17:43.648 a707 Delete type=2 #48
+2023/03/17-06:17:43.648 a707 Manual compaction at level-0 from '\x00\x11\x00\x00\x05' @ 724 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/17-06:18:23.354 8203 Compacting 1@1 + 1@2 files
+2023/03/17-06:18:23.359 8203 Generated table #50@1: 51 keys, 3057 bytes
+2023/03/17-06:18:23.359 8203 Compacted 1@1 + 1@2 files => 3057 bytes
+2023/03/17-06:18:23.367 8203 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/17-06:18:23.368 8203 Delete type=2 #49
+2023/03/17-06:18:23.368 8203 Delete type=2 #43
+2023/03/17-06:18:23.368 8203 Delete type=2 #46

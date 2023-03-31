@@ -1,0 +1,24 @@
+2023/03/22-13:43:23.361 6e07 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.hf9IaJ/flutter_tools_chrome_device.F0EV4n/Default/IndexedDB/http_localhost_59424.indexeddb.leveldb/MANIFEST-000001
+2023/03/22-13:43:23.361 6e07 Recovering log #237
+2023/03/22-13:43:23.361 6e07 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.hf9IaJ/flutter_tools_chrome_device.F0EV4n/Default/IndexedDB/http_localhost_59424.indexeddb.leveldb/000237.log 
+2023/03/22-13:43:23.380 15b5f Level-0 table #243: started
+2023/03/22-13:43:23.382 15b5f Level-0 table #243: 2093 bytes OK
+2023/03/22-13:43:23.390 15b5f Delete type=0 #237
+2023/03/22-13:43:23.391 6e07 Manual compaction at level-0 from '\x00H\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00I\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/22-13:43:24.638 2a9b7 Level-0 table #245: started
+2023/03/22-13:43:24.641 2a9b7 Level-0 table #245: 2624 bytes OK
+2023/03/22-13:43:24.646 2a9b7 Delete type=0 #242
+2023/03/22-13:43:24.646 6e07 Manual compaction at level-0 from '\x00I\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00J\x00\x00\x00' @ 0 : 0; will stop at '\x00I\x00\x00\x05' @ 2938 : 1
+2023/03/22-13:43:24.646 6e07 Compacting 1@0 + 1@1 files
+2023/03/22-13:43:24.648 6e07 Generated table #246@0: 35 keys, 2769 bytes
+2023/03/22-13:43:24.648 6e07 Compacted 1@0 + 1@1 files => 2769 bytes
+2023/03/22-13:43:24.651 6e07 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/22-13:43:24.651 6e07 Delete type=2 #245
+2023/03/22-13:43:24.652 6e07 Manual compaction at level-0 from '\x00I\x00\x00\x05' @ 2938 : 1 .. '\x00J\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/22-13:44:04.196 a603 Compacting 1@1 + 1@2 files
+2023/03/22-13:44:04.206 a603 Generated table #247@1: 53 keys, 3090 bytes
+2023/03/22-13:44:04.206 a603 Compacted 1@1 + 1@2 files => 3090 bytes
+2023/03/22-13:44:04.213 a603 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/22-13:44:04.214 a603 Delete type=2 #240
+2023/03/22-13:44:04.215 a603 Delete type=2 #243
+2023/03/22-13:44:04.215 a603 Delete type=2 #246

@@ -1,0 +1,24 @@
+2023/03/26-00:40:36.945 7007 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.snRuS7/flutter_tools_chrome_device.g4s92s/Default/IndexedDB/http_localhost_63705.indexeddb.leveldb/MANIFEST-000001
+2023/03/26-00:40:36.945 7007 Recovering log #274
+2023/03/26-00:40:36.946 7007 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.snRuS7/flutter_tools_chrome_device.g4s92s/Default/IndexedDB/http_localhost_63705.indexeddb.leveldb/000274.log 
+2023/03/26-00:40:36.962 1d00b Level-0 table #280: started
+2023/03/26-00:40:36.965 1d00b Level-0 table #280: 2092 bytes OK
+2023/03/26-00:40:36.969 1d00b Delete type=0 #274
+2023/03/26-00:40:36.972 7007 Manual compaction at level-0 from '\x00R\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00S\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/26-00:40:38.297 7007 Level-0 table #282: started
+2023/03/26-00:40:38.299 7007 Level-0 table #282: 2626 bytes OK
+2023/03/26-00:40:38.308 7007 Delete type=0 #279
+2023/03/26-00:40:38.308 7007 Manual compaction at level-0 from '\x00S\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00T\x00\x00\x00' @ 0 : 0; will stop at '\x00S\x00\x00\x05' @ 3596 : 1
+2023/03/26-00:40:38.308 7007 Compacting 1@0 + 1@1 files
+2023/03/26-00:40:38.311 7007 Generated table #283@0: 35 keys, 2773 bytes
+2023/03/26-00:40:38.311 7007 Compacted 1@0 + 1@1 files => 2773 bytes
+2023/03/26-00:40:38.315 7007 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/26-00:40:38.315 7007 Delete type=2 #282
+2023/03/26-00:40:38.315 7007 Manual compaction at level-0 from '\x00S\x00\x00\x05' @ 3596 : 1 .. '\x00T\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/26-00:41:17.783 a503 Compacting 1@1 + 1@2 files
+2023/03/26-00:41:17.788 a503 Generated table #284@1: 53 keys, 3096 bytes
+2023/03/26-00:41:17.788 a503 Compacted 1@1 + 1@2 files => 3096 bytes
+2023/03/26-00:41:17.794 a503 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/26-00:41:17.795 a503 Delete type=2 #277
+2023/03/26-00:41:17.795 a503 Delete type=2 #283
+2023/03/26-00:41:17.795 a503 Delete type=2 #280

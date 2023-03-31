@@ -1,0 +1,44 @@
+2023/03/30-10:17:55.717 a907 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.uxtyBl/flutter_tools_chrome_device.PcPB8c/Default/IndexedDB/http_localhost_54367.indexeddb.leveldb/MANIFEST-000001
+2023/03/30-10:17:55.717 a907 Recovering log #40
+2023/03/30-10:17:55.718 a907 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.uxtyBl/flutter_tools_chrome_device.PcPB8c/Default/IndexedDB/http_localhost_54367.indexeddb.leveldb/000040.log 
+2023/03/30-10:17:55.718 a907 Delete type=2 #39
+2023/03/30-10:17:55.736 15f6f Level-0 table #45: started
+2023/03/30-10:17:55.740 15f6f Level-0 table #45: 2091 bytes OK
+2023/03/30-10:17:55.748 15f6f Delete type=0 #40
+2023/03/30-10:17:55.748 15f6f Manual compaction at level-0 from '\x00\x10\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at '\x00\x10\x00\x00\x05' @ 770 : 1
+2023/03/30-10:17:55.748 15f6f Compacting 1@0 + 1@1 files
+2023/03/30-10:17:55.753 15f6f Generated table #46@0: 51 keys, 2996 bytes
+2023/03/30-10:17:55.753 15f6f Compacted 1@0 + 1@1 files => 2996 bytes
+2023/03/30-10:17:55.758 15f6f compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/30-10:17:55.758 15f6f Delete type=2 #45
+2023/03/30-10:17:55.758 a907 Manual compaction at level-0 from '\x00\x10\x00\x00\x05' @ 770 : 1 .. '\x00\x11\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/30-10:17:56.962 15f6f Level-0 table #48: started
+2023/03/30-10:17:56.966 15f6f Level-0 table #48: 2629 bytes OK
+2023/03/30-10:17:56.970 15f6f Delete type=0 #44
+2023/03/30-10:17:56.970 15f6f Delete type=2 #42
+2023/03/30-10:17:56.971 a907 Manual compaction at level-0 from '\x00\x11\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at '\x00\x11\x00\x00\x05' @ 815 : 1
+2023/03/30-10:17:56.971 a907 Compacting 1@0 + 1@1 files
+2023/03/30-10:17:56.973 a907 Generated table #49@0: 51 keys, 2934 bytes
+2023/03/30-10:17:56.973 a907 Compacted 1@0 + 1@1 files => 2934 bytes
+2023/03/30-10:17:56.978 a907 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/30-10:17:56.978 a907 Delete type=2 #48
+2023/03/30-10:17:56.978 a907 Manual compaction at level-0 from '\x00\x11\x00\x00\x05' @ 815 : 1 .. '\x00\x12\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/30-10:18:36.544 a303 Compacting 1@1 + 1@2 files
+2023/03/30-10:18:36.550 a303 Generated table #50@1: 52 keys, 3095 bytes
+2023/03/30-10:18:36.550 a303 Compacted 1@1 + 1@2 files => 3095 bytes
+2023/03/30-10:18:36.554 a303 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/30-10:18:36.554 a303 Delete type=2 #49
+2023/03/30-10:18:36.554 a303 Delete type=2 #36
+2023/03/30-10:18:36.554 a303 Delete type=2 #46
+2023/03/30-10:56:18.249 a907 Level-0 table #52: started
+2023/03/30-10:56:18.255 a907 Level-0 table #52: 1429 bytes OK
+2023/03/30-10:56:18.264 a907 Delete type=0 #47
+2023/03/30-10:56:18.264 a907 Manual compaction at level-0 from (begin) .. (end); will stop at (end)
+2023/03/30-10:56:18.264 a907 Manual compaction at level-1 from (begin) .. (end); will stop at '\x00\x05\x01\x02\x013\x00[\x00D\x00E\x00F\x00A\x00U\x00L\x00T\x00]\x00!\x001\x00:\x007\x008\x006\x008\x009\x005\x002\x008\x004\x004\x002\x001\x00:\x00w\x00e\x00b\x00:\x006\x003\x005\x007\x002\x009\x000\x007\x00f\x00d\x006\x004\x00e\x00e\x009\x00f\x001\x00b\x002\x008\x00a\x00c' @ 836 : 1
+2023/03/30-10:56:18.264 a907 Compacting 1@1 + 1@2 files
+2023/03/30-10:56:18.266 a907 Generated table #53@1: 51 keys, 3053 bytes
+2023/03/30-10:56:18.266 a907 Compacted 1@1 + 1@2 files => 3053 bytes
+2023/03/30-10:56:18.271 a907 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/30-10:56:18.271 a907 Delete type=2 #50
+2023/03/30-10:56:18.271 a907 Delete type=2 #52
+2023/03/30-10:56:18.271 a907 Manual compaction at level-1 from '\x00\x05\x01\x02\x013\x00[\x00D\x00E\x00F\x00A\x00U\x00L\x00T\x00]\x00!\x001\x00:\x007\x008\x006\x008\x009\x005\x002\x008\x004\x004\x002\x001\x00:\x00w\x00e\x00b\x00:\x006\x003\x005\x007\x002\x009\x000\x007\x00f\x00d\x006\x004\x00e\x00e\x009\x00f\x001\x00b\x002\x008\x00a\x00c' @ 836 : 1 .. (end); will stop at (end)

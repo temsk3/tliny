@@ -1,0 +1,1 @@
+[{"name":null,"pathParams":[],"pageType":{"import":"package:tliny/src/ui/home.dart","name":"HomePage","isNullable":false,"typeArguments":[]},"className":"HomePage","returnType":{"import":null,"name":"dynamic","isNullable":false,"typeArguments":[]},"parameters":[],"hasWrappedRoute":false,"replacementInRouteName":null,"hasConstConstructor":true,"deferredLoading":null}]

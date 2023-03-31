@@ -1,0 +1,24 @@
+2023/03/22-04:40:19.132 a907 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.jjpu7t/flutter_tools_chrome_device.lLyeRJ/Default/IndexedDB/http_localhost_59492.indexeddb.leveldb/MANIFEST-000001
+2023/03/22-04:40:19.132 a907 Recovering log #6
+2023/03/22-04:40:19.132 a907 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.jjpu7t/flutter_tools_chrome_device.lLyeRJ/Default/IndexedDB/http_localhost_59492.indexeddb.leveldb/000006.log 
+2023/03/22-04:40:19.150 b207 Level-0 table #11: started
+2023/03/22-04:40:19.152 b207 Level-0 table #11: 4734 bytes OK
+2023/03/22-04:40:19.161 b207 Delete type=0 #6
+2023/03/22-04:40:19.163 b207 Manual compaction at level-0 from '\x00\x06\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x07\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/22-04:40:20.267 b207 Level-0 table #13: started
+2023/03/22-04:40:20.270 b207 Level-0 table #13: 2621 bytes OK
+2023/03/22-04:40:20.274 b207 Delete type=0 #10
+2023/03/22-04:40:20.274 a907 Manual compaction at level-0 from '\x00\x07\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x08\x00\x00\x00' @ 0 : 0; will stop at '\x00\x07\x00\x00\x05' @ 284 : 1
+2023/03/22-04:40:20.274 a907 Compacting 1@0 + 1@1 files
+2023/03/22-04:40:20.277 a907 Generated table #14@0: 72 keys, 3409 bytes
+2023/03/22-04:40:20.277 a907 Compacted 1@0 + 1@1 files => 3409 bytes
+2023/03/22-04:40:20.280 a907 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/22-04:40:20.280 a907 Delete type=2 #13
+2023/03/22-04:40:20.280 a907 Manual compaction at level-0 from '\x00\x07\x00\x00\x05' @ 284 : 1 .. '\x00\x08\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/22-04:40:59.965 a503 Compacting 1@1 + 1@2 files
+2023/03/22-04:40:59.970 a503 Generated table #15@1: 51 keys, 3050 bytes
+2023/03/22-04:40:59.970 a503 Compacted 1@1 + 1@2 files => 3050 bytes
+2023/03/22-04:40:59.974 a503 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/22-04:40:59.975 a503 Delete type=2 #14
+2023/03/22-04:40:59.975 a503 Delete type=2 #11
+2023/03/22-04:40:59.975 a503 Delete type=2 #8

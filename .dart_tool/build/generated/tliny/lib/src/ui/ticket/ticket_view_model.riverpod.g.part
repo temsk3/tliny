@@ -1,0 +1,37 @@
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$ticketViewModelHash() => r'128cbaf12825d466b6e1c1b6b8a68d64a2890e13';
+
+/// See also [TicketViewModel].
+@ProviderFor(TicketViewModel)
+final ticketViewModelProvider =
+    AutoDisposeAsyncNotifierProvider<TicketViewModel, List<Ticket>>.internal(
+  TicketViewModel.new,
+  name: r'ticketViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$ticketViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$TicketViewModel = AutoDisposeAsyncNotifier<List<Ticket>>;
+String _$ticketCheckListHash() => r'28984af52180080dabfd97591e392a45a678ebc9';
+
+/// See also [TicketCheckList].
+@ProviderFor(TicketCheckList)
+final ticketCheckListProvider =
+    AutoDisposeNotifierProvider<TicketCheckList, Set<String>>.internal(
+  TicketCheckList.new,
+  name: r'ticketCheckListProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$ticketCheckListHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$TicketCheckList = AutoDisposeNotifier<Set<String>>;
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

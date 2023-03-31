@@ -1,0 +1,191 @@
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$usageHistoryStateHash() => r'a4fcecf0b4cf4be31179b923fe9c2ee8ff1c617c';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+typedef UsageHistoryStateRef = AutoDisposeStreamProviderRef<UsageHistory>;
+
+/// See also [usageHistoryState].
+@ProviderFor(usageHistoryState)
+const usageHistoryStateProvider = UsageHistoryStateFamily();
+
+/// See also [usageHistoryState].
+class UsageHistoryStateFamily extends Family<AsyncValue<UsageHistory>> {
+  /// See also [usageHistoryState].
+  const UsageHistoryStateFamily();
+
+  /// See also [usageHistoryState].
+  UsageHistoryStateProvider call(
+    String id,
+  ) {
+    return UsageHistoryStateProvider(
+      id,
+    );
+  }
+
+  @override
+  UsageHistoryStateProvider getProviderOverride(
+    covariant UsageHistoryStateProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'usageHistoryStateProvider';
+}
+
+/// See also [usageHistoryState].
+class UsageHistoryStateProvider
+    extends AutoDisposeStreamProvider<UsageHistory> {
+  /// See also [usageHistoryState].
+  UsageHistoryStateProvider(
+    this.id,
+  ) : super.internal(
+          (ref) => usageHistoryState(
+            ref,
+            id,
+          ),
+          from: usageHistoryStateProvider,
+          name: r'usageHistoryStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$usageHistoryStateHash,
+          dependencies: UsageHistoryStateFamily._dependencies,
+          allTransitiveDependencies:
+              UsageHistoryStateFamily._allTransitiveDependencies,
+        );
+
+  final String id;
+
+  @override
+  bool operator ==(Object other) {
+    return other is UsageHistoryStateProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+String _$ticketStreamStateHash() => r'cf741b409e53841b63709ed0e6694cab2ba7abbb';
+typedef TicketStreamStateRef = AutoDisposeStreamProviderRef<Ticket>;
+
+/// See also [ticketStreamState].
+@ProviderFor(ticketStreamState)
+const ticketStreamStateProvider = TicketStreamStateFamily();
+
+/// See also [ticketStreamState].
+class TicketStreamStateFamily extends Family<AsyncValue<Ticket>> {
+  /// See also [ticketStreamState].
+  const TicketStreamStateFamily();
+
+  /// See also [ticketStreamState].
+  TicketStreamStateProvider call(
+    String id,
+  ) {
+    return TicketStreamStateProvider(
+      id,
+    );
+  }
+
+  @override
+  TicketStreamStateProvider getProviderOverride(
+    covariant TicketStreamStateProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'ticketStreamStateProvider';
+}
+
+/// See also [ticketStreamState].
+class TicketStreamStateProvider extends AutoDisposeStreamProvider<Ticket> {
+  /// See also [ticketStreamState].
+  TicketStreamStateProvider(
+    this.id,
+  ) : super.internal(
+          (ref) => ticketStreamState(
+            ref,
+            id,
+          ),
+          from: ticketStreamStateProvider,
+          name: r'ticketStreamStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ticketStreamStateHash,
+          dependencies: TicketStreamStateFamily._dependencies,
+          allTransitiveDependencies:
+              TicketStreamStateFamily._allTransitiveDependencies,
+        );
+
+  final String id;
+
+  @override
+  bool operator ==(Object other) {
+    return other is TicketStreamStateProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

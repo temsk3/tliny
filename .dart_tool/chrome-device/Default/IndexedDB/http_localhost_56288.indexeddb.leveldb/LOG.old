@@ -1,0 +1,24 @@
+2023/03/23-14:02:49.564 6807 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.kxKYW4/flutter_tools_chrome_device.UOPrLC/Default/IndexedDB/http_localhost_56288.indexeddb.leveldb/MANIFEST-000001
+2023/03/23-14:02:49.564 6807 Recovering log #292
+2023/03/23-14:02:49.564 6807 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.kxKYW4/flutter_tools_chrome_device.UOPrLC/Default/IndexedDB/http_localhost_56288.indexeddb.leveldb/000292.log 
+2023/03/23-14:02:49.593 21323 Level-0 table #298: started
+2023/03/23-14:02:49.596 21323 Level-0 table #298: 2087 bytes OK
+2023/03/23-14:02:49.610 21323 Delete type=0 #292
+2023/03/23-14:02:49.610 21323 Manual compaction at level-0 from '\x00W\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00X\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/23-14:02:56.438 21323 Level-0 table #300: started
+2023/03/23-14:02:56.439 21323 Level-0 table #300: 2624 bytes OK
+2023/03/23-14:02:56.450 21323 Delete type=0 #297
+2023/03/23-14:02:56.450 8703 Manual compaction at level-0 from '\x00X\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00Y\x00\x00\x00' @ 0 : 0; will stop at '\x00X\x00\x00\x05' @ 3971 : 1
+2023/03/23-14:02:56.450 8703 Compacting 1@0 + 1@1 files
+2023/03/23-14:02:56.454 8703 Generated table #301@0: 37 keys, 2802 bytes
+2023/03/23-14:02:56.454 8703 Compacted 1@0 + 1@1 files => 2802 bytes
+2023/03/23-14:02:56.463 8703 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/23-14:02:56.463 8703 Delete type=2 #300
+2023/03/23-14:02:56.463 8703 Manual compaction at level-0 from '\x00X\x00\x00\x05' @ 3971 : 1 .. '\x00Y\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/23-14:03:36.021 8703 Compacting 1@1 + 1@2 files
+2023/03/23-14:03:36.028 8703 Generated table #302@1: 53 keys, 3095 bytes
+2023/03/23-14:03:36.028 8703 Compacted 1@1 + 1@2 files => 3095 bytes
+2023/03/23-14:03:36.036 8703 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/23-14:03:36.037 8703 Delete type=2 #301
+2023/03/23-14:03:36.039 8703 Delete type=2 #298
+2023/03/23-14:03:36.039 8703 Delete type=2 #295

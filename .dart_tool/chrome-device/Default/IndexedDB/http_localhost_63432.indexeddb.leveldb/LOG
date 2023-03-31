@@ -1,0 +1,53 @@
+2023/03/31-14:57:04.227 a707 Reusing MANIFEST /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.c5EEkS/flutter_tools_chrome_device.ebwPMS/Default/IndexedDB/http_localhost_63432.indexeddb.leveldb/MANIFEST-000001
+2023/03/31-14:57:04.227 a707 Recovering log #292
+2023/03/31-14:57:04.228 a707 Reusing old log /private/var/folders/0y/wpjnr3jd4qv6jj0c8m8bks503vkt6q/T/flutter_tools.c5EEkS/flutter_tools_chrome_device.ebwPMS/Default/IndexedDB/http_localhost_63432.indexeddb.leveldb/000292.log 
+2023/03/31-14:57:04.228 a707 Delete type=2 #291
+2023/03/31-14:57:04.242 b35f Level-0 table #297: started
+2023/03/31-14:57:04.245 b35f Level-0 table #297: 2089 bytes OK
+2023/03/31-14:57:04.253 b35f Delete type=0 #292
+2023/03/31-14:57:04.253 20c87 Manual compaction at level-0 from '\x00X\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00Y\x00\x00\x00' @ 0 : 0; will stop at '\x00X\x00\x00\x05' @ 3873 : 1
+2023/03/31-14:57:04.253 20c87 Compacting 1@0 + 1@1 files
+2023/03/31-14:57:04.255 20c87 Generated table #298@0: 39 keys, 2874 bytes
+2023/03/31-14:57:04.255 20c87 Compacted 1@0 + 1@1 files => 2874 bytes
+2023/03/31-14:57:04.259 20c87 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/31-14:57:04.259 20c87 Delete type=2 #297
+2023/03/31-14:57:04.259 a707 Manual compaction at level-0 from '\x00X\x00\x00\x05' @ 3873 : 1 .. '\x00Y\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/31-14:57:05.393 a103 Level-0 table #300: started
+2023/03/31-14:57:05.395 a103 Level-0 table #300: 2626 bytes OK
+2023/03/31-14:57:05.399 a103 Delete type=0 #296
+2023/03/31-14:57:05.399 a103 Delete type=2 #294
+2023/03/31-14:57:05.399 a707 Manual compaction at level-0 from '\x00Y\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00Z\x00\x00\x00' @ 0 : 0; will stop at '\x00Y\x00\x00\x05' @ 3918 : 1
+2023/03/31-14:57:05.399 a707 Compacting 1@0 + 1@1 files
+2023/03/31-14:57:05.403 a707 Generated table #301@0: 39 keys, 2807 bytes
+2023/03/31-14:57:05.403 a707 Compacted 1@0 + 1@1 files => 2807 bytes
+2023/03/31-14:57:05.409 a707 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/31-14:57:05.409 a707 Delete type=2 #300
+2023/03/31-14:57:05.409 a707 Manual compaction at level-0 from '\x00Y\x00\x00\x05' @ 3918 : 1 .. '\x00Z\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/31-14:57:45.058 a103 Compacting 1@1 + 1@2 files
+2023/03/31-14:57:45.065 a103 Generated table #302@1: 53 keys, 3095 bytes
+2023/03/31-14:57:45.065 a103 Compacted 1@1 + 1@2 files => 3095 bytes
+2023/03/31-14:57:45.071 a103 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/31-14:57:45.071 a103 Delete type=2 #274
+2023/03/31-14:57:45.071 a103 Delete type=2 #301
+2023/03/31-14:57:45.071 a103 Delete type=2 #298
+2023/03/31-14:57:57.437 20c87 Level-0 table #304: started
+2023/03/31-14:57:57.444 20c87 Level-0 table #304: 2085 bytes OK
+2023/03/31-14:57:57.452 20c87 Delete type=0 #299
+2023/03/31-14:57:57.452 a707 Manual compaction at level-0 from '\x00Z\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00[\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/31-14:57:58.702 b35f Level-0 table #306: started
+2023/03/31-14:57:58.705 b35f Level-0 table #306: 2627 bytes OK
+2023/03/31-14:57:58.711 b35f Delete type=0 #303
+2023/03/31-14:57:58.711 a707 Manual compaction at level-0 from '\x00[\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\\x00\x00\x00' @ 0 : 0; will stop at '\x00[\x00\x00\x05' @ 4006 : 1
+2023/03/31-14:57:58.711 a707 Compacting 1@0 + 1@1 files
+2023/03/31-14:57:58.714 a707 Generated table #307@0: 37 keys, 2795 bytes
+2023/03/31-14:57:58.714 a707 Compacted 1@0 + 1@1 files => 2795 bytes
+2023/03/31-14:57:58.718 a707 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/03/31-14:57:58.718 a707 Delete type=2 #306
+2023/03/31-14:57:58.718 a707 Manual compaction at level-0 from '\x00[\x00\x00\x05' @ 4006 : 1 .. '\x00\\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/03/31-14:58:38.227 a103 Compacting 1@1 + 1@2 files
+2023/03/31-14:58:38.230 a103 Generated table #308@1: 53 keys, 3095 bytes
+2023/03/31-14:58:38.230 a103 Compacted 1@1 + 1@2 files => 3095 bytes
+2023/03/31-14:58:38.237 a103 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/03/31-14:58:38.237 a103 Delete type=2 #302
+2023/03/31-14:58:38.237 a103 Delete type=2 #307
+2023/03/31-14:58:38.237 a103 Delete type=2 #304

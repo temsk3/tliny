@@ -1,0 +1,124 @@
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$staffRepositoryHash() => r'9c2a312caad9861a2f7730e92ada37c85f8ac2d1';
+
+/// See also [staffRepository].
+@ProviderFor(staffRepository)
+final staffRepositoryProvider = Provider<StaffRepository>.internal(
+  staffRepository,
+  name: r'staffRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$staffRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef StaffRepositoryRef = ProviderRef<StaffRepository>;
+String _$staffCheckExistenceHash() =>
+    r'50002fd03ce34011f0eb61a9043c7d84c2599506';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+typedef StaffCheckExistenceRef = AutoDisposeStreamProviderRef<bool>;
+
+/// See also [staffCheckExistence].
+@ProviderFor(staffCheckExistence)
+const staffCheckExistenceProvider = StaffCheckExistenceFamily();
+
+/// See also [staffCheckExistence].
+class StaffCheckExistenceFamily extends Family<AsyncValue<bool>> {
+  /// See also [staffCheckExistence].
+  const StaffCheckExistenceFamily();
+
+  /// See also [staffCheckExistence].
+  StaffCheckExistenceProvider call(
+    String eventId,
+  ) {
+    return StaffCheckExistenceProvider(
+      eventId,
+    );
+  }
+
+  @override
+  StaffCheckExistenceProvider getProviderOverride(
+    covariant StaffCheckExistenceProvider provider,
+  ) {
+    return call(
+      provider.eventId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'staffCheckExistenceProvider';
+}
+
+/// See also [staffCheckExistence].
+class StaffCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
+  /// See also [staffCheckExistence].
+  StaffCheckExistenceProvider(
+    this.eventId,
+  ) : super.internal(
+          (ref) => staffCheckExistence(
+            ref,
+            eventId,
+          ),
+          from: staffCheckExistenceProvider,
+          name: r'staffCheckExistenceProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$staffCheckExistenceHash,
+          dependencies: StaffCheckExistenceFamily._dependencies,
+          allTransitiveDependencies:
+              StaffCheckExistenceFamily._allTransitiveDependencies,
+        );
+
+  final String eventId;
+
+  @override
+  bool operator ==(Object other) {
+    return other is StaffCheckExistenceProvider && other.eventId == eventId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, eventId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

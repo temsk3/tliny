@@ -3,8 +3,8 @@ import * as P from '../../utils/function_paths'
 
 const domains = [
   // 'account_links',
-  'account',
-  'customer',
+  // 'account',
+  // 'customer',
   // 'extrenal_accounts',
   // 'paymentIntent',
   // 'paymentMethod',
