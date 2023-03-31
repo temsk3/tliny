@@ -1,6 +1,7 @@
 {
   "name": "functions",
   "scripts": {
+    "lint": "eslint . --ext ts,tsx",
     "lint:eslint": "eslint . --ext ts,tsx",
     "fix:eslint": "eslint . --ext ts,tsx --fix",
     "lint:prettier": "prettier --check src",

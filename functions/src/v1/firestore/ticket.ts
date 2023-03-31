@@ -13,12 +13,12 @@ export const createTicketDocument = async (orderId: string) => {
       .get()
       .then((s) => new Document<Model.Order>(s))
     // order status の確認
-    if (order.data.status !== 'Pre') {
+    if (order.data.status !== 'pre') {
       console.log('check order status: ' + order.data.status)
       return
     }
     // orderの確定
-    await order.ref.set({ status: 'Order' }, { merge: true })
+    await order.ref.set({ status: 'order' }, { merge: true })
 
     // user 購入履歴
     // ユーザー情報の取得
