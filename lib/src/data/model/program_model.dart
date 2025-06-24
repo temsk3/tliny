@@ -22,6 +22,7 @@ class Program with _$Program {
     @timestampKey required DateTime? eventFrom,
     @timestampKey required DateTime? eventTo,
     required String? place,
+    String? storageId,
     @Default([]) List<String> pictureURL,
     @timestampKey DateTime? createdAt,
     @timestampKey DateTime? updatedAt,

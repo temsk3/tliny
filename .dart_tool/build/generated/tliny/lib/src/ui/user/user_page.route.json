@@ -1,1 +1,0 @@
-[{"name":null,"pathParams":[],"pageType":{"import":"package:tliny/src/ui/user/user_page.dart","name":"UserPage","isNullable":false,"typeArguments":[]},"className":"UserPage","returnType":{"import":null,"name":"dynamic","isNullable":false,"typeArguments":[]},"parameters":[],"hasWrappedRoute":false,"replacementInRouteName":null,"hasConstConstructor":true,"deferredLoading":null}]

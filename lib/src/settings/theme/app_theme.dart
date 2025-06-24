@@ -1,80 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'app_colors.dart';
-import 'app_text_theme.dart';
-
-final appThemeModeProvider =
-    StateNotifierProvider<StateController<ThemeMode>, ThemeMode>(
-  (ref) => StateController(ThemeMode.system),
-);
-
-final appThemeProvider = Provider<AppTheme>(
-  (ref) {
-    final mode = ref.watch(appThemeModeProvider);
-    switch (mode) {
-      case ThemeMode.dark:
-        return AppTheme.dark();
-      case ThemeMode.light:
-      default:
-        return AppTheme.light();
-    }
-  },
-);
+part 'app_theme.g.dart';
 
 class AppTheme {
-  AppTheme({
-    required this.mode,
-    required this.data,
-    required this.textTheme,
-    required this.appColors,
-  });
-
-  factory AppTheme.light() {
-    const mode = ThemeMode.light;
-    final appColors = AppColors.light();
-    final themeData = ThemeData.light().copyWith(
-      // useMaterial3: true,
-      // colorScheme: lightColorScheme,
-      // scaffoldBackgroundColor: appColors.background,
+  ThemeData get lightTheme {
+    return ThemeData(
       textTheme: GoogleFonts.notoSansTextTheme(ThemeData.light().textTheme),
-      // snackBarTheme: SnackBarThemeData(
-      //   backgroundColor: appColors.error,
-      //   behavior: SnackBarBehavior.floating,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      brightness: Brightness.light,
+      primaryColor: Colors.black,
+      colorScheme: const ColorScheme.light(
+        primary: Colors.black,
+        secondary: Colors.grey,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.black,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: Colors.grey[600]),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        prefixIconColor: Colors.grey,
+      ),
+      // colorScheme: ColorScheme.fromSeed(
+      //   seedColor: const Color.fromARGB(255, 225, 212, 67),
       // ),
-    );
-    return AppTheme(
-      mode: mode,
-      data: themeData,
-      textTheme: AppTextTheme(),
-      appColors: appColors,
     );
   }
 
-  factory AppTheme.dark() {
-    const mode = ThemeMode.dark;
-    final appColors = AppColors.dark();
-    final themeData = ThemeData.dark().copyWith(
-      // useMaterial3: true,
-      // colorScheme: darkColorScheme,
-      // scaffoldBackgroundColor: appColors.background,
+  ThemeData get darkTheme {
+    return ThemeData(
       textTheme: GoogleFonts.notoSansTextTheme(ThemeData.dark().textTheme),
-      // snackBarTheme: SnackBarThemeData(
-      //   backgroundColor: appColors.error,
-      //   behavior: SnackBarBehavior.floating,
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      brightness: Brightness.dark,
+      primaryColor: Colors.white,
+      colorScheme: const ColorScheme.dark(
+        primary: Colors.white,
+        secondary: Colors.grey,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: Colors.grey[400]),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        prefixIconColor: Colors.grey,
+      ),
+      // colorScheme: ColorScheme.fromSeed(
+      //   seedColor: Colors.yellow,
+      //   brightness: Brightness.dark,
       // ),
     );
-    return AppTheme(
-      mode: mode,
-      data: themeData,
-      textTheme: AppTextTheme(),
-      appColors: appColors,
-    );
   }
+}
 
-  final ThemeMode mode;
-  final ThemeData data;
-  final AppTextTheme textTheme;
-  final AppColors appColors;
+@riverpod
+class AppThemeMode extends _$AppThemeMode {
+  @override
+  ThemeMode build() => ThemeMode.light;
+
+  void toggleTheme() {
+    state = state == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+  }
 }

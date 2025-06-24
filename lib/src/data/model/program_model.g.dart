@@ -8,7 +8,8 @@ part of 'program_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Program _$$_ProgramFromJson(Map<String, dynamic> json) => _$_Program(
+_$ProgramImpl _$$ProgramImplFromJson(Map<String, dynamic> json) =>
+    _$ProgramImpl(
       id: json['id'] as String?,
       organizerId: json['organizerId'] as String?,
       name: json['name'] as String?,
@@ -18,7 +19,9 @@ _$_Program _$$_ProgramFromJson(Map<String, dynamic> json) => _$_Program(
       eventFrom: dateFromTimestampValue(json['eventFrom']),
       eventTo: dateFromTimestampValue(json['eventTo']),
       place: json['place'] as String?,
-      pictureURL: (json['pictureURL'] as List<dynamic>?)
+      storageId: json['storageId'] as String?,
+      pictureURL:
+          (json['pictureURL'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -28,15 +31,17 @@ _$_Program _$$_ProgramFromJson(Map<String, dynamic> json) => _$_Program(
       isActive: json['isActive'] as bool?,
       isPublish: json['isPublish'] as bool?,
       staffCode: json['staffCode'] as String?,
-      staff: (json['staff'] as List<dynamic>?)
-          ?.map((e) => Staff.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      product: (json['product'] as List<dynamic>?)
-          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      staff:
+          (json['staff'] as List<dynamic>?)
+              ?.map((e) => Staff.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      product:
+          (json['product'] as List<dynamic>?)
+              ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+              .toList(),
     );
 
-Map<String, dynamic> _$$_ProgramToJson(_$_Program instance) =>
+Map<String, dynamic> _$$ProgramImplToJson(_$ProgramImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'organizerId': instance.organizerId,
@@ -47,6 +52,7 @@ Map<String, dynamic> _$$_ProgramToJson(_$_Program instance) =>
       'eventFrom': timestampFromDateValue(instance.eventFrom),
       'eventTo': timestampFromDateValue(instance.eventTo),
       'place': instance.place,
+      'storageId': instance.storageId,
       'pictureURL': instance.pictureURL,
       'createdAt': timestampFromDateValue(instance.createdAt),
       'updatedAt': timestampFromDateValue(instance.updatedAt),

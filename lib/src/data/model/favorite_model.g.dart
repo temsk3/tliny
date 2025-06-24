@@ -8,7 +8,8 @@ part of 'favorite_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Favorite _$$_FavoriteFromJson(Map<String, dynamic> json) => _$_Favorite(
+_$FavoriteImpl _$$FavoriteImplFromJson(Map<String, dynamic> json) =>
+    _$FavoriteImpl(
       id: json['id'] as String?,
       programId: json['programId'] as String?,
       createdAt: dateFromTimestampValue(json['createdAt']),
@@ -16,7 +17,7 @@ _$_Favorite _$$_FavoriteFromJson(Map<String, dynamic> json) => _$_Favorite(
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$$_FavoriteToJson(_$_Favorite instance) =>
+Map<String, dynamic> _$$FavoriteImplToJson(_$FavoriteImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'programId': instance.programId,

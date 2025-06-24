@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tliny/src/data/repository/auth_repository.dart';
-import 'package:tliny/src/ui/auth/auth_view_model.dart';
+import 'package:tliny/src/settings/routes/routes.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../data/repository/auth_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_router.dart';
-import '../../settings/routes/app_route.gr.dart';
-import '../../settings/theme/app_theme.dart';
+import '../../ui/auth/auth_view_model.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import '../../ui/drawer/drawer_state.dart';
+import '../../ui/program/program_state.dart';
+import '../my_program/my_program_view_model.dart';
 
 class CustomDrawer extends HookConsumerWidget {
   const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
+    // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     // final appMQ = useMediaQuery();
     return Drawer(
       child: Column(
@@ -27,24 +29,119 @@ class CustomDrawer extends HookConsumerWidget {
         children: [
           Flexible(
             child: ListView(
-              children: const [
-                // QRCodeScanListTile(),
-                CustomUserAccountsDrawerHeader(),
-                CustomSignListTile(),
-                CustomProfileListTile(),
-                CustomUsageHistoryListTile(),
-                CustomOrderListTile(),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Assets.img.icon.image(height: 16, width: 16),
+                      const SizedBox(width: 4),
+                      Text(l10n.appTitle),
+                    ],
+                  ),
+                ),
+                const CustomUserAccountsDrawerHeader(),
+                const CustomSignListTile(),
+                const CustomProfileListTile(),
+                const CustomUsageHistoryListTile(),
+                const CustomOrderListTile(),
+                const CustomMyEventListTile(),
+                const CustomManagementListTile(),
               ],
             ),
           ),
-          ListTile(
-            leading: const Icon(Icons.library_books_outlined),
-            title: const Text('Terms'),
-            onTap: () {},
-          ),
+          const CustomTermsListTile(),
           const CustomAboutListTile(),
+          const SizedBox(height: 16),
         ],
       ),
+    );
+  }
+}
+
+class CustomMyEventListTile extends HookWidget {
+  const CustomMyEventListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = useL10n();
+    return Consumer(
+      builder: (context, ref, child) {
+        return AsyncValueButtonWidget(
+          value: ref.watch(myProgramViewModelProvider),
+          data: (myProgramList) {
+            final widgetList = <Widget>[];
+            final program = ref.watch(programListStateProvider).value;
+            if (program != null) {
+              for (final myProgram in myProgramList) {
+                final programData = program.firstWhere(
+                  (element) => element.id == myProgram.id,
+                );
+                final widget = ListTile(
+                  onTap: () {
+                    ProgramDetailRoute($extra: programData).push(context);
+                  },
+                  title: Text(programData.name.toString()),
+                );
+                widgetList.add(widget);
+              }
+              return widgetList.isEmpty
+                  ? Container()
+                  : ExpansionTile(
+                    title: const Text('My Event'),
+                    children: widgetList,
+                  );
+            } else {
+              return Container();
+            }
+          },
+        );
+      },
+    );
+  }
+}
+
+class CustomManagementListTile extends HookWidget {
+  const CustomManagementListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = useL10n();
+    // final appRoute = useRouter();
+    return Consumer(
+      builder: (context, ref, child) {
+        return AsyncValueButtonWidget(
+          value: ref.watch(authStateChangesProvider),
+          data: (data) {
+            if (data) {
+              final list = ref.watch(myProgramListStateProvider).value;
+              final widgetList = <Widget>[];
+              if (list != null) {
+                for (final element in list) {
+                  final widget = ListTile(
+                    onTap:
+                        () =>
+                        // appRoute.push(ManagementRoute(eventId: element.id!))
+                        ManagementRoute(eventId: element.id!).push(context),
+                    title: Text(element.name.toString()),
+                  );
+                  widgetList.add(widget);
+                }
+              }
+
+              return widgetList.isEmpty
+                  ? Container()
+                  : ExpansionTile(
+                    title: Text(l10n.salesInformation),
+                    // leading: const Icon(Icons.cancel),
+                    children: widgetList,
+                  );
+            } else {
+              return Container();
+            }
+          },
+        );
+      },
     );
   }
 }
@@ -56,7 +153,6 @@ class CustomUserAccountsDrawerHeader extends HookWidget {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final theme = ref.watch(appThemeProvider);
         return AsyncValueButtonWidget(
           value: ref.watch(userStreamStateProvider),
           data: (data) {
@@ -64,69 +160,21 @@ class CustomUserAccountsDrawerHeader extends HookWidget {
               return Container();
             } else {
               return UserAccountsDrawerHeader(
-                decoration: const BoxDecoration(),
-                accountName: data.displayName == null
-                    ? Text(
-                        'non',
-                        style: TextStyle(
-                          color: theme.mode == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      )
-                    : Text(
-                        data.displayName!,
-                        style: TextStyle(
-                          color: theme.mode == Brightness.dark
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                accountEmail: Text(
-                  data.email!,
-                  style: TextStyle(
-                    color: theme.mode == Brightness.dark
-                        ? Colors.white
-                        : Colors.black,
-                  ),
-                ),
+                // decoration: const BoxDecoration(),
+                // onDetailsPressed: () => appRoute.push(const UserRoute()),
+                accountName:
+                    data.displayName == null
+                        ? const Text('non')
+                        : Text(data.displayName!),
+                accountEmail: Text(data.email!),
                 currentAccountPicture: CircleAvatar(
                   backgroundColor: Colors.grey,
-                  backgroundImage: data.photoUrl == null
-                      ? null
-                      : NetworkImage(data.photoUrl!),
+                  backgroundImage:
+                      data.photoUrl == null
+                          ? null
+                          : NetworkImage(data.photoUrl!),
                 ),
               );
-            }
-          },
-        );
-      },
-    );
-  }
-}
-
-class QRCodeScanListTile extends HookWidget {
-  const QRCodeScanListTile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = useL10n();
-    final appRoute = useRouter();
-    return Consumer(
-      builder: (context, ref, child) {
-        return AsyncValueButtonWidget(
-          value: ref.watch(authStateChangesProvider),
-          data: (data) {
-            if (data) {
-              return ListTile(
-                leading: const Icon(Icons.qr_code_scanner),
-                title: const Text('QRCodeScan'),
-                onTap: () {
-                  appRoute.push(const QRScanRoute());
-                },
-              );
-            } else {
-              return Container();
             }
           },
         );
@@ -141,7 +189,7 @@ class CustomProfileListTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     return Consumer(
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
@@ -152,11 +200,12 @@ class CustomProfileListTile extends HookWidget {
                 leading: const Icon(Icons.person_outline),
                 title: Text(l10n.profile),
                 onTap: () {
-                  appRoute.push(const UserRoute());
+                  // appRoute.push(const UserRoute());
+                  const UserRoute().push(context);
                 },
               );
             } else {
-              return Container();
+              return const SizedBox.shrink();
             }
           },
         );
@@ -171,7 +220,7 @@ class CustomUsageHistoryListTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     return Consumer(
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
@@ -182,9 +231,10 @@ class CustomUsageHistoryListTile extends HookWidget {
                 leading: const Icon(Icons.history_rounded),
                 title: Text(l10n.usageHistory),
                 onTap: () {
-                  appRoute.push(
-                    const UsageHistoryRoute(),
-                  );
+                  // appRoute.push(
+                  //   const UsageHistoryRoute(),
+                  // );
+                  const UsageHistoryRoute().push(context);
                 },
               );
             } else {
@@ -203,7 +253,7 @@ class CustomOrderListTile extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     return Consumer(
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
@@ -212,11 +262,12 @@ class CustomOrderListTile extends HookWidget {
             if (data) {
               return ListTile(
                 leading: const Icon(Icons.history_rounded),
-                title: const Text('購入履歴'),
+                title: Text(l10n.purchaseHistory),
                 onTap: () {
-                  appRoute.push(
-                    const OrderRoute(),
-                  );
+                  // appRoute.push(
+                  //   const OrderRoute(),
+                  // );
+                  const OrderRoute().push(context);
                 },
               );
             } else {
@@ -234,7 +285,8 @@ class CustomSignListTile extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appRoute = useRouter();
+    final l10n = useL10n();
+    // final appRoute = useRouter();
     return Consumer(
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
@@ -243,7 +295,7 @@ class CustomSignListTile extends HookWidget {
             if (data) {
               return ListTile(
                 leading: const Icon(Icons.logout_outlined),
-                title: const Text('SignOut'),
+                title: Text(l10n.signOut),
                 onTap: () {
                   ref.read(authViewModelProvider.notifier).signOut();
                 },
@@ -251,19 +303,16 @@ class CustomSignListTile extends HookWidget {
             } else {
               return ListTile(
                 leading: const Icon(Icons.login_outlined),
-                title: const Text('SignIn'),
+                title: Text(l10n.signIn),
                 onTap: () async {
-                  await appRoute.replace(
-                    SignInRoute(
-                      onSigninCallback: (bool bool) {
-                        appRoute.replace(const HomeRoute());
-                      },
-                    ),
-                  );
-                  // final result = await appRoute.push(
-                  //   const SignInRoute(),
+                  // await appRoute.replace(
+                  //   SignInRoute(
+                  //     onSigninCallback: (bool bool) {
+                  //       appRoute.replace(const HomeRoute());
+                  // },
+                  //   ),
                   // );
-                  // await appRoute.replace(const HomeRoute());
+                  context.push(AppRoutes.signInPage);
                 },
               );
             }
@@ -288,8 +337,82 @@ class CustomAboutListTile extends StatelessWidget {
               icon: const Icon(Icons.info_outline),
               applicationName: data.appName,
               applicationVersion: data.version,
-              applicationIcon: Assets.img.icon32x32.image(),
+              applicationIcon: Assets.img.icon.image(scale: 16),
               applicationLegalese: '2022 Spel1\nsupport@spel1.com',
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class CustomTermsListTile extends HookWidget {
+  const CustomTermsListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = useL10n();
+    // final appRoute = useRouter();
+    return ListTile(
+      leading: const Icon(Icons.library_books_outlined),
+      title: const Text('Terms'),
+      onTap: () async {
+        final txtContent = await rootBundle.loadString(
+          'assets/files/TLINY_terms.txt',
+        );
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Terms'),
+              content: SingleChildScrollView(child: Text(txtContent)),
+              actions: [
+                TextButton(
+                  child: Text(l10n.close),
+                  onPressed: () {
+                    // appRoute.pop(false);
+                    context.pop(false);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class CustomCommerceListTile extends HookWidget {
+  const CustomCommerceListTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = useL10n();
+    // final appRoute = useRouter();
+    return ListTile(
+      leading: const Icon(Icons.library_books_outlined),
+      title: const Text('特定商取引法に基づく表記'),
+      onTap: () async {
+        final txtContent = await rootBundle.loadString(
+          'assets/files/TLINY_commerce.txt',
+        );
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('特定商取引法に基づく表記'),
+              content: SingleChildScrollView(child: Text(txtContent)),
+              actions: [
+                TextButton(
+                  child: Text(l10n.close),
+                  onPressed: () {
+                    // appRoute.pop(false);
+                    context.pop(false);
+                  },
+                ),
+              ],
             );
           },
         );

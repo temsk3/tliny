@@ -1,18 +1,15 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_router.dart';
 import '../../ui/usage_history/history_state.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
 import 'history_view_model.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
-@RoutePage()
+// @RoutePage()
 class UsageHistoryDetailsPage extends HookConsumerWidget {
   const UsageHistoryDetailsPage({super.key, required this.list});
   final List<String> list;
@@ -21,14 +18,14 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     // final appMQ = useMediaQuery();
     // final state = ref.watch(ticketStreamStateProvider(list[index]));
     final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('UsageHistory'),
-        leading: const AutoLeadingButton(),
+        // leading: const AutoLeadingButton(),
       ),
       body: MainBodyWidget(
         body: ListView.separated(

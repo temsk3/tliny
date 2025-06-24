@@ -18,6 +18,8 @@ export interface Account {
 export interface CartItem {
   productDocRef: FirebaseFirestore.DocumentReference
   quantity: number
+  productId: string
+  programId: string
 }
 
 export interface LineItem {
@@ -144,13 +146,17 @@ export interface Ticket {
   purchaseTime: FirebaseFirestore.Timestamp
   // 所有者
   ownerId: string
-  ownerName?: string
+  ownerName: string
   assignment: Assignment[]
-  isActive: boolean
+  // isActive: boolean
   isPrinting: boolean
+  isUsed: boolean
+  uuid: null
+  pdfUuid: null
   // 商品情報
+  productDocRef: FirebaseFirestore.DocumentReference
   productId: string
-  exchangeNumber: number
+  // exchangeNumber: number
   code: string
   name: string
   // genre: string
@@ -160,7 +166,7 @@ export interface Ticket {
   expirationFrom: FirebaseFirestore.Timestamp
   expirationTo: FirebaseFirestore.Timestamp
   // 登録者
-  register: string
+  register?: string
   // 開催者
   organizerDocRef: FirebaseFirestore.DocumentReference
   organizerId: string
@@ -168,7 +174,7 @@ export interface Ticket {
   eventDocRef: FirebaseFirestore.DocumentReference
   eventId: string
   eventName: string
-  expirationLink: boolean
+  // expirationLink: boolean
   // Stripe
   // priceId: string
 }

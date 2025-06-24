@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as firebaseAdmin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import Stripe from 'stripe'
@@ -352,6 +353,38 @@ _exportFunction('onUpdateAccountLink', () =>
         const accountUrl = result.url
         console.log(accountUrl)
         return { accountUrl: accountUrl }
+      },
+      (error: any) => {
+        stripeErrors(error)
+        throw new functions.https.HttpsError('unknown', error)
+      }
+    )
+  })
+)
+
+// MARK: 管理画面へのリンク
+_exportFunction('onCreateLoginLink', () =>
+  onCall(async (data, context) => {
+    // 認証済みユーザーかどうかチェックする
+    checkAuth(context)
+    //
+    const accountId = await getStripeConnectAccountId(
+      getRequestingUserId(context)
+    )
+    if (accountId === null) {
+      throw new functions.https.HttpsError(
+        'failed-precondition',
+        'User has no Stripe ConnectAccount ID'
+      )
+    }
+
+    stripeOptions.idempotencyKey = uuidv4()
+
+    return await stripe.accounts.createLoginLink(accountId, stripeOptions).then(
+      (result: Stripe.Response<Stripe.LoginLink>) => {
+        const loginUrl = result.url
+        console.log(loginUrl)
+        return { loginUrl: loginUrl }
       },
       (error: any) => {
         stripeErrors(error)

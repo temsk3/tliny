@@ -33,7 +33,7 @@ Stream<List<Product>> productsState(
 }
 
 @riverpod
-Stream<Product> productState(ProductStateRef ref, String productId) {
+Stream<Product> productState(ProductStateRef ref, String? productId) {
   return ref.watch(productRepositoryProvider).watchProduct(productId);
 }
 

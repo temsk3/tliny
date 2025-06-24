@@ -1,16 +1,14 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../../ui/common/main_body.dart';
 import '../../ui/staff/widget/staff_card.dart';
 import '../common/asyncvalue_widget.dart';
 import 'staff_view_model.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
-@RoutePage()
+// @RoutePage()
 class StaffPage extends HookConsumerWidget {
   const StaffPage({super.key, required this.programId});
   final String programId;

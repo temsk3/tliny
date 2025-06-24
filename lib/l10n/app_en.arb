@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "appTitle": "TLINY",
   "home": "Home",
   "hello": "Hello",
   "profile": "Profile",
@@ -8,10 +9,13 @@
   "yes": "yes",
   "no": "no",
   "title": "TLINY",
-  "signUpNow": "アカウントをお持ちでない場合  ",
+  "signUpNow": "Don't have an account?  ",
   "signUp": "SignUp",
-  "haveAnAccount": "すでにアカウントをお持ちの場合  ",
+  "haveAnAccount": "Already have an account  ",
   "login": "Login",
+  "mail": "Mail",
+  "mailAddress": "Mail Address",
+  "password": "Password",
   "register": "register",
   "update": "Update",
   "delete": "Delete",
@@ -35,14 +39,27 @@
   "name": "Name",
   "phone": "Phone",
   "pleaseEnterSomeText": "Please enter some text",
+  "pleaseEnterSomeNum": "Please enter some number",
   "edit": "Edit",
   "cancel": "Cancel",
+  "backButton": "back",
   "message": "message",
   "pleaseEnterADateAfterTheSpecifiedDate": "Please enter a date after the specified date",
   "eventName": "Name",
   "detail": "Detail",
-  "dataTime": "{date}",
-  "@dataTime": {
+  "dateTime": "{date}",
+  "@dateTime": {
+    "description": "date parameter",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "isCustomDateFormat": "true",
+        "format": "yMMMEd Hm"
+      }
+    }
+  },
+  "date": "{date}",
+  "@date": {
     "description": "date parameter",
     "placeholders": {
       "date": {
@@ -80,5 +97,40 @@
         "format": "simpleCurrency"
       }
     }
-  }
+  },
+  "validPeriod": "valid period",
+  "code": "code",
+  "genre": "genre",
+  "goods": "goods",
+  "foods": "foods",
+  "others": "others",
+  "productName": "Product Name",
+  "productDescription": "Product Description",
+  "stock": "stock",
+  "price": "price",
+  "purchaseHistory": "Purchase History",
+  "noPurchaseHistory": "No Purchase History",
+  "completion": "Completion",
+  "outOfTerm": "Out of term",
+  "awaitingPayment": "awaiting payment. Complete the payment in the window that opens.",
+  "openNewWindow": "Open new window",
+  "addToCart": "Add to cart",
+  "addToCartQ": "Add to cart?",
+  "addedToCart": "Added to cart",
+  "doYouWantToDeleteIt": "Do you want to delete it?",
+  "processingData": "Processing Data",
+  "handoverProcessQ": "Do you want to complete the handover process?",
+  "handoverProcess": "Handover process",
+  "wouldYouLikeToRegisterAsAStaffMember": "Would you like to register as a staff member?",
+  "confirm": "confirm",
+  "theCodeIsWrong": "the code is wrong",
+  "thankYouForYourPurchase": "Thank you for your purchase",
+  "processingInterrupted": "Processing interrupted.",
+  "selectImage": "select image",
+  "salesInformation": "Sales information",
+  "close": "close",
+  "registered": "Registered",
+  "notification": "Notification",
+  "signIn": "Sign In",
+  "signOut": "Sign Out"
 }

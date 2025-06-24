@@ -13,7 +13,21 @@ import paths from '../firestore/utils/db_paths'
 import Document from '../firestore/utils/document'
 import * as Model from '../firestore/utils/model'
 
-export const createPreOrder = async (userId: string, eventId: string) => {
+/**
+ * プレオーダーを作成する
+ * @param {string}userId - ユーザーID
+ * @param {string}eventId - イベントID
+ * @return {Map}オーダーID、ラインアイテム、アカウントID、小計
+ */
+export const createPreOrder = async (
+  userId: string,
+  eventId: string,
+): Promise<{
+  orderID: string
+  lineItems: Stripe.Checkout.SessionCreateParams.LineItem[]
+  accountId: string
+  subtotal: number
+}> => {
   console.log('Checkout Pre order')
   try {
     // 販売者のStripeConnectAccountIdを確認
@@ -23,15 +37,14 @@ export const createPreOrder = async (userId: string, eventId: string) => {
       .get()
       .then((s) => new Document<Model.Event>(s))
     const account = event.data.organizerId
-    // console.log(account)
+
     const accountId = await getStripeConnectAccountId(account)
     if (accountId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ConnectAccount ID'
+        'User has no Stripe ConnectAccount ID',
       )
     }
-    // console.log(accountId)
 
     // // ユーザー情報の取得
     const user = await db
@@ -45,7 +58,7 @@ export const createPreOrder = async (userId: string, eventId: string) => {
     if (customerId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ID'
+        'User has no Stripe ID',
       )
     }
 
@@ -61,14 +74,15 @@ export const createPreOrder = async (userId: string, eventId: string) => {
     if (cartItems.length === 0) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'Cart items must be one or more items.'
+        'Cart items must be one or more items.',
       )
     }
     // line_items
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = []
+    let subtotal = 0
     // トランザクションを利用して、カートにいれた商品の在庫があり購入可能かを確認する
     await db.runTransaction(async (transaction) => {
-      const promises: any[] = []
+      const promises: Promise<void>[] = []
       for (const cartItem of cartItems) {
         // console.log(cartItem)
         promises.push(
@@ -98,31 +112,28 @@ export const createPreOrder = async (userId: string, eventId: string) => {
                   quantity: cartItem.data.quantity,
                 }
                 lineItems.push(lineItem)
+                subtotal = +product.data.price * cartItem.data.quantity
               } else {
                 throw new functions.https.HttpsError(
                   'failed-precondition',
-                  'There is less stock than the quantity to buy'
+                  'There is less stock than the quantity to buy',
                 )
               }
-            })
+            }),
         )
       }
       return Promise.all(promises)
     })
-    // console.log(lineItems)
 
-    //
+    // 注文情報の作成
+    const now = Timestamp.now()
     const products = await Promise.all(
       cartItems.map((c) =>
-        c.data.productDocRef.get().then((s) => new Document<Model.Product>(s))
-      )
+        c.data.productDocRef.get().then((s) => new Document<Model.Product>(s)),
+      ),
     )
-    // console.log(products)
 
-    // 注文情報を作成する
     // 購入日時と、購入した時点での商品の情報を配列として持たせる
-    const now = Timestamp.now()
-    // console.log(now)
     const order: Model.Order = {
       status: Model.OrderStatus.pre,
       userId: userId,
@@ -134,7 +145,7 @@ export const createPreOrder = async (userId: string, eventId: string) => {
       createdAt: now,
       snapshotProducts: products.map((product) => {
         const quantity = cartItems.find(
-          (c) => c.data.productDocRef.path === product.ref.path
+          (c) => c.data.productDocRef.path === product.ref.path,
         )?.data.quantity
         if (quantity === undefined) {
           throw new Error('Product not found!')
@@ -178,12 +189,19 @@ export const createPreOrder = async (userId: string, eventId: string) => {
     // カートの中身を削除
     await Promise.all(cartItems.map((cartItem) => cartItem.ref.delete()))
 
+    console.log('order===================================')
     console.log(orderId)
+    console.log('lineItem================================')
     console.log(lineItems)
+    console.log('accountId===============================')
+    console.log(accountId)
+    console.log('subtotal===============================')
+    console.log(subtotal)
     return {
       orderID: orderId,
       lineItems: lineItems,
       accountId: accountId,
+      subtotal: subtotal,
     }
   } catch (error: any) {
     console.log('========== プレオーダー処理に失敗===============')
@@ -193,10 +211,14 @@ export const createPreOrder = async (userId: string, eventId: string) => {
   }
 }
 
-//
+/**
+ * 注文をキャンセルする
+ * @param {string}orderId - キャンセルする注文のID
+ */
 export const cancelOrder = async (orderId: string) => {
   console.log('cancel order')
   try {
+    console.log(orderId)
     // order情報の取得
     const order = await db
       .collection(paths.ordersCollectionPath)
@@ -211,13 +233,13 @@ export const cancelOrder = async (orderId: string) => {
     // orderの確定
     await order.ref.set(
       { status: 'cancel', cancelAt: Timestamp.now() },
-      { merge: true }
+      { merge: true },
     )
 
     // 在庫の差し戻し
     const orderItems = order.data.snapshotProducts
     await db.runTransaction(async (transaction) => {
-      const promises = []
+      const promises: Promise<void>[] = []
       for (const orderItem of orderItems) {
         promises.push(
           transaction
@@ -228,7 +250,7 @@ export const cancelOrder = async (orderId: string) => {
               transaction.update(product.ref, {
                 stock: product.data.stock + orderItem.quantity,
               })
-            })
+            }),
         )
       }
       return Promise.all(promises)
@@ -248,10 +270,15 @@ export const cancelOrder = async (orderId: string) => {
   }
 }
 
+/**
+ * カートに商品を戻す
+ * @param {string}userId - ユーザーID
+ * @param {Model.SnapshotProduct[]}orderItems - 戻す商品情報
+ */
 export const sendBackCartItem = async (
   userId: string,
-  orderItems: Model.SnapshotProduct[]
-) => {
+  orderItems: Model.SnapshotProduct[],
+): Promise<void> => {
   console.log('send back cart item')
   try {
     // ユーザーのサブコレクション`cart_items`のドキュメントレファレンスを取得する
@@ -267,7 +294,9 @@ export const sendBackCartItem = async (
         batch.create(cartDocRef, {
           productDocRef: orderItem.productDocRef,
           quantity: orderItem.quantity,
-        })
+          programId: orderItem.eventId,
+          productId: orderItem.productId,
+        }),
       )
       await batch.commit()
     }

@@ -14,14 +14,16 @@ String _$orderViewModelHash() => r'1a5c9e5a40c4262fe3c62acfa1dda6d0434aa66f';
 @ProviderFor(OrderViewModel)
 final orderViewModelProvider =
     AutoDisposeAsyncNotifierProvider<OrderViewModel, List<Order>>.internal(
-  OrderViewModel.new,
-  name: r'orderViewModelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$orderViewModelHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      OrderViewModel.new,
+      name: r'orderViewModelProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$orderViewModelHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$OrderViewModel = AutoDisposeAsyncNotifier<List<Order>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -12,7 +12,8 @@ part of 'stripe_account_params.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 AccountParams _$AccountParamsFromJson(Map<String, dynamic> json) {
   return _AccountParams.fromJson(json);
@@ -39,8 +40,12 @@ mixin _$AccountParams {
   RepresentativeParams? get representative =>
       throw _privateConstructorUsedError;
 
+  /// Serializes this AccountParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AccountParamsCopyWith<AccountParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,21 +53,23 @@ mixin _$AccountParams {
 /// @nodoc
 abstract class $AccountParamsCopyWith<$Res> {
   factory $AccountParamsCopyWith(
-          AccountParams value, $Res Function(AccountParams) then) =
-      _$AccountParamsCopyWithImpl<$Res, AccountParams>;
+    AccountParams value,
+    $Res Function(AccountParams) then,
+  ) = _$AccountParamsCopyWithImpl<$Res, AccountParams>;
   @useResult
-  $Res call(
-      {@JsonKey(unknownEnumValue: null) Type? type,
-      @JsonKey(unknownEnumValue: null) Country? country,
-      CapabilitiesParams? capabilities,
-      String? email,
-      @JsonKey(unknownEnumValue: null) BusinessType? businessType,
-      BusinessProfileParams? businessProfile,
-      TosAcceptanceParams? tosAcceptance,
-      String? externalAccount,
-      IndividualParams? individual,
-      CompanyParams? company,
-      RepresentativeParams? representative});
+  $Res call({
+    @JsonKey(unknownEnumValue: null) Type? type,
+    @JsonKey(unknownEnumValue: null) Country? country,
+    CapabilitiesParams? capabilities,
+    String? email,
+    @JsonKey(unknownEnumValue: null) BusinessType? businessType,
+    BusinessProfileParams? businessProfile,
+    TosAcceptanceParams? tosAcceptance,
+    String? externalAccount,
+    IndividualParams? individual,
+    CompanyParams? company,
+    RepresentativeParams? representative,
+  });
 
   $CapabilitiesParamsCopyWith<$Res>? get capabilities;
   $BusinessProfileParamsCopyWith<$Res>? get businessProfile;
@@ -82,6 +89,8 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -97,54 +106,70 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
     Object? company = freezed,
     Object? representative = freezed,
   }) {
-    return _then(_value.copyWith(
-      type: freezed == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as Type?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as Country?,
-      capabilities: freezed == capabilities
-          ? _value.capabilities
-          : capabilities // ignore: cast_nullable_to_non_nullable
-              as CapabilitiesParams?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      businessType: freezed == businessType
-          ? _value.businessType
-          : businessType // ignore: cast_nullable_to_non_nullable
-              as BusinessType?,
-      businessProfile: freezed == businessProfile
-          ? _value.businessProfile
-          : businessProfile // ignore: cast_nullable_to_non_nullable
-              as BusinessProfileParams?,
-      tosAcceptance: freezed == tosAcceptance
-          ? _value.tosAcceptance
-          : tosAcceptance // ignore: cast_nullable_to_non_nullable
-              as TosAcceptanceParams?,
-      externalAccount: freezed == externalAccount
-          ? _value.externalAccount
-          : externalAccount // ignore: cast_nullable_to_non_nullable
-              as String?,
-      individual: freezed == individual
-          ? _value.individual
-          : individual // ignore: cast_nullable_to_non_nullable
-              as IndividualParams?,
-      company: freezed == company
-          ? _value.company
-          : company // ignore: cast_nullable_to_non_nullable
-              as CompanyParams?,
-      representative: freezed == representative
-          ? _value.representative
-          : representative // ignore: cast_nullable_to_non_nullable
-              as RepresentativeParams?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            type:
+                freezed == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as Type?,
+            country:
+                freezed == country
+                    ? _value.country
+                    : country // ignore: cast_nullable_to_non_nullable
+                        as Country?,
+            capabilities:
+                freezed == capabilities
+                    ? _value.capabilities
+                    : capabilities // ignore: cast_nullable_to_non_nullable
+                        as CapabilitiesParams?,
+            email:
+                freezed == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            businessType:
+                freezed == businessType
+                    ? _value.businessType
+                    : businessType // ignore: cast_nullable_to_non_nullable
+                        as BusinessType?,
+            businessProfile:
+                freezed == businessProfile
+                    ? _value.businessProfile
+                    : businessProfile // ignore: cast_nullable_to_non_nullable
+                        as BusinessProfileParams?,
+            tosAcceptance:
+                freezed == tosAcceptance
+                    ? _value.tosAcceptance
+                    : tosAcceptance // ignore: cast_nullable_to_non_nullable
+                        as TosAcceptanceParams?,
+            externalAccount:
+                freezed == externalAccount
+                    ? _value.externalAccount
+                    : externalAccount // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            individual:
+                freezed == individual
+                    ? _value.individual
+                    : individual // ignore: cast_nullable_to_non_nullable
+                        as IndividualParams?,
+            company:
+                freezed == company
+                    ? _value.company
+                    : company // ignore: cast_nullable_to_non_nullable
+                        as CompanyParams?,
+            representative:
+                freezed == representative
+                    ? _value.representative
+                    : representative // ignore: cast_nullable_to_non_nullable
+                        as RepresentativeParams?,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CapabilitiesParamsCopyWith<$Res>? get capabilities {
@@ -157,6 +182,8 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
     });
   }
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $BusinessProfileParamsCopyWith<$Res>? get businessProfile {
@@ -164,12 +191,15 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
       return null;
     }
 
-    return $BusinessProfileParamsCopyWith<$Res>(_value.businessProfile!,
-        (value) {
+    return $BusinessProfileParamsCopyWith<$Res>(_value.businessProfile!, (
+      value,
+    ) {
       return _then(_value.copyWith(businessProfile: value) as $Val);
     });
   }
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $TosAcceptanceParamsCopyWith<$Res>? get tosAcceptance {
@@ -182,6 +212,8 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
     });
   }
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $IndividualParamsCopyWith<$Res>? get individual {
@@ -194,6 +226,8 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
     });
   }
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CompanyParamsCopyWith<$Res>? get company {
@@ -206,6 +240,8 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
     });
   }
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RepresentativeParamsCopyWith<$Res>? get representative {
@@ -220,25 +256,27 @@ class _$AccountParamsCopyWithImpl<$Res, $Val extends AccountParams>
 }
 
 /// @nodoc
-abstract class _$$_AccountParamsCopyWith<$Res>
+abstract class _$$AccountParamsImplCopyWith<$Res>
     implements $AccountParamsCopyWith<$Res> {
-  factory _$$_AccountParamsCopyWith(
-          _$_AccountParams value, $Res Function(_$_AccountParams) then) =
-      __$$_AccountParamsCopyWithImpl<$Res>;
+  factory _$$AccountParamsImplCopyWith(
+    _$AccountParamsImpl value,
+    $Res Function(_$AccountParamsImpl) then,
+  ) = __$$AccountParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(unknownEnumValue: null) Type? type,
-      @JsonKey(unknownEnumValue: null) Country? country,
-      CapabilitiesParams? capabilities,
-      String? email,
-      @JsonKey(unknownEnumValue: null) BusinessType? businessType,
-      BusinessProfileParams? businessProfile,
-      TosAcceptanceParams? tosAcceptance,
-      String? externalAccount,
-      IndividualParams? individual,
-      CompanyParams? company,
-      RepresentativeParams? representative});
+  $Res call({
+    @JsonKey(unknownEnumValue: null) Type? type,
+    @JsonKey(unknownEnumValue: null) Country? country,
+    CapabilitiesParams? capabilities,
+    String? email,
+    @JsonKey(unknownEnumValue: null) BusinessType? businessType,
+    BusinessProfileParams? businessProfile,
+    TosAcceptanceParams? tosAcceptance,
+    String? externalAccount,
+    IndividualParams? individual,
+    CompanyParams? company,
+    RepresentativeParams? representative,
+  });
 
   @override
   $CapabilitiesParamsCopyWith<$Res>? get capabilities;
@@ -255,13 +293,16 @@ abstract class _$$_AccountParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AccountParamsCopyWithImpl<$Res>
-    extends _$AccountParamsCopyWithImpl<$Res, _$_AccountParams>
-    implements _$$_AccountParamsCopyWith<$Res> {
-  __$$_AccountParamsCopyWithImpl(
-      _$_AccountParams _value, $Res Function(_$_AccountParams) _then)
-      : super(_value, _then);
+class __$$AccountParamsImplCopyWithImpl<$Res>
+    extends _$AccountParamsCopyWithImpl<$Res, _$AccountParamsImpl>
+    implements _$$AccountParamsImplCopyWith<$Res> {
+  __$$AccountParamsImplCopyWithImpl(
+    _$AccountParamsImpl _value,
+    $Res Function(_$AccountParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -277,74 +318,88 @@ class __$$_AccountParamsCopyWithImpl<$Res>
     Object? company = freezed,
     Object? representative = freezed,
   }) {
-    return _then(_$_AccountParams(
-      type: freezed == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as Type?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as Country?,
-      capabilities: freezed == capabilities
-          ? _value.capabilities
-          : capabilities // ignore: cast_nullable_to_non_nullable
-              as CapabilitiesParams?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      businessType: freezed == businessType
-          ? _value.businessType
-          : businessType // ignore: cast_nullable_to_non_nullable
-              as BusinessType?,
-      businessProfile: freezed == businessProfile
-          ? _value.businessProfile
-          : businessProfile // ignore: cast_nullable_to_non_nullable
-              as BusinessProfileParams?,
-      tosAcceptance: freezed == tosAcceptance
-          ? _value.tosAcceptance
-          : tosAcceptance // ignore: cast_nullable_to_non_nullable
-              as TosAcceptanceParams?,
-      externalAccount: freezed == externalAccount
-          ? _value.externalAccount
-          : externalAccount // ignore: cast_nullable_to_non_nullable
-              as String?,
-      individual: freezed == individual
-          ? _value.individual
-          : individual // ignore: cast_nullable_to_non_nullable
-              as IndividualParams?,
-      company: freezed == company
-          ? _value.company
-          : company // ignore: cast_nullable_to_non_nullable
-              as CompanyParams?,
-      representative: freezed == representative
-          ? _value.representative
-          : representative // ignore: cast_nullable_to_non_nullable
-              as RepresentativeParams?,
-    ));
+    return _then(
+      _$AccountParamsImpl(
+        type:
+            freezed == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as Type?,
+        country:
+            freezed == country
+                ? _value.country
+                : country // ignore: cast_nullable_to_non_nullable
+                    as Country?,
+        capabilities:
+            freezed == capabilities
+                ? _value.capabilities
+                : capabilities // ignore: cast_nullable_to_non_nullable
+                    as CapabilitiesParams?,
+        email:
+            freezed == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        businessType:
+            freezed == businessType
+                ? _value.businessType
+                : businessType // ignore: cast_nullable_to_non_nullable
+                    as BusinessType?,
+        businessProfile:
+            freezed == businessProfile
+                ? _value.businessProfile
+                : businessProfile // ignore: cast_nullable_to_non_nullable
+                    as BusinessProfileParams?,
+        tosAcceptance:
+            freezed == tosAcceptance
+                ? _value.tosAcceptance
+                : tosAcceptance // ignore: cast_nullable_to_non_nullable
+                    as TosAcceptanceParams?,
+        externalAccount:
+            freezed == externalAccount
+                ? _value.externalAccount
+                : externalAccount // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        individual:
+            freezed == individual
+                ? _value.individual
+                : individual // ignore: cast_nullable_to_non_nullable
+                    as IndividualParams?,
+        company:
+            freezed == company
+                ? _value.company
+                : company // ignore: cast_nullable_to_non_nullable
+                    as CompanyParams?,
+        representative:
+            freezed == representative
+                ? _value.representative
+                : representative // ignore: cast_nullable_to_non_nullable
+                    as RepresentativeParams?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_AccountParams implements _AccountParams {
-  const _$_AccountParams(
-      {@JsonKey(unknownEnumValue: null) required this.type,
-      @JsonKey(unknownEnumValue: null) required this.country,
-      required this.capabilities,
-      required this.email,
-      @JsonKey(unknownEnumValue: null) required this.businessType,
-      required this.businessProfile,
-      required this.tosAcceptance,
-      required this.externalAccount,
-      required this.individual,
-      required this.company,
-      required this.representative});
+class _$AccountParamsImpl implements _AccountParams {
+  const _$AccountParamsImpl({
+    @JsonKey(unknownEnumValue: null) required this.type,
+    @JsonKey(unknownEnumValue: null) required this.country,
+    required this.capabilities,
+    required this.email,
+    @JsonKey(unknownEnumValue: null) required this.businessType,
+    required this.businessProfile,
+    required this.tosAcceptance,
+    required this.externalAccount,
+    required this.individual,
+    required this.company,
+    required this.representative,
+  });
 
-  factory _$_AccountParams.fromJson(Map<String, dynamic> json) =>
-      _$$_AccountParamsFromJson(json);
+  factory _$AccountParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AccountParamsImplFromJson(json);
 
   @override
   @JsonKey(unknownEnumValue: null)
@@ -356,7 +411,7 @@ class _$_AccountParams implements _AccountParams {
   final CapabilitiesParams? capabilities;
   @override
   final String? email;
-//
+  //
   @override
   @JsonKey(unknownEnumValue: null)
   final BusinessType? businessType;
@@ -368,10 +423,10 @@ class _$_AccountParams implements _AccountParams {
   final String? externalAccount;
   @override
   final IndividualParams? individual;
-// // 個人
+  // // 個人
   @override
   final CompanyParams? company;
-// // 法人＆個人事業主
+  // // 法人＆個人事業主
   @override
   final RepresentativeParams? representative;
 
@@ -381,10 +436,10 @@ class _$_AccountParams implements _AccountParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AccountParams &&
+            other is _$AccountParamsImpl &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.country, country) || other.country == country) &&
             (identical(other.capabilities, capabilities) ||
@@ -405,55 +460,54 @@ class _$_AccountParams implements _AccountParams {
                 other.representative == representative));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      type,
-      country,
-      capabilities,
-      email,
-      businessType,
-      businessProfile,
-      tosAcceptance,
-      externalAccount,
-      individual,
-      company,
-      representative);
+    runtimeType,
+    type,
+    country,
+    capabilities,
+    email,
+    businessType,
+    businessProfile,
+    tosAcceptance,
+    externalAccount,
+    individual,
+    company,
+    representative,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AccountParamsCopyWith<_$_AccountParams> get copyWith =>
-      __$$_AccountParamsCopyWithImpl<_$_AccountParams>(this, _$identity);
+  _$$AccountParamsImplCopyWith<_$AccountParamsImpl> get copyWith =>
+      __$$AccountParamsImplCopyWithImpl<_$AccountParamsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AccountParamsToJson(
-      this,
-    );
+    return _$$AccountParamsImplToJson(this);
   }
 }
 
 abstract class _AccountParams implements AccountParams {
-  const factory _AccountParams(
-      {@JsonKey(unknownEnumValue: null)
-          required final Type? type,
-      @JsonKey(unknownEnumValue: null)
-          required final Country? country,
-      required final CapabilitiesParams? capabilities,
-      required final String? email,
-      @JsonKey(unknownEnumValue: null)
-          required final BusinessType? businessType,
-      required final BusinessProfileParams? businessProfile,
-      required final TosAcceptanceParams? tosAcceptance,
-      required final String? externalAccount,
-      required final IndividualParams? individual,
-      required final CompanyParams? company,
-      required final RepresentativeParams? representative}) = _$_AccountParams;
+  const factory _AccountParams({
+    @JsonKey(unknownEnumValue: null) required final Type? type,
+    @JsonKey(unknownEnumValue: null) required final Country? country,
+    required final CapabilitiesParams? capabilities,
+    required final String? email,
+    @JsonKey(unknownEnumValue: null) required final BusinessType? businessType,
+    required final BusinessProfileParams? businessProfile,
+    required final TosAcceptanceParams? tosAcceptance,
+    required final String? externalAccount,
+    required final IndividualParams? individual,
+    required final CompanyParams? company,
+    required final RepresentativeParams? representative,
+  }) = _$AccountParamsImpl;
 
   factory _AccountParams.fromJson(Map<String, dynamic> json) =
-      _$_AccountParams.fromJson;
+      _$AccountParamsImpl.fromJson;
 
   @override
   @JsonKey(unknownEnumValue: null)
@@ -464,8 +518,8 @@ abstract class _AccountParams implements AccountParams {
   @override
   CapabilitiesParams? get capabilities;
   @override
-  String? get email;
-  @override //
+  String? get email; //
+  @override
   @JsonKey(unknownEnumValue: null)
   BusinessType? get businessType;
   @override
@@ -475,14 +529,17 @@ abstract class _AccountParams implements AccountParams {
   @override
   String? get externalAccount;
   @override
-  IndividualParams? get individual;
-  @override // // 個人
-  CompanyParams? get company;
-  @override // // 法人＆個人事業主
-  RepresentativeParams? get representative;
+  IndividualParams? get individual; // // 個人
   @override
-  @JsonKey(ignore: true)
-  _$$_AccountParamsCopyWith<_$_AccountParams> get copyWith =>
+  CompanyParams? get company; // // 法人＆個人事業主
+  @override
+  RepresentativeParams? get representative;
+
+  /// Create a copy of AccountParams
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AccountParamsImplCopyWith<_$AccountParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -503,8 +560,12 @@ mixin _$CapabilitiesParams {
   RequestedParams get konbiniPayments => throw _privateConstructorUsedError;
   RequestedParams get transfers => throw _privateConstructorUsedError;
 
+  /// Serializes this CapabilitiesParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CapabilitiesParamsCopyWith<CapabilitiesParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -512,19 +573,18 @@ mixin _$CapabilitiesParams {
 /// @nodoc
 abstract class $CapabilitiesParamsCopyWith<$Res> {
   factory $CapabilitiesParamsCopyWith(
-          CapabilitiesParams value, $Res Function(CapabilitiesParams) then) =
-      _$CapabilitiesParamsCopyWithImpl<$Res, CapabilitiesParams>;
+    CapabilitiesParams value,
+    $Res Function(CapabilitiesParams) then,
+  ) = _$CapabilitiesParamsCopyWithImpl<$Res, CapabilitiesParams>;
   @useResult
-  $Res call(
-      {@JsonKey(name: 'bank_transfer_payments')
-          RequestedParams bankTransferPayments,
-      @JsonKey(name: 'card_payments')
-          RequestedParams cardPayments,
-      @JsonKey(name: 'jcb_payments')
-          RequestedParams jcbPayments,
-      @JsonKey(name: 'konbini_payments')
-          RequestedParams konbiniPayments,
-      RequestedParams transfers});
+  $Res call({
+    @JsonKey(name: 'bank_transfer_payments')
+    RequestedParams bankTransferPayments,
+    @JsonKey(name: 'card_payments') RequestedParams cardPayments,
+    @JsonKey(name: 'jcb_payments') RequestedParams jcbPayments,
+    @JsonKey(name: 'konbini_payments') RequestedParams konbiniPayments,
+    RequestedParams transfers,
+  });
 
   $RequestedParamsCopyWith<$Res> get bankTransferPayments;
   $RequestedParamsCopyWith<$Res> get cardPayments;
@@ -543,6 +603,8 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -552,30 +614,40 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
     Object? konbiniPayments = null,
     Object? transfers = null,
   }) {
-    return _then(_value.copyWith(
-      bankTransferPayments: null == bankTransferPayments
-          ? _value.bankTransferPayments
-          : bankTransferPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      cardPayments: null == cardPayments
-          ? _value.cardPayments
-          : cardPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      jcbPayments: null == jcbPayments
-          ? _value.jcbPayments
-          : jcbPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      konbiniPayments: null == konbiniPayments
-          ? _value.konbiniPayments
-          : konbiniPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      transfers: null == transfers
-          ? _value.transfers
-          : transfers // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            bankTransferPayments:
+                null == bankTransferPayments
+                    ? _value.bankTransferPayments
+                    : bankTransferPayments // ignore: cast_nullable_to_non_nullable
+                        as RequestedParams,
+            cardPayments:
+                null == cardPayments
+                    ? _value.cardPayments
+                    : cardPayments // ignore: cast_nullable_to_non_nullable
+                        as RequestedParams,
+            jcbPayments:
+                null == jcbPayments
+                    ? _value.jcbPayments
+                    : jcbPayments // ignore: cast_nullable_to_non_nullable
+                        as RequestedParams,
+            konbiniPayments:
+                null == konbiniPayments
+                    ? _value.konbiniPayments
+                    : konbiniPayments // ignore: cast_nullable_to_non_nullable
+                        as RequestedParams,
+            transfers:
+                null == transfers
+                    ? _value.transfers
+                    : transfers // ignore: cast_nullable_to_non_nullable
+                        as RequestedParams,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RequestedParamsCopyWith<$Res> get bankTransferPayments {
@@ -584,6 +656,8 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
     });
   }
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RequestedParamsCopyWith<$Res> get cardPayments {
@@ -592,6 +666,8 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
     });
   }
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RequestedParamsCopyWith<$Res> get jcbPayments {
@@ -600,6 +676,8 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
     });
   }
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RequestedParamsCopyWith<$Res> get konbiniPayments {
@@ -608,6 +686,8 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
     });
   }
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $RequestedParamsCopyWith<$Res> get transfers {
@@ -618,23 +698,22 @@ class _$CapabilitiesParamsCopyWithImpl<$Res, $Val extends CapabilitiesParams>
 }
 
 /// @nodoc
-abstract class _$$_CapabilitiesParamsCopyWith<$Res>
+abstract class _$$CapabilitiesParamsImplCopyWith<$Res>
     implements $CapabilitiesParamsCopyWith<$Res> {
-  factory _$$_CapabilitiesParamsCopyWith(_$_CapabilitiesParams value,
-          $Res Function(_$_CapabilitiesParams) then) =
-      __$$_CapabilitiesParamsCopyWithImpl<$Res>;
+  factory _$$CapabilitiesParamsImplCopyWith(
+    _$CapabilitiesParamsImpl value,
+    $Res Function(_$CapabilitiesParamsImpl) then,
+  ) = __$$CapabilitiesParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: 'bank_transfer_payments')
-          RequestedParams bankTransferPayments,
-      @JsonKey(name: 'card_payments')
-          RequestedParams cardPayments,
-      @JsonKey(name: 'jcb_payments')
-          RequestedParams jcbPayments,
-      @JsonKey(name: 'konbini_payments')
-          RequestedParams konbiniPayments,
-      RequestedParams transfers});
+  $Res call({
+    @JsonKey(name: 'bank_transfer_payments')
+    RequestedParams bankTransferPayments,
+    @JsonKey(name: 'card_payments') RequestedParams cardPayments,
+    @JsonKey(name: 'jcb_payments') RequestedParams jcbPayments,
+    @JsonKey(name: 'konbini_payments') RequestedParams konbiniPayments,
+    RequestedParams transfers,
+  });
 
   @override
   $RequestedParamsCopyWith<$Res> get bankTransferPayments;
@@ -649,13 +728,16 @@ abstract class _$$_CapabilitiesParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CapabilitiesParamsCopyWithImpl<$Res>
-    extends _$CapabilitiesParamsCopyWithImpl<$Res, _$_CapabilitiesParams>
-    implements _$$_CapabilitiesParamsCopyWith<$Res> {
-  __$$_CapabilitiesParamsCopyWithImpl(
-      _$_CapabilitiesParams _value, $Res Function(_$_CapabilitiesParams) _then)
-      : super(_value, _then);
+class __$$CapabilitiesParamsImplCopyWithImpl<$Res>
+    extends _$CapabilitiesParamsCopyWithImpl<$Res, _$CapabilitiesParamsImpl>
+    implements _$$CapabilitiesParamsImplCopyWith<$Res> {
+  __$$CapabilitiesParamsImplCopyWithImpl(
+    _$CapabilitiesParamsImpl _value,
+    $Res Function(_$CapabilitiesParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -665,47 +747,51 @@ class __$$_CapabilitiesParamsCopyWithImpl<$Res>
     Object? konbiniPayments = null,
     Object? transfers = null,
   }) {
-    return _then(_$_CapabilitiesParams(
-      bankTransferPayments: null == bankTransferPayments
-          ? _value.bankTransferPayments
-          : bankTransferPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      cardPayments: null == cardPayments
-          ? _value.cardPayments
-          : cardPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      jcbPayments: null == jcbPayments
-          ? _value.jcbPayments
-          : jcbPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      konbiniPayments: null == konbiniPayments
-          ? _value.konbiniPayments
-          : konbiniPayments // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-      transfers: null == transfers
-          ? _value.transfers
-          : transfers // ignore: cast_nullable_to_non_nullable
-              as RequestedParams,
-    ));
+    return _then(
+      _$CapabilitiesParamsImpl(
+        bankTransferPayments:
+            null == bankTransferPayments
+                ? _value.bankTransferPayments
+                : bankTransferPayments // ignore: cast_nullable_to_non_nullable
+                    as RequestedParams,
+        cardPayments:
+            null == cardPayments
+                ? _value.cardPayments
+                : cardPayments // ignore: cast_nullable_to_non_nullable
+                    as RequestedParams,
+        jcbPayments:
+            null == jcbPayments
+                ? _value.jcbPayments
+                : jcbPayments // ignore: cast_nullable_to_non_nullable
+                    as RequestedParams,
+        konbiniPayments:
+            null == konbiniPayments
+                ? _value.konbiniPayments
+                : konbiniPayments // ignore: cast_nullable_to_non_nullable
+                    as RequestedParams,
+        transfers:
+            null == transfers
+                ? _value.transfers
+                : transfers // ignore: cast_nullable_to_non_nullable
+                    as RequestedParams,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_CapabilitiesParams implements _CapabilitiesParams {
-  const _$_CapabilitiesParams(
-      {@JsonKey(name: 'bank_transfer_payments')
-          required this.bankTransferPayments,
-      @JsonKey(name: 'card_payments')
-          required this.cardPayments,
-      @JsonKey(name: 'jcb_payments')
-          required this.jcbPayments,
-      @JsonKey(name: 'konbini_payments')
-          required this.konbiniPayments,
-      required this.transfers});
+class _$CapabilitiesParamsImpl implements _CapabilitiesParams {
+  const _$CapabilitiesParamsImpl({
+    @JsonKey(name: 'bank_transfer_payments') required this.bankTransferPayments,
+    @JsonKey(name: 'card_payments') required this.cardPayments,
+    @JsonKey(name: 'jcb_payments') required this.jcbPayments,
+    @JsonKey(name: 'konbini_payments') required this.konbiniPayments,
+    required this.transfers,
+  });
 
-  factory _$_CapabilitiesParams.fromJson(Map<String, dynamic> json) =>
-      _$$_CapabilitiesParamsFromJson(json);
+  factory _$CapabilitiesParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CapabilitiesParamsImplFromJson(json);
 
   @override
   @JsonKey(name: 'bank_transfer_payments')
@@ -728,10 +814,10 @@ class _$_CapabilitiesParams implements _CapabilitiesParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CapabilitiesParams &&
+            other is _$CapabilitiesParamsImpl &&
             (identical(other.bankTransferPayments, bankTransferPayments) ||
                 other.bankTransferPayments == bankTransferPayments) &&
             (identical(other.cardPayments, cardPayments) ||
@@ -744,40 +830,47 @@ class _$_CapabilitiesParams implements _CapabilitiesParams {
                 other.transfers == transfers));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, bankTransferPayments,
-      cardPayments, jcbPayments, konbiniPayments, transfers);
+  int get hashCode => Object.hash(
+    runtimeType,
+    bankTransferPayments,
+    cardPayments,
+    jcbPayments,
+    konbiniPayments,
+    transfers,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CapabilitiesParamsCopyWith<_$_CapabilitiesParams> get copyWith =>
-      __$$_CapabilitiesParamsCopyWithImpl<_$_CapabilitiesParams>(
-          this, _$identity);
+  _$$CapabilitiesParamsImplCopyWith<_$CapabilitiesParamsImpl> get copyWith =>
+      __$$CapabilitiesParamsImplCopyWithImpl<_$CapabilitiesParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CapabilitiesParamsToJson(
-      this,
-    );
+    return _$$CapabilitiesParamsImplToJson(this);
   }
 }
 
 abstract class _CapabilitiesParams implements CapabilitiesParams {
-  const factory _CapabilitiesParams(
-      {@JsonKey(name: 'bank_transfer_payments')
-          required final RequestedParams bankTransferPayments,
-      @JsonKey(name: 'card_payments')
-          required final RequestedParams cardPayments,
-      @JsonKey(name: 'jcb_payments')
-          required final RequestedParams jcbPayments,
-      @JsonKey(name: 'konbini_payments')
-          required final RequestedParams konbiniPayments,
-      required final RequestedParams transfers}) = _$_CapabilitiesParams;
+  const factory _CapabilitiesParams({
+    @JsonKey(name: 'bank_transfer_payments')
+    required final RequestedParams bankTransferPayments,
+    @JsonKey(name: 'card_payments') required final RequestedParams cardPayments,
+    @JsonKey(name: 'jcb_payments') required final RequestedParams jcbPayments,
+    @JsonKey(name: 'konbini_payments')
+    required final RequestedParams konbiniPayments,
+    required final RequestedParams transfers,
+  }) = _$CapabilitiesParamsImpl;
 
   factory _CapabilitiesParams.fromJson(Map<String, dynamic> json) =
-      _$_CapabilitiesParams.fromJson;
+      _$CapabilitiesParamsImpl.fromJson;
 
   @override
   @JsonKey(name: 'bank_transfer_payments')
@@ -793,9 +886,12 @@ abstract class _CapabilitiesParams implements CapabilitiesParams {
   RequestedParams get konbiniPayments;
   @override
   RequestedParams get transfers;
+
+  /// Create a copy of CapabilitiesParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_CapabilitiesParamsCopyWith<_$_CapabilitiesParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CapabilitiesParamsImplCopyWith<_$CapabilitiesParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -807,8 +903,12 @@ RequestedParams _$RequestedParamsFromJson(Map<String, dynamic> json) {
 mixin _$RequestedParams {
   bool? get required => throw _privateConstructorUsedError;
 
+  /// Serializes this RequestedParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RequestedParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RequestedParamsCopyWith<RequestedParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -816,8 +916,9 @@ mixin _$RequestedParams {
 /// @nodoc
 abstract class $RequestedParamsCopyWith<$Res> {
   factory $RequestedParamsCopyWith(
-          RequestedParams value, $Res Function(RequestedParams) then) =
-      _$RequestedParamsCopyWithImpl<$Res, RequestedParams>;
+    RequestedParams value,
+    $Res Function(RequestedParams) then,
+  ) = _$RequestedParamsCopyWithImpl<$Res, RequestedParams>;
   @useResult
   $Res call({bool? required});
 }
@@ -832,60 +933,69 @@ class _$RequestedParamsCopyWithImpl<$Res, $Val extends RequestedParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RequestedParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? required = freezed,
-  }) {
-    return _then(_value.copyWith(
-      required: freezed == required
-          ? _value.required
-          : required // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ) as $Val);
+  $Res call({Object? required = freezed}) {
+    return _then(
+      _value.copyWith(
+            required:
+                freezed == required
+                    ? _value.required
+                    : required // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_RequestedParamsCopyWith<$Res>
+abstract class _$$RequestedParamsImplCopyWith<$Res>
     implements $RequestedParamsCopyWith<$Res> {
-  factory _$$_RequestedParamsCopyWith(
-          _$_RequestedParams value, $Res Function(_$_RequestedParams) then) =
-      __$$_RequestedParamsCopyWithImpl<$Res>;
+  factory _$$RequestedParamsImplCopyWith(
+    _$RequestedParamsImpl value,
+    $Res Function(_$RequestedParamsImpl) then,
+  ) = __$$RequestedParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({bool? required});
 }
 
 /// @nodoc
-class __$$_RequestedParamsCopyWithImpl<$Res>
-    extends _$RequestedParamsCopyWithImpl<$Res, _$_RequestedParams>
-    implements _$$_RequestedParamsCopyWith<$Res> {
-  __$$_RequestedParamsCopyWithImpl(
-      _$_RequestedParams _value, $Res Function(_$_RequestedParams) _then)
-      : super(_value, _then);
+class __$$RequestedParamsImplCopyWithImpl<$Res>
+    extends _$RequestedParamsCopyWithImpl<$Res, _$RequestedParamsImpl>
+    implements _$$RequestedParamsImplCopyWith<$Res> {
+  __$$RequestedParamsImplCopyWithImpl(
+    _$RequestedParamsImpl _value,
+    $Res Function(_$RequestedParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of RequestedParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? required = freezed,
-  }) {
-    return _then(_$_RequestedParams(
-      required: freezed == required
-          ? _value.required
-          : required // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
+  $Res call({Object? required = freezed}) {
+    return _then(
+      _$RequestedParamsImpl(
+        required:
+            freezed == required
+                ? _value.required
+                : required // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_RequestedParams implements _RequestedParams {
-  const _$_RequestedParams({required this.required});
+class _$RequestedParamsImpl implements _RequestedParams {
+  const _$RequestedParamsImpl({required this.required});
 
-  factory _$_RequestedParams.fromJson(Map<String, dynamic> json) =>
-      _$$_RequestedParamsFromJson(json);
+  factory _$RequestedParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RequestedParamsImplFromJson(json);
 
   @override
   final bool? required;
@@ -896,49 +1006,56 @@ class _$_RequestedParams implements _RequestedParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RequestedParams &&
+            other is _$RequestedParamsImpl &&
             (identical(other.required, required) ||
                 other.required == required));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, required);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RequestedParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RequestedParamsCopyWith<_$_RequestedParams> get copyWith =>
-      __$$_RequestedParamsCopyWithImpl<_$_RequestedParams>(this, _$identity);
+  _$$RequestedParamsImplCopyWith<_$RequestedParamsImpl> get copyWith =>
+      __$$RequestedParamsImplCopyWithImpl<_$RequestedParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RequestedParamsToJson(
-      this,
-    );
+    return _$$RequestedParamsImplToJson(this);
   }
 }
 
 abstract class _RequestedParams implements RequestedParams {
   const factory _RequestedParams({required final bool? required}) =
-      _$_RequestedParams;
+      _$RequestedParamsImpl;
 
   factory _RequestedParams.fromJson(Map<String, dynamic> json) =
-      _$_RequestedParams.fromJson;
+      _$RequestedParamsImpl.fromJson;
 
   @override
   bool? get required;
+
+  /// Create a copy of RequestedParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_RequestedParamsCopyWith<_$_RequestedParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RequestedParamsImplCopyWith<_$RequestedParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 BusinessProfileParams _$BusinessProfileParamsFromJson(
-    Map<String, dynamic> json) {
+  Map<String, dynamic> json,
+) {
   return _BusinessProfileParams.fromJson(json);
 }
 
@@ -946,30 +1063,38 @@ BusinessProfileParams _$BusinessProfileParamsFromJson(
 mixin _$BusinessProfileParams {
   String? get mcc => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
-  @JsonKey(name: "product_description")
+  @JsonKey(name: 'product_description')
   String? get productDescription => throw _privateConstructorUsedError;
 
+  /// Serializes this BusinessProfileParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of BusinessProfileParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $BusinessProfileParamsCopyWith<BusinessProfileParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $BusinessProfileParamsCopyWith<$Res> {
-  factory $BusinessProfileParamsCopyWith(BusinessProfileParams value,
-          $Res Function(BusinessProfileParams) then) =
-      _$BusinessProfileParamsCopyWithImpl<$Res, BusinessProfileParams>;
+  factory $BusinessProfileParamsCopyWith(
+    BusinessProfileParams value,
+    $Res Function(BusinessProfileParams) then,
+  ) = _$BusinessProfileParamsCopyWithImpl<$Res, BusinessProfileParams>;
   @useResult
-  $Res call(
-      {String? mcc,
-      String? url,
-      @JsonKey(name: "product_description") String? productDescription});
+  $Res call({
+    String? mcc,
+    String? url,
+    @JsonKey(name: 'product_description') String? productDescription,
+  });
 }
 
 /// @nodoc
-class _$BusinessProfileParamsCopyWithImpl<$Res,
-        $Val extends BusinessProfileParams>
+class _$BusinessProfileParamsCopyWithImpl<
+  $Res,
+  $Val extends BusinessProfileParams
+>
     implements $BusinessProfileParamsCopyWith<$Res> {
   _$BusinessProfileParamsCopyWithImpl(this._value, this._then);
 
@@ -978,6 +1103,8 @@ class _$BusinessProfileParamsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of BusinessProfileParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -985,45 +1112,57 @@ class _$BusinessProfileParamsCopyWithImpl<$Res,
     Object? url = freezed,
     Object? productDescription = freezed,
   }) {
-    return _then(_value.copyWith(
-      mcc: freezed == mcc
-          ? _value.mcc
-          : mcc // ignore: cast_nullable_to_non_nullable
-              as String?,
-      url: freezed == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String?,
-      productDescription: freezed == productDescription
-          ? _value.productDescription
-          : productDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            mcc:
+                freezed == mcc
+                    ? _value.mcc
+                    : mcc // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            url:
+                freezed == url
+                    ? _value.url
+                    : url // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            productDescription:
+                freezed == productDescription
+                    ? _value.productDescription
+                    : productDescription // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_BusinessProfileParamsCopyWith<$Res>
+abstract class _$$BusinessProfileParamsImplCopyWith<$Res>
     implements $BusinessProfileParamsCopyWith<$Res> {
-  factory _$$_BusinessProfileParamsCopyWith(_$_BusinessProfileParams value,
-          $Res Function(_$_BusinessProfileParams) then) =
-      __$$_BusinessProfileParamsCopyWithImpl<$Res>;
+  factory _$$BusinessProfileParamsImplCopyWith(
+    _$BusinessProfileParamsImpl value,
+    $Res Function(_$BusinessProfileParamsImpl) then,
+  ) = __$$BusinessProfileParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? mcc,
-      String? url,
-      @JsonKey(name: "product_description") String? productDescription});
+  $Res call({
+    String? mcc,
+    String? url,
+    @JsonKey(name: 'product_description') String? productDescription,
+  });
 }
 
 /// @nodoc
-class __$$_BusinessProfileParamsCopyWithImpl<$Res>
-    extends _$BusinessProfileParamsCopyWithImpl<$Res, _$_BusinessProfileParams>
-    implements _$$_BusinessProfileParamsCopyWith<$Res> {
-  __$$_BusinessProfileParamsCopyWithImpl(_$_BusinessProfileParams _value,
-      $Res Function(_$_BusinessProfileParams) _then)
-      : super(_value, _then);
+class __$$BusinessProfileParamsImplCopyWithImpl<$Res>
+    extends
+        _$BusinessProfileParamsCopyWithImpl<$Res, _$BusinessProfileParamsImpl>
+    implements _$$BusinessProfileParamsImplCopyWith<$Res> {
+  __$$BusinessProfileParamsImplCopyWithImpl(
+    _$BusinessProfileParamsImpl _value,
+    $Res Function(_$BusinessProfileParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of BusinessProfileParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1031,40 +1170,46 @@ class __$$_BusinessProfileParamsCopyWithImpl<$Res>
     Object? url = freezed,
     Object? productDescription = freezed,
   }) {
-    return _then(_$_BusinessProfileParams(
-      mcc: freezed == mcc
-          ? _value.mcc
-          : mcc // ignore: cast_nullable_to_non_nullable
-              as String?,
-      url: freezed == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String?,
-      productDescription: freezed == productDescription
-          ? _value.productDescription
-          : productDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$BusinessProfileParamsImpl(
+        mcc:
+            freezed == mcc
+                ? _value.mcc
+                : mcc // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        url:
+            freezed == url
+                ? _value.url
+                : url // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        productDescription:
+            freezed == productDescription
+                ? _value.productDescription
+                : productDescription // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_BusinessProfileParams implements _BusinessProfileParams {
-  const _$_BusinessProfileParams(
-      {required this.mcc,
-      required this.url,
-      @JsonKey(name: "product_description") required this.productDescription});
+class _$BusinessProfileParamsImpl implements _BusinessProfileParams {
+  const _$BusinessProfileParamsImpl({
+    required this.mcc,
+    required this.url,
+    @JsonKey(name: 'product_description') required this.productDescription,
+  });
 
-  factory _$_BusinessProfileParams.fromJson(Map<String, dynamic> json) =>
-      _$$_BusinessProfileParamsFromJson(json);
+  factory _$BusinessProfileParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BusinessProfileParamsImplFromJson(json);
 
   @override
   final String? mcc;
   @override
   final String? url;
   @override
-  @JsonKey(name: "product_description")
+  @JsonKey(name: 'product_description')
   final String? productDescription;
 
   @override
@@ -1073,57 +1218,63 @@ class _$_BusinessProfileParams implements _BusinessProfileParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_BusinessProfileParams &&
+            other is _$BusinessProfileParamsImpl &&
             (identical(other.mcc, mcc) || other.mcc == mcc) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.productDescription, productDescription) ||
                 other.productDescription == productDescription));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, mcc, url, productDescription);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of BusinessProfileParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_BusinessProfileParamsCopyWith<_$_BusinessProfileParams> get copyWith =>
-      __$$_BusinessProfileParamsCopyWithImpl<_$_BusinessProfileParams>(
-          this, _$identity);
+  _$$BusinessProfileParamsImplCopyWith<_$BusinessProfileParamsImpl>
+  get copyWith =>
+      __$$BusinessProfileParamsImplCopyWithImpl<_$BusinessProfileParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_BusinessProfileParamsToJson(
-      this,
-    );
+    return _$$BusinessProfileParamsImplToJson(this);
   }
 }
 
 abstract class _BusinessProfileParams implements BusinessProfileParams {
-  const factory _BusinessProfileParams(
-          {required final String? mcc,
-          required final String? url,
-          @JsonKey(name: "product_description")
-              required final String? productDescription}) =
-      _$_BusinessProfileParams;
+  const factory _BusinessProfileParams({
+    required final String? mcc,
+    required final String? url,
+    @JsonKey(name: 'product_description')
+    required final String? productDescription,
+  }) = _$BusinessProfileParamsImpl;
 
   factory _BusinessProfileParams.fromJson(Map<String, dynamic> json) =
-      _$_BusinessProfileParams.fromJson;
+      _$BusinessProfileParamsImpl.fromJson;
 
   @override
   String? get mcc;
   @override
   String? get url;
   @override
-  @JsonKey(name: "product_description")
+  @JsonKey(name: 'product_description')
   String? get productDescription;
+
+  /// Create a copy of BusinessProfileParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_BusinessProfileParamsCopyWith<_$_BusinessProfileParams> get copyWith =>
-      throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$BusinessProfileParamsImplCopyWith<_$BusinessProfileParamsImpl>
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 TosAcceptanceParams _$TosAcceptanceParamsFromJson(Map<String, dynamic> json) {
@@ -1135,8 +1286,12 @@ mixin _$TosAcceptanceParams {
   String? get ip => throw _privateConstructorUsedError;
   String? get data => throw _privateConstructorUsedError;
 
+  /// Serializes this TosAcceptanceParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of TosAcceptanceParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TosAcceptanceParamsCopyWith<TosAcceptanceParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1144,8 +1299,9 @@ mixin _$TosAcceptanceParams {
 /// @nodoc
 abstract class $TosAcceptanceParamsCopyWith<$Res> {
   factory $TosAcceptanceParamsCopyWith(
-          TosAcceptanceParams value, $Res Function(TosAcceptanceParams) then) =
-      _$TosAcceptanceParamsCopyWithImpl<$Res, TosAcceptanceParams>;
+    TosAcceptanceParams value,
+    $Res Function(TosAcceptanceParams) then,
+  ) = _$TosAcceptanceParamsCopyWithImpl<$Res, TosAcceptanceParams>;
   @useResult
   $Res call({String? ip, String? data});
 }
@@ -1160,70 +1316,79 @@ class _$TosAcceptanceParamsCopyWithImpl<$Res, $Val extends TosAcceptanceParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of TosAcceptanceParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? ip = freezed,
-    Object? data = freezed,
-  }) {
-    return _then(_value.copyWith(
-      ip: freezed == ip
-          ? _value.ip
-          : ip // ignore: cast_nullable_to_non_nullable
-              as String?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+  $Res call({Object? ip = freezed, Object? data = freezed}) {
+    return _then(
+      _value.copyWith(
+            ip:
+                freezed == ip
+                    ? _value.ip
+                    : ip // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            data:
+                freezed == data
+                    ? _value.data
+                    : data // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_TosAcceptanceParamsCopyWith<$Res>
+abstract class _$$TosAcceptanceParamsImplCopyWith<$Res>
     implements $TosAcceptanceParamsCopyWith<$Res> {
-  factory _$$_TosAcceptanceParamsCopyWith(_$_TosAcceptanceParams value,
-          $Res Function(_$_TosAcceptanceParams) then) =
-      __$$_TosAcceptanceParamsCopyWithImpl<$Res>;
+  factory _$$TosAcceptanceParamsImplCopyWith(
+    _$TosAcceptanceParamsImpl value,
+    $Res Function(_$TosAcceptanceParamsImpl) then,
+  ) = __$$TosAcceptanceParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? ip, String? data});
 }
 
 /// @nodoc
-class __$$_TosAcceptanceParamsCopyWithImpl<$Res>
-    extends _$TosAcceptanceParamsCopyWithImpl<$Res, _$_TosAcceptanceParams>
-    implements _$$_TosAcceptanceParamsCopyWith<$Res> {
-  __$$_TosAcceptanceParamsCopyWithImpl(_$_TosAcceptanceParams _value,
-      $Res Function(_$_TosAcceptanceParams) _then)
-      : super(_value, _then);
+class __$$TosAcceptanceParamsImplCopyWithImpl<$Res>
+    extends _$TosAcceptanceParamsCopyWithImpl<$Res, _$TosAcceptanceParamsImpl>
+    implements _$$TosAcceptanceParamsImplCopyWith<$Res> {
+  __$$TosAcceptanceParamsImplCopyWithImpl(
+    _$TosAcceptanceParamsImpl _value,
+    $Res Function(_$TosAcceptanceParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of TosAcceptanceParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? ip = freezed,
-    Object? data = freezed,
-  }) {
-    return _then(_$_TosAcceptanceParams(
-      ip: freezed == ip
-          ? _value.ip
-          : ip // ignore: cast_nullable_to_non_nullable
-              as String?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+  $Res call({Object? ip = freezed, Object? data = freezed}) {
+    return _then(
+      _$TosAcceptanceParamsImpl(
+        ip:
+            freezed == ip
+                ? _value.ip
+                : ip // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        data:
+            freezed == data
+                ? _value.data
+                : data // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_TosAcceptanceParams implements _TosAcceptanceParams {
-  const _$_TosAcceptanceParams({required this.ip, required this.data});
+class _$TosAcceptanceParamsImpl implements _TosAcceptanceParams {
+  const _$TosAcceptanceParamsImpl({required this.ip, required this.data});
 
-  factory _$_TosAcceptanceParams.fromJson(Map<String, dynamic> json) =>
-      _$$_TosAcceptanceParamsFromJson(json);
+  factory _$TosAcceptanceParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$TosAcceptanceParamsImplFromJson(json);
 
   @override
   final String? ip;
@@ -1236,48 +1401,54 @@ class _$_TosAcceptanceParams implements _TosAcceptanceParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_TosAcceptanceParams &&
+            other is _$TosAcceptanceParamsImpl &&
             (identical(other.ip, ip) || other.ip == ip) &&
             (identical(other.data, data) || other.data == data));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, ip, data);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of TosAcceptanceParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_TosAcceptanceParamsCopyWith<_$_TosAcceptanceParams> get copyWith =>
-      __$$_TosAcceptanceParamsCopyWithImpl<_$_TosAcceptanceParams>(
-          this, _$identity);
+  _$$TosAcceptanceParamsImplCopyWith<_$TosAcceptanceParamsImpl> get copyWith =>
+      __$$TosAcceptanceParamsImplCopyWithImpl<_$TosAcceptanceParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_TosAcceptanceParamsToJson(
-      this,
-    );
+    return _$$TosAcceptanceParamsImplToJson(this);
   }
 }
 
 abstract class _TosAcceptanceParams implements TosAcceptanceParams {
-  const factory _TosAcceptanceParams(
-      {required final String? ip,
-      required final String? data}) = _$_TosAcceptanceParams;
+  const factory _TosAcceptanceParams({
+    required final String? ip,
+    required final String? data,
+  }) = _$TosAcceptanceParamsImpl;
 
   factory _TosAcceptanceParams.fromJson(Map<String, dynamic> json) =
-      _$_TosAcceptanceParams.fromJson;
+      _$TosAcceptanceParamsImpl.fromJson;
 
   @override
   String? get ip;
   @override
   String? get data;
+
+  /// Create a copy of TosAcceptanceParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_TosAcceptanceParamsCopyWith<_$_TosAcceptanceParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TosAcceptanceParamsImplCopyWith<_$TosAcceptanceParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1287,24 +1458,28 @@ IndividualParams _$IndividualParamsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$IndividualParams {
-  @JsonKey(name: "first_name_kana")
+  @JsonKey(name: 'first_name_kana')
   String? get firstNameKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "first_name_kanji")
+  @JsonKey(name: 'first_name_kanji')
   String? get firstNameKanji => throw _privateConstructorUsedError;
-  @JsonKey(name: "last_name_kana")
+  @JsonKey(name: 'last_name_kana')
   String? get lastNameKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "last_name_kanji")
+  @JsonKey(name: 'last_name_kanji')
   String? get lastNameKanji => throw _privateConstructorUsedError;
   DobParams? get dob => throw _privateConstructorUsedError;
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   AddressKanaParams? get addressKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   AddressKanjiParams? get addressKanji => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
 
+  /// Serializes this IndividualParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $IndividualParamsCopyWith<IndividualParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1312,19 +1487,21 @@ mixin _$IndividualParams {
 /// @nodoc
 abstract class $IndividualParamsCopyWith<$Res> {
   factory $IndividualParamsCopyWith(
-          IndividualParams value, $Res Function(IndividualParams) then) =
-      _$IndividualParamsCopyWithImpl<$Res, IndividualParams>;
+    IndividualParams value,
+    $Res Function(IndividualParams) then,
+  ) = _$IndividualParamsCopyWithImpl<$Res, IndividualParams>;
   @useResult
-  $Res call(
-      {@JsonKey(name: "first_name_kana") String? firstNameKana,
-      @JsonKey(name: "first_name_kanji") String? firstNameKanji,
-      @JsonKey(name: "last_name_kana") String? lastNameKana,
-      @JsonKey(name: "last_name_kanji") String? lastNameKanji,
-      DobParams? dob,
-      @JsonKey(name: "address_kana") AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji") AddressKanjiParams? addressKanji,
-      String? email,
-      String? phone});
+  $Res call({
+    @JsonKey(name: 'first_name_kana') String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') String? lastNameKanji,
+    DobParams? dob,
+    @JsonKey(name: 'address_kana') AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') AddressKanjiParams? addressKanji,
+    String? email,
+    String? phone,
+  });
 
   $DobParamsCopyWith<$Res>? get dob;
   $AddressKanaParamsCopyWith<$Res>? get addressKana;
@@ -1341,6 +1518,8 @@ class _$IndividualParamsCopyWithImpl<$Res, $Val extends IndividualParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1354,46 +1533,60 @@ class _$IndividualParamsCopyWithImpl<$Res, $Val extends IndividualParams>
     Object? email = freezed,
     Object? phone = freezed,
   }) {
-    return _then(_value.copyWith(
-      firstNameKana: freezed == firstNameKana
-          ? _value.firstNameKana
-          : firstNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      firstNameKanji: freezed == firstNameKanji
-          ? _value.firstNameKanji
-          : firstNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKana: freezed == lastNameKana
-          ? _value.lastNameKana
-          : lastNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKanji: freezed == lastNameKanji
-          ? _value.lastNameKanji
-          : lastNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      dob: freezed == dob
-          ? _value.dob
-          : dob // ignore: cast_nullable_to_non_nullable
-              as DobParams?,
-      addressKana: freezed == addressKana
-          ? _value.addressKana
-          : addressKana // ignore: cast_nullable_to_non_nullable
-              as AddressKanaParams?,
-      addressKanji: freezed == addressKanji
-          ? _value.addressKanji
-          : addressKanji // ignore: cast_nullable_to_non_nullable
-              as AddressKanjiParams?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            firstNameKana:
+                freezed == firstNameKana
+                    ? _value.firstNameKana
+                    : firstNameKana // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            firstNameKanji:
+                freezed == firstNameKanji
+                    ? _value.firstNameKanji
+                    : firstNameKanji // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            lastNameKana:
+                freezed == lastNameKana
+                    ? _value.lastNameKana
+                    : lastNameKana // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            lastNameKanji:
+                freezed == lastNameKanji
+                    ? _value.lastNameKanji
+                    : lastNameKanji // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            dob:
+                freezed == dob
+                    ? _value.dob
+                    : dob // ignore: cast_nullable_to_non_nullable
+                        as DobParams?,
+            addressKana:
+                freezed == addressKana
+                    ? _value.addressKana
+                    : addressKana // ignore: cast_nullable_to_non_nullable
+                        as AddressKanaParams?,
+            addressKanji:
+                freezed == addressKanji
+                    ? _value.addressKanji
+                    : addressKanji // ignore: cast_nullable_to_non_nullable
+                        as AddressKanjiParams?,
+            email:
+                freezed == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phone:
+                freezed == phone
+                    ? _value.phone
+                    : phone // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DobParamsCopyWith<$Res>? get dob {
@@ -1406,6 +1599,8 @@ class _$IndividualParamsCopyWithImpl<$Res, $Val extends IndividualParams>
     });
   }
 
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressKanaParamsCopyWith<$Res>? get addressKana {
@@ -1418,6 +1613,8 @@ class _$IndividualParamsCopyWithImpl<$Res, $Val extends IndividualParams>
     });
   }
 
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressKanjiParamsCopyWith<$Res>? get addressKanji {
@@ -1432,23 +1629,25 @@ class _$IndividualParamsCopyWithImpl<$Res, $Val extends IndividualParams>
 }
 
 /// @nodoc
-abstract class _$$_IndividualParamsCopyWith<$Res>
+abstract class _$$IndividualParamsImplCopyWith<$Res>
     implements $IndividualParamsCopyWith<$Res> {
-  factory _$$_IndividualParamsCopyWith(
-          _$_IndividualParams value, $Res Function(_$_IndividualParams) then) =
-      __$$_IndividualParamsCopyWithImpl<$Res>;
+  factory _$$IndividualParamsImplCopyWith(
+    _$IndividualParamsImpl value,
+    $Res Function(_$IndividualParamsImpl) then,
+  ) = __$$IndividualParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: "first_name_kana") String? firstNameKana,
-      @JsonKey(name: "first_name_kanji") String? firstNameKanji,
-      @JsonKey(name: "last_name_kana") String? lastNameKana,
-      @JsonKey(name: "last_name_kanji") String? lastNameKanji,
-      DobParams? dob,
-      @JsonKey(name: "address_kana") AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji") AddressKanjiParams? addressKanji,
-      String? email,
-      String? phone});
+  $Res call({
+    @JsonKey(name: 'first_name_kana') String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') String? lastNameKanji,
+    DobParams? dob,
+    @JsonKey(name: 'address_kana') AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') AddressKanjiParams? addressKanji,
+    String? email,
+    String? phone,
+  });
 
   @override
   $DobParamsCopyWith<$Res>? get dob;
@@ -1459,13 +1658,16 @@ abstract class _$$_IndividualParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_IndividualParamsCopyWithImpl<$Res>
-    extends _$IndividualParamsCopyWithImpl<$Res, _$_IndividualParams>
-    implements _$$_IndividualParamsCopyWith<$Res> {
-  __$$_IndividualParamsCopyWithImpl(
-      _$_IndividualParams _value, $Res Function(_$_IndividualParams) _then)
-      : super(_value, _then);
+class __$$IndividualParamsImplCopyWithImpl<$Res>
+    extends _$IndividualParamsCopyWithImpl<$Res, _$IndividualParamsImpl>
+    implements _$$IndividualParamsImplCopyWith<$Res> {
+  __$$IndividualParamsImplCopyWithImpl(
+    _$IndividualParamsImpl _value,
+    $Res Function(_$IndividualParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1479,83 +1681,95 @@ class __$$_IndividualParamsCopyWithImpl<$Res>
     Object? email = freezed,
     Object? phone = freezed,
   }) {
-    return _then(_$_IndividualParams(
-      firstNameKana: freezed == firstNameKana
-          ? _value.firstNameKana
-          : firstNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      firstNameKanji: freezed == firstNameKanji
-          ? _value.firstNameKanji
-          : firstNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKana: freezed == lastNameKana
-          ? _value.lastNameKana
-          : lastNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKanji: freezed == lastNameKanji
-          ? _value.lastNameKanji
-          : lastNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      dob: freezed == dob
-          ? _value.dob
-          : dob // ignore: cast_nullable_to_non_nullable
-              as DobParams?,
-      addressKana: freezed == addressKana
-          ? _value.addressKana
-          : addressKana // ignore: cast_nullable_to_non_nullable
-              as AddressKanaParams?,
-      addressKanji: freezed == addressKanji
-          ? _value.addressKanji
-          : addressKanji // ignore: cast_nullable_to_non_nullable
-              as AddressKanjiParams?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$IndividualParamsImpl(
+        firstNameKana:
+            freezed == firstNameKana
+                ? _value.firstNameKana
+                : firstNameKana // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        firstNameKanji:
+            freezed == firstNameKanji
+                ? _value.firstNameKanji
+                : firstNameKanji // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        lastNameKana:
+            freezed == lastNameKana
+                ? _value.lastNameKana
+                : lastNameKana // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        lastNameKanji:
+            freezed == lastNameKanji
+                ? _value.lastNameKanji
+                : lastNameKanji // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        dob:
+            freezed == dob
+                ? _value.dob
+                : dob // ignore: cast_nullable_to_non_nullable
+                    as DobParams?,
+        addressKana:
+            freezed == addressKana
+                ? _value.addressKana
+                : addressKana // ignore: cast_nullable_to_non_nullable
+                    as AddressKanaParams?,
+        addressKanji:
+            freezed == addressKanji
+                ? _value.addressKanji
+                : addressKanji // ignore: cast_nullable_to_non_nullable
+                    as AddressKanjiParams?,
+        email:
+            freezed == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phone:
+            freezed == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_IndividualParams implements _IndividualParams {
-  const _$_IndividualParams(
-      {@JsonKey(name: "first_name_kana") required this.firstNameKana,
-      @JsonKey(name: "first_name_kanji") required this.firstNameKanji,
-      @JsonKey(name: "last_name_kana") required this.lastNameKana,
-      @JsonKey(name: "last_name_kanji") required this.lastNameKanji,
-      required this.dob,
-      @JsonKey(name: "address_kana") required this.addressKana,
-      @JsonKey(name: "address_kanji") required this.addressKanji,
-      required this.email,
-      required this.phone});
+class _$IndividualParamsImpl implements _IndividualParams {
+  const _$IndividualParamsImpl({
+    @JsonKey(name: 'first_name_kana') required this.firstNameKana,
+    @JsonKey(name: 'first_name_kanji') required this.firstNameKanji,
+    @JsonKey(name: 'last_name_kana') required this.lastNameKana,
+    @JsonKey(name: 'last_name_kanji') required this.lastNameKanji,
+    required this.dob,
+    @JsonKey(name: 'address_kana') required this.addressKana,
+    @JsonKey(name: 'address_kanji') required this.addressKanji,
+    required this.email,
+    required this.phone,
+  });
 
-  factory _$_IndividualParams.fromJson(Map<String, dynamic> json) =>
-      _$$_IndividualParamsFromJson(json);
+  factory _$IndividualParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IndividualParamsImplFromJson(json);
 
   @override
-  @JsonKey(name: "first_name_kana")
+  @JsonKey(name: 'first_name_kana')
   final String? firstNameKana;
   @override
-  @JsonKey(name: "first_name_kanji")
+  @JsonKey(name: 'first_name_kanji')
   final String? firstNameKanji;
   @override
-  @JsonKey(name: "last_name_kana")
+  @JsonKey(name: 'last_name_kana')
   final String? lastNameKana;
   @override
-  @JsonKey(name: "last_name_kanji")
+  @JsonKey(name: 'last_name_kanji')
   final String? lastNameKanji;
   @override
   final DobParams? dob;
   @override
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   final AddressKanaParams? addressKana;
   @override
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   final AddressKanjiParams? addressKanji;
   @override
   final String? email;
@@ -1568,10 +1782,10 @@ class _$_IndividualParams implements _IndividualParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_IndividualParams &&
+            other is _$IndividualParamsImpl &&
             (identical(other.firstNameKana, firstNameKana) ||
                 other.firstNameKana == firstNameKana) &&
             (identical(other.firstNameKanji, firstNameKanji) ||
@@ -1589,82 +1803,86 @@ class _$_IndividualParams implements _IndividualParams {
             (identical(other.phone, phone) || other.phone == phone));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      firstNameKana,
-      firstNameKanji,
-      lastNameKana,
-      lastNameKanji,
-      dob,
-      addressKana,
-      addressKanji,
-      email,
-      phone);
+    runtimeType,
+    firstNameKana,
+    firstNameKanji,
+    lastNameKana,
+    lastNameKanji,
+    dob,
+    addressKana,
+    addressKanji,
+    email,
+    phone,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_IndividualParamsCopyWith<_$_IndividualParams> get copyWith =>
-      __$$_IndividualParamsCopyWithImpl<_$_IndividualParams>(this, _$identity);
+  _$$IndividualParamsImplCopyWith<_$IndividualParamsImpl> get copyWith =>
+      __$$IndividualParamsImplCopyWithImpl<_$IndividualParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_IndividualParamsToJson(
-      this,
-    );
+    return _$$IndividualParamsImplToJson(this);
   }
 }
 
 abstract class _IndividualParams implements IndividualParams {
-  const factory _IndividualParams(
-      {@JsonKey(name: "first_name_kana")
-          required final String? firstNameKana,
-      @JsonKey(name: "first_name_kanji")
-          required final String? firstNameKanji,
-      @JsonKey(name: "last_name_kana")
-          required final String? lastNameKana,
-      @JsonKey(name: "last_name_kanji")
-          required final String? lastNameKanji,
-      required final DobParams? dob,
-      @JsonKey(name: "address_kana")
-          required final AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji")
-          required final AddressKanjiParams? addressKanji,
-      required final String? email,
-      required final String? phone}) = _$_IndividualParams;
+  const factory _IndividualParams({
+    @JsonKey(name: 'first_name_kana') required final String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') required final String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') required final String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') required final String? lastNameKanji,
+    required final DobParams? dob,
+    @JsonKey(name: 'address_kana')
+    required final AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji')
+    required final AddressKanjiParams? addressKanji,
+    required final String? email,
+    required final String? phone,
+  }) = _$IndividualParamsImpl;
 
   factory _IndividualParams.fromJson(Map<String, dynamic> json) =
-      _$_IndividualParams.fromJson;
+      _$IndividualParamsImpl.fromJson;
 
   @override
-  @JsonKey(name: "first_name_kana")
+  @JsonKey(name: 'first_name_kana')
   String? get firstNameKana;
   @override
-  @JsonKey(name: "first_name_kanji")
+  @JsonKey(name: 'first_name_kanji')
   String? get firstNameKanji;
   @override
-  @JsonKey(name: "last_name_kana")
+  @JsonKey(name: 'last_name_kana')
   String? get lastNameKana;
   @override
-  @JsonKey(name: "last_name_kanji")
+  @JsonKey(name: 'last_name_kanji')
   String? get lastNameKanji;
   @override
   DobParams? get dob;
   @override
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   AddressKanaParams? get addressKana;
   @override
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   AddressKanjiParams? get addressKanji;
   @override
   String? get email;
   @override
   String? get phone;
+
+  /// Create a copy of IndividualParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_IndividualParamsCopyWith<_$_IndividualParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$IndividualParamsImplCopyWith<_$IndividualParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1676,19 +1894,23 @@ CompanyParams _$CompanyParamsFromJson(Map<String, dynamic> json) {
 mixin _$CompanyParams {
   String? get name =>
       throw _privateConstructorUsedError; // 法人の場合必須 //ローマ字または英語表記
-  @JsonKey(name: "name_kana")
+  @JsonKey(name: 'name_kana')
   String? get nameKana => throw _privateConstructorUsedError; // 法人の場合必須
-  @JsonKey(name: "name_kanji")
+  @JsonKey(name: 'name_kanji')
   String? get nameKanji => throw _privateConstructorUsedError; // 法人の場合必須
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   AddressKanaParams? get addressKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   AddressKanjiParams? get addressKanji => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get taxId => throw _privateConstructorUsedError;
 
+  /// Serializes this CompanyParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CompanyParamsCopyWith<CompanyParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1696,17 +1918,19 @@ mixin _$CompanyParams {
 /// @nodoc
 abstract class $CompanyParamsCopyWith<$Res> {
   factory $CompanyParamsCopyWith(
-          CompanyParams value, $Res Function(CompanyParams) then) =
-      _$CompanyParamsCopyWithImpl<$Res, CompanyParams>;
+    CompanyParams value,
+    $Res Function(CompanyParams) then,
+  ) = _$CompanyParamsCopyWithImpl<$Res, CompanyParams>;
   @useResult
-  $Res call(
-      {String? name,
-      @JsonKey(name: "name_kana") String? nameKana,
-      @JsonKey(name: "name_kanji") String? nameKanji,
-      @JsonKey(name: "address_kana") AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji") AddressKanjiParams? addressKanji,
-      String? phone,
-      String? taxId});
+  $Res call({
+    String? name,
+    @JsonKey(name: 'name_kana') String? nameKana,
+    @JsonKey(name: 'name_kanji') String? nameKanji,
+    @JsonKey(name: 'address_kana') AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') AddressKanjiParams? addressKanji,
+    String? phone,
+    String? taxId,
+  });
 
   $AddressKanaParamsCopyWith<$Res>? get addressKana;
   $AddressKanjiParamsCopyWith<$Res>? get addressKanji;
@@ -1722,6 +1946,8 @@ class _$CompanyParamsCopyWithImpl<$Res, $Val extends CompanyParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1733,38 +1959,50 @@ class _$CompanyParamsCopyWithImpl<$Res, $Val extends CompanyParams>
     Object? phone = freezed,
     Object? taxId = freezed,
   }) {
-    return _then(_value.copyWith(
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nameKana: freezed == nameKana
-          ? _value.nameKana
-          : nameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nameKanji: freezed == nameKanji
-          ? _value.nameKanji
-          : nameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      addressKana: freezed == addressKana
-          ? _value.addressKana
-          : addressKana // ignore: cast_nullable_to_non_nullable
-              as AddressKanaParams?,
-      addressKanji: freezed == addressKanji
-          ? _value.addressKanji
-          : addressKanji // ignore: cast_nullable_to_non_nullable
-              as AddressKanjiParams?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      taxId: freezed == taxId
-          ? _value.taxId
-          : taxId // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            name:
+                freezed == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            nameKana:
+                freezed == nameKana
+                    ? _value.nameKana
+                    : nameKana // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            nameKanji:
+                freezed == nameKanji
+                    ? _value.nameKanji
+                    : nameKanji // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            addressKana:
+                freezed == addressKana
+                    ? _value.addressKana
+                    : addressKana // ignore: cast_nullable_to_non_nullable
+                        as AddressKanaParams?,
+            addressKanji:
+                freezed == addressKanji
+                    ? _value.addressKanji
+                    : addressKanji // ignore: cast_nullable_to_non_nullable
+                        as AddressKanjiParams?,
+            phone:
+                freezed == phone
+                    ? _value.phone
+                    : phone // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            taxId:
+                freezed == taxId
+                    ? _value.taxId
+                    : taxId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressKanaParamsCopyWith<$Res>? get addressKana {
@@ -1777,6 +2015,8 @@ class _$CompanyParamsCopyWithImpl<$Res, $Val extends CompanyParams>
     });
   }
 
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressKanjiParamsCopyWith<$Res>? get addressKanji {
@@ -1791,21 +2031,23 @@ class _$CompanyParamsCopyWithImpl<$Res, $Val extends CompanyParams>
 }
 
 /// @nodoc
-abstract class _$$_CompanyParamsCopyWith<$Res>
+abstract class _$$CompanyParamsImplCopyWith<$Res>
     implements $CompanyParamsCopyWith<$Res> {
-  factory _$$_CompanyParamsCopyWith(
-          _$_CompanyParams value, $Res Function(_$_CompanyParams) then) =
-      __$$_CompanyParamsCopyWithImpl<$Res>;
+  factory _$$CompanyParamsImplCopyWith(
+    _$CompanyParamsImpl value,
+    $Res Function(_$CompanyParamsImpl) then,
+  ) = __$$CompanyParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? name,
-      @JsonKey(name: "name_kana") String? nameKana,
-      @JsonKey(name: "name_kanji") String? nameKanji,
-      @JsonKey(name: "address_kana") AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji") AddressKanjiParams? addressKanji,
-      String? phone,
-      String? taxId});
+  $Res call({
+    String? name,
+    @JsonKey(name: 'name_kana') String? nameKana,
+    @JsonKey(name: 'name_kanji') String? nameKanji,
+    @JsonKey(name: 'address_kana') AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') AddressKanjiParams? addressKanji,
+    String? phone,
+    String? taxId,
+  });
 
   @override
   $AddressKanaParamsCopyWith<$Res>? get addressKana;
@@ -1814,13 +2056,16 @@ abstract class _$$_CompanyParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CompanyParamsCopyWithImpl<$Res>
-    extends _$CompanyParamsCopyWithImpl<$Res, _$_CompanyParams>
-    implements _$$_CompanyParamsCopyWith<$Res> {
-  __$$_CompanyParamsCopyWithImpl(
-      _$_CompanyParams _value, $Res Function(_$_CompanyParams) _then)
-      : super(_value, _then);
+class __$$CompanyParamsImplCopyWithImpl<$Res>
+    extends _$CompanyParamsCopyWithImpl<$Res, _$CompanyParamsImpl>
+    implements _$$CompanyParamsImplCopyWith<$Res> {
+  __$$CompanyParamsImplCopyWithImpl(
+    _$CompanyParamsImpl _value,
+    $Res Function(_$CompanyParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1832,70 +2077,80 @@ class __$$_CompanyParamsCopyWithImpl<$Res>
     Object? phone = freezed,
     Object? taxId = freezed,
   }) {
-    return _then(_$_CompanyParams(
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nameKana: freezed == nameKana
-          ? _value.nameKana
-          : nameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      nameKanji: freezed == nameKanji
-          ? _value.nameKanji
-          : nameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      addressKana: freezed == addressKana
-          ? _value.addressKana
-          : addressKana // ignore: cast_nullable_to_non_nullable
-              as AddressKanaParams?,
-      addressKanji: freezed == addressKanji
-          ? _value.addressKanji
-          : addressKanji // ignore: cast_nullable_to_non_nullable
-              as AddressKanjiParams?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      taxId: freezed == taxId
-          ? _value.taxId
-          : taxId // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$CompanyParamsImpl(
+        name:
+            freezed == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        nameKana:
+            freezed == nameKana
+                ? _value.nameKana
+                : nameKana // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        nameKanji:
+            freezed == nameKanji
+                ? _value.nameKanji
+                : nameKanji // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        addressKana:
+            freezed == addressKana
+                ? _value.addressKana
+                : addressKana // ignore: cast_nullable_to_non_nullable
+                    as AddressKanaParams?,
+        addressKanji:
+            freezed == addressKanji
+                ? _value.addressKanji
+                : addressKanji // ignore: cast_nullable_to_non_nullable
+                    as AddressKanjiParams?,
+        phone:
+            freezed == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        taxId:
+            freezed == taxId
+                ? _value.taxId
+                : taxId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_CompanyParams implements _CompanyParams {
-  const _$_CompanyParams(
-      {required this.name,
-      @JsonKey(name: "name_kana") required this.nameKana,
-      @JsonKey(name: "name_kanji") required this.nameKanji,
-      @JsonKey(name: "address_kana") required this.addressKana,
-      @JsonKey(name: "address_kanji") required this.addressKanji,
-      required this.phone,
-      required this.taxId});
+class _$CompanyParamsImpl implements _CompanyParams {
+  const _$CompanyParamsImpl({
+    required this.name,
+    @JsonKey(name: 'name_kana') required this.nameKana,
+    @JsonKey(name: 'name_kanji') required this.nameKanji,
+    @JsonKey(name: 'address_kana') required this.addressKana,
+    @JsonKey(name: 'address_kanji') required this.addressKanji,
+    required this.phone,
+    required this.taxId,
+  });
 
-  factory _$_CompanyParams.fromJson(Map<String, dynamic> json) =>
-      _$$_CompanyParamsFromJson(json);
+  factory _$CompanyParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CompanyParamsImplFromJson(json);
 
   @override
   final String? name;
-// 法人の場合必須 //ローマ字または英語表記
+  // 法人の場合必須 //ローマ字または英語表記
   @override
-  @JsonKey(name: "name_kana")
+  @JsonKey(name: 'name_kana')
   final String? nameKana;
-// 法人の場合必須
+  // 法人の場合必須
   @override
-  @JsonKey(name: "name_kanji")
+  @JsonKey(name: 'name_kanji')
   final String? nameKanji;
-// 法人の場合必須
+  // 法人の場合必須
   @override
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   final AddressKanaParams? addressKana;
   @override
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   final AddressKanjiParams? addressKanji;
   @override
   final String? phone;
@@ -1908,10 +2163,10 @@ class _$_CompanyParams implements _CompanyParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CompanyParams &&
+            other is _$CompanyParamsImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.nameKana, nameKana) ||
                 other.nameKana == nameKana) &&
@@ -1925,63 +2180,73 @@ class _$_CompanyParams implements _CompanyParams {
             (identical(other.taxId, taxId) || other.taxId == taxId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, nameKana, nameKanji,
-      addressKana, addressKanji, phone, taxId);
+  int get hashCode => Object.hash(
+    runtimeType,
+    name,
+    nameKana,
+    nameKanji,
+    addressKana,
+    addressKanji,
+    phone,
+    taxId,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CompanyParamsCopyWith<_$_CompanyParams> get copyWith =>
-      __$$_CompanyParamsCopyWithImpl<_$_CompanyParams>(this, _$identity);
+  _$$CompanyParamsImplCopyWith<_$CompanyParamsImpl> get copyWith =>
+      __$$CompanyParamsImplCopyWithImpl<_$CompanyParamsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CompanyParamsToJson(
-      this,
-    );
+    return _$$CompanyParamsImplToJson(this);
   }
 }
 
 abstract class _CompanyParams implements CompanyParams {
-  const factory _CompanyParams(
-      {required final String? name,
-      @JsonKey(name: "name_kana")
-          required final String? nameKana,
-      @JsonKey(name: "name_kanji")
-          required final String? nameKanji,
-      @JsonKey(name: "address_kana")
-          required final AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji")
-          required final AddressKanjiParams? addressKanji,
-      required final String? phone,
-      required final String? taxId}) = _$_CompanyParams;
+  const factory _CompanyParams({
+    required final String? name,
+    @JsonKey(name: 'name_kana') required final String? nameKana,
+    @JsonKey(name: 'name_kanji') required final String? nameKanji,
+    @JsonKey(name: 'address_kana')
+    required final AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji')
+    required final AddressKanjiParams? addressKanji,
+    required final String? phone,
+    required final String? taxId,
+  }) = _$CompanyParamsImpl;
 
   factory _CompanyParams.fromJson(Map<String, dynamic> json) =
-      _$_CompanyParams.fromJson;
+      _$CompanyParamsImpl.fromJson;
 
   @override
-  String? get name;
-  @override // 法人の場合必須 //ローマ字または英語表記
-  @JsonKey(name: "name_kana")
-  String? get nameKana;
-  @override // 法人の場合必須
-  @JsonKey(name: "name_kanji")
-  String? get nameKanji;
-  @override // 法人の場合必須
-  @JsonKey(name: "address_kana")
+  String? get name; // 法人の場合必須 //ローマ字または英語表記
+  @override
+  @JsonKey(name: 'name_kana')
+  String? get nameKana; // 法人の場合必須
+  @override
+  @JsonKey(name: 'name_kanji')
+  String? get nameKanji; // 法人の場合必須
+  @override
+  @JsonKey(name: 'address_kana')
   AddressKanaParams? get addressKana;
   @override
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   AddressKanjiParams? get addressKanji;
   @override
   String? get phone;
   @override
   String? get taxId;
+
+  /// Create a copy of CompanyParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_CompanyParamsCopyWith<_$_CompanyParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CompanyParamsImplCopyWith<_$CompanyParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1991,44 +2256,50 @@ RepresentativeParams _$RepresentativeParamsFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RepresentativeParams {
-  @JsonKey(name: "first_name_kana")
+  @JsonKey(name: 'first_name_kana')
   String? get firstNameKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "first_name_kanji")
+  @JsonKey(name: 'first_name_kanji')
   String? get firstNameKanji => throw _privateConstructorUsedError;
-  @JsonKey(name: "last_name_kana")
+  @JsonKey(name: 'last_name_kana')
   String? get lastNameKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "last_name_kanji")
+  @JsonKey(name: 'last_name_kanji')
   String? get lastNameKanji => throw _privateConstructorUsedError;
   DobParams? get dob => throw _privateConstructorUsedError;
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   AddressKanaParams? get addressKana => throw _privateConstructorUsedError;
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   AddressKanjiParams? get addressKanji => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
 
+  /// Serializes this RepresentativeParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $RepresentativeParamsCopyWith<RepresentativeParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $RepresentativeParamsCopyWith<$Res> {
-  factory $RepresentativeParamsCopyWith(RepresentativeParams value,
-          $Res Function(RepresentativeParams) then) =
-      _$RepresentativeParamsCopyWithImpl<$Res, RepresentativeParams>;
+  factory $RepresentativeParamsCopyWith(
+    RepresentativeParams value,
+    $Res Function(RepresentativeParams) then,
+  ) = _$RepresentativeParamsCopyWithImpl<$Res, RepresentativeParams>;
   @useResult
-  $Res call(
-      {@JsonKey(name: "first_name_kana") String? firstNameKana,
-      @JsonKey(name: "first_name_kanji") String? firstNameKanji,
-      @JsonKey(name: "last_name_kana") String? lastNameKana,
-      @JsonKey(name: "last_name_kanji") String? lastNameKanji,
-      DobParams? dob,
-      @JsonKey(name: "address_kana") AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji") AddressKanjiParams? addressKanji,
-      String? email,
-      String? phone});
+  $Res call({
+    @JsonKey(name: 'first_name_kana') String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') String? lastNameKanji,
+    DobParams? dob,
+    @JsonKey(name: 'address_kana') AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') AddressKanjiParams? addressKanji,
+    String? email,
+    String? phone,
+  });
 
   $DobParamsCopyWith<$Res>? get dob;
   $AddressKanaParamsCopyWith<$Res>? get addressKana;
@@ -2036,8 +2307,10 @@ abstract class $RepresentativeParamsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RepresentativeParamsCopyWithImpl<$Res,
-        $Val extends RepresentativeParams>
+class _$RepresentativeParamsCopyWithImpl<
+  $Res,
+  $Val extends RepresentativeParams
+>
     implements $RepresentativeParamsCopyWith<$Res> {
   _$RepresentativeParamsCopyWithImpl(this._value, this._then);
 
@@ -2046,6 +2319,8 @@ class _$RepresentativeParamsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2059,46 +2334,60 @@ class _$RepresentativeParamsCopyWithImpl<$Res,
     Object? email = freezed,
     Object? phone = freezed,
   }) {
-    return _then(_value.copyWith(
-      firstNameKana: freezed == firstNameKana
-          ? _value.firstNameKana
-          : firstNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      firstNameKanji: freezed == firstNameKanji
-          ? _value.firstNameKanji
-          : firstNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKana: freezed == lastNameKana
-          ? _value.lastNameKana
-          : lastNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKanji: freezed == lastNameKanji
-          ? _value.lastNameKanji
-          : lastNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      dob: freezed == dob
-          ? _value.dob
-          : dob // ignore: cast_nullable_to_non_nullable
-              as DobParams?,
-      addressKana: freezed == addressKana
-          ? _value.addressKana
-          : addressKana // ignore: cast_nullable_to_non_nullable
-              as AddressKanaParams?,
-      addressKanji: freezed == addressKanji
-          ? _value.addressKanji
-          : addressKanji // ignore: cast_nullable_to_non_nullable
-              as AddressKanjiParams?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            firstNameKana:
+                freezed == firstNameKana
+                    ? _value.firstNameKana
+                    : firstNameKana // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            firstNameKanji:
+                freezed == firstNameKanji
+                    ? _value.firstNameKanji
+                    : firstNameKanji // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            lastNameKana:
+                freezed == lastNameKana
+                    ? _value.lastNameKana
+                    : lastNameKana // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            lastNameKanji:
+                freezed == lastNameKanji
+                    ? _value.lastNameKanji
+                    : lastNameKanji // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            dob:
+                freezed == dob
+                    ? _value.dob
+                    : dob // ignore: cast_nullable_to_non_nullable
+                        as DobParams?,
+            addressKana:
+                freezed == addressKana
+                    ? _value.addressKana
+                    : addressKana // ignore: cast_nullable_to_non_nullable
+                        as AddressKanaParams?,
+            addressKanji:
+                freezed == addressKanji
+                    ? _value.addressKanji
+                    : addressKanji // ignore: cast_nullable_to_non_nullable
+                        as AddressKanjiParams?,
+            email:
+                freezed == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phone:
+                freezed == phone
+                    ? _value.phone
+                    : phone // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $DobParamsCopyWith<$Res>? get dob {
@@ -2111,6 +2400,8 @@ class _$RepresentativeParamsCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressKanaParamsCopyWith<$Res>? get addressKana {
@@ -2123,6 +2414,8 @@ class _$RepresentativeParamsCopyWithImpl<$Res,
     });
   }
 
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressKanjiParamsCopyWith<$Res>? get addressKanji {
@@ -2137,23 +2430,25 @@ class _$RepresentativeParamsCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_RepresentativeParamsCopyWith<$Res>
+abstract class _$$RepresentativeParamsImplCopyWith<$Res>
     implements $RepresentativeParamsCopyWith<$Res> {
-  factory _$$_RepresentativeParamsCopyWith(_$_RepresentativeParams value,
-          $Res Function(_$_RepresentativeParams) then) =
-      __$$_RepresentativeParamsCopyWithImpl<$Res>;
+  factory _$$RepresentativeParamsImplCopyWith(
+    _$RepresentativeParamsImpl value,
+    $Res Function(_$RepresentativeParamsImpl) then,
+  ) = __$$RepresentativeParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {@JsonKey(name: "first_name_kana") String? firstNameKana,
-      @JsonKey(name: "first_name_kanji") String? firstNameKanji,
-      @JsonKey(name: "last_name_kana") String? lastNameKana,
-      @JsonKey(name: "last_name_kanji") String? lastNameKanji,
-      DobParams? dob,
-      @JsonKey(name: "address_kana") AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji") AddressKanjiParams? addressKanji,
-      String? email,
-      String? phone});
+  $Res call({
+    @JsonKey(name: 'first_name_kana') String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') String? lastNameKanji,
+    DobParams? dob,
+    @JsonKey(name: 'address_kana') AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') AddressKanjiParams? addressKanji,
+    String? email,
+    String? phone,
+  });
 
   @override
   $DobParamsCopyWith<$Res>? get dob;
@@ -2164,13 +2459,16 @@ abstract class _$$_RepresentativeParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RepresentativeParamsCopyWithImpl<$Res>
-    extends _$RepresentativeParamsCopyWithImpl<$Res, _$_RepresentativeParams>
-    implements _$$_RepresentativeParamsCopyWith<$Res> {
-  __$$_RepresentativeParamsCopyWithImpl(_$_RepresentativeParams _value,
-      $Res Function(_$_RepresentativeParams) _then)
-      : super(_value, _then);
+class __$$RepresentativeParamsImplCopyWithImpl<$Res>
+    extends _$RepresentativeParamsCopyWithImpl<$Res, _$RepresentativeParamsImpl>
+    implements _$$RepresentativeParamsImplCopyWith<$Res> {
+  __$$RepresentativeParamsImplCopyWithImpl(
+    _$RepresentativeParamsImpl _value,
+    $Res Function(_$RepresentativeParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2184,83 +2482,95 @@ class __$$_RepresentativeParamsCopyWithImpl<$Res>
     Object? email = freezed,
     Object? phone = freezed,
   }) {
-    return _then(_$_RepresentativeParams(
-      firstNameKana: freezed == firstNameKana
-          ? _value.firstNameKana
-          : firstNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      firstNameKanji: freezed == firstNameKanji
-          ? _value.firstNameKanji
-          : firstNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKana: freezed == lastNameKana
-          ? _value.lastNameKana
-          : lastNameKana // ignore: cast_nullable_to_non_nullable
-              as String?,
-      lastNameKanji: freezed == lastNameKanji
-          ? _value.lastNameKanji
-          : lastNameKanji // ignore: cast_nullable_to_non_nullable
-              as String?,
-      dob: freezed == dob
-          ? _value.dob
-          : dob // ignore: cast_nullable_to_non_nullable
-              as DobParams?,
-      addressKana: freezed == addressKana
-          ? _value.addressKana
-          : addressKana // ignore: cast_nullable_to_non_nullable
-              as AddressKanaParams?,
-      addressKanji: freezed == addressKanji
-          ? _value.addressKanji
-          : addressKanji // ignore: cast_nullable_to_non_nullable
-              as AddressKanjiParams?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$RepresentativeParamsImpl(
+        firstNameKana:
+            freezed == firstNameKana
+                ? _value.firstNameKana
+                : firstNameKana // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        firstNameKanji:
+            freezed == firstNameKanji
+                ? _value.firstNameKanji
+                : firstNameKanji // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        lastNameKana:
+            freezed == lastNameKana
+                ? _value.lastNameKana
+                : lastNameKana // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        lastNameKanji:
+            freezed == lastNameKanji
+                ? _value.lastNameKanji
+                : lastNameKanji // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        dob:
+            freezed == dob
+                ? _value.dob
+                : dob // ignore: cast_nullable_to_non_nullable
+                    as DobParams?,
+        addressKana:
+            freezed == addressKana
+                ? _value.addressKana
+                : addressKana // ignore: cast_nullable_to_non_nullable
+                    as AddressKanaParams?,
+        addressKanji:
+            freezed == addressKanji
+                ? _value.addressKanji
+                : addressKanji // ignore: cast_nullable_to_non_nullable
+                    as AddressKanjiParams?,
+        email:
+            freezed == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phone:
+            freezed == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_RepresentativeParams implements _RepresentativeParams {
-  const _$_RepresentativeParams(
-      {@JsonKey(name: "first_name_kana") required this.firstNameKana,
-      @JsonKey(name: "first_name_kanji") required this.firstNameKanji,
-      @JsonKey(name: "last_name_kana") required this.lastNameKana,
-      @JsonKey(name: "last_name_kanji") required this.lastNameKanji,
-      required this.dob,
-      @JsonKey(name: "address_kana") required this.addressKana,
-      @JsonKey(name: "address_kanji") required this.addressKanji,
-      required this.email,
-      required this.phone});
+class _$RepresentativeParamsImpl implements _RepresentativeParams {
+  const _$RepresentativeParamsImpl({
+    @JsonKey(name: 'first_name_kana') required this.firstNameKana,
+    @JsonKey(name: 'first_name_kanji') required this.firstNameKanji,
+    @JsonKey(name: 'last_name_kana') required this.lastNameKana,
+    @JsonKey(name: 'last_name_kanji') required this.lastNameKanji,
+    required this.dob,
+    @JsonKey(name: 'address_kana') required this.addressKana,
+    @JsonKey(name: 'address_kanji') required this.addressKanji,
+    required this.email,
+    required this.phone,
+  });
 
-  factory _$_RepresentativeParams.fromJson(Map<String, dynamic> json) =>
-      _$$_RepresentativeParamsFromJson(json);
+  factory _$RepresentativeParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RepresentativeParamsImplFromJson(json);
 
   @override
-  @JsonKey(name: "first_name_kana")
+  @JsonKey(name: 'first_name_kana')
   final String? firstNameKana;
   @override
-  @JsonKey(name: "first_name_kanji")
+  @JsonKey(name: 'first_name_kanji')
   final String? firstNameKanji;
   @override
-  @JsonKey(name: "last_name_kana")
+  @JsonKey(name: 'last_name_kana')
   final String? lastNameKana;
   @override
-  @JsonKey(name: "last_name_kanji")
+  @JsonKey(name: 'last_name_kanji')
   final String? lastNameKanji;
   @override
   final DobParams? dob;
   @override
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   final AddressKanaParams? addressKana;
   @override
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   final AddressKanjiParams? addressKanji;
   @override
   final String? email;
@@ -2273,10 +2583,10 @@ class _$_RepresentativeParams implements _RepresentativeParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RepresentativeParams &&
+            other is _$RepresentativeParamsImpl &&
             (identical(other.firstNameKana, firstNameKana) ||
                 other.firstNameKana == firstNameKana) &&
             (identical(other.firstNameKanji, firstNameKanji) ||
@@ -2294,84 +2604,88 @@ class _$_RepresentativeParams implements _RepresentativeParams {
             (identical(other.phone, phone) || other.phone == phone));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      firstNameKana,
-      firstNameKanji,
-      lastNameKana,
-      lastNameKanji,
-      dob,
-      addressKana,
-      addressKanji,
-      email,
-      phone);
+    runtimeType,
+    firstNameKana,
+    firstNameKanji,
+    lastNameKana,
+    lastNameKanji,
+    dob,
+    addressKana,
+    addressKanji,
+    email,
+    phone,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RepresentativeParamsCopyWith<_$_RepresentativeParams> get copyWith =>
-      __$$_RepresentativeParamsCopyWithImpl<_$_RepresentativeParams>(
-          this, _$identity);
+  _$$RepresentativeParamsImplCopyWith<_$RepresentativeParamsImpl>
+  get copyWith =>
+      __$$RepresentativeParamsImplCopyWithImpl<_$RepresentativeParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RepresentativeParamsToJson(
-      this,
-    );
+    return _$$RepresentativeParamsImplToJson(this);
   }
 }
 
 abstract class _RepresentativeParams implements RepresentativeParams {
-  const factory _RepresentativeParams(
-      {@JsonKey(name: "first_name_kana")
-          required final String? firstNameKana,
-      @JsonKey(name: "first_name_kanji")
-          required final String? firstNameKanji,
-      @JsonKey(name: "last_name_kana")
-          required final String? lastNameKana,
-      @JsonKey(name: "last_name_kanji")
-          required final String? lastNameKanji,
-      required final DobParams? dob,
-      @JsonKey(name: "address_kana")
-          required final AddressKanaParams? addressKana,
-      @JsonKey(name: "address_kanji")
-          required final AddressKanjiParams? addressKanji,
-      required final String? email,
-      required final String? phone}) = _$_RepresentativeParams;
+  const factory _RepresentativeParams({
+    @JsonKey(name: 'first_name_kana') required final String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') required final String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') required final String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') required final String? lastNameKanji,
+    required final DobParams? dob,
+    @JsonKey(name: 'address_kana')
+    required final AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji')
+    required final AddressKanjiParams? addressKanji,
+    required final String? email,
+    required final String? phone,
+  }) = _$RepresentativeParamsImpl;
 
   factory _RepresentativeParams.fromJson(Map<String, dynamic> json) =
-      _$_RepresentativeParams.fromJson;
+      _$RepresentativeParamsImpl.fromJson;
 
   @override
-  @JsonKey(name: "first_name_kana")
+  @JsonKey(name: 'first_name_kana')
   String? get firstNameKana;
   @override
-  @JsonKey(name: "first_name_kanji")
+  @JsonKey(name: 'first_name_kanji')
   String? get firstNameKanji;
   @override
-  @JsonKey(name: "last_name_kana")
+  @JsonKey(name: 'last_name_kana')
   String? get lastNameKana;
   @override
-  @JsonKey(name: "last_name_kanji")
+  @JsonKey(name: 'last_name_kanji')
   String? get lastNameKanji;
   @override
   DobParams? get dob;
   @override
-  @JsonKey(name: "address_kana")
+  @JsonKey(name: 'address_kana')
   AddressKanaParams? get addressKana;
   @override
-  @JsonKey(name: "address_kanji")
+  @JsonKey(name: 'address_kanji')
   AddressKanjiParams? get addressKanji;
   @override
   String? get email;
   @override
   String? get phone;
+
+  /// Create a copy of RepresentativeParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_RepresentativeParamsCopyWith<_$_RepresentativeParams> get copyWith =>
-      throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RepresentativeParamsImplCopyWith<_$RepresentativeParamsImpl>
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 DobParams _$DobParamsFromJson(Map<String, dynamic> json) {
@@ -2384,8 +2698,12 @@ mixin _$DobParams {
   String? get month => throw _privateConstructorUsedError;
   String? get year => throw _privateConstructorUsedError;
 
+  /// Serializes this DobParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of DobParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $DobParamsCopyWith<DobParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2408,6 +2726,8 @@ class _$DobParamsCopyWithImpl<$Res, $Val extends DobParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of DobParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2415,41 +2735,52 @@ class _$DobParamsCopyWithImpl<$Res, $Val extends DobParams>
     Object? month = freezed,
     Object? year = freezed,
   }) {
-    return _then(_value.copyWith(
-      day: freezed == day
-          ? _value.day
-          : day // ignore: cast_nullable_to_non_nullable
-              as String?,
-      month: freezed == month
-          ? _value.month
-          : month // ignore: cast_nullable_to_non_nullable
-              as String?,
-      year: freezed == year
-          ? _value.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            day:
+                freezed == day
+                    ? _value.day
+                    : day // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            month:
+                freezed == month
+                    ? _value.month
+                    : month // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            year:
+                freezed == year
+                    ? _value.year
+                    : year // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_DobParamsCopyWith<$Res> implements $DobParamsCopyWith<$Res> {
-  factory _$$_DobParamsCopyWith(
-          _$_DobParams value, $Res Function(_$_DobParams) then) =
-      __$$_DobParamsCopyWithImpl<$Res>;
+abstract class _$$DobParamsImplCopyWith<$Res>
+    implements $DobParamsCopyWith<$Res> {
+  factory _$$DobParamsImplCopyWith(
+    _$DobParamsImpl value,
+    $Res Function(_$DobParamsImpl) then,
+  ) = __$$DobParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? day, String? month, String? year});
 }
 
 /// @nodoc
-class __$$_DobParamsCopyWithImpl<$Res>
-    extends _$DobParamsCopyWithImpl<$Res, _$_DobParams>
-    implements _$$_DobParamsCopyWith<$Res> {
-  __$$_DobParamsCopyWithImpl(
-      _$_DobParams _value, $Res Function(_$_DobParams) _then)
-      : super(_value, _then);
+class __$$DobParamsImplCopyWithImpl<$Res>
+    extends _$DobParamsCopyWithImpl<$Res, _$DobParamsImpl>
+    implements _$$DobParamsImplCopyWith<$Res> {
+  __$$DobParamsImplCopyWithImpl(
+    _$DobParamsImpl _value,
+    $Res Function(_$DobParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of DobParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2457,31 +2788,39 @@ class __$$_DobParamsCopyWithImpl<$Res>
     Object? month = freezed,
     Object? year = freezed,
   }) {
-    return _then(_$_DobParams(
-      day: freezed == day
-          ? _value.day
-          : day // ignore: cast_nullable_to_non_nullable
-              as String?,
-      month: freezed == month
-          ? _value.month
-          : month // ignore: cast_nullable_to_non_nullable
-              as String?,
-      year: freezed == year
-          ? _value.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$DobParamsImpl(
+        day:
+            freezed == day
+                ? _value.day
+                : day // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        month:
+            freezed == month
+                ? _value.month
+                : month // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        year:
+            freezed == year
+                ? _value.year
+                : year // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_DobParams implements _DobParams {
-  const _$_DobParams(
-      {required this.day, required this.month, required this.year});
+class _$DobParamsImpl implements _DobParams {
+  const _$DobParamsImpl({
+    required this.day,
+    required this.month,
+    required this.year,
+  });
 
-  factory _$_DobParams.fromJson(Map<String, dynamic> json) =>
-      _$$_DobParamsFromJson(json);
+  factory _$DobParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DobParamsImplFromJson(json);
 
   @override
   final String? day;
@@ -2496,41 +2835,42 @@ class _$_DobParams implements _DobParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_DobParams &&
+            other is _$DobParamsImpl &&
             (identical(other.day, day) || other.day == day) &&
             (identical(other.month, month) || other.month == month) &&
             (identical(other.year, year) || other.year == year));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, day, month, year);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of DobParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_DobParamsCopyWith<_$_DobParams> get copyWith =>
-      __$$_DobParamsCopyWithImpl<_$_DobParams>(this, _$identity);
+  _$$DobParamsImplCopyWith<_$DobParamsImpl> get copyWith =>
+      __$$DobParamsImplCopyWithImpl<_$DobParamsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_DobParamsToJson(
-      this,
-    );
+    return _$$DobParamsImplToJson(this);
   }
 }
 
 abstract class _DobParams implements DobParams {
-  const factory _DobParams(
-      {required final String? day,
-      required final String? month,
-      required final String? year}) = _$_DobParams;
+  const factory _DobParams({
+    required final String? day,
+    required final String? month,
+    required final String? year,
+  }) = _$DobParamsImpl;
 
   factory _DobParams.fromJson(Map<String, dynamic> json) =
-      _$_DobParams.fromJson;
+      _$DobParamsImpl.fromJson;
 
   @override
   String? get day;
@@ -2538,9 +2878,12 @@ abstract class _DobParams implements DobParams {
   String? get month;
   @override
   String? get year;
+
+  /// Create a copy of DobParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_DobParamsCopyWith<_$_DobParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DobParamsImplCopyWith<_$DobParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2551,14 +2894,18 @@ AddressKanaParams _$AddressKanaParamsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AddressKanaParams {
   String? get line1 => throw _privateConstructorUsedError;
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   String? get postalCode => throw _privateConstructorUsedError;
   String? get city => throw _privateConstructorUsedError;
   String? get state => throw _privateConstructorUsedError;
   String? get town => throw _privateConstructorUsedError;
 
+  /// Serializes this AddressKanaParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddressKanaParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AddressKanaParamsCopyWith<AddressKanaParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2566,15 +2913,17 @@ mixin _$AddressKanaParams {
 /// @nodoc
 abstract class $AddressKanaParamsCopyWith<$Res> {
   factory $AddressKanaParamsCopyWith(
-          AddressKanaParams value, $Res Function(AddressKanaParams) then) =
-      _$AddressKanaParamsCopyWithImpl<$Res, AddressKanaParams>;
+    AddressKanaParams value,
+    $Res Function(AddressKanaParams) then,
+  ) = _$AddressKanaParamsCopyWithImpl<$Res, AddressKanaParams>;
   @useResult
-  $Res call(
-      {String? line1,
-      @JsonKey(name: "postal_code") String? postalCode,
-      String? city,
-      String? state,
-      String? town});
+  $Res call({
+    String? line1,
+    @JsonKey(name: 'postal_code') String? postalCode,
+    String? city,
+    String? state,
+    String? town,
+  });
 }
 
 /// @nodoc
@@ -2587,6 +2936,8 @@ class _$AddressKanaParamsCopyWithImpl<$Res, $Val extends AddressKanaParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AddressKanaParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2596,55 +2947,68 @@ class _$AddressKanaParamsCopyWithImpl<$Res, $Val extends AddressKanaParams>
     Object? state = freezed,
     Object? town = freezed,
   }) {
-    return _then(_value.copyWith(
-      line1: freezed == line1
-          ? _value.line1
-          : line1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      town: freezed == town
-          ? _value.town
-          : town // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            line1:
+                freezed == line1
+                    ? _value.line1
+                    : line1 // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            postalCode:
+                freezed == postalCode
+                    ? _value.postalCode
+                    : postalCode // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            city:
+                freezed == city
+                    ? _value.city
+                    : city // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            state:
+                freezed == state
+                    ? _value.state
+                    : state // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            town:
+                freezed == town
+                    ? _value.town
+                    : town // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_AddressKanaParamsCopyWith<$Res>
+abstract class _$$AddressKanaParamsImplCopyWith<$Res>
     implements $AddressKanaParamsCopyWith<$Res> {
-  factory _$$_AddressKanaParamsCopyWith(_$_AddressKanaParams value,
-          $Res Function(_$_AddressKanaParams) then) =
-      __$$_AddressKanaParamsCopyWithImpl<$Res>;
+  factory _$$AddressKanaParamsImplCopyWith(
+    _$AddressKanaParamsImpl value,
+    $Res Function(_$AddressKanaParamsImpl) then,
+  ) = __$$AddressKanaParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? line1,
-      @JsonKey(name: "postal_code") String? postalCode,
-      String? city,
-      String? state,
-      String? town});
+  $Res call({
+    String? line1,
+    @JsonKey(name: 'postal_code') String? postalCode,
+    String? city,
+    String? state,
+    String? town,
+  });
 }
 
 /// @nodoc
-class __$$_AddressKanaParamsCopyWithImpl<$Res>
-    extends _$AddressKanaParamsCopyWithImpl<$Res, _$_AddressKanaParams>
-    implements _$$_AddressKanaParamsCopyWith<$Res> {
-  __$$_AddressKanaParamsCopyWithImpl(
-      _$_AddressKanaParams _value, $Res Function(_$_AddressKanaParams) _then)
-      : super(_value, _then);
+class __$$AddressKanaParamsImplCopyWithImpl<$Res>
+    extends _$AddressKanaParamsCopyWithImpl<$Res, _$AddressKanaParamsImpl>
+    implements _$$AddressKanaParamsImplCopyWith<$Res> {
+  __$$AddressKanaParamsImplCopyWithImpl(
+    _$AddressKanaParamsImpl _value,
+    $Res Function(_$AddressKanaParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of AddressKanaParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2654,48 +3018,56 @@ class __$$_AddressKanaParamsCopyWithImpl<$Res>
     Object? state = freezed,
     Object? town = freezed,
   }) {
-    return _then(_$_AddressKanaParams(
-      line1: freezed == line1
-          ? _value.line1
-          : line1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      town: freezed == town
-          ? _value.town
-          : town // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$AddressKanaParamsImpl(
+        line1:
+            freezed == line1
+                ? _value.line1
+                : line1 // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        postalCode:
+            freezed == postalCode
+                ? _value.postalCode
+                : postalCode // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        city:
+            freezed == city
+                ? _value.city
+                : city // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        state:
+            freezed == state
+                ? _value.state
+                : state // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        town:
+            freezed == town
+                ? _value.town
+                : town // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_AddressKanaParams implements _AddressKanaParams {
-  const _$_AddressKanaParams(
-      {required this.line1,
-      @JsonKey(name: "postal_code") required this.postalCode,
-      required this.city,
-      required this.state,
-      required this.town});
+class _$AddressKanaParamsImpl implements _AddressKanaParams {
+  const _$AddressKanaParamsImpl({
+    required this.line1,
+    @JsonKey(name: 'postal_code') required this.postalCode,
+    required this.city,
+    required this.state,
+    required this.town,
+  });
 
-  factory _$_AddressKanaParams.fromJson(Map<String, dynamic> json) =>
-      _$$_AddressKanaParamsFromJson(json);
+  factory _$AddressKanaParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AddressKanaParamsImplFromJson(json);
 
   @override
   final String? line1;
   @override
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   final String? postalCode;
   @override
   final String? city;
@@ -2710,10 +3082,10 @@ class _$_AddressKanaParams implements _AddressKanaParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AddressKanaParams &&
+            other is _$AddressKanaParamsImpl &&
             (identical(other.line1, line1) || other.line1 == line1) &&
             (identical(other.postalCode, postalCode) ||
                 other.postalCode == postalCode) &&
@@ -2722,41 +3094,44 @@ class _$_AddressKanaParams implements _AddressKanaParams {
             (identical(other.town, town) || other.town == town));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, line1, postalCode, city, state, town);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddressKanaParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AddressKanaParamsCopyWith<_$_AddressKanaParams> get copyWith =>
-      __$$_AddressKanaParamsCopyWithImpl<_$_AddressKanaParams>(
-          this, _$identity);
+  _$$AddressKanaParamsImplCopyWith<_$AddressKanaParamsImpl> get copyWith =>
+      __$$AddressKanaParamsImplCopyWithImpl<_$AddressKanaParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AddressKanaParamsToJson(
-      this,
-    );
+    return _$$AddressKanaParamsImplToJson(this);
   }
 }
 
 abstract class _AddressKanaParams implements AddressKanaParams {
-  const factory _AddressKanaParams(
-      {required final String? line1,
-      @JsonKey(name: "postal_code") required final String? postalCode,
-      required final String? city,
-      required final String? state,
-      required final String? town}) = _$_AddressKanaParams;
+  const factory _AddressKanaParams({
+    required final String? line1,
+    @JsonKey(name: 'postal_code') required final String? postalCode,
+    required final String? city,
+    required final String? state,
+    required final String? town,
+  }) = _$AddressKanaParamsImpl;
 
   factory _AddressKanaParams.fromJson(Map<String, dynamic> json) =
-      _$_AddressKanaParams.fromJson;
+      _$AddressKanaParamsImpl.fromJson;
 
   @override
   String? get line1;
   @override
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   String? get postalCode;
   @override
   String? get city;
@@ -2764,9 +3139,12 @@ abstract class _AddressKanaParams implements AddressKanaParams {
   String? get state;
   @override
   String? get town;
+
+  /// Create a copy of AddressKanaParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_AddressKanaParamsCopyWith<_$_AddressKanaParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AddressKanaParamsImplCopyWith<_$AddressKanaParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2777,14 +3155,18 @@ AddressKanjiParams _$AddressKanjiParamsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AddressKanjiParams {
   String? get line1 => throw _privateConstructorUsedError;
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   String? get postalCode => throw _privateConstructorUsedError;
   String? get city => throw _privateConstructorUsedError;
   String? get state => throw _privateConstructorUsedError;
   String? get town => throw _privateConstructorUsedError;
 
+  /// Serializes this AddressKanjiParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddressKanjiParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AddressKanjiParamsCopyWith<AddressKanjiParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2792,15 +3174,17 @@ mixin _$AddressKanjiParams {
 /// @nodoc
 abstract class $AddressKanjiParamsCopyWith<$Res> {
   factory $AddressKanjiParamsCopyWith(
-          AddressKanjiParams value, $Res Function(AddressKanjiParams) then) =
-      _$AddressKanjiParamsCopyWithImpl<$Res, AddressKanjiParams>;
+    AddressKanjiParams value,
+    $Res Function(AddressKanjiParams) then,
+  ) = _$AddressKanjiParamsCopyWithImpl<$Res, AddressKanjiParams>;
   @useResult
-  $Res call(
-      {String? line1,
-      @JsonKey(name: "postal_code") String? postalCode,
-      String? city,
-      String? state,
-      String? town});
+  $Res call({
+    String? line1,
+    @JsonKey(name: 'postal_code') String? postalCode,
+    String? city,
+    String? state,
+    String? town,
+  });
 }
 
 /// @nodoc
@@ -2813,6 +3197,8 @@ class _$AddressKanjiParamsCopyWithImpl<$Res, $Val extends AddressKanjiParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AddressKanjiParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2822,55 +3208,68 @@ class _$AddressKanjiParamsCopyWithImpl<$Res, $Val extends AddressKanjiParams>
     Object? state = freezed,
     Object? town = freezed,
   }) {
-    return _then(_value.copyWith(
-      line1: freezed == line1
-          ? _value.line1
-          : line1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      town: freezed == town
-          ? _value.town
-          : town // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            line1:
+                freezed == line1
+                    ? _value.line1
+                    : line1 // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            postalCode:
+                freezed == postalCode
+                    ? _value.postalCode
+                    : postalCode // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            city:
+                freezed == city
+                    ? _value.city
+                    : city // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            state:
+                freezed == state
+                    ? _value.state
+                    : state // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            town:
+                freezed == town
+                    ? _value.town
+                    : town // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_AddressKanjiParamsCopyWith<$Res>
+abstract class _$$AddressKanjiParamsImplCopyWith<$Res>
     implements $AddressKanjiParamsCopyWith<$Res> {
-  factory _$$_AddressKanjiParamsCopyWith(_$_AddressKanjiParams value,
-          $Res Function(_$_AddressKanjiParams) then) =
-      __$$_AddressKanjiParamsCopyWithImpl<$Res>;
+  factory _$$AddressKanjiParamsImplCopyWith(
+    _$AddressKanjiParamsImpl value,
+    $Res Function(_$AddressKanjiParamsImpl) then,
+  ) = __$$AddressKanjiParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? line1,
-      @JsonKey(name: "postal_code") String? postalCode,
-      String? city,
-      String? state,
-      String? town});
+  $Res call({
+    String? line1,
+    @JsonKey(name: 'postal_code') String? postalCode,
+    String? city,
+    String? state,
+    String? town,
+  });
 }
 
 /// @nodoc
-class __$$_AddressKanjiParamsCopyWithImpl<$Res>
-    extends _$AddressKanjiParamsCopyWithImpl<$Res, _$_AddressKanjiParams>
-    implements _$$_AddressKanjiParamsCopyWith<$Res> {
-  __$$_AddressKanjiParamsCopyWithImpl(
-      _$_AddressKanjiParams _value, $Res Function(_$_AddressKanjiParams) _then)
-      : super(_value, _then);
+class __$$AddressKanjiParamsImplCopyWithImpl<$Res>
+    extends _$AddressKanjiParamsCopyWithImpl<$Res, _$AddressKanjiParamsImpl>
+    implements _$$AddressKanjiParamsImplCopyWith<$Res> {
+  __$$AddressKanjiParamsImplCopyWithImpl(
+    _$AddressKanjiParamsImpl _value,
+    $Res Function(_$AddressKanjiParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of AddressKanjiParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2880,48 +3279,56 @@ class __$$_AddressKanjiParamsCopyWithImpl<$Res>
     Object? state = freezed,
     Object? town = freezed,
   }) {
-    return _then(_$_AddressKanjiParams(
-      line1: freezed == line1
-          ? _value.line1
-          : line1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-      town: freezed == town
-          ? _value.town
-          : town // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$AddressKanjiParamsImpl(
+        line1:
+            freezed == line1
+                ? _value.line1
+                : line1 // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        postalCode:
+            freezed == postalCode
+                ? _value.postalCode
+                : postalCode // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        city:
+            freezed == city
+                ? _value.city
+                : city // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        state:
+            freezed == state
+                ? _value.state
+                : state // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        town:
+            freezed == town
+                ? _value.town
+                : town // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_AddressKanjiParams implements _AddressKanjiParams {
-  const _$_AddressKanjiParams(
-      {required this.line1,
-      @JsonKey(name: "postal_code") required this.postalCode,
-      required this.city,
-      required this.state,
-      required this.town});
+class _$AddressKanjiParamsImpl implements _AddressKanjiParams {
+  const _$AddressKanjiParamsImpl({
+    required this.line1,
+    @JsonKey(name: 'postal_code') required this.postalCode,
+    required this.city,
+    required this.state,
+    required this.town,
+  });
 
-  factory _$_AddressKanjiParams.fromJson(Map<String, dynamic> json) =>
-      _$$_AddressKanjiParamsFromJson(json);
+  factory _$AddressKanjiParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AddressKanjiParamsImplFromJson(json);
 
   @override
   final String? line1;
   @override
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   final String? postalCode;
   @override
   final String? city;
@@ -2936,10 +3343,10 @@ class _$_AddressKanjiParams implements _AddressKanjiParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AddressKanjiParams &&
+            other is _$AddressKanjiParamsImpl &&
             (identical(other.line1, line1) || other.line1 == line1) &&
             (identical(other.postalCode, postalCode) ||
                 other.postalCode == postalCode) &&
@@ -2948,41 +3355,44 @@ class _$_AddressKanjiParams implements _AddressKanjiParams {
             (identical(other.town, town) || other.town == town));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, line1, postalCode, city, state, town);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddressKanjiParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AddressKanjiParamsCopyWith<_$_AddressKanjiParams> get copyWith =>
-      __$$_AddressKanjiParamsCopyWithImpl<_$_AddressKanjiParams>(
-          this, _$identity);
+  _$$AddressKanjiParamsImplCopyWith<_$AddressKanjiParamsImpl> get copyWith =>
+      __$$AddressKanjiParamsImplCopyWithImpl<_$AddressKanjiParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AddressKanjiParamsToJson(
-      this,
-    );
+    return _$$AddressKanjiParamsImplToJson(this);
   }
 }
 
 abstract class _AddressKanjiParams implements AddressKanjiParams {
-  const factory _AddressKanjiParams(
-      {required final String? line1,
-      @JsonKey(name: "postal_code") required final String? postalCode,
-      required final String? city,
-      required final String? state,
-      required final String? town}) = _$_AddressKanjiParams;
+  const factory _AddressKanjiParams({
+    required final String? line1,
+    @JsonKey(name: 'postal_code') required final String? postalCode,
+    required final String? city,
+    required final String? state,
+    required final String? town,
+  }) = _$AddressKanjiParamsImpl;
 
   factory _AddressKanjiParams.fromJson(Map<String, dynamic> json) =
-      _$_AddressKanjiParams.fromJson;
+      _$AddressKanjiParamsImpl.fromJson;
 
   @override
   String? get line1;
   @override
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   String? get postalCode;
   @override
   String? get city;
@@ -2990,8 +3400,11 @@ abstract class _AddressKanjiParams implements AddressKanjiParams {
   String? get state;
   @override
   String? get town;
+
+  /// Create a copy of AddressKanjiParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_AddressKanjiParamsCopyWith<_$_AddressKanjiParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AddressKanjiParamsImplCopyWith<_$AddressKanjiParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,182 +1,157 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
+import 'package:tliny/src/ui/cart/widget/cart_button.dart';
 
+import '../../data/model/cart_model.dart';
 import '../../data/repository/program_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_media_query.dart';
-import '../../settings/hooks/use_router.dart';
-import '../../settings/theme/app_theme.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import '../../ui/common/main_body.dart';
+import '../../utils/logger.dart';
+import '../common/loading_screen.dart';
+import '../image/image_screen.dart';
 import 'cart_view_model.dart';
-import 'widget/cart_button.dart';
 import 'widget/cart_card.dart';
 
-final logger = Logger();
-
-@RoutePage()
+/// カート画面
+// @RoutePage()
 class CartPage extends HookConsumerWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
+    // テーマを取得
+    // final theme = ref.watch(appThemeProvider);
+    // ローカリゼーションを取得
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // ルーターを取得
+    // final appRoute = useRouter();
+    // メディアクエリを取得
     final appMediaQuery = useMediaQuery();
 
-    // final authState = ref.watch(authViewModelProvider);
-    // final uid = authState?.uid;
+    // カートの状態を取得
+    final cartState = ref.watch(cartViewModelProvider);
+    // カートの ViewModel を取得
+    final cartViewModel = ref.watch(cartViewModelProvider.notifier);
 
-    final state = ref.watch(cartViewModelProvider);
-    final viewModel = ref.watch(cartViewModelProvider.notifier);
-
-    return AsyncValueWidget(
-      value: state,
+    return AsyncValueWidget<List<Cart>>(
+      value: cartState,
       data: (data) {
-        // logger.d(data);
-        return Scaffold(
-          body: MainBodyWidget(
-            body: data.isNotEmpty
-                ? RefreshIndicator(
-                    onRefresh: () async {
-                      // viewModel.readCart(userId: userId);
-                      // ref.refresh(cartViewModelProvider);
-                    },
-                    // child: Column(
-                    //   children: [
-                    //     // const Text("amount:"),
-                    //     PaymentButton(list: data),
-                    //     Expanded(
-                    // child: ListView.builder(
-                    //   physics: const AlwaysScrollableScrollPhysics(),
-                    //   // itemExtent: 100,
-                    //   itemCount: data.length,
-                    //   itemBuilder: (_, index) {
-                    //     final cart = data[index];
-                    //     return Dismissible(
-                    //       key: UniqueKey(),
-                    //       onDismissed: (direction) => {
-                    //         logger.d('Dismissible'),
-                    //         viewModel.deleteCart(cart.id.toString()),
-                    //         // if (direction ==
-                    //         //     DismissDirection.endToStart)
-                    //         //   {
-                    //         // 右から左
-                    //         // logger.d('DismissibleEndToStart'),
-                    //         // }
-                    //       },
-                    //       background: const ColoredBox(
-                    //         color: Colors.red,
-                    //         child:
-                    //             Icon(Icons.delete, color: Colors.white),
-                    //       ),
-                    //       child: CartCard(cart: cart),
-                    //     );
-                    //   },
-                    // ),
-                    child: GroupedListView(
-                      elements: data,
-                      groupBy: (element) => element.programId!,
-                      groupComparator: (value1, value2) =>
-                          value2.compareTo(value1),
-                      itemComparator: (item1, item2) =>
-                          item1.productId!.compareTo(item2.productId!),
-                      // order: GroupedListOrder.DESC,
-                      useStickyGroupSeparators: true,
-                      groupSeparatorBuilder: (String value) {
-                        //   return Padding(
-                        //     padding: const EdgeInsets.all(8),
-                        //     child: Text(
-                        //       value,
-                        //       textAlign: TextAlign.center,
-                        //       style: const TextStyle(
-                        //         fontSize: 20,
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //   );
-                        // },
-                        // groupHeaderBuilder: (element) {
-                        final programAsyncValue = ref.watch(
-                          ProgramStreamProvider(value),
-                          // ProgramStreamProvider(element.programId!),
-                        );
-                        // logger.d(programAsyncValue);
-                        final program = programAsyncValue.value;
-                        if (program == null) {
-                          return const Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text(
-                              '',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+        logger.d('CartPage: data=$data', time: DateTime.now());
+        return WidgetWithLoading(
+          child: Scaffold(
+            body: MainBodyWidget(
+              width: 400,
+              body: data.isNotEmpty
+                  ? RefreshIndicator(
+                      onRefresh: () async {
+                        logger.d('CartPage: onRefresh', time: DateTime.now());
+                        try {
+                          await cartViewModel.readCart();
+                        } on Exception catch (e, st) {
+                          logger.e(
+                              'CartPage: onRefresh: error=$e, stackTrace=$st',
+                              time: DateTime.now());
+                        }
+                      },
+                      child: GroupedListView<Cart, String>(
+                        stickyHeaderBackgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        elements: data,
+                        groupBy: (element) => element.programId!,
+                        groupComparator: (value1, value2) =>
+                            value2.compareTo(value1),
+                        itemComparator: (item1, item2) =>
+                            item1.productId!.compareTo(item2.productId!),
+                        useStickyGroupSeparators: true,
+                        groupSeparatorBuilder: (String value) {
+                          logger.d(
+                              'CartPage: groupSeparatorBuilder: value=$value',
+                              time: DateTime.now());
+                          final program =
+                              ref.watch(programStreamProvider(value)).value;
+                          if (program == null) {
+                            return Container();
+                          }
+                          return SizedBox(
+                            height: 70,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  PictureView(
+                                    picture: program.pictureURL,
+                                    index: 0,
+                                  ),
+                                  SizedBox(
+                                    width: 160,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            program.name.toString(),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              '${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
+                                              // style: theme.textTheme.h10,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: PaymentButton(
+                                      // appRoute,
+                                      context,
+                                      list: data,
+                                      event: program,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
                           );
-                        }
-                        return Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                program.name!,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        },
+                        indexedItemBuilder: (context, element, index) {
+                          logger.d(
+                              'CartPage: indexedItemBuilder: element=$element, index=$index',
+                              time: DateTime.now());
+                          return Dismissible(
+                            key: UniqueKey(),
+                            onDismissed: (direction) => {
+                              logger.d('CartPage: onDismissed',
+                                  time: DateTime.now()),
+                              cartViewModel.deleteCart(element.id.toString()),
+                            },
+                            background: const ColoredBox(
+                              color: Colors.red,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(Icons.delete, color: Colors.white),
+                                  Icon(Icons.delete, color: Colors.white),
+                                ],
                               ),
-                              Flexible(
-                                child: PaymentButton(
-                                  appRoute, context,
-                                  list: data,
-                                  eventId: value,
-                                  // eventId: element.programId!,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      // itemBuilder: (context, cart) {
-                      //   return CartCard(cart: cart);
-                      // },
-                      indexedItemBuilder: (context, element, index) {
-                        logger
-                          ..d(element)
-                          ..d(index);
-                        return Dismissible(
-                          key: UniqueKey(),
-                          onDismissed: (direction) => {
-                            logger.d('Dismissible'),
-                            viewModel.deleteCart(element.id.toString()),
-                            // if (direction ==
-                            //     DismissDirection.endToStart)
-                            //   {
-                            // 右から左
-                            // logger.d('DismissibleEndToStart'),
-                            // }
-                          },
-                          background: const ColoredBox(
-                            color: Colors.red,
-                            child: Icon(Icons.delete, color: Colors.white),
-                          ),
-                          child: CartCard(cart: element),
-                        );
-                      },
-                    ),
-                    //     ),
-                    //   ],
-                    // ),
-                  )
-                : Container(),
+                            ),
+                            child: CartCard(cart: element),
+                          );
+                        },
+                      ),
+                    )
+                  : Container(),
+            ),
           ),
         );
       },

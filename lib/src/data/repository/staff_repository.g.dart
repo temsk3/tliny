@@ -15,16 +15,19 @@ String _$staffRepositoryHash() => r'9c2a312caad9861a2f7730e92ada37c85f8ac2d1';
 final staffRepositoryProvider = Provider<StaffRepository>.internal(
   staffRepository,
   name: r'staffRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$staffRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$staffRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef StaffRepositoryRef = ProviderRef<StaffRepository>;
 String _$staffCheckExistenceHash() =>
-    r'50002fd03ce34011f0eb61a9043c7d84c2599506';
+    r'f1b142961226ac27e86f0e8a18d1b88bf2f53c10';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,33 +50,33 @@ class _SystemHash {
   }
 }
 
-typedef StaffCheckExistenceRef = AutoDisposeStreamProviderRef<bool>;
-
-/// See also [staffCheckExistence].
+/// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
+///
+/// Copied from [staffCheckExistence].
 @ProviderFor(staffCheckExistence)
 const staffCheckExistenceProvider = StaffCheckExistenceFamily();
 
-/// See also [staffCheckExistence].
+/// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
+///
+/// Copied from [staffCheckExistence].
 class StaffCheckExistenceFamily extends Family<AsyncValue<bool>> {
-  /// See also [staffCheckExistence].
+  /// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
+  ///
+  /// Copied from [staffCheckExistence].
   const StaffCheckExistenceFamily();
 
-  /// See also [staffCheckExistence].
-  StaffCheckExistenceProvider call(
-    String eventId,
-  ) {
-    return StaffCheckExistenceProvider(
-      eventId,
-    );
+  /// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
+  ///
+  /// Copied from [staffCheckExistence].
+  StaffCheckExistenceProvider call(String eventId) {
+    return StaffCheckExistenceProvider(eventId);
   }
 
   @override
   StaffCheckExistenceProvider getProviderOverride(
     covariant StaffCheckExistenceProvider provider,
   ) {
-    return call(
-      provider.eventId,
-    );
+    return call(provider.eventId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -91,28 +94,62 @@ class StaffCheckExistenceFamily extends Family<AsyncValue<bool>> {
   String? get name => r'staffCheckExistenceProvider';
 }
 
-/// See also [staffCheckExistence].
+/// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
+///
+/// Copied from [staffCheckExistence].
 class StaffCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
-  /// See also [staffCheckExistence].
-  StaffCheckExistenceProvider(
-    this.eventId,
-  ) : super.internal(
-          (ref) => staffCheckExistence(
-            ref,
-            eventId,
-          ),
-          from: staffCheckExistenceProvider,
-          name: r'staffCheckExistenceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$staffCheckExistenceHash,
-          dependencies: StaffCheckExistenceFamily._dependencies,
-          allTransitiveDependencies:
-              StaffCheckExistenceFamily._allTransitiveDependencies,
-        );
+  /// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
+  ///
+  /// Copied from [staffCheckExistence].
+  StaffCheckExistenceProvider(String eventId)
+    : this._internal(
+        (ref) => staffCheckExistence(ref as StaffCheckExistenceRef, eventId),
+        from: staffCheckExistenceProvider,
+        name: r'staffCheckExistenceProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$staffCheckExistenceHash,
+        dependencies: StaffCheckExistenceFamily._dependencies,
+        allTransitiveDependencies:
+            StaffCheckExistenceFamily._allTransitiveDependencies,
+        eventId: eventId,
+      );
+
+  StaffCheckExistenceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.eventId,
+  }) : super.internal();
 
   final String eventId;
+
+  @override
+  Override overrideWith(
+    Stream<bool> Function(StaffCheckExistenceRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: StaffCheckExistenceProvider._internal(
+        (ref) => create(ref as StaffCheckExistenceRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        eventId: eventId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<bool> createElement() {
+    return _StaffCheckExistenceProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -127,4 +164,22 @@ class StaffCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin StaffCheckExistenceRef on AutoDisposeStreamProviderRef<bool> {
+  /// The parameter `eventId` of this provider.
+  String get eventId;
+}
+
+class _StaffCheckExistenceProviderElement
+    extends AutoDisposeStreamProviderElement<bool>
+    with StaffCheckExistenceRef {
+  _StaffCheckExistenceProviderElement(super.provider);
+
+  @override
+  String get eventId => (origin as StaffCheckExistenceProvider).eventId;
+}
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -52,7 +52,7 @@ class ValidationUtils {
   }
 
   static String validatePhoneNumber(String phone) {
-    var phoneStringNew = phone.replaceAll('-', '');
+    final phoneStringNew = phone.replaceAll('-', '');
     if (phoneStringNew.length != 10 && phoneStringNew.length != 11) {
       return '電話番号は10桁か11桁の数字でお願い致します';
     }

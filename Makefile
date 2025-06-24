@@ -89,6 +89,11 @@ run-dev-preview:
 run-prod:
 	fvm flutter run -d chrome --web-renderer html --release --dart-define=FLAVOR=${PROD_FLAVOR} --target lib/main.dart
 
+# build prod
+.PHONY: build-prod
+build-prod:
+	fvm flutter build web  --release --dart-define=FLAVOR=${PROD_FLAVOR} --target lib/main.dart
+
 # build APK dev
 .PHONY: build-android-dev
 build-android-dev:

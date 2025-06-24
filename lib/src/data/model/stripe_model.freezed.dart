@@ -12,7 +12,8 @@ part of 'stripe_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 LineItem _$LineItemFromJson(Map<String, dynamic> json) {
   return _LineItem.fromJson(json);
@@ -23,8 +24,12 @@ mixin _$LineItem {
   int get quantity => throw _privateConstructorUsedError;
   PriceData get priceDate => throw _privateConstructorUsedError;
 
+  /// Serializes this LineItem to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LineItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LineItemCopyWith<LineItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -49,24 +54,30 @@ class _$LineItemCopyWithImpl<$Res, $Val extends LineItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LineItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? quantity = null,
-    Object? priceDate = null,
-  }) {
-    return _then(_value.copyWith(
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      priceDate: null == priceDate
-          ? _value.priceDate
-          : priceDate // ignore: cast_nullable_to_non_nullable
-              as PriceData,
-    ) as $Val);
+  $Res call({Object? quantity = null, Object? priceDate = null}) {
+    return _then(
+      _value.copyWith(
+            quantity:
+                null == quantity
+                    ? _value.quantity
+                    : quantity // ignore: cast_nullable_to_non_nullable
+                        as int,
+            priceDate:
+                null == priceDate
+                    ? _value.priceDate
+                    : priceDate // ignore: cast_nullable_to_non_nullable
+                        as PriceData,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of LineItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PriceDataCopyWith<$Res> get priceDate {
@@ -77,10 +88,12 @@ class _$LineItemCopyWithImpl<$Res, $Val extends LineItem>
 }
 
 /// @nodoc
-abstract class _$$_LineItemCopyWith<$Res> implements $LineItemCopyWith<$Res> {
-  factory _$$_LineItemCopyWith(
-          _$_LineItem value, $Res Function(_$_LineItem) then) =
-      __$$_LineItemCopyWithImpl<$Res>;
+abstract class _$$LineItemImplCopyWith<$Res>
+    implements $LineItemCopyWith<$Res> {
+  factory _$$LineItemImplCopyWith(
+    _$LineItemImpl value,
+    $Res Function(_$LineItemImpl) then,
+  ) = __$$LineItemImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int quantity, PriceData priceDate});
@@ -90,40 +103,44 @@ abstract class _$$_LineItemCopyWith<$Res> implements $LineItemCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LineItemCopyWithImpl<$Res>
-    extends _$LineItemCopyWithImpl<$Res, _$_LineItem>
-    implements _$$_LineItemCopyWith<$Res> {
-  __$$_LineItemCopyWithImpl(
-      _$_LineItem _value, $Res Function(_$_LineItem) _then)
-      : super(_value, _then);
+class __$$LineItemImplCopyWithImpl<$Res>
+    extends _$LineItemCopyWithImpl<$Res, _$LineItemImpl>
+    implements _$$LineItemImplCopyWith<$Res> {
+  __$$LineItemImplCopyWithImpl(
+    _$LineItemImpl _value,
+    $Res Function(_$LineItemImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of LineItem
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? quantity = null,
-    Object? priceDate = null,
-  }) {
-    return _then(_$_LineItem(
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      priceDate: null == priceDate
-          ? _value.priceDate
-          : priceDate // ignore: cast_nullable_to_non_nullable
-              as PriceData,
-    ));
+  $Res call({Object? quantity = null, Object? priceDate = null}) {
+    return _then(
+      _$LineItemImpl(
+        quantity:
+            null == quantity
+                ? _value.quantity
+                : quantity // ignore: cast_nullable_to_non_nullable
+                    as int,
+        priceDate:
+            null == priceDate
+                ? _value.priceDate
+                : priceDate // ignore: cast_nullable_to_non_nullable
+                    as PriceData,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_LineItem implements _LineItem {
-  const _$_LineItem({required this.quantity, required this.priceDate});
+class _$LineItemImpl implements _LineItem {
+  const _$LineItemImpl({required this.quantity, required this.priceDate});
 
-  factory _$_LineItem.fromJson(Map<String, dynamic> json) =>
-      _$$_LineItemFromJson(json);
+  factory _$LineItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LineItemImplFromJson(json);
 
   @override
   final int quantity;
@@ -136,48 +153,53 @@ class _$_LineItem implements _LineItem {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LineItem &&
+            other is _$LineItemImpl &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.priceDate, priceDate) ||
                 other.priceDate == priceDate));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, quantity, priceDate);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LineItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LineItemCopyWith<_$_LineItem> get copyWith =>
-      __$$_LineItemCopyWithImpl<_$_LineItem>(this, _$identity);
+  _$$LineItemImplCopyWith<_$LineItemImpl> get copyWith =>
+      __$$LineItemImplCopyWithImpl<_$LineItemImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LineItemToJson(
-      this,
-    );
+    return _$$LineItemImplToJson(this);
   }
 }
 
 abstract class _LineItem implements LineItem {
-  const factory _LineItem(
-      {required final int quantity,
-      required final PriceData priceDate}) = _$_LineItem;
+  const factory _LineItem({
+    required final int quantity,
+    required final PriceData priceDate,
+  }) = _$LineItemImpl;
 
-  factory _LineItem.fromJson(Map<String, dynamic> json) = _$_LineItem.fromJson;
+  factory _LineItem.fromJson(Map<String, dynamic> json) =
+      _$LineItemImpl.fromJson;
 
   @override
   int get quantity;
   @override
   PriceData get priceDate;
+
+  /// Create a copy of LineItem
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_LineItemCopyWith<_$_LineItem> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LineItemImplCopyWith<_$LineItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -191,8 +213,12 @@ mixin _$PriceData {
   String get currency => throw _privateConstructorUsedError;
   ProductData get productData => throw _privateConstructorUsedError;
 
+  /// Serializes this PriceData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PriceData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $PriceDataCopyWith<PriceData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -217,6 +243,8 @@ class _$PriceDataCopyWithImpl<$Res, $Val extends PriceData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of PriceData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -224,22 +252,30 @@ class _$PriceDataCopyWithImpl<$Res, $Val extends PriceData>
     Object? currency = null,
     Object? productData = null,
   }) {
-    return _then(_value.copyWith(
-      unitAmount: null == unitAmount
-          ? _value.unitAmount
-          : unitAmount // ignore: cast_nullable_to_non_nullable
-              as int,
-      currency: null == currency
-          ? _value.currency
-          : currency // ignore: cast_nullable_to_non_nullable
-              as String,
-      productData: null == productData
-          ? _value.productData
-          : productData // ignore: cast_nullable_to_non_nullable
-              as ProductData,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            unitAmount:
+                null == unitAmount
+                    ? _value.unitAmount
+                    : unitAmount // ignore: cast_nullable_to_non_nullable
+                        as int,
+            currency:
+                null == currency
+                    ? _value.currency
+                    : currency // ignore: cast_nullable_to_non_nullable
+                        as String,
+            productData:
+                null == productData
+                    ? _value.productData
+                    : productData // ignore: cast_nullable_to_non_nullable
+                        as ProductData,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of PriceData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ProductDataCopyWith<$Res> get productData {
@@ -250,10 +286,12 @@ class _$PriceDataCopyWithImpl<$Res, $Val extends PriceData>
 }
 
 /// @nodoc
-abstract class _$$_PriceDataCopyWith<$Res> implements $PriceDataCopyWith<$Res> {
-  factory _$$_PriceDataCopyWith(
-          _$_PriceData value, $Res Function(_$_PriceData) then) =
-      __$$_PriceDataCopyWithImpl<$Res>;
+abstract class _$$PriceDataImplCopyWith<$Res>
+    implements $PriceDataCopyWith<$Res> {
+  factory _$$PriceDataImplCopyWith(
+    _$PriceDataImpl value,
+    $Res Function(_$PriceDataImpl) then,
+  ) = __$$PriceDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int unitAmount, String currency, ProductData productData});
@@ -263,13 +301,16 @@ abstract class _$$_PriceDataCopyWith<$Res> implements $PriceDataCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_PriceDataCopyWithImpl<$Res>
-    extends _$PriceDataCopyWithImpl<$Res, _$_PriceData>
-    implements _$$_PriceDataCopyWith<$Res> {
-  __$$_PriceDataCopyWithImpl(
-      _$_PriceData _value, $Res Function(_$_PriceData) _then)
-      : super(_value, _then);
+class __$$PriceDataImplCopyWithImpl<$Res>
+    extends _$PriceDataCopyWithImpl<$Res, _$PriceDataImpl>
+    implements _$$PriceDataImplCopyWith<$Res> {
+  __$$PriceDataImplCopyWithImpl(
+    _$PriceDataImpl _value,
+    $Res Function(_$PriceDataImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of PriceData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -277,34 +318,40 @@ class __$$_PriceDataCopyWithImpl<$Res>
     Object? currency = null,
     Object? productData = null,
   }) {
-    return _then(_$_PriceData(
-      unitAmount: null == unitAmount
-          ? _value.unitAmount
-          : unitAmount // ignore: cast_nullable_to_non_nullable
-              as int,
-      currency: null == currency
-          ? _value.currency
-          : currency // ignore: cast_nullable_to_non_nullable
-              as String,
-      productData: null == productData
-          ? _value.productData
-          : productData // ignore: cast_nullable_to_non_nullable
-              as ProductData,
-    ));
+    return _then(
+      _$PriceDataImpl(
+        unitAmount:
+            null == unitAmount
+                ? _value.unitAmount
+                : unitAmount // ignore: cast_nullable_to_non_nullable
+                    as int,
+        currency:
+            null == currency
+                ? _value.currency
+                : currency // ignore: cast_nullable_to_non_nullable
+                    as String,
+        productData:
+            null == productData
+                ? _value.productData
+                : productData // ignore: cast_nullable_to_non_nullable
+                    as ProductData,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_PriceData implements _PriceData {
-  _$_PriceData(
-      {required this.unitAmount,
-      required this.currency,
-      required this.productData});
+class _$PriceDataImpl implements _PriceData {
+  _$PriceDataImpl({
+    required this.unitAmount,
+    required this.currency,
+    required this.productData,
+  });
 
-  factory _$_PriceData.fromJson(Map<String, dynamic> json) =>
-      _$$_PriceDataFromJson(json);
+  factory _$PriceDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PriceDataImplFromJson(json);
 
   @override
   final int unitAmount;
@@ -319,10 +366,10 @@ class _$_PriceData implements _PriceData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PriceData &&
+            other is _$PriceDataImpl &&
             (identical(other.unitAmount, unitAmount) ||
                 other.unitAmount == unitAmount) &&
             (identical(other.currency, currency) ||
@@ -331,33 +378,34 @@ class _$_PriceData implements _PriceData {
                 other.productData == productData));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, unitAmount, currency, productData);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PriceData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PriceDataCopyWith<_$_PriceData> get copyWith =>
-      __$$_PriceDataCopyWithImpl<_$_PriceData>(this, _$identity);
+  _$$PriceDataImplCopyWith<_$PriceDataImpl> get copyWith =>
+      __$$PriceDataImplCopyWithImpl<_$PriceDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PriceDataToJson(
-      this,
-    );
+    return _$$PriceDataImplToJson(this);
   }
 }
 
 abstract class _PriceData implements PriceData {
-  factory _PriceData(
-      {required final int unitAmount,
-      required final String currency,
-      required final ProductData productData}) = _$_PriceData;
+  factory _PriceData({
+    required final int unitAmount,
+    required final String currency,
+    required final ProductData productData,
+  }) = _$PriceDataImpl;
 
   factory _PriceData.fromJson(Map<String, dynamic> json) =
-      _$_PriceData.fromJson;
+      _$PriceDataImpl.fromJson;
 
   @override
   int get unitAmount;
@@ -365,9 +413,12 @@ abstract class _PriceData implements PriceData {
   String get currency;
   @override
   ProductData get productData;
+
+  /// Create a copy of PriceData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_PriceDataCopyWith<_$_PriceData> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PriceDataImplCopyWith<_$PriceDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -382,8 +433,12 @@ mixin _$ProductData {
   List<String> get images => throw _privateConstructorUsedError;
   MetaData get metaData => throw _privateConstructorUsedError;
 
+  /// Serializes this ProductData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ProductData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProductDataCopyWith<ProductData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -391,14 +446,16 @@ mixin _$ProductData {
 /// @nodoc
 abstract class $ProductDataCopyWith<$Res> {
   factory $ProductDataCopyWith(
-          ProductData value, $Res Function(ProductData) then) =
-      _$ProductDataCopyWithImpl<$Res, ProductData>;
+    ProductData value,
+    $Res Function(ProductData) then,
+  ) = _$ProductDataCopyWithImpl<$Res, ProductData>;
   @useResult
-  $Res call(
-      {String name,
-      String description,
-      List<String> images,
-      MetaData metaData});
+  $Res call({
+    String name,
+    String description,
+    List<String> images,
+    MetaData metaData,
+  });
 
   $MetaDataCopyWith<$Res> get metaData;
 }
@@ -413,6 +470,8 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ProductData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -421,26 +480,35 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
     Object? images = null,
     Object? metaData = null,
   }) {
-    return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      images: null == images
-          ? _value.images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      metaData: null == metaData
-          ? _value.metaData
-          : metaData // ignore: cast_nullable_to_non_nullable
-              as MetaData,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            description:
+                null == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String,
+            images:
+                null == images
+                    ? _value.images
+                    : images // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            metaData:
+                null == metaData
+                    ? _value.metaData
+                    : metaData // ignore: cast_nullable_to_non_nullable
+                        as MetaData,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of ProductData
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $MetaDataCopyWith<$Res> get metaData {
@@ -451,31 +519,36 @@ class _$ProductDataCopyWithImpl<$Res, $Val extends ProductData>
 }
 
 /// @nodoc
-abstract class _$$_ProductDataCopyWith<$Res>
+abstract class _$$ProductDataImplCopyWith<$Res>
     implements $ProductDataCopyWith<$Res> {
-  factory _$$_ProductDataCopyWith(
-          _$_ProductData value, $Res Function(_$_ProductData) then) =
-      __$$_ProductDataCopyWithImpl<$Res>;
+  factory _$$ProductDataImplCopyWith(
+    _$ProductDataImpl value,
+    $Res Function(_$ProductDataImpl) then,
+  ) = __$$ProductDataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String name,
-      String description,
-      List<String> images,
-      MetaData metaData});
+  $Res call({
+    String name,
+    String description,
+    List<String> images,
+    MetaData metaData,
+  });
 
   @override
   $MetaDataCopyWith<$Res> get metaData;
 }
 
 /// @nodoc
-class __$$_ProductDataCopyWithImpl<$Res>
-    extends _$ProductDataCopyWithImpl<$Res, _$_ProductData>
-    implements _$$_ProductDataCopyWith<$Res> {
-  __$$_ProductDataCopyWithImpl(
-      _$_ProductData _value, $Res Function(_$_ProductData) _then)
-      : super(_value, _then);
+class __$$ProductDataImplCopyWithImpl<$Res>
+    extends _$ProductDataCopyWithImpl<$Res, _$ProductDataImpl>
+    implements _$$ProductDataImplCopyWith<$Res> {
+  __$$ProductDataImplCopyWithImpl(
+    _$ProductDataImpl _value,
+    $Res Function(_$ProductDataImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of ProductData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -484,40 +557,46 @@ class __$$_ProductDataCopyWithImpl<$Res>
     Object? images = null,
     Object? metaData = null,
   }) {
-    return _then(_$_ProductData(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      images: null == images
-          ? _value._images
-          : images // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      metaData: null == metaData
-          ? _value.metaData
-          : metaData // ignore: cast_nullable_to_non_nullable
-              as MetaData,
-    ));
+    return _then(
+      _$ProductDataImpl(
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        description:
+            null == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String,
+        images:
+            null == images
+                ? _value._images
+                : images // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        metaData:
+            null == metaData
+                ? _value.metaData
+                : metaData // ignore: cast_nullable_to_non_nullable
+                    as MetaData,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_ProductData implements _ProductData {
-  _$_ProductData(
-      {required this.name,
-      required this.description,
-      required final List<String> images,
-      required this.metaData})
-      : _images = images;
+class _$ProductDataImpl implements _ProductData {
+  _$ProductDataImpl({
+    required this.name,
+    required this.description,
+    required final List<String> images,
+    required this.metaData,
+  }) : _images = images;
 
-  factory _$_ProductData.fromJson(Map<String, dynamic> json) =>
-      _$$_ProductDataFromJson(json);
+  factory _$ProductDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProductDataImplFromJson(json);
 
   @override
   final String name;
@@ -540,10 +619,10 @@ class _$_ProductData implements _ProductData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ProductData &&
+            other is _$ProductDataImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -552,34 +631,40 @@ class _$_ProductData implements _ProductData {
                 other.metaData == metaData));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, name, description,
-      const DeepCollectionEquality().hash(_images), metaData);
+  int get hashCode => Object.hash(
+    runtimeType,
+    name,
+    description,
+    const DeepCollectionEquality().hash(_images),
+    metaData,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ProductData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProductDataCopyWith<_$_ProductData> get copyWith =>
-      __$$_ProductDataCopyWithImpl<_$_ProductData>(this, _$identity);
+  _$$ProductDataImplCopyWith<_$ProductDataImpl> get copyWith =>
+      __$$ProductDataImplCopyWithImpl<_$ProductDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProductDataToJson(
-      this,
-    );
+    return _$$ProductDataImplToJson(this);
   }
 }
 
 abstract class _ProductData implements ProductData {
-  factory _ProductData(
-      {required final String name,
-      required final String description,
-      required final List<String> images,
-      required final MetaData metaData}) = _$_ProductData;
+  factory _ProductData({
+    required final String name,
+    required final String description,
+    required final List<String> images,
+    required final MetaData metaData,
+  }) = _$ProductDataImpl;
 
   factory _ProductData.fromJson(Map<String, dynamic> json) =
-      _$_ProductData.fromJson;
+      _$ProductDataImpl.fromJson;
 
   @override
   String get name;
@@ -589,9 +674,12 @@ abstract class _ProductData implements ProductData {
   List<String> get images;
   @override
   MetaData get metaData;
+
+  /// Create a copy of ProductData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_ProductDataCopyWith<_$_ProductData> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ProductDataImplCopyWith<_$ProductDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -603,8 +691,12 @@ MetaData _$MetaDataFromJson(Map<String, dynamic> json) {
 mixin _$MetaData {
   String get productId => throw _privateConstructorUsedError;
 
+  /// Serializes this MetaData to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of MetaData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $MetaDataCopyWith<MetaData> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -627,60 +719,70 @@ class _$MetaDataCopyWithImpl<$Res, $Val extends MetaData>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of MetaData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? productId = null,
-  }) {
-    return _then(_value.copyWith(
-      productId: null == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+  $Res call({Object? productId = null}) {
+    return _then(
+      _value.copyWith(
+            productId:
+                null == productId
+                    ? _value.productId
+                    : productId // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_MetaDataCopyWith<$Res> implements $MetaDataCopyWith<$Res> {
-  factory _$$_MetaDataCopyWith(
-          _$_MetaData value, $Res Function(_$_MetaData) then) =
-      __$$_MetaDataCopyWithImpl<$Res>;
+abstract class _$$MetaDataImplCopyWith<$Res>
+    implements $MetaDataCopyWith<$Res> {
+  factory _$$MetaDataImplCopyWith(
+    _$MetaDataImpl value,
+    $Res Function(_$MetaDataImpl) then,
+  ) = __$$MetaDataImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String productId});
 }
 
 /// @nodoc
-class __$$_MetaDataCopyWithImpl<$Res>
-    extends _$MetaDataCopyWithImpl<$Res, _$_MetaData>
-    implements _$$_MetaDataCopyWith<$Res> {
-  __$$_MetaDataCopyWithImpl(
-      _$_MetaData _value, $Res Function(_$_MetaData) _then)
-      : super(_value, _then);
+class __$$MetaDataImplCopyWithImpl<$Res>
+    extends _$MetaDataCopyWithImpl<$Res, _$MetaDataImpl>
+    implements _$$MetaDataImplCopyWith<$Res> {
+  __$$MetaDataImplCopyWithImpl(
+    _$MetaDataImpl _value,
+    $Res Function(_$MetaDataImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of MetaData
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? productId = null,
-  }) {
-    return _then(_$_MetaData(
-      productId: null == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+  $Res call({Object? productId = null}) {
+    return _then(
+      _$MetaDataImpl(
+        productId:
+            null == productId
+                ? _value.productId
+                : productId // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$_MetaData implements _MetaData {
-  _$_MetaData({required this.productId});
+class _$MetaDataImpl implements _MetaData {
+  _$MetaDataImpl({required this.productId});
 
-  factory _$_MetaData.fromJson(Map<String, dynamic> json) =>
-      _$$_MetaDataFromJson(json);
+  factory _$MetaDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MetaDataImplFromJson(json);
 
   @override
   final String productId;
@@ -691,41 +793,45 @@ class _$_MetaData implements _MetaData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MetaData &&
+            other is _$MetaDataImpl &&
             (identical(other.productId, productId) ||
                 other.productId == productId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, productId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of MetaData
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MetaDataCopyWith<_$_MetaData> get copyWith =>
-      __$$_MetaDataCopyWithImpl<_$_MetaData>(this, _$identity);
+  _$$MetaDataImplCopyWith<_$MetaDataImpl> get copyWith =>
+      __$$MetaDataImplCopyWithImpl<_$MetaDataImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MetaDataToJson(
-      this,
-    );
+    return _$$MetaDataImplToJson(this);
   }
 }
 
 abstract class _MetaData implements MetaData {
-  factory _MetaData({required final String productId}) = _$_MetaData;
+  factory _MetaData({required final String productId}) = _$MetaDataImpl;
 
-  factory _MetaData.fromJson(Map<String, dynamic> json) = _$_MetaData.fromJson;
+  factory _MetaData.fromJson(Map<String, dynamic> json) =
+      _$MetaDataImpl.fromJson;
 
   @override
   String get productId;
+
+  /// Create a copy of MetaData
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_MetaDataCopyWith<_$_MetaData> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MetaDataImplCopyWith<_$MetaDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

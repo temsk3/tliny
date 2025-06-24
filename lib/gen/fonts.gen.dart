@@ -12,7 +12,4 @@ class FontFamily {
 
   /// Font family: Melanthios
   static const String melanthios = 'Melanthios';
-
-  /// Font family: SocialIcons
-  static const String socialIcons = 'SocialIcons';
 }

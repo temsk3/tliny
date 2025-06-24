@@ -12,7 +12,8 @@ part of 'favorite_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Favorite _$FavoriteFromJson(Map<String, dynamic> json) {
   return _Favorite.fromJson(json);
@@ -29,8 +30,12 @@ mixin _$Favorite {
   @timestampKey
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Favorite to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Favorite
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FavoriteCopyWith<Favorite> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -40,12 +45,13 @@ abstract class $FavoriteCopyWith<$Res> {
   factory $FavoriteCopyWith(Favorite value, $Res Function(Favorite) then) =
       _$FavoriteCopyWithImpl<$Res, Favorite>;
   @useResult
-  $Res call(
-      {String? id,
-      String? programId,
-      @timestampKey DateTime? createdAt,
-      @timestampKey DateTime? updatedAt,
-      @timestampKey DateTime? deletedAt});
+  $Res call({
+    String? id,
+    String? programId,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  });
 }
 
 /// @nodoc
@@ -58,6 +64,8 @@ class _$FavoriteCopyWithImpl<$Res, $Val extends Favorite>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Favorite
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -67,54 +75,68 @@ class _$FavoriteCopyWithImpl<$Res, $Val extends Favorite>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      programId: freezed == programId
-          ? _value.programId
-          : programId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      deletedAt: freezed == deletedAt
-          ? _value.deletedAt
-          : deletedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            programId:
+                freezed == programId
+                    ? _value.programId
+                    : programId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            createdAt:
+                freezed == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            deletedAt:
+                freezed == deletedAt
+                    ? _value.deletedAt
+                    : deletedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_FavoriteCopyWith<$Res> implements $FavoriteCopyWith<$Res> {
-  factory _$$_FavoriteCopyWith(
-          _$_Favorite value, $Res Function(_$_Favorite) then) =
-      __$$_FavoriteCopyWithImpl<$Res>;
+abstract class _$$FavoriteImplCopyWith<$Res>
+    implements $FavoriteCopyWith<$Res> {
+  factory _$$FavoriteImplCopyWith(
+    _$FavoriteImpl value,
+    $Res Function(_$FavoriteImpl) then,
+  ) = __$$FavoriteImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? id,
-      String? programId,
-      @timestampKey DateTime? createdAt,
-      @timestampKey DateTime? updatedAt,
-      @timestampKey DateTime? deletedAt});
+  $Res call({
+    String? id,
+    String? programId,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  });
 }
 
 /// @nodoc
-class __$$_FavoriteCopyWithImpl<$Res>
-    extends _$FavoriteCopyWithImpl<$Res, _$_Favorite>
-    implements _$$_FavoriteCopyWith<$Res> {
-  __$$_FavoriteCopyWithImpl(
-      _$_Favorite _value, $Res Function(_$_Favorite) _then)
-      : super(_value, _then);
+class __$$FavoriteImplCopyWithImpl<$Res>
+    extends _$FavoriteCopyWithImpl<$Res, _$FavoriteImpl>
+    implements _$$FavoriteImplCopyWith<$Res> {
+  __$$FavoriteImplCopyWithImpl(
+    _$FavoriteImpl _value,
+    $Res Function(_$FavoriteImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of Favorite
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -124,44 +146,51 @@ class __$$_FavoriteCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(_$_Favorite(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      programId: freezed == programId
-          ? _value.programId
-          : programId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      deletedAt: freezed == deletedAt
-          ? _value.deletedAt
-          : deletedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+    return _then(
+      _$FavoriteImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        programId:
+            freezed == programId
+                ? _value.programId
+                : programId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        createdAt:
+            freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        deletedAt:
+            freezed == deletedAt
+                ? _value.deletedAt
+                : deletedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_Favorite extends _Favorite {
-  const _$_Favorite(
-      {this.id,
-      required this.programId,
-      @timestampKey this.createdAt,
-      @timestampKey this.updatedAt,
-      @timestampKey this.deletedAt})
-      : super._();
+class _$FavoriteImpl extends _Favorite {
+  const _$FavoriteImpl({
+    this.id,
+    required this.programId,
+    @timestampKey this.createdAt,
+    @timestampKey this.updatedAt,
+    @timestampKey this.deletedAt,
+  }) : super._();
 
-  factory _$_Favorite.fromJson(Map<String, dynamic> json) =>
-      _$$_FavoriteFromJson(json);
+  factory _$FavoriteImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FavoriteImplFromJson(json);
 
   @override
   final String? id;
@@ -183,10 +212,10 @@ class _$_Favorite extends _Favorite {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Favorite &&
+            other is _$FavoriteImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.programId, programId) ||
                 other.programId == programId) &&
@@ -198,35 +227,37 @@ class _$_Favorite extends _Favorite {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, programId, createdAt, updatedAt, deletedAt);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Favorite
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FavoriteCopyWith<_$_Favorite> get copyWith =>
-      __$$_FavoriteCopyWithImpl<_$_Favorite>(this, _$identity);
+  _$$FavoriteImplCopyWith<_$FavoriteImpl> get copyWith =>
+      __$$FavoriteImplCopyWithImpl<_$FavoriteImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FavoriteToJson(
-      this,
-    );
+    return _$$FavoriteImplToJson(this);
   }
 }
 
 abstract class _Favorite extends Favorite {
-  const factory _Favorite(
-      {final String? id,
-      required final String? programId,
-      @timestampKey final DateTime? createdAt,
-      @timestampKey final DateTime? updatedAt,
-      @timestampKey final DateTime? deletedAt}) = _$_Favorite;
+  const factory _Favorite({
+    final String? id,
+    required final String? programId,
+    @timestampKey final DateTime? createdAt,
+    @timestampKey final DateTime? updatedAt,
+    @timestampKey final DateTime? deletedAt,
+  }) = _$FavoriteImpl;
   const _Favorite._() : super._();
 
-  factory _Favorite.fromJson(Map<String, dynamic> json) = _$_Favorite.fromJson;
+  factory _Favorite.fromJson(Map<String, dynamic> json) =
+      _$FavoriteImpl.fromJson;
 
   @override
   String? get id;
@@ -241,8 +272,11 @@ abstract class _Favorite extends Favorite {
   @override
   @timestampKey
   DateTime? get deletedAt;
+
+  /// Create a copy of Favorite
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_FavoriteCopyWith<_$_Favorite> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FavoriteImplCopyWith<_$FavoriteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

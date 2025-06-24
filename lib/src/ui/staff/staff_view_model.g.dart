@@ -35,9 +35,7 @@ abstract class _$StaffViewModel
     extends BuildlessAutoDisposeAsyncNotifier<List<Staff>> {
   late final String programId;
 
-  FutureOr<List<Staff>> build(
-    String programId,
-  );
+  FutureOr<List<Staff>> build(String programId);
 }
 
 /// See also [StaffViewModel].
@@ -50,21 +48,15 @@ class StaffViewModelFamily extends Family<AsyncValue<List<Staff>>> {
   const StaffViewModelFamily();
 
   /// See also [StaffViewModel].
-  StaffViewModelProvider call(
-    String programId,
-  ) {
-    return StaffViewModelProvider(
-      programId,
-    );
+  StaffViewModelProvider call(String programId) {
+    return StaffViewModelProvider(programId);
   }
 
   @override
   StaffViewModelProvider getProviderOverride(
     covariant StaffViewModelProvider provider,
   ) {
-    return call(
-      provider.programId,
-    );
+    return call(provider.programId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -86,22 +78,59 @@ class StaffViewModelFamily extends Family<AsyncValue<List<Staff>>> {
 class StaffViewModelProvider
     extends AutoDisposeAsyncNotifierProviderImpl<StaffViewModel, List<Staff>> {
   /// See also [StaffViewModel].
-  StaffViewModelProvider(
-    this.programId,
-  ) : super.internal(
-          () => StaffViewModel()..programId = programId,
-          from: staffViewModelProvider,
-          name: r'staffViewModelProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$staffViewModelHash,
-          dependencies: StaffViewModelFamily._dependencies,
-          allTransitiveDependencies:
-              StaffViewModelFamily._allTransitiveDependencies,
-        );
+  StaffViewModelProvider(String programId)
+    : this._internal(
+        () => StaffViewModel()..programId = programId,
+        from: staffViewModelProvider,
+        name: r'staffViewModelProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$staffViewModelHash,
+        dependencies: StaffViewModelFamily._dependencies,
+        allTransitiveDependencies:
+            StaffViewModelFamily._allTransitiveDependencies,
+        programId: programId,
+      );
+
+  StaffViewModelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.programId,
+  }) : super.internal();
 
   final String programId;
+
+  @override
+  FutureOr<List<Staff>> runNotifierBuild(covariant StaffViewModel notifier) {
+    return notifier.build(programId);
+  }
+
+  @override
+  Override overrideWith(StaffViewModel Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: StaffViewModelProvider._internal(
+        () => create()..programId = programId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        programId: programId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<StaffViewModel, List<Staff>>
+  createElement() {
+    return _StaffViewModelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -115,14 +144,23 @@ class StaffViewModelProvider
 
     return _SystemHash.finish(hash);
   }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin StaffViewModelRef on AutoDisposeAsyncNotifierProviderRef<List<Staff>> {
+  /// The parameter `programId` of this provider.
+  String get programId;
+}
+
+class _StaffViewModelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<StaffViewModel, List<Staff>>
+    with StaffViewModelRef {
+  _StaffViewModelProviderElement(super.provider);
 
   @override
-  FutureOr<List<Staff>> runNotifierBuild(
-    covariant StaffViewModel notifier,
-  ) {
-    return notifier.build(
-      programId,
-    );
-  }
+  String get programId => (origin as StaffViewModelProvider).programId;
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

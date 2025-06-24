@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../utils/logger.dart';
 import '../general_provider.dart';
 
 part 'image_repository.g.dart';
@@ -32,27 +33,38 @@ class ImageRepository {
           contentType: 'image/jpeg',
         ),
       );
+      return mountainsRef.getDownloadURL();
     } on FirebaseException catch (e) {
-      e.toString();
+      logger.d(e);
+      return 'FirebaseStorage Error';
     }
-    return mountainsRef.getDownloadURL();
   }
 
   // 削除
   Future<String> deleteImage({
     required String path,
-    required String name,
+    required String? name,
   }) async {
+    final String url;
     final storageRef = _storage.ref();
     final mountainsRef = storageRef.child(path);
-    final url = mountainsRef.child(name).getDownloadURL();
-
-    final listResult = await mountainsRef.listAll();
-    for (final item in listResult.items) {
-      if (item.name == name) {
-        await mountainsRef.child(name).delete();
+    try {
+      if (name == null) {
+        url = await mountainsRef.getDownloadURL();
+        await mountainsRef.delete();
+      } else {
+        url = await mountainsRef.child(name).getDownloadURL();
+        final listResult = await mountainsRef.listAll();
+        for (final item in listResult.items) {
+          if (item.name == name) {
+            await mountainsRef.child(name).delete();
+          }
+        }
       }
+      return url;
+    } on Exception catch (e) {
+      logger.d(e);
+      return 'FirebaseStorage Error';
     }
-    return url;
   }
 }

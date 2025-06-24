@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tliny/src/data/repository/my_program_repository.dart';
 
@@ -7,10 +6,11 @@ import '../../data/model/staff_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/staff_repository.dart';
 import '../../data/repository/user_repository.dart';
+import '../../utils/logger.dart';
 
 part 'staff_view_model.g.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
 @riverpod
 class StaffViewModel extends _$StaffViewModel {

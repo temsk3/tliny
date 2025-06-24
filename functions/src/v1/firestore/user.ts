@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 import * as firebaseAdmin from 'firebase-admin'
 import { db } from '../../utils/firebase_utils'
 import functions from '../../utils/base_function'
 import { exportFunction } from '../../utils/deploy'
 import * as P from '../../utils/function_paths'
 import triggerOnce from '../../utils/trigger_once'
-import config from './utils/db_paths'
+import paths from './utils/db_paths'
 import { Stripe } from 'stripe'
 import { stripe, stripeOptions } from '../stripe/utils/stripe_config'
 // import { error } from 'firebase-functions/logger'
@@ -71,18 +72,25 @@ _exportFunction('onCreateStripeCustomer', () =>
           .setCustomUserClaims(user.uid, { customerId: customer.id })
 
         // stripe_customers collection への登録
-        await db.collection(config.customersCollectionPath).doc(user.uid).set({
+        await db.collection(paths.customersCollectionPath).doc(user.uid).set({
           customer_id: customer.id,
           setup_secret: intent.client_secret,
         })
 
+        //
+        let displayName: string | undefined = user.displayName
+        if (!displayName || !displayName.trim()) {
+          displayName = user.email?.substring(0, user.email.lastIndexOf('@'))
+        } else {
+          displayName = displayName.trim()
+        }
         // users collection への登録
         await db
-          .collection(config.usersCollectionPath)
+          .collection(paths.usersCollectionPath)
           .doc(user.uid)
           .set({
-            displayName: user.displayName,
-            name: user.displayName,
+            displayName: displayName,
+            name: displayName,
             email: user.email,
             phoneNumber: user.phoneNumber,
             photoUrl: user.photoURL,
@@ -92,6 +100,14 @@ _exportFunction('onCreateStripeCustomer', () =>
 
         console.log(user, context)
 
+        // public_users への登録
+        await db
+          .collection(paths.publicUsersCollectionPath)
+          .doc(user.uid)
+          .set({
+            displayName: displayName,
+            createdAt: new Date(new Date().getTime()),
+          })
         return
       })
     )
@@ -127,7 +143,7 @@ _exportFunction('onDeleteStripeCustomer', () =>
         //   await dbRef.doc(user.uid).delete()
         // }
         await db
-          .collection(config.usersCollectionPath)
+          .collection(paths.usersCollectionPath)
           .doc(user.uid)
           // .set({ isActive: false }, { merge: true })
           .delete()

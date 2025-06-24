@@ -10,7 +10,7 @@ class Result<T> with _$Result<T> {
   const factory Result.success({required T data}) = Success<T>;
 
   const factory Result.failure(
-      {required Exception error, required StackTrace stackTrace}) = Failure<T>;
+      {required Exception error, required StackTrace stackTrace,}) = Failure<T>;
   // 同期のビジネスロジック用
   static Result<T> guard<T>(T Function() body) {
     try {

@@ -12,7 +12,8 @@ part of 'cart_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Cart _$CartFromJson(Map<String, dynamic> json) {
   return _Cart.fromJson(json);
@@ -32,8 +33,12 @@ mixin _$Cart {
   @timestampKey
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this Cart to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CartCopyWith<Cart> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -42,17 +47,16 @@ abstract class $CartCopyWith<$Res> {
   factory $CartCopyWith(Cart value, $Res Function(Cart) then) =
       _$CartCopyWithImpl<$Res, Cart>;
   @useResult
-  $Res call(
-      {String? id,
-      int quantity,
-      @documentReferenceKey
-          DocumentReference<Map<String, dynamic>>? productDocRef,
-      String? productId,
-      String? programId,
-      @timestampKey
-          DateTime? createdAt,
-      @timestampKey
-          DateTime? updatedAt});
+  $Res call({
+    String? id,
+    int quantity,
+    @documentReferenceKey
+    DocumentReference<Map<String, dynamic>>? productDocRef,
+    String? productId,
+    String? programId,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+  });
 }
 
 /// @nodoc
@@ -65,6 +69,8 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -76,64 +82,78 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      productDocRef: freezed == productDocRef
-          ? _value.productDocRef
-          : productDocRef // ignore: cast_nullable_to_non_nullable
-              as DocumentReference<Map<String, dynamic>>?,
-      productId: freezed == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      programId: freezed == programId
-          ? _value.programId
-          : programId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            quantity:
+                null == quantity
+                    ? _value.quantity
+                    : quantity // ignore: cast_nullable_to_non_nullable
+                        as int,
+            productDocRef:
+                freezed == productDocRef
+                    ? _value.productDocRef
+                    : productDocRef // ignore: cast_nullable_to_non_nullable
+                        as DocumentReference<Map<String, dynamic>>?,
+            productId:
+                freezed == productId
+                    ? _value.productId
+                    : productId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            programId:
+                freezed == programId
+                    ? _value.programId
+                    : programId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            createdAt:
+                freezed == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_CartCopyWith<$Res> implements $CartCopyWith<$Res> {
-  factory _$$_CartCopyWith(_$_Cart value, $Res Function(_$_Cart) then) =
-      __$$_CartCopyWithImpl<$Res>;
+abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
+  factory _$$CartImplCopyWith(
+    _$CartImpl value,
+    $Res Function(_$CartImpl) then,
+  ) = __$$CartImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? id,
-      int quantity,
-      @documentReferenceKey
-          DocumentReference<Map<String, dynamic>>? productDocRef,
-      String? productId,
-      String? programId,
-      @timestampKey
-          DateTime? createdAt,
-      @timestampKey
-          DateTime? updatedAt});
+  $Res call({
+    String? id,
+    int quantity,
+    @documentReferenceKey
+    DocumentReference<Map<String, dynamic>>? productDocRef,
+    String? productId,
+    String? programId,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+  });
 }
 
 /// @nodoc
-class __$$_CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res, _$_Cart>
-    implements _$$_CartCopyWith<$Res> {
-  __$$_CartCopyWithImpl(_$_Cart _value, $Res Function(_$_Cart) _then)
-      : super(_value, _then);
+class __$$CartImplCopyWithImpl<$Res>
+    extends _$CartCopyWithImpl<$Res, _$CartImpl>
+    implements _$$CartImplCopyWith<$Res> {
+  __$$CartImplCopyWithImpl(_$CartImpl _value, $Res Function(_$CartImpl) _then)
+    : super(_value, _then);
 
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -145,53 +165,63 @@ class __$$_CartCopyWithImpl<$Res> extends _$CartCopyWithImpl<$Res, _$_Cart>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
-    return _then(_$_Cart(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
-      productDocRef: freezed == productDocRef
-          ? _value.productDocRef
-          : productDocRef // ignore: cast_nullable_to_non_nullable
-              as DocumentReference<Map<String, dynamic>>?,
-      productId: freezed == productId
-          ? _value.productId
-          : productId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      programId: freezed == programId
-          ? _value.programId
-          : programId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+    return _then(
+      _$CartImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        quantity:
+            null == quantity
+                ? _value.quantity
+                : quantity // ignore: cast_nullable_to_non_nullable
+                    as int,
+        productDocRef:
+            freezed == productDocRef
+                ? _value.productDocRef
+                : productDocRef // ignore: cast_nullable_to_non_nullable
+                    as DocumentReference<Map<String, dynamic>>?,
+        productId:
+            freezed == productId
+                ? _value.productId
+                : productId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        programId:
+            freezed == programId
+                ? _value.programId
+                : programId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        createdAt:
+            freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_Cart extends _Cart {
-  const _$_Cart(
-      {this.id,
-      required this.quantity,
-      @documentReferenceKey this.productDocRef,
-      required this.productId,
-      required this.programId,
-      @timestampKey this.createdAt,
-      @timestampKey this.updatedAt})
-      : super._();
+class _$CartImpl extends _Cart {
+  const _$CartImpl({
+    this.id,
+    required this.quantity,
+    @documentReferenceKey this.productDocRef,
+    required this.productId,
+    required this.programId,
+    @timestampKey this.createdAt,
+    @timestampKey this.updatedAt,
+  }) : super._();
 
-  factory _$_Cart.fromJson(Map<String, dynamic> json) => _$$_CartFromJson(json);
+  factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CartImplFromJson(json);
 
   @override
   final String? id;
@@ -217,10 +247,10 @@ class _$_Cart extends _Cart {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Cart &&
+            other is _$CartImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
@@ -236,40 +266,47 @@ class _$_Cart extends _Cart {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, quantity, productDocRef,
-      productId, programId, createdAt, updatedAt);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    quantity,
+    productDocRef,
+    productId,
+    programId,
+    createdAt,
+    updatedAt,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CartCopyWith<_$_Cart> get copyWith =>
-      __$$_CartCopyWithImpl<_$_Cart>(this, _$identity);
+  _$$CartImplCopyWith<_$CartImpl> get copyWith =>
+      __$$CartImplCopyWithImpl<_$CartImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CartToJson(
-      this,
-    );
+    return _$$CartImplToJson(this);
   }
 }
 
 abstract class _Cart extends Cart {
-  const factory _Cart(
-      {final String? id,
-      required final int quantity,
-      @documentReferenceKey
-          final DocumentReference<Map<String, dynamic>>? productDocRef,
-      required final String? productId,
-      required final String? programId,
-      @timestampKey
-          final DateTime? createdAt,
-      @timestampKey
-          final DateTime? updatedAt}) = _$_Cart;
+  const factory _Cart({
+    final String? id,
+    required final int quantity,
+    @documentReferenceKey
+    final DocumentReference<Map<String, dynamic>>? productDocRef,
+    required final String? productId,
+    required final String? programId,
+    @timestampKey final DateTime? createdAt,
+    @timestampKey final DateTime? updatedAt,
+  }) = _$CartImpl;
   const _Cart._() : super._();
 
-  factory _Cart.fromJson(Map<String, dynamic> json) = _$_Cart.fromJson;
+  factory _Cart.fromJson(Map<String, dynamic> json) = _$CartImpl.fromJson;
 
   @override
   String? get id;
@@ -288,7 +325,11 @@ abstract class _Cart extends Cart {
   @override
   @timestampKey
   DateTime? get updatedAt;
+
+  /// Create a copy of Cart
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_CartCopyWith<_$_Cart> get copyWith => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CartImplCopyWith<_$CartImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -1,19 +1,23 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/ui/checkout/checkout_view_model.dart';
 
 import '../../../data/model/cart_model.dart';
 import '../../../data/model/product_model.dart';
+import '../../../data/model/program_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
-import '../../../settings/hooks/use_router.dart';
-import '../../../settings/routes/app_route.gr.dart';
+import '../../../settings/routes/routes.dart';
 import '../../../ui/cart/cart_view_model.dart';
 import '../../../ui/common/asyncvalue_widget.dart';
 import '../../../ui/program/program_state.dart';
+import '../../../utils/logger.dart';
+import '../../common/base_button_widget.dart';
+import '../../common/loading_screen.dart';
 import '../cart_state.dart';
 
+/// 商品詳細画面への遷移ボタン
 class ToProductDetailsTextButton extends HookWidget {
   const ToProductDetailsTextButton({
     super.key,
@@ -24,7 +28,7 @@ class ToProductDetailsTextButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
 
     return Consumer(
       child: Text(l10n.productDetails),
@@ -32,19 +36,31 @@ class ToProductDetailsTextButton extends HookWidget {
         return AsyncValueButtonWidget(
           value: ref.watch(programListStateProvider),
           data: (list) {
-            final program =
-                list.firstWhere((program) => program.id == product.eventId);
-            return TextButton(
-              child: child!,
-              onPressed: () {
-                appRoute.push(
-                  ProductDetailsRoute(
-                    program: program,
-                    product: product,
-                  ),
-                );
-              },
-            );
+            logger.d('ToProductDetailsTextButton: list=$list',
+                time: DateTime.now());
+            try {
+              final program =
+                  list.firstWhere((program) => program.id == product.eventId);
+              return TextButton(
+                child: child!,
+                onPressed: () {
+                  logger.d(
+                      'ToProductDetailsTextButton: onPressed, program=$program',
+                      time: DateTime.now());
+                  // appRoute.push(
+                  //   ProductDetailsRoute(
+                  //     program: program,
+                  //     product: product,
+                  //   ),
+                  // );
+                  ProductDetailsRoute($extra: (program, product)).go(context);
+                },
+              );
+            } on Exception catch (e, st) {
+              logger.e('ToProductDetailsTextButton: error=$e, stackTrace=$st',
+                  time: DateTime.now());
+              return const SizedBox.shrink();
+            }
           },
         );
       },
@@ -52,6 +68,7 @@ class ToProductDetailsTextButton extends HookWidget {
   }
 }
 
+/// カートアイテム削除ボタン
 class DeleteCartTextButton extends HookWidget {
   const DeleteCartTextButton({
     super.key,
@@ -70,6 +87,8 @@ class DeleteCartTextButton extends HookWidget {
         return TextButton(
           child: child!,
           onPressed: () {
+            logger.d('DeleteCartTextButton: onPressed, cartId=$cartId',
+                time: DateTime.now());
             viewModel.deleteCart(cartId);
           },
         );
@@ -78,6 +97,7 @@ class DeleteCartTextButton extends HookWidget {
   }
 }
 
+/// 数量増減ボタン
 class PlusMinusButtons extends StatelessWidget {
   const PlusMinusButtons({
     super.key,
@@ -103,6 +123,7 @@ class PlusMinusButtons extends StatelessWidget {
   }
 }
 
+/// 全商品購入ボタン
 class AllPaymentButton extends HookWidget {
   const AllPaymentButton({super.key, required this.list});
   final List<Cart> list;
@@ -125,42 +146,66 @@ class AllPaymentButton extends HookWidget {
   }
 }
 
+/// イベントごとの購入ボタン
 class PaymentButton extends HookWidget {
   const PaymentButton(
-    this.appRoute,
+    // this.appRoute,
     this.ctx, {
     super.key,
     required this.list,
-    required this.eventId,
+    required this.event,
+    // required this.eventId,
   });
-  final StackRouter appRoute;
+  // final StackRouter appRoute;
   final BuildContext ctx;
   final List<Cart> list;
-  final String eventId;
+  final Program event;
+  // final String eventId;
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final eventId = event.id;
     final newList = list.where((e) => e.programId == eventId).toList();
+    var sales = true;
+    if (event.salesStart == null ||
+        event.salesStart!.isAfter(DateTime.now()) ||
+        event.salesEnd == null ||
+        event.salesEnd!.isBefore(DateTime.now())) {
+      sales = false;
+    } else {
+      sales = true;
+    }
     return Consumer(
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
           value: ref.watch(totalAmountStateProvider(newList)),
           data: (value) {
-            return ElevatedButton(
-              onPressed: () async {
-                final result = await ref
-                    .watch(stripeCheckoutViewModelProvider)
-                    .getCheckoutPaymentLink(appRoute, ctx, eventId);
-                // await ref
-                //     .watch(stripeCheckoutViewModelProvider)
-                //     .paymentWithBrowser(
-                //       appRoute,
-                //       ctx,
-                //       result[0],
-                //       result[1],
-                //     );
-              },
-              child: Text('購入 : ${l10n.currency(value)}'),
+            return BaseElevatedButton(
+              onPressed: sales
+                  ? () async {
+                      logger.d(
+                          'PaymentButton: onPressed, eventId=$eventId, value=$value',
+                          time: DateTime.now());
+                      final result = await ref
+                          .read(isLoadingProvider.notifier)
+                          .guardFuture<bool>(
+                            () async => ref
+                                .watch(stripeCheckoutViewModelProvider.notifier)
+                                .getCheckoutPaymentLink(
+                                  // appRoute,
+                                  ctx,
+                                  eventId!,
+                                ),
+                          );
+                      if (context.mounted && result) {
+                        logger.d('PaymentButton: result=$result',
+                            time: DateTime.now());
+                        // await appRoute.pop();
+                        ctx.pop();
+                      }
+                    }
+                  : null,
+              child: Text('${l10n.buy} : ${l10n.currency(value)}'),
             );
           },
         );

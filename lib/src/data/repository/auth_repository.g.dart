@@ -15,13 +15,16 @@ String _$authRepositoryHash() => r'3871275ded2762a0e529629be71e890bfd3bd7ad';
 final authRepositoryProvider = Provider<AuthRepository>.internal(
   authRepository,
   name: r'authRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$authRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AuthRepositoryRef = ProviderRef<AuthRepository>;
 String _$authStateChangesHash() => r'5656b54933886e79bc809de7960c8e908ffeb259';
 
@@ -30,13 +33,16 @@ String _$authStateChangesHash() => r'5656b54933886e79bc809de7960c8e908ffeb259';
 final authStateChangesProvider = AutoDisposeStreamProvider<bool>.internal(
   authStateChanges,
   name: r'authStateChangesProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$authStateChangesHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$authStateChangesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AuthStateChangesRef = AutoDisposeStreamProviderRef<bool>;
 String _$userIdHash() => r'78ecdc2286d48b22f0feaaadbaeb58cfd1f0132a';
 
@@ -51,5 +57,8 @@ final userIdProvider = AutoDisposeStreamProvider<String?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef UserIdRef = AutoDisposeStreamProviderRef<String?>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

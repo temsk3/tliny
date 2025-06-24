@@ -64,7 +64,7 @@ class BusinessProfileParams with _$BusinessProfileParams {
   const factory BusinessProfileParams({
     required String? mcc,
     required String? url,
-    @JsonKey(name: "product_description") required String? productDescription,
+    @JsonKey(name: 'product_description') required String? productDescription,
   }) = _BusinessProfileParams;
 
   factory BusinessProfileParams.fromJson(Map<String, dynamic> json) =>
@@ -89,13 +89,13 @@ class TosAcceptanceParams with _$TosAcceptanceParams {
 // @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class IndividualParams with _$IndividualParams {
   const factory IndividualParams({
-    @JsonKey(name: "first_name_kana") required String? firstNameKana,
-    @JsonKey(name: "first_name_kanji") required String? firstNameKanji,
-    @JsonKey(name: "last_name_kana") required String? lastNameKana,
-    @JsonKey(name: "last_name_kanji") required String? lastNameKanji,
+    @JsonKey(name: 'first_name_kana') required String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') required String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') required String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') required String? lastNameKanji,
     required DobParams? dob,
-    @JsonKey(name: "address_kana") required AddressKanaParams? addressKana,
-    @JsonKey(name: "address_kanji") required AddressKanjiParams? addressKanji,
+    @JsonKey(name: 'address_kana') required AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') required AddressKanjiParams? addressKanji,
     required String? email,
     required String? phone,
   }) = _IndividualParams;
@@ -110,10 +110,10 @@ class IndividualParams with _$IndividualParams {
 class CompanyParams with _$CompanyParams {
   const factory CompanyParams({
     required String? name, // 法人の場合必須 //ローマ字または英語表記
-    @JsonKey(name: "name_kana") required String? nameKana, // 法人の場合必須
-    @JsonKey(name: "name_kanji") required String? nameKanji, // 法人の場合必須
-    @JsonKey(name: "address_kana") required AddressKanaParams? addressKana,
-    @JsonKey(name: "address_kanji") required AddressKanjiParams? addressKanji,
+    @JsonKey(name: 'name_kana') required String? nameKana, // 法人の場合必須
+    @JsonKey(name: 'name_kanji') required String? nameKanji, // 法人の場合必須
+    @JsonKey(name: 'address_kana') required AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') required AddressKanjiParams? addressKanji,
     required String? phone,
     required String? taxId, // 法人の場合必須
   }) = _CompanyParams;
@@ -127,13 +127,13 @@ class CompanyParams with _$CompanyParams {
 // @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class RepresentativeParams with _$RepresentativeParams {
   const factory RepresentativeParams({
-    @JsonKey(name: "first_name_kana") required String? firstNameKana,
-    @JsonKey(name: "first_name_kanji") required String? firstNameKanji,
-    @JsonKey(name: "last_name_kana") required String? lastNameKana,
-    @JsonKey(name: "last_name_kanji") required String? lastNameKanji,
+    @JsonKey(name: 'first_name_kana') required String? firstNameKana,
+    @JsonKey(name: 'first_name_kanji') required String? firstNameKanji,
+    @JsonKey(name: 'last_name_kana') required String? lastNameKana,
+    @JsonKey(name: 'last_name_kanji') required String? lastNameKanji,
     required DobParams? dob,
-    @JsonKey(name: "address_kana") required AddressKanaParams? addressKana,
-    @JsonKey(name: "address_kanji") required AddressKanjiParams? addressKanji,
+    @JsonKey(name: 'address_kana') required AddressKanaParams? addressKana,
+    @JsonKey(name: 'address_kanji') required AddressKanjiParams? addressKanji,
     required String? email,
     required String? phone,
   }) = _RepresentativeParams;
@@ -162,7 +162,7 @@ class DobParams with _$DobParams {
 class AddressKanaParams with _$AddressKanaParams {
   const factory AddressKanaParams({
     required String? line1,
-    @JsonKey(name: "postal_code") required String? postalCode,
+    @JsonKey(name: 'postal_code') required String? postalCode,
     required String? city,
     required String? state,
     required String? town,
@@ -178,7 +178,7 @@ class AddressKanaParams with _$AddressKanaParams {
 class AddressKanjiParams with _$AddressKanjiParams {
   const factory AddressKanjiParams({
     required String? line1,
-    @JsonKey(name: "postal_code") required String? postalCode,
+    @JsonKey(name: 'postal_code') required String? postalCode,
     required String? city,
     required String? state,
     required String? town,

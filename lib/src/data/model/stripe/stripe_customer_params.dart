@@ -47,7 +47,7 @@ class AddressParams with _$AddressParams {
     required String? country,
     required String? line1,
     required String? line2,
-    @JsonKey(name: "postal_code") required String? postalCode,
+    @JsonKey(name: 'postal_code') required String? postalCode,
     required String? state,
   }) = _AddressParams;
 

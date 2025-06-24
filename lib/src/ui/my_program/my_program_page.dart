@@ -1,54 +1,84 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/my_program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_router.dart';
-import '../../settings/theme/app_theme.dart';
 import '../../ui/common/main_body.dart';
 import '../../ui/my_program/my_program_view_model.dart';
+import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 
-@RoutePage()
+/// マイプログラム画面
+// @RoutePage()
 class MyProgramPage extends HookConsumerWidget {
   const MyProgramPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
+    // テーマを取得
+    // final theme = ref.watch(appThemeProvider);
+    // ローカリゼーションを取得
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // ルーターを取得
+    // final appRoute = useRouter();
 
+    // マイプログラムのステートを取得
     final state = ref.watch(myProgramViewModelProvider);
+    // マイプログラムのViewModelを取得
     final viewModel = ref.watch(myProgramViewModelProvider.notifier);
 
+    // マイプログラムのステートを監視し、ステートが更新されたらWidgetを再描画
     return AsyncValueButtonWidget(
       value: state,
       data: (data) {
+        // Scaffoldを作成
         return Scaffold(
+          // bodyにMainBodyWidgetを表示
           body: MainBodyWidget(
+            // bodyにマイプログラムのリストを表示
             body: data.isNotEmpty
+                // マイプログラムのリストが空でない場合
                 ? Column(
+                    // マイプログラムのリストを左寄せで表示
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // マイプログラムのリストをListView.builderで表示
                       ListView.builder(
+                        // スクロールを禁止
                         physics: const NeverScrollableScrollPhysics(),
+                        // リストの高さをコンテンツの高さに合わせる
                         shrinkWrap: true,
+                        // リストのアイテム数を設定
                         itemCount: data.length,
+                        // リストのアイテムを構築する関数
                         itemBuilder: (context, index) {
+                          // マイプログラムのデータを取得
                           final myProgram = data[index];
+                          // マイプログラムのIDを表示
                           return Text(myProgram.programId!);
                         },
                       ),
                     ],
                   )
+                // マイプログラムのリストが空の場合、空のコンテナを表示
                 : Container(),
           ),
+          // フローティングアクションボタンを作成
           floatingActionButton: FloatingActionButton(
+            // ボタンを押したときの処理
             onPressed: () {
-              viewModel.addMyProgram(MyProgram.empty());
+              // エラー処理
+              try {
+                // マイプログラムを追加
+                viewModel.addMyProgram(MyProgram.empty());
+                // マイプログラムを追加したことをログ出力
+                logger.d('Added my program');
+              } on Exception catch (e) {
+                // エラーが発生した場合、エラーログを出力
+                logger.e('Failed to add my program: $e');
+              }
             },
+            // ボタンのアイコンを設定
             child: const Icon(Icons.qr_code),
           ),
         );

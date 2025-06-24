@@ -12,7 +12,8 @@ part of 'user_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 User _$UserFromJson(Map<String, dynamic> json) {
   return _User.fromJson(json);
@@ -33,8 +34,12 @@ mixin _$User {
   @timestampKey
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
+  /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -43,16 +48,17 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res, User>;
   @useResult
-  $Res call(
-      {String? id,
-      String? photoUrl,
-      String? displayName,
-      String? name,
-      String? email,
-      String? phoneNumber,
-      @timestampKey DateTime? createdAt,
-      @timestampKey DateTime? updatedAt,
-      @timestampKey DateTime? deletedAt});
+  $Res call({
+    String? id,
+    String? photoUrl,
+    String? displayName,
+    String? name,
+    String? email,
+    String? phoneNumber,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  });
 }
 
 /// @nodoc
@@ -65,6 +71,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -78,71 +86,89 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      displayName: freezed == displayName
-          ? _value.displayName
-          : displayName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneNumber: freezed == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      deletedAt: freezed == deletedAt
-          ? _value.deletedAt
-          : deletedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            photoUrl:
+                freezed == photoUrl
+                    ? _value.photoUrl
+                    : photoUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            displayName:
+                freezed == displayName
+                    ? _value.displayName
+                    : displayName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            name:
+                freezed == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            email:
+                freezed == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phoneNumber:
+                freezed == phoneNumber
+                    ? _value.phoneNumber
+                    : phoneNumber // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            createdAt:
+                freezed == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            deletedAt:
+                freezed == deletedAt
+                    ? _value.deletedAt
+                    : deletedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
-      __$$_UserCopyWithImpl<$Res>;
+abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$$UserImplCopyWith(
+    _$UserImpl value,
+    $Res Function(_$UserImpl) then,
+  ) = __$$UserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? id,
-      String? photoUrl,
-      String? displayName,
-      String? name,
-      String? email,
-      String? phoneNumber,
-      @timestampKey DateTime? createdAt,
-      @timestampKey DateTime? updatedAt,
-      @timestampKey DateTime? deletedAt});
+  $Res call({
+    String? id,
+    String? photoUrl,
+    String? displayName,
+    String? name,
+    String? email,
+    String? phoneNumber,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  });
 }
 
 /// @nodoc
-class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
-    implements _$$_UserCopyWith<$Res> {
-  __$$_UserCopyWithImpl(_$_User _value, $Res Function(_$_User) _then)
-      : super(_value, _then);
+class __$$UserImplCopyWithImpl<$Res>
+    extends _$UserCopyWithImpl<$Res, _$UserImpl>
+    implements _$$UserImplCopyWith<$Res> {
+  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
+    : super(_value, _then);
 
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -156,63 +182,75 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(_$_User(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      displayName: freezed == displayName
-          ? _value.displayName
-          : displayName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phoneNumber: freezed == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      deletedAt: freezed == deletedAt
-          ? _value.deletedAt
-          : deletedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+    return _then(
+      _$UserImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        photoUrl:
+            freezed == photoUrl
+                ? _value.photoUrl
+                : photoUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        displayName:
+            freezed == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        name:
+            freezed == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        email:
+            freezed == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phoneNumber:
+            freezed == phoneNumber
+                ? _value.phoneNumber
+                : phoneNumber // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        createdAt:
+            freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        deletedAt:
+            freezed == deletedAt
+                ? _value.deletedAt
+                : deletedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_User extends _User {
-  const _$_User(
-      {this.id,
-      this.photoUrl,
-      this.displayName,
-      required this.name,
-      required this.email,
-      required this.phoneNumber,
-      @timestampKey this.createdAt,
-      @timestampKey this.updatedAt,
-      @timestampKey this.deletedAt})
-      : super._();
+class _$UserImpl extends _User {
+  const _$UserImpl({
+    this.id,
+    this.photoUrl,
+    this.displayName,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+    @timestampKey this.createdAt,
+    @timestampKey this.updatedAt,
+    @timestampKey this.deletedAt,
+  }) : super._();
 
-  factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
+  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserImplFromJson(json);
 
   @override
   final String? id;
@@ -242,10 +280,10 @@ class _$_User extends _User {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_User &&
+            other is _$UserImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.photoUrl, photoUrl) ||
                 other.photoUrl == photoUrl) &&
@@ -263,39 +301,50 @@ class _$_User extends _User {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, photoUrl, displayName, name,
-      email, phoneNumber, createdAt, updatedAt, deletedAt);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    photoUrl,
+    displayName,
+    name,
+    email,
+    phoneNumber,
+    createdAt,
+    updatedAt,
+    deletedAt,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserCopyWith<_$_User> get copyWith =>
-      __$$_UserCopyWithImpl<_$_User>(this, _$identity);
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserToJson(
-      this,
-    );
+    return _$$UserImplToJson(this);
   }
 }
 
 abstract class _User extends User {
-  const factory _User(
-      {final String? id,
-      final String? photoUrl,
-      final String? displayName,
-      required final String? name,
-      required final String? email,
-      required final String? phoneNumber,
-      @timestampKey final DateTime? createdAt,
-      @timestampKey final DateTime? updatedAt,
-      @timestampKey final DateTime? deletedAt}) = _$_User;
+  const factory _User({
+    final String? id,
+    final String? photoUrl,
+    final String? displayName,
+    required final String? name,
+    required final String? email,
+    required final String? phoneNumber,
+    @timestampKey final DateTime? createdAt,
+    @timestampKey final DateTime? updatedAt,
+    @timestampKey final DateTime? deletedAt,
+  }) = _$UserImpl;
   const _User._() : super._();
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
+  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
   @override
   String? get id;
@@ -318,7 +367,284 @@ abstract class _User extends User {
   @override
   @timestampKey
   DateTime? get deletedAt;
+
+  /// Create a copy of User
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+PublicUsers _$PublicUsersFromJson(Map<String, dynamic> json) {
+  return _PublicUsers.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PublicUsers {
+  String? get id => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get deletedAt => throw _privateConstructorUsedError;
+
+  /// Serializes this PublicUsers to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of PublicUsers
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $PublicUsersCopyWith<PublicUsers> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PublicUsersCopyWith<$Res> {
+  factory $PublicUsersCopyWith(
+    PublicUsers value,
+    $Res Function(PublicUsers) then,
+  ) = _$PublicUsersCopyWithImpl<$Res, PublicUsers>;
+  @useResult
+  $Res call({
+    String? id,
+    String? displayName,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  });
+}
+
+/// @nodoc
+class _$PublicUsersCopyWithImpl<$Res, $Val extends PublicUsers>
+    implements $PublicUsersCopyWith<$Res> {
+  _$PublicUsersCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of PublicUsers
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? displayName = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
+  }) {
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            displayName:
+                freezed == displayName
+                    ? _value.displayName
+                    : displayName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            createdAt:
+                freezed == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            deletedAt:
+                freezed == deletedAt
+                    ? _value.deletedAt
+                    : deletedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$PublicUsersImplCopyWith<$Res>
+    implements $PublicUsersCopyWith<$Res> {
+  factory _$$PublicUsersImplCopyWith(
+    _$PublicUsersImpl value,
+    $Res Function(_$PublicUsersImpl) then,
+  ) = __$$PublicUsersImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String? id,
+    String? displayName,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  });
+}
+
+/// @nodoc
+class __$$PublicUsersImplCopyWithImpl<$Res>
+    extends _$PublicUsersCopyWithImpl<$Res, _$PublicUsersImpl>
+    implements _$$PublicUsersImplCopyWith<$Res> {
+  __$$PublicUsersImplCopyWithImpl(
+    _$PublicUsersImpl _value,
+    $Res Function(_$PublicUsersImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of PublicUsers
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? displayName = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
+  }) {
+    return _then(
+      _$PublicUsersImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        displayName:
+            freezed == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        createdAt:
+            freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        deletedAt:
+            freezed == deletedAt
+                ? _value.deletedAt
+                : deletedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PublicUsersImpl implements _PublicUsers {
+  _$PublicUsersImpl({
+    this.id,
+    this.displayName,
+    @timestampKey this.createdAt,
+    @timestampKey this.updatedAt,
+    @timestampKey this.deletedAt,
+  });
+
+  factory _$PublicUsersImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PublicUsersImplFromJson(json);
+
+  @override
+  final String? id;
+  @override
+  final String? displayName;
+  @override
+  @timestampKey
+  final DateTime? createdAt;
+  @override
+  @timestampKey
+  final DateTime? updatedAt;
+  @override
+  @timestampKey
+  final DateTime? deletedAt;
+
+  @override
+  String toString() {
+    return 'PublicUsers(id: $id, displayName: $displayName, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PublicUsersImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.deletedAt, deletedAt) ||
+                other.deletedAt == deletedAt));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    displayName,
+    createdAt,
+    updatedAt,
+    deletedAt,
+  );
+
+  /// Create a copy of PublicUsers
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PublicUsersImplCopyWith<_$PublicUsersImpl> get copyWith =>
+      __$$PublicUsersImplCopyWithImpl<_$PublicUsersImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PublicUsersImplToJson(this);
+  }
+}
+
+abstract class _PublicUsers implements PublicUsers {
+  factory _PublicUsers({
+    final String? id,
+    final String? displayName,
+    @timestampKey final DateTime? createdAt,
+    @timestampKey final DateTime? updatedAt,
+    @timestampKey final DateTime? deletedAt,
+  }) = _$PublicUsersImpl;
+
+  factory _PublicUsers.fromJson(Map<String, dynamic> json) =
+      _$PublicUsersImpl.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get displayName;
+  @override
+  @timestampKey
+  DateTime? get createdAt;
+  @override
+  @timestampKey
+  DateTime? get updatedAt;
+  @override
+  @timestampKey
+  DateTime? get deletedAt;
+
+  /// Create a copy of PublicUsers
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PublicUsersImplCopyWith<_$PublicUsersImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

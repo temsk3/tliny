@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../utils/logger.dart';
 import '../general_provider.dart';
 import '../model/my_program_model.dart';
 
@@ -39,8 +40,11 @@ class MyProgramRepository {
 
   // 取得
   Stream<List<MyProgram>> streamMyProgramList(String uid) {
+    logger.d('streamMyProgramList: uid=$uid');
     final list = _collectionRef(uid).snapshots().map((snapshot) {
+      logger.d('streamMyProgramList: snapshot=$snapshot');
       return snapshot.docs.map((doc) {
+        logger.d('streamMyProgramList: doc=$doc');
         return doc.data();
       }).toList();
     });
@@ -48,8 +52,11 @@ class MyProgramRepository {
   }
 
   Stream<MyProgram> streamMyProgram(String uid, String myProgramId) {
+    logger.d('streamMyProgram: uid=$uid, myProgramId=$myProgramId');
     return _collectionRef(uid).doc(myProgramId).snapshots().map((doc) {
+      logger.d('streamMyProgram: doc=$doc');
       if (doc.data() == null) {
+        logger.e('streamMyProgram: doc.data() is null');
         throw Error();
       }
       return doc.data()!;
@@ -57,26 +64,53 @@ class MyProgramRepository {
   }
 
   Future<List<MyProgram>> readMyPrograms(String uid) async {
-    return _collectionRef(uid)
-        .get()
-        .then((value) => value.docs.map((doc) => doc.data()).toList());
+    logger.d('readMyPrograms: uid=$uid');
+    try {
+      final snapshot = await _collectionRef(uid).get();
+      logger.d('readMyPrograms: snapshot=$snapshot');
+      return snapshot.docs.map((doc) => doc.data()).toList();
+    } on Exception catch (e) {
+      logger.e('readMyPrograms: error=$e');
+      rethrow;
+    }
   }
 
   // 登録
   Future<String> createMyProgram(String uid, MyProgram myProgram) async {
-    await _collectionRef(uid).doc(myProgram.programId).set(myProgram);
-    return myProgram.programId!;
+    logger.d('createMyProgram: uid=$uid, myProgram=$myProgram');
+    try {
+      await _collectionRef(uid).doc(myProgram.programId).set(myProgram);
+      logger.d('createMyProgram: success');
+      return myProgram.programId!;
+    } on Exception catch (e) {
+      logger.e('createMyProgram: error=$e');
+      rethrow;
+    }
   }
 
   // 更新
   Future<String> updateMyProgram(String uid, MyProgram myProgram) async {
-    final docRef = _collectionRef(uid).doc(myProgram.id);
-    await docRef.set(myProgram, SetOptions(merge: true));
-    return docRef.id;
+    logger.d('updateMyProgram: uid=$uid, myProgram=$myProgram');
+    try {
+      final docRef = _collectionRef(uid).doc(myProgram.id);
+      await docRef.set(myProgram, SetOptions(merge: true));
+      logger.d('updateMyProgram: success');
+      return docRef.id;
+    } on Exception catch (e) {
+      logger.e('updateMyProgram: error=$e');
+      rethrow;
+    }
   }
 
   // 削除
   Future<void> deleteMyProgram(String uid, String myProgramId) async {
-    await _collectionRef(uid).doc(myProgramId).delete();
+    logger.d('deleteMyProgram: uid=$uid, myProgramId=$myProgramId');
+    try {
+      await _collectionRef(uid).doc(myProgramId).delete();
+      logger.d('deleteMyProgram: success');
+    } on Exception catch (e) {
+      logger.e('deleteMyProgram: error=$e');
+      rethrow;
+    }
   }
 }

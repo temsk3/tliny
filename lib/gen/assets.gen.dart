@@ -9,31 +9,47 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsFilesGen {
+  const $AssetsFilesGen();
+
+  /// File path: assets/files/TLINY_commerce.txt
+  String get tLINYCommerce => 'assets/files/TLINY_commerce.txt';
+
+  /// File path: assets/files/TLINY_terms.txt
+  String get tLINYTerms => 'assets/files/TLINY_terms.txt';
+
+  /// List of all assets
+  List<String> get values => [tLINYCommerce, tLINYTerms];
+}
+
 class $AssetsImgGen {
   const $AssetsImgGen();
 
-  /// File path: assets/img/icon-32x32.png
-  AssetGenImage get icon32x32 =>
-      const AssetGenImage('assets/img/icon-32x32.png');
+  /// File path: assets/img/icon.png
+  AssetGenImage get icon => const AssetGenImage('assets/img/icon.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [icon32x32];
+  List<AssetGenImage> get values => [icon];
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
-  static const String env = 'assets/.env';
+  static const String aEnv = '.env';
+  static const $AssetsFilesGen files = $AssetsFilesGen();
   static const $AssetsImgGen img = $AssetsImgGen();
 
   /// List of all assets
-  List<String> get values => [env];
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName);
+  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
+
+  final Size? size;
+  final Set<String> flavors;
 
   Image image({
     Key? key,
@@ -53,10 +69,10 @@ class AssetGenImage {
     ImageRepeat repeat = ImageRepeat.noRepeat,
     Rect? centerSlice,
     bool matchTextDirection = false,
-    bool gaplessPlayback = false,
+    bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -88,7 +104,9 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider() => AssetImage(_assetName);
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
+  }
 
   String get path => _assetName;
 

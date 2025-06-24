@@ -9,9 +9,9 @@ part 'product_model.freezed.dart';
 part 'product_model.g.dart';
 
 enum GenreType {
-  goods(name: 'Goods'),
-  foods(name: 'Foods'),
-  others(name: 'Others');
+  goods(name: '物品'),
+  foods(name: '食品'),
+  others(name: 'その他');
 
   const GenreType({required this.name});
 
@@ -31,6 +31,7 @@ class Product with _$Product {
     required String? desc,
     @Default(0) int stock,
     @Default(50) int price,
+    String? strageId,
     @Default([]) List<String> pictureURL,
     @timestampKey required DateTime? expirationFrom,
     @timestampKey required DateTime? expirationTo,

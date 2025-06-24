@@ -16,19 +16,10 @@ const timestampKey = JsonKey(
   toJson: timestampFromDateValue,
 );
 
-// firestore から受け取った document型を String型に変換するためにJsonKeyを作成 @DocumentReference String
-// String? stringFromDocumentReference(DocumentReference? value) => value?.path;
-
-// DocumentReference? documentReferenceFromString(String? value) =>
-//     value is String ? FirebaseFirestore.instance.doc(value) : null;
-
-// const documentReferenceKey = JsonKey(
-//   fromJson: documentReferenceFromString,
-//   toJson: stringFromDocumentReference,
-// );
-
+// firestore から受け取った document型を保存するためのJsonKey
 DocumentReference<Map<String, dynamic>>? documentReference(
-        DocumentReference<Map<String, dynamic>>? value) =>
+  DocumentReference<Map<String, dynamic>>? value,
+) =>
     value ?? value;
 
 const documentReferenceKey = JsonKey(

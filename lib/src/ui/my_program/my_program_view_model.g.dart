@@ -9,20 +9,24 @@ part of 'my_program_view_model.dart';
 // **************************************************************************
 
 String _$myProgramViewModelHash() =>
-    r'4d51b1442c7192982e016e484198b63ae8caae63';
+    r'2ca9c4faea4d43501d2ca4f4d492f2f717a4499b';
 
 /// See also [MyProgramViewModel].
 @ProviderFor(MyProgramViewModel)
 final myProgramViewModelProvider = AutoDisposeAsyncNotifierProvider<
-    MyProgramViewModel, List<MyProgram>>.internal(
+  MyProgramViewModel,
+  List<MyProgram>
+>.internal(
   MyProgramViewModel.new,
   name: r'myProgramViewModelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$myProgramViewModelHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$myProgramViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 typedef _$MyProgramViewModel = AutoDisposeAsyncNotifier<List<MyProgram>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -12,7 +12,8 @@ part of 'stripe_customer_params.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 CustomerParams _$CustomerParamsFromJson(Map<String, dynamic> json) {
   return _CustomerParams.fromJson(json);
@@ -30,8 +31,12 @@ mixin _$CustomerParams {
   ShippingParams? get shipping => throw _privateConstructorUsedError;
   String? get source => throw _privateConstructorUsedError;
 
+  /// Serializes this CustomerParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CustomerParamsCopyWith<CustomerParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -39,19 +44,21 @@ mixin _$CustomerParams {
 /// @nodoc
 abstract class $CustomerParamsCopyWith<$Res> {
   factory $CustomerParamsCopyWith(
-          CustomerParams value, $Res Function(CustomerParams) then) =
-      _$CustomerParamsCopyWithImpl<$Res, CustomerParams>;
+    CustomerParams value,
+    $Res Function(CustomerParams) then,
+  ) = _$CustomerParamsCopyWithImpl<$Res, CustomerParams>;
   @useResult
-  $Res call(
-      {AddressParams? address,
-      String? description,
-      String? email,
-      Map<dynamic, dynamic>? metadata,
-      String? name,
-      String? paymentMethod,
-      String? phone,
-      ShippingParams? shipping,
-      String? source});
+  $Res call({
+    AddressParams? address,
+    String? description,
+    String? email,
+    Map<dynamic, dynamic>? metadata,
+    String? name,
+    String? paymentMethod,
+    String? phone,
+    ShippingParams? shipping,
+    String? source,
+  });
 
   $AddressParamsCopyWith<$Res>? get address;
   $ShippingParamsCopyWith<$Res>? get shipping;
@@ -67,6 +74,8 @@ class _$CustomerParamsCopyWithImpl<$Res, $Val extends CustomerParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -80,46 +89,60 @@ class _$CustomerParamsCopyWithImpl<$Res, $Val extends CustomerParams>
     Object? shipping = freezed,
     Object? source = freezed,
   }) {
-    return _then(_value.copyWith(
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as AddressParams?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      metadata: freezed == metadata
-          ? _value.metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      paymentMethod: freezed == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      shipping: freezed == shipping
-          ? _value.shipping
-          : shipping // ignore: cast_nullable_to_non_nullable
-              as ShippingParams?,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            address:
+                freezed == address
+                    ? _value.address
+                    : address // ignore: cast_nullable_to_non_nullable
+                        as AddressParams?,
+            description:
+                freezed == description
+                    ? _value.description
+                    : description // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            email:
+                freezed == email
+                    ? _value.email
+                    : email // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            metadata:
+                freezed == metadata
+                    ? _value.metadata
+                    : metadata // ignore: cast_nullable_to_non_nullable
+                        as Map<dynamic, dynamic>?,
+            name:
+                freezed == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            paymentMethod:
+                freezed == paymentMethod
+                    ? _value.paymentMethod
+                    : paymentMethod // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phone:
+                freezed == phone
+                    ? _value.phone
+                    : phone // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            shipping:
+                freezed == shipping
+                    ? _value.shipping
+                    : shipping // ignore: cast_nullable_to_non_nullable
+                        as ShippingParams?,
+            source:
+                freezed == source
+                    ? _value.source
+                    : source // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressParamsCopyWith<$Res>? get address {
@@ -132,6 +155,8 @@ class _$CustomerParamsCopyWithImpl<$Res, $Val extends CustomerParams>
     });
   }
 
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ShippingParamsCopyWith<$Res>? get shipping {
@@ -146,23 +171,25 @@ class _$CustomerParamsCopyWithImpl<$Res, $Val extends CustomerParams>
 }
 
 /// @nodoc
-abstract class _$$_CustomerParamsCopyWith<$Res>
+abstract class _$$CustomerParamsImplCopyWith<$Res>
     implements $CustomerParamsCopyWith<$Res> {
-  factory _$$_CustomerParamsCopyWith(
-          _$_CustomerParams value, $Res Function(_$_CustomerParams) then) =
-      __$$_CustomerParamsCopyWithImpl<$Res>;
+  factory _$$CustomerParamsImplCopyWith(
+    _$CustomerParamsImpl value,
+    $Res Function(_$CustomerParamsImpl) then,
+  ) = __$$CustomerParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {AddressParams? address,
-      String? description,
-      String? email,
-      Map<dynamic, dynamic>? metadata,
-      String? name,
-      String? paymentMethod,
-      String? phone,
-      ShippingParams? shipping,
-      String? source});
+  $Res call({
+    AddressParams? address,
+    String? description,
+    String? email,
+    Map<dynamic, dynamic>? metadata,
+    String? name,
+    String? paymentMethod,
+    String? phone,
+    ShippingParams? shipping,
+    String? source,
+  });
 
   @override
   $AddressParamsCopyWith<$Res>? get address;
@@ -171,13 +198,16 @@ abstract class _$$_CustomerParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CustomerParamsCopyWithImpl<$Res>
-    extends _$CustomerParamsCopyWithImpl<$Res, _$_CustomerParams>
-    implements _$$_CustomerParamsCopyWith<$Res> {
-  __$$_CustomerParamsCopyWithImpl(
-      _$_CustomerParams _value, $Res Function(_$_CustomerParams) _then)
-      : super(_value, _then);
+class __$$CustomerParamsImplCopyWithImpl<$Res>
+    extends _$CustomerParamsCopyWithImpl<$Res, _$CustomerParamsImpl>
+    implements _$$CustomerParamsImplCopyWith<$Res> {
+  __$$CustomerParamsImplCopyWithImpl(
+    _$CustomerParamsImpl _value,
+    $Res Function(_$CustomerParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -191,66 +221,77 @@ class __$$_CustomerParamsCopyWithImpl<$Res>
     Object? shipping = freezed,
     Object? source = freezed,
   }) {
-    return _then(_$_CustomerParams(
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as AddressParams?,
-      description: freezed == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String?,
-      metadata: freezed == metadata
-          ? _value._metadata
-          : metadata // ignore: cast_nullable_to_non_nullable
-              as Map<dynamic, dynamic>?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      paymentMethod: freezed == paymentMethod
-          ? _value.paymentMethod
-          : paymentMethod // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-      shipping: freezed == shipping
-          ? _value.shipping
-          : shipping // ignore: cast_nullable_to_non_nullable
-              as ShippingParams?,
-      source: freezed == source
-          ? _value.source
-          : source // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$CustomerParamsImpl(
+        address:
+            freezed == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                    as AddressParams?,
+        description:
+            freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        email:
+            freezed == email
+                ? _value.email
+                : email // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        metadata:
+            freezed == metadata
+                ? _value._metadata
+                : metadata // ignore: cast_nullable_to_non_nullable
+                    as Map<dynamic, dynamic>?,
+        name:
+            freezed == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        paymentMethod:
+            freezed == paymentMethod
+                ? _value.paymentMethod
+                : paymentMethod // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phone:
+            freezed == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        shipping:
+            freezed == shipping
+                ? _value.shipping
+                : shipping // ignore: cast_nullable_to_non_nullable
+                    as ShippingParams?,
+        source:
+            freezed == source
+                ? _value.source
+                : source // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
-class _$_CustomerParams extends _CustomerParams {
-  const _$_CustomerParams(
-      {required this.address,
-      required this.description,
-      required this.email,
-      required final Map<dynamic, dynamic>? metadata,
-      required this.name,
-      required this.paymentMethod,
-      required this.phone,
-      required this.shipping,
-      required this.source})
-      : _metadata = metadata,
-        super._();
+class _$CustomerParamsImpl extends _CustomerParams {
+  const _$CustomerParamsImpl({
+    required this.address,
+    required this.description,
+    required this.email,
+    required final Map<dynamic, dynamic>? metadata,
+    required this.name,
+    required this.paymentMethod,
+    required this.phone,
+    required this.shipping,
+    required this.source,
+  }) : _metadata = metadata,
+       super._();
 
-  factory _$_CustomerParams.fromJson(Map<String, dynamic> json) =>
-      _$$_CustomerParamsFromJson(json);
+  factory _$CustomerParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CustomerParamsImplFromJson(json);
 
   @override
   final AddressParams? address;
@@ -285,10 +326,10 @@ class _$_CustomerParams extends _CustomerParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CustomerParams &&
+            other is _$CustomerParamsImpl &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.description, description) ||
                 other.description == description) &&
@@ -303,49 +344,54 @@ class _$_CustomerParams extends _CustomerParams {
             (identical(other.source, source) || other.source == source));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      address,
-      description,
-      email,
-      const DeepCollectionEquality().hash(_metadata),
-      name,
-      paymentMethod,
-      phone,
-      shipping,
-      source);
+    runtimeType,
+    address,
+    description,
+    email,
+    const DeepCollectionEquality().hash(_metadata),
+    name,
+    paymentMethod,
+    phone,
+    shipping,
+    source,
+  );
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CustomerParamsCopyWith<_$_CustomerParams> get copyWith =>
-      __$$_CustomerParamsCopyWithImpl<_$_CustomerParams>(this, _$identity);
+  _$$CustomerParamsImplCopyWith<_$CustomerParamsImpl> get copyWith =>
+      __$$CustomerParamsImplCopyWithImpl<_$CustomerParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CustomerParamsToJson(
-      this,
-    );
+    return _$$CustomerParamsImplToJson(this);
   }
 }
 
 abstract class _CustomerParams extends CustomerParams {
-  const factory _CustomerParams(
-      {required final AddressParams? address,
-      required final String? description,
-      required final String? email,
-      required final Map<dynamic, dynamic>? metadata,
-      required final String? name,
-      required final String? paymentMethod,
-      required final String? phone,
-      required final ShippingParams? shipping,
-      required final String? source}) = _$_CustomerParams;
+  const factory _CustomerParams({
+    required final AddressParams? address,
+    required final String? description,
+    required final String? email,
+    required final Map<dynamic, dynamic>? metadata,
+    required final String? name,
+    required final String? paymentMethod,
+    required final String? phone,
+    required final ShippingParams? shipping,
+    required final String? source,
+  }) = _$CustomerParamsImpl;
   const _CustomerParams._() : super._();
 
   factory _CustomerParams.fromJson(Map<String, dynamic> json) =
-      _$_CustomerParams.fromJson;
+      _$CustomerParamsImpl.fromJson;
 
   @override
   AddressParams? get address;
@@ -365,9 +411,12 @@ abstract class _CustomerParams extends CustomerParams {
   ShippingParams? get shipping;
   @override
   String? get source;
+
+  /// Create a copy of CustomerParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_CustomerParamsCopyWith<_$_CustomerParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CustomerParamsImplCopyWith<_$CustomerParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -381,8 +430,12 @@ mixin _$ShippingParams {
   String? get name => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
 
+  /// Serializes this ShippingParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ShippingParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ShippingParamsCopyWith<ShippingParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -390,8 +443,9 @@ mixin _$ShippingParams {
 /// @nodoc
 abstract class $ShippingParamsCopyWith<$Res> {
   factory $ShippingParamsCopyWith(
-          ShippingParams value, $Res Function(ShippingParams) then) =
-      _$ShippingParamsCopyWithImpl<$Res, ShippingParams>;
+    ShippingParams value,
+    $Res Function(ShippingParams) then,
+  ) = _$ShippingParamsCopyWithImpl<$Res, ShippingParams>;
   @useResult
   $Res call({AddressParams? address, String? name, String? phone});
 
@@ -408,6 +462,8 @@ class _$ShippingParamsCopyWithImpl<$Res, $Val extends ShippingParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ShippingParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -415,22 +471,30 @@ class _$ShippingParamsCopyWithImpl<$Res, $Val extends ShippingParams>
     Object? name = freezed,
     Object? phone = freezed,
   }) {
-    return _then(_value.copyWith(
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as AddressParams?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            address:
+                freezed == address
+                    ? _value.address
+                    : address // ignore: cast_nullable_to_non_nullable
+                        as AddressParams?,
+            name:
+                freezed == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            phone:
+                freezed == phone
+                    ? _value.phone
+                    : phone // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 
+  /// Create a copy of ShippingParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AddressParamsCopyWith<$Res>? get address {
@@ -445,11 +509,12 @@ class _$ShippingParamsCopyWithImpl<$Res, $Val extends ShippingParams>
 }
 
 /// @nodoc
-abstract class _$$_ShippingParamsCopyWith<$Res>
+abstract class _$$ShippingParamsImplCopyWith<$Res>
     implements $ShippingParamsCopyWith<$Res> {
-  factory _$$_ShippingParamsCopyWith(
-          _$_ShippingParams value, $Res Function(_$_ShippingParams) then) =
-      __$$_ShippingParamsCopyWithImpl<$Res>;
+  factory _$$ShippingParamsImplCopyWith(
+    _$ShippingParamsImpl value,
+    $Res Function(_$ShippingParamsImpl) then,
+  ) = __$$ShippingParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({AddressParams? address, String? name, String? phone});
@@ -459,13 +524,16 @@ abstract class _$$_ShippingParamsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ShippingParamsCopyWithImpl<$Res>
-    extends _$ShippingParamsCopyWithImpl<$Res, _$_ShippingParams>
-    implements _$$_ShippingParamsCopyWith<$Res> {
-  __$$_ShippingParamsCopyWithImpl(
-      _$_ShippingParams _value, $Res Function(_$_ShippingParams) _then)
-      : super(_value, _then);
+class __$$ShippingParamsImplCopyWithImpl<$Res>
+    extends _$ShippingParamsCopyWithImpl<$Res, _$ShippingParamsImpl>
+    implements _$$ShippingParamsImplCopyWith<$Res> {
+  __$$ShippingParamsImplCopyWithImpl(
+    _$ShippingParamsImpl _value,
+    $Res Function(_$ShippingParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of ShippingParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -473,31 +541,39 @@ class __$$_ShippingParamsCopyWithImpl<$Res>
     Object? name = freezed,
     Object? phone = freezed,
   }) {
-    return _then(_$_ShippingParams(
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as AddressParams?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$ShippingParamsImpl(
+        address:
+            freezed == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                    as AddressParams?,
+        name:
+            freezed == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        phone:
+            freezed == phone
+                ? _value.phone
+                : phone // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_ShippingParams implements _ShippingParams {
-  const _$_ShippingParams(
-      {required this.address, required this.name, required this.phone});
+class _$ShippingParamsImpl implements _ShippingParams {
+  const _$ShippingParamsImpl({
+    required this.address,
+    required this.name,
+    required this.phone,
+  });
 
-  factory _$_ShippingParams.fromJson(Map<String, dynamic> json) =>
-      _$$_ShippingParamsFromJson(json);
+  factory _$ShippingParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ShippingParamsImplFromJson(json);
 
   @override
   final AddressParams? address;
@@ -512,41 +588,45 @@ class _$_ShippingParams implements _ShippingParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ShippingParams &&
+            other is _$ShippingParamsImpl &&
             (identical(other.address, address) || other.address == address) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.phone, phone) || other.phone == phone));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, address, name, phone);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ShippingParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ShippingParamsCopyWith<_$_ShippingParams> get copyWith =>
-      __$$_ShippingParamsCopyWithImpl<_$_ShippingParams>(this, _$identity);
+  _$$ShippingParamsImplCopyWith<_$ShippingParamsImpl> get copyWith =>
+      __$$ShippingParamsImplCopyWithImpl<_$ShippingParamsImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ShippingParamsToJson(
-      this,
-    );
+    return _$$ShippingParamsImplToJson(this);
   }
 }
 
 abstract class _ShippingParams implements ShippingParams {
-  const factory _ShippingParams(
-      {required final AddressParams? address,
-      required final String? name,
-      required final String? phone}) = _$_ShippingParams;
+  const factory _ShippingParams({
+    required final AddressParams? address,
+    required final String? name,
+    required final String? phone,
+  }) = _$ShippingParamsImpl;
 
   factory _ShippingParams.fromJson(Map<String, dynamic> json) =
-      _$_ShippingParams.fromJson;
+      _$ShippingParamsImpl.fromJson;
 
   @override
   AddressParams? get address;
@@ -554,9 +634,12 @@ abstract class _ShippingParams implements ShippingParams {
   String? get name;
   @override
   String? get phone;
+
+  /// Create a copy of ShippingParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_ShippingParamsCopyWith<_$_ShippingParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ShippingParamsImplCopyWith<_$ShippingParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -570,12 +653,16 @@ mixin _$AddressParams {
   String? get country => throw _privateConstructorUsedError;
   String? get line1 => throw _privateConstructorUsedError;
   String? get line2 => throw _privateConstructorUsedError;
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   String? get postalCode => throw _privateConstructorUsedError;
   String? get state => throw _privateConstructorUsedError;
 
+  /// Serializes this AddressParams to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AddressParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $AddressParamsCopyWith<AddressParams> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -583,16 +670,18 @@ mixin _$AddressParams {
 /// @nodoc
 abstract class $AddressParamsCopyWith<$Res> {
   factory $AddressParamsCopyWith(
-          AddressParams value, $Res Function(AddressParams) then) =
-      _$AddressParamsCopyWithImpl<$Res, AddressParams>;
+    AddressParams value,
+    $Res Function(AddressParams) then,
+  ) = _$AddressParamsCopyWithImpl<$Res, AddressParams>;
   @useResult
-  $Res call(
-      {String? city,
-      String? country,
-      String? line1,
-      String? line2,
-      @JsonKey(name: "postal_code") String? postalCode,
-      String? state});
+  $Res call({
+    String? city,
+    String? country,
+    String? line1,
+    String? line2,
+    @JsonKey(name: 'postal_code') String? postalCode,
+    String? state,
+  });
 }
 
 /// @nodoc
@@ -605,6 +694,8 @@ class _$AddressParamsCopyWithImpl<$Res, $Val extends AddressParams>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of AddressParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -615,60 +706,74 @@ class _$AddressParamsCopyWithImpl<$Res, $Val extends AddressParams>
     Object? postalCode = freezed,
     Object? state = freezed,
   }) {
-    return _then(_value.copyWith(
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as String?,
-      line1: freezed == line1
-          ? _value.line1
-          : line1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      line2: freezed == line2
-          ? _value.line2
-          : line2 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            city:
+                freezed == city
+                    ? _value.city
+                    : city // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            country:
+                freezed == country
+                    ? _value.country
+                    : country // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            line1:
+                freezed == line1
+                    ? _value.line1
+                    : line1 // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            line2:
+                freezed == line2
+                    ? _value.line2
+                    : line2 // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            postalCode:
+                freezed == postalCode
+                    ? _value.postalCode
+                    : postalCode // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            state:
+                freezed == state
+                    ? _value.state
+                    : state // ignore: cast_nullable_to_non_nullable
+                        as String?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_AddressParamsCopyWith<$Res>
+abstract class _$$AddressParamsImplCopyWith<$Res>
     implements $AddressParamsCopyWith<$Res> {
-  factory _$$_AddressParamsCopyWith(
-          _$_AddressParams value, $Res Function(_$_AddressParams) then) =
-      __$$_AddressParamsCopyWithImpl<$Res>;
+  factory _$$AddressParamsImplCopyWith(
+    _$AddressParamsImpl value,
+    $Res Function(_$AddressParamsImpl) then,
+  ) = __$$AddressParamsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? city,
-      String? country,
-      String? line1,
-      String? line2,
-      @JsonKey(name: "postal_code") String? postalCode,
-      String? state});
+  $Res call({
+    String? city,
+    String? country,
+    String? line1,
+    String? line2,
+    @JsonKey(name: 'postal_code') String? postalCode,
+    String? state,
+  });
 }
 
 /// @nodoc
-class __$$_AddressParamsCopyWithImpl<$Res>
-    extends _$AddressParamsCopyWithImpl<$Res, _$_AddressParams>
-    implements _$$_AddressParamsCopyWith<$Res> {
-  __$$_AddressParamsCopyWithImpl(
-      _$_AddressParams _value, $Res Function(_$_AddressParams) _then)
-      : super(_value, _then);
+class __$$AddressParamsImplCopyWithImpl<$Res>
+    extends _$AddressParamsCopyWithImpl<$Res, _$AddressParamsImpl>
+    implements _$$AddressParamsImplCopyWith<$Res> {
+  __$$AddressParamsImplCopyWithImpl(
+    _$AddressParamsImpl _value,
+    $Res Function(_$AddressParamsImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of AddressParams
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -679,48 +784,57 @@ class __$$_AddressParamsCopyWithImpl<$Res>
     Object? postalCode = freezed,
     Object? state = freezed,
   }) {
-    return _then(_$_AddressParams(
-      city: freezed == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String?,
-      country: freezed == country
-          ? _value.country
-          : country // ignore: cast_nullable_to_non_nullable
-              as String?,
-      line1: freezed == line1
-          ? _value.line1
-          : line1 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      line2: freezed == line2
-          ? _value.line2
-          : line2 // ignore: cast_nullable_to_non_nullable
-              as String?,
-      postalCode: freezed == postalCode
-          ? _value.postalCode
-          : postalCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
+    return _then(
+      _$AddressParamsImpl(
+        city:
+            freezed == city
+                ? _value.city
+                : city // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        country:
+            freezed == country
+                ? _value.country
+                : country // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        line1:
+            freezed == line1
+                ? _value.line1
+                : line1 // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        line2:
+            freezed == line2
+                ? _value.line2
+                : line2 // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        postalCode:
+            freezed == postalCode
+                ? _value.postalCode
+                : postalCode // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        state:
+            freezed == state
+                ? _value.state
+                : state // ignore: cast_nullable_to_non_nullable
+                    as String?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_AddressParams implements _AddressParams {
-  const _$_AddressParams(
-      {required this.city,
-      required this.country,
-      required this.line1,
-      required this.line2,
-      @JsonKey(name: "postal_code") required this.postalCode,
-      required this.state});
+class _$AddressParamsImpl implements _AddressParams {
+  const _$AddressParamsImpl({
+    required this.city,
+    required this.country,
+    required this.line1,
+    required this.line2,
+    @JsonKey(name: 'postal_code') required this.postalCode,
+    required this.state,
+  });
 
-  factory _$_AddressParams.fromJson(Map<String, dynamic> json) =>
-      _$$_AddressParamsFromJson(json);
+  factory _$AddressParamsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AddressParamsImplFromJson(json);
 
   @override
   final String? city;
@@ -731,7 +845,7 @@ class _$_AddressParams implements _AddressParams {
   @override
   final String? line2;
   @override
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   final String? postalCode;
   @override
   final String? state;
@@ -742,10 +856,10 @@ class _$_AddressParams implements _AddressParams {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AddressParams &&
+            other is _$AddressParamsImpl &&
             (identical(other.city, city) || other.city == city) &&
             (identical(other.country, country) || other.country == country) &&
             (identical(other.line1, line1) || other.line1 == line1) &&
@@ -755,36 +869,37 @@ class _$_AddressParams implements _AddressParams {
             (identical(other.state, state) || other.state == state));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, city, country, line1, line2, postalCode, state);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AddressParams
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AddressParamsCopyWith<_$_AddressParams> get copyWith =>
-      __$$_AddressParamsCopyWithImpl<_$_AddressParams>(this, _$identity);
+  _$$AddressParamsImplCopyWith<_$AddressParamsImpl> get copyWith =>
+      __$$AddressParamsImplCopyWithImpl<_$AddressParamsImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AddressParamsToJson(
-      this,
-    );
+    return _$$AddressParamsImplToJson(this);
   }
 }
 
 abstract class _AddressParams implements AddressParams {
-  const factory _AddressParams(
-      {required final String? city,
-      required final String? country,
-      required final String? line1,
-      required final String? line2,
-      @JsonKey(name: "postal_code") required final String? postalCode,
-      required final String? state}) = _$_AddressParams;
+  const factory _AddressParams({
+    required final String? city,
+    required final String? country,
+    required final String? line1,
+    required final String? line2,
+    @JsonKey(name: 'postal_code') required final String? postalCode,
+    required final String? state,
+  }) = _$AddressParamsImpl;
 
   factory _AddressParams.fromJson(Map<String, dynamic> json) =
-      _$_AddressParams.fromJson;
+      _$AddressParamsImpl.fromJson;
 
   @override
   String? get city;
@@ -795,12 +910,15 @@ abstract class _AddressParams implements AddressParams {
   @override
   String? get line2;
   @override
-  @JsonKey(name: "postal_code")
+  @JsonKey(name: 'postal_code')
   String? get postalCode;
   @override
   String? get state;
+
+  /// Create a copy of AddressParams
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_AddressParamsCopyWith<_$_AddressParams> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AddressParamsImplCopyWith<_$AddressParamsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

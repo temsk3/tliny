@@ -1,93 +1,108 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../settings/hooks/use_l10n.dart';
-import '../settings/hooks/use_media_query.dart';
-import '../settings/routes/app_route.gr.dart';
-import '../settings/theme/app_text_theme.dart';
-import '../settings/theme/app_theme.dart';
+import '../settings/routes/routes.dart';
+import '../utils/logger.dart';
 import 'drawer/drawer.dart';
 
-@RoutePage()
+enum PageIndex { top, cart, ticket }
+
 class HomePage extends HookConsumerWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.navigationShell});
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
-    // final appRoute = useRouter();
-    final appMQ = useMediaQuery();
+    final currentIndex = useState(navigationShell.currentIndex);
+    useEffect(() {
+      currentIndex.value = navigationShell.currentIndex;
+      return null;
+    }, [navigationShell.currentIndex]);
+    // スプラッシュスクリーン表示終了
+    FlutterNativeSplash.remove();
+    logger.i('スプラッシュスクリーンを終了しました'); // loggerでログ出力
 
-    return WillPopScope(
-      onWillPop: _finishNextPage,
-      child: AutoTabsScaffold(
-        appBarBuilder: (_, tabsRouter) {
-          return AppBar(
-            // elevation: 0,
-            title: Text(
-              'Tliny',
-              style: theme.textTheme.h30.melanthios(),
-            ),
-            centerTitle: true,
-            leading: const AutoLeadingButton(),
-            actions: const [],
-          );
-        },
-        drawer: appMQ.size.width <= 1024 ? const CustomDrawer() : null,
-        // homeIndex: 1,
-        routes: const [
-          TopRoute(),
-          FavoriteRoute(),
-          CartRoute(),
-          TicketRoute(),
-          ProgramRoute(),
-        ],
-        bottomNavigationBuilder: (_, tabsRouter) {
-          return NavigationBar(
-            selectedIndex: tabsRouter.activeIndex,
-            onDestinationSelected: tabsRouter.setActiveIndex,
-            destinations: [
-              NavigationDestination(
-                selectedIcon: const Icon(Icons.home),
-                icon: const Icon(Icons.home_outlined),
-                label: l10n.home,
-              ),
-              NavigationDestination(
-                selectedIcon: const Icon(Icons.favorite),
-                icon: const Icon(Icons.favorite_outline),
-                label: l10n.favorite,
-              ),
-              NavigationDestination(
-                selectedIcon: const Icon(Icons.shopping_cart),
-                icon: const Icon(Icons.shopping_cart_outlined),
-                label: l10n.cart,
-              ),
-              NavigationDestination(
-                selectedIcon: const FaIcon(FontAwesomeIcons.ticketSimple),
-                icon: const FaIcon(FontAwesomeIcons.ticket),
-                label: l10n.ticket,
-              ),
-              // NavigationDestination(
-              //   selectedIcon: const Icon(Icons.shopping_basket),
-              //   icon: const Icon(Icons.shopping_basket_outlined),
-              //   label: l10n.product,
-              // ),
-              // NavigationDestination(
-              //   selectedIcon: const Icon(Icons.event),
-              //   icon: const Icon(Icons.event_outlined),
-              //   label: l10n.event,
-              // ),
-            ],
-          );
-        },
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: _appBar(context),
+        drawer: const CustomDrawer(),
+        body: navigationShell,
+        bottomNavigationBar: _bottomNavigationBar(context, currentIndex, ref),
       ),
     );
   }
-}
 
-Future<bool> _finishNextPage() async {
-  return false;
+  AppBar _appBar(BuildContext context) {
+    return AppBar(
+      leading: _showLeading(context) ? _leadButton(context) : null,
+      title: const Text('TLINY Sample'),
+    );
+  }
+
+  // 戻るボタン
+  Widget _leadButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.pop(),
+      child: const Icon(Icons.arrow_back),
+    );
+  }
+
+  // 戻るボタンを表示するかの判定
+  bool _showLeading(BuildContext context) {
+    return ![
+      AppRoutes.topPage,
+      AppRoutes.cartPage,
+      AppRoutes.ticketPage,
+    ].contains(GoRouterState.of(context).uri.toString());
+  }
+
+  BottomNavigationBar _bottomNavigationBar(
+      BuildContext context, ValueNotifier<int> currentIndex, WidgetRef ref) {
+    final l10n = useL10n();
+    const quantity = 0;
+    return BottomNavigationBar(
+      currentIndex: currentIndex.value,
+      items: <BottomNavigationBarItem>[
+        // Top
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.home_outlined),
+          label: l10n.home,
+          activeIcon: const Icon(Icons.home),
+        ),
+        // Cart
+        BottomNavigationBarItem(
+          icon: Badge(
+            isLabelVisible: (quantity == 0) ? false : true,
+            label: Text(quantity.toString()),
+            child: const Icon(Icons.shopping_cart_outlined),
+          ),
+          label: l10n.cart,
+          activeIcon: Badge(
+            isLabelVisible: (quantity == 0) ? false : true,
+            label: Text(quantity.toString()),
+            child: const Icon(Icons.shopping_cart),
+          ),
+        ),
+        // Ticket
+        BottomNavigationBarItem(
+          icon: const FaIcon(FontAwesomeIcons.ticket),
+          label: l10n.ticket,
+          activeIcon: const FaIcon(FontAwesomeIcons.ticketSimple),
+        ),
+      ],
+      onTap: (int index) {
+        currentIndex.value = index;
+        navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        );
+      },
+    );
+  }
 }

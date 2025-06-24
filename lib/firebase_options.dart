@@ -21,25 +21,13 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -53,12 +41,54 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAUfurYMesWH-5L6HSZWUxdzFHRr212_2k',
-    appId: '1:786895284421:web:63572907fd64ee9f1b28ac',
-    messagingSenderId: '786895284421',
-    projectId: 'tliny-58de7',
-    authDomain: 'tliny-58de7.firebaseapp.com',
-    storageBucket: 'tliny-58de7.appspot.com',
-    measurementId: 'G-D2GHMCKVRV',
+    apiKey: 'AIzaSyDGh2hgPptvftSpCbooC6B0JlvF2buRTpc',
+    appId: '1:312506082989:web:c9afeda5018001cd450824',
+    messagingSenderId: '312506082989',
+    projectId: 'tliny-sample',
+    authDomain: 'tliny-sample.firebaseapp.com',
+    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'tliny-sample.appspot.com',
+    measurementId: 'G-65ZMZD8S4V',
   );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyBMDuKR6Dick0HCGZSiN55vXl5bzFwB5yw',
+    appId: '1:312506082989:ios:d71d0879776e2e27450824',
+    messagingSenderId: '312506082989',
+    projectId: 'tliny-sample',
+    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'tliny-sample.appspot.com',
+    iosBundleId: 'com.example.tliny',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBMDuKR6Dick0HCGZSiN55vXl5bzFwB5yw',
+    appId: '1:312506082989:ios:d71d0879776e2e27450824',
+    messagingSenderId: '312506082989',
+    projectId: 'tliny-sample',
+    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'tliny-sample.appspot.com',
+    iosBundleId: 'com.example.tliny',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyCf93IBNSI6tfN76hilPJ6Jw2OPbY1IwGA',
+    appId: '1:312506082989:android:84101f58a7eddd02450824',
+    messagingSenderId: '312506082989',
+    projectId: 'tliny-sample',
+    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'tliny-sample.appspot.com',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCoQSxALGity4uWeKYIvSQ2GgOto6qS3tY',
+    appId: '1:312506082989:web:405d7646fcb1f0f6450824',
+    messagingSenderId: '312506082989',
+    projectId: 'tliny-sample',
+    authDomain: 'tliny-sample.firebaseapp.com',
+    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'tliny-sample.appspot.com',
+    measurementId: 'G-PQBNM3YP5T',
+  );
+
 }

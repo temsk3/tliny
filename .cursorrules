@@ -1,0 +1,90 @@
+バザーWebアプリ開発ルールサマリー:
+  目的: Flutter、Firebase、Stripe、MVVM+Repository、Riverpod (Generator含む)、Freezed、GoRouter、TypeScript (Cloud Functions) を用いたWebアプリ構築において、開発効率とコード品質を最大化すること
+  1. 全体的な指針:
+    - DRY (Don't Repeat Yourself) 原則の徹底: コードの重複を避け、積極的に共通化を図る。
+    - KISS (Keep It Simple, Stupid) 原則: コードはシンプルかつ理解しやすいものとする。
+    - 可読性の追求: 適切な命名、コメント、フォーマットにより、誰が読んでも理解できるコードを記述する。
+    - テスト容易性: 各コンポーネントは独立してテスト可能となるよう設計する。
+    - パフォーマンス意識: 特にFirebaseの読み書き、Stripe API呼び出し回数には注意を払う。
+  2. アーキテクチャ: MVVM + Repository パターン:
+    責務: 各層の責務を明確にし、依存関係を一方通行とする。
+    - View (Presentation層 / Widget): UIの表示とユーザーイベントのViewModelへの伝達のみを行う。ビジネスロジックは持たない。
+    - ViewModel (Presentation層 / Notifier / AsyncNotifier): Viewからのイベントを受け取り、ビジネスロジックを実行する。Repository層を通じてデータの取得・更新を行い、Viewに表示すべき状態を管理する。
+    - UseCase (Domain層 / 任意): 複数のRepository操作や複雑なドメインロジックをカプセル化する場合に定義する。ViewModelの責務を軽減し、ドメインロジックを分離する。
+    - Repository (Domain層 / Data層):
+      - 抽象定義 (Domain層): アプリケーションのビジネス要件に基づくデータ操作のインターフェースを定義する。
+      - 実装 (Data層): 抽象インターフェースを、具体的なデータソース（Firebase, Stripeなど）に依存する形で実装する。
+    - DataSource (Data層): 特定のデータソースに対する低レベルな操作（API通信、DB操作）をカプセル化する。
+  3. Flutter 開発:
+    - ディレクトリ構成: core, data, domain, presentation, routes を基本とし、大規模な場合は features で機能ごとに分割する。
+    - Widget: ステートレスなUIには StatelessWidget を使用し、ステートフルなUIには ConsumerWidget または HookConsumerWidget を使用する。状態はRiverpodに集約し、Widgetの分割を積極的に行う。統一的なデザインのため、再利用可能な共通Widgetを積極的に作成し、デザインの一貫性を保つ。
+    - Riverpod (Riverpod Generator を積極的に活用):
+      - アノテーション駆動: 可能な限り @riverpod を利用し、Provider, FutureProvider, StreamProvider, NotifierProvider, AsyncNotifierProvider を自動生成する。これによりボイラープレートを削減し、型安全性を高める。
+      - Notifier / AsyncNotifier: ViewModelの実装には @riverpod アノテーションを付与した Notifier または AsyncNotifier を使用し、同期非同期の状態管理を行う。
+      - ref オブジェクト: プロバイダ内で他のプロバイダにアクセスする際は、必ず引数で渡される ref を使用する。
+      - Family: 動的な引数をプロバイダに渡す際は、@riverpod の関数やクラスの build メソッドに引数を定義することで自動的に Family が生成される。
+      - build_runner: flutter pub run build_runner watch を常に起動し、.g.dart ファイルが最新であることを保証する。
+      - 非同期処理の優先順位: データの継続的な更新やリアルタイム性が求められる場合は、Stream を優先して使用する。一度限りの操作や静的なデータ取得には Future を使い分ける。
+    - Freezed: データモデル（Entity, DTO）の定義に利用し、イミュータブルなオブジェクト生成と変更管理を容易にする。
+    - GoRouter: 名前付きルートを積極的に使用し、redirect を用いた認証フローを適切に実装する。ルーティング設定は独立したファイルに集約する。
+  4. Firebase 開発:
+    - Firestore:
+      - データ設計: バザーの特性に応じた最適なデータ構造を設計する（正規化、非正規化、コレクションとドキュメントの関係）。
+      - セキュリティルール: 開発の早期段階で厳密なルールを設定し、データ保護を徹底する。
+      - インデックス: クエリパフォーマンス向上のため、適切なインデックスを作成する。
+      - バッチ処理: 複数ドキュメントの書き込みにはバッチ処理を推奨する。
+    - Firebase Authentication: Eメール/パスワード認証、ソーシャルサインインなど必要な認証方法を実装する。
+    - Firebase Storage: 画像などのファイル保存に利用し、セキュリティルールでアクセス権限を管理する。
+    - Cloud Functions (TypeScript):
+      - 責務: クライアント側では行えない処理（Stripe決済、DBトリガー、外部API連携など）に特化させる。
+      - 堅牢性: 適切なエラーハンドリング、ロギング、環境変数の安全な管理を行う。
+      - TypeScript: 型安全性を最大限に活用し、可読性と保守性を高める。トランザクションの利用を検討する。
+  5. Stripe 連携:
+    - APIキーの管理: 公開可能キーはクライアントサイドで使用し、秘密キーはCloud Functionsなどのサーバーサイドのみで使用する。クライアントサイドに秘密キーを埋め込まない。
+    - 決済フロー: Stripeのベストプラクティスに従い、支払い意図の作成と確認はCloud Functionsで行う。
+    - Webhook: Stripeからの決済イベントをCloud Functionsで受信し、決済結果の反映や通知を行う。Webhook署名検証は必須とする。
+    - エラーハンドリング: APIからのエラーを適切に処理し、ユーザーに分かりやすいフィードバックを提供する。
+  6. コーディング規約・ツール:
+    - Dart Formatter/Analyzer: 常に有効にし、Lintルールに従う。
+    - 命名規則: クラス名にはPascalCase、変数名や関数名にはcamelCase、ファイル名にはsnake_caseを使用する。
+    - コメント: 複雑なロジックや意図を説明するため、必要に応じてJSDoc形式のコメントを追加する。
+    - ログ: 開発時は適切なログ出力を行い、本番環境ではログレベルを調整する。
+    - エラーハンドリング:
+      - 統一的なエラー表現: アプリケーション全体で統一されたエラー表現を使用するため、カスタムのAppExceptionクラスを定義する。これにより、エラーの種類や原因を明確にし、各層でのハンドリングを簡素化する。
+      - 層ごとのエラー変換:
+        - DataSource層: FirebaseやStripeなど外部APIからの低レベルなエラー（例: FirebaseException, StripeException）を捕捉し、必要に応じてDomain層で定義されたAppExceptionに変換してRepository層に渡す。
+        - Repository層: DataSource層から渡されたエラーを、UseCase層やViewModel層が理解しやすいAppExceptionに変換して渡す。
+        - UseCase層 / ViewModel層: Repository層から受け取ったAppExceptionを処理し、UIに表示すべきユーザーフレンドリーなメッセージや状態に変換する。
+      - UIへのエラー表示: ViewModelから通知されるエラー状態（例: RiverpodのAsyncValue.error）をUI層で受け取り、SnackBars, Dialogs, エラーメッセージWidgetなど、ユーザーに分かりやすい一貫した方法でフィードバックを提供する。
+      - try-catchの使用: 非同期処理で発生する可能性のあるエラーは、各層で適切にtry-catchブロックを使用して捕捉し、上述のルールに従って処理する。
+      - ロギング: 発生したエラーは、種類やスタックトレースを含めて詳細にロギングする。本番環境ではSentryやCrashlyticsなどのエラー監視ツールとの連携を検討する。
+    - 非同期処理: async/await を適切に使用し、非同期処理のフローを明確にする。
+    - テスト: 単体テスト、ウィジェットテスト、統合テストを適切に実施する。
+    - .gitignore: 自動生成される .g.dart ファイルはGit管理から除外する。
+  7. その他:
+    ユーザー体験 (UX) とアクセシビリティ (A11y):
+      - シンプルなナビゲーション: ユーザーが迷わない直感的なナビゲーションを提供する。
+      - 明確なフィードバック: アクション（例: ボタンクリック、データ送信）に対して、ローディングインジケータ、成功メッセージ、エラーメッセージなど、即座に視覚的なフィードバックを提供する。ローディング中は、関連するUI要素（ボタンなど）を無効化し、不必要な操作や二重送信を防ぐ。
+      - アクセシビリティ: スクリーンリーダー対応、キーボード操作のサポート、十分なコントラスト比など、多様なユーザーが利用できるUIを心がける。
+      - 通知戦略: 商品の売買成立、メッセージ受信など、重要なイベントはプッシュ通知（Web Push）、アプリ内通知、メール通知などを活用してユーザーに適切に伝える。
+    パフォーマンス最適化 (Webアプリ特化):
+      - Web向け最適化: Flutter Webのビルドオプション（例: canvaskit と html レンダラーの選択）を適切に設定し、バンドルサイズと初期ロード時間を最適化する。
+      - 画像の最適化: 商品画像はWebPなどのモダンなフォーマットを使用し、適切なサイズに圧縮して提供する。Firebase Storageの画像変換機能（Firebase Extensionsなど）の利用を検討する。
+      - Lazy Loading: 画面外のWidgetやデータは遅延ロードを検討し、初期ロード時の負荷を軽減する。
+      - Firebaseデータ取得の最適化: 必要なフィールドのみを取得（select()）し、クエリを最適化する（limit(), orderBy(), startAt()/endAt()/startAfter()/endBefore()）。不要なドキュメントの読み込みを避ける。
+    セキュリティのさらなる考慮:
+      - 入力検証: クライアントサイドとサーバーサイド（Cloud Functions）の両方で、ユーザーからの入力値を厳密に検証し、不正なデータやインジェクション攻撃を防ぐ。
+      - レートリミット: Cloud FunctionsでAPIエンドポイントに対して、不正利用やDoS攻撃を防ぐためのレートリミットを実装する。
+      - 機密情報の取り扱い: APIキー、Stripeシークレットキーなどの機密情報は、Firebase Functionsの環境変数やSecret Managerを使用して安全に管理する。
+    デプロイとCI/CD:
+      - 自動デプロイ: GitHub ActionsやCloud BuildなどのCI/CDパイプラインを構築し、コードコミットやタグ付けをトリガーに自動テスト、ビルド、デプロイを行う。
+      - 環境分離: 開発（dev）、ステージング（stg）、本番（prod）など、環境を明確に分離し、それぞれの環境で異なるFirebaseプロジェクトやStripeアカウントを使用する。
+    オブザーバビリティ:
+      - 監視: Firebase Performance MonitoringやCloud Monitoringなどを活用し、アプリのパフォーマンスやエラーを継続的に監視する。
+      - アナリティクス: Firebase AnalyticsやGoogle Analyticsを利用して、ユーザーの行動やアプリの利用状況を把握し、改善に役立てる。
+    PWA (Progressive Web App) 対応:
+      - オフライン対応: Service Workerを導入し、オフライン時でも基本的な機能が利用できるようにする（例: キャッシュされたコンテンツの表示）。
+      - ホーム画面追加: ユーザーがアプリをホーム画面に追加できるようにし、ネイティブアプリのような体験を提供する。
+    ドキュメンテーション:
+      - 内部ドキュメンテーション: プロジェクトのアーキテクチャ、主要な設計思想、複雑なロジック、デプロイ手順などをチーム内で共有できるドキュメントとして残す。
+      - コードコメント: 複雑な関数、クラス、アルゴリズムには、JSDocスタイル（Dart）やTSDocスタイル（TypeScript）のコメントを付与し、コードの意図を明確にする。

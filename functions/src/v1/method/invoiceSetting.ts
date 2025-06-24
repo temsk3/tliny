@@ -1,10 +1,11 @@
-import * as functions from 'firebase-functions'
+/* eslint-disable max-len */
+import * as functions from 'firebase-functions';
 // import * as firebaseAdmin from 'firebase-admin'
-import { v4 as uuidv4 } from 'uuid'
+import {v4 as uuidv4} from 'uuid';
 
-import { onCall } from '../../utils/base_function'
-import { exportFunction } from '../../utils/deploy'
-import * as P from '../../utils/function_paths'
+import {onCall} from '../../utils/base_function';
+import {exportFunction} from '../../utils/deploy';
+import * as P from '../../utils/function_paths';
 
 import {
   stripe,
@@ -12,37 +13,37 @@ import {
   // country,
   // accountType,
   // capabilities,
-} from '../stripe/utils/stripe_config'
-import stripeErrors from '../stripe/utils/stripe_error'
-import Stripe from 'stripe'
+} from '../stripe/utils/stripe_config';
+import stripeErrors from '../stripe/utils/stripe_error';
+import Stripe from 'stripe';
 import {
   // db,
   checkAuth,
   getRequestingUserId,
   getStripeCustomerId,
-} from '../../utils/firebase_utils'
+} from '../../utils/firebase_utils';
 // import config from '../firestore/utils/db_paths'
 // import Document from '../firestore/utils/document'
 // import * as Model from '../firestore/utils/model'
 
 const _exportFunction = (name: string, f: () => any) =>
-  exportFunction([P.v1, P.method, 'invoiceSetting', name], exports, f)
+  exportFunction([P.v1, P.method, 'invoiceSetting', name], exports, f);
 
 // MARK: Account Links の登録(account_onboarding)or更新(account_update)
 _exportFunction('onCreate', () =>
   onCall(async (data, context) => {
-    console.log('Customer invoiceSetting')
+    console.log('Customer invoiceSetting');
     // 認証済みユーザーかどうかチェックする
-    checkAuth(context)
+    checkAuth(context);
     // uid取得
-    const uid = getRequestingUserId(context)
+    const uid = getRequestingUserId(context);
     //
-    const customerId = await getStripeCustomerId(uid)
+    const customerId = await getStripeCustomerId(uid);
     if (customerId === null) {
       throw new functions.https.HttpsError(
-        'failed-precondition',
-        'User has no Stripe ID'
-      )
+          'failed-precondition',
+          'User has no Stripe ID'
+      );
     }
     //
     // const setupIntent = await db
@@ -85,23 +86,23 @@ _exportFunction('onCreate', () =>
     //   }
     // )
     const paramsA: Stripe.CustomerUpdateParams = {
-      invoice_settings: { default_payment_method: data.paymentMethodId },
-    }
-    stripeOptions.idempotencyKey = uuidv4()
+      invoice_settings: {default_payment_method: data.paymentMethodId},
+    };
+    stripeOptions.idempotencyKey = uuidv4();
     return await stripe.customers
-      .update(customerId, paramsA, stripeOptions)
-      .then(
-        (result: Stripe.Response<Stripe.Customer>) => {
-          console.log(result)
-          return result
-        },
-        (error: any) => {
-          stripeErrors(error)
-          throw new functions.https.HttpsError('unknown', error)
-        }
-      )
+        .update(customerId, paramsA, stripeOptions)
+        .then(
+            (result: Stripe.Response<Stripe.Customer>) => {
+              console.log(result);
+              return result;
+            },
+            (error: any) => {
+              stripeErrors(error);
+              throw new functions.https.HttpsError('unknown', error);
+            }
+        );
   })
-)
+);
 
 // const createAccount = async (data: any) => {
 //   console.log('createAccount')

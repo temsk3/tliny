@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 extension IntExtension on int? {
   String toSplitCommaString() {
-    final formatter = NumberFormat("#,###");
+    final formatter = NumberFormat('#,###');
     return formatter.format(this);
   }
 }

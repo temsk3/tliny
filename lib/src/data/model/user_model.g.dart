@@ -8,25 +8,44 @@ part of 'user_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
-      id: json['id'] as String?,
-      photoUrl: json['photoUrl'] as String?,
-      displayName: json['displayName'] as String?,
-      name: json['name'] as String?,
-      email: json['email'] as String?,
-      phoneNumber: json['phoneNumber'] as String?,
-      createdAt: dateFromTimestampValue(json['createdAt']),
-      updatedAt: dateFromTimestampValue(json['updatedAt']),
-      deletedAt: dateFromTimestampValue(json['deletedAt']),
-    );
+_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+  id: json['id'] as String?,
+  photoUrl: json['photoUrl'] as String?,
+  displayName: json['displayName'] as String?,
+  name: json['name'] as String?,
+  email: json['email'] as String?,
+  phoneNumber: json['phoneNumber'] as String?,
+  createdAt: dateFromTimestampValue(json['createdAt']),
+  updatedAt: dateFromTimestampValue(json['updatedAt']),
+  deletedAt: dateFromTimestampValue(json['deletedAt']),
+);
 
-Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
+Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'photoUrl': instance.photoUrl,
       'displayName': instance.displayName,
       'name': instance.name,
       'email': instance.email,
       'phoneNumber': instance.phoneNumber,
+      'createdAt': timestampFromDateValue(instance.createdAt),
+      'updatedAt': timestampFromDateValue(instance.updatedAt),
+      'deletedAt': timestampFromDateValue(instance.deletedAt),
+    };
+
+_$PublicUsersImpl _$$PublicUsersImplFromJson(Map<String, dynamic> json) =>
+    _$PublicUsersImpl(
+      id: json['id'] as String?,
+      displayName: json['displayName'] as String?,
+      createdAt: dateFromTimestampValue(json['createdAt']),
+      updatedAt: dateFromTimestampValue(json['updatedAt']),
+      deletedAt: dateFromTimestampValue(json['deletedAt']),
+    );
+
+Map<String, dynamic> _$$PublicUsersImplToJson(_$PublicUsersImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'displayName': instance.displayName,
       'createdAt': timestampFromDateValue(instance.createdAt),
       'updatedAt': timestampFromDateValue(instance.updatedAt),
       'deletedAt': timestampFromDateValue(instance.deletedAt),

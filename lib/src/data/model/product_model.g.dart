@@ -8,17 +8,23 @@ part of 'product_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
+_$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
+    _$ProductImpl(
       id: json['id'] as String?,
-      exchangeNumber: json['exchangeNumber'] as int?,
+      exchangeNumber: (json['exchangeNumber'] as num?)?.toInt(),
       code: json['code'] as String?,
       name: json['name'] as String?,
-      genre: $enumDecodeNullable(_$GenreTypeEnumMap, json['genre'],
-          unknownValue: GenreType.others),
+      genre: $enumDecodeNullable(
+        _$GenreTypeEnumMap,
+        json['genre'],
+        unknownValue: GenreType.others,
+      ),
       desc: json['desc'] as String?,
-      stock: json['stock'] as int? ?? 0,
-      price: json['price'] as int? ?? 50,
-      pictureURL: (json['pictureURL'] as List<dynamic>?)
+      stock: (json['stock'] as num?)?.toInt() ?? 0,
+      price: (json['price'] as num?)?.toInt() ?? 50,
+      strageId: json['strageId'] as String?,
+      pictureURL:
+          (json['pictureURL'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -29,10 +35,12 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       priceId: json['priceId'] as String?,
       register: json['register'] as String?,
       organizerDocRef: documentReference(
-          json['organizerDocRef'] as DocumentReference<Map<String, dynamic>>?),
+        json['organizerDocRef'] as DocumentReference<Map<String, dynamic>>?,
+      ),
       organizerId: json['organizerId'] as String?,
       eventDocRef: documentReference(
-          json['eventDocRef'] as DocumentReference<Map<String, dynamic>>?),
+        json['eventDocRef'] as DocumentReference<Map<String, dynamic>>?,
+      ),
       eventId: json['eventId'] as String?,
       eventName: json['eventName'] as String?,
       expirationLink: json['expirationLink'] as bool?,
@@ -43,7 +51,7 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
+Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'exchangeNumber': instance.exchangeNumber,
@@ -53,6 +61,7 @@ Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
       'desc': instance.desc,
       'stock': instance.stock,
       'price': instance.price,
+      'strageId': instance.strageId,
       'pictureURL': instance.pictureURL,
       'expirationFrom': timestampFromDateValue(instance.expirationFrom),
       'expirationTo': timestampFromDateValue(instance.expirationTo),
@@ -79,16 +88,16 @@ const _$GenreTypeEnumMap = {
   GenreType.others: 'others',
 };
 
-_$_ProductQueryParameter _$$_ProductQueryParameterFromJson(
-        Map<String, dynamic> json) =>
-    _$_ProductQueryParameter(
-      json['programId'] as String?,
-      $enumDecodeNullable(_$GenreTypeEnumMap, json['genre']),
-    );
+_$ProductQueryParameterImpl _$$ProductQueryParameterImplFromJson(
+  Map<String, dynamic> json,
+) => _$ProductQueryParameterImpl(
+  json['programId'] as String?,
+  $enumDecodeNullable(_$GenreTypeEnumMap, json['genre']),
+);
 
-Map<String, dynamic> _$$_ProductQueryParameterToJson(
-        _$_ProductQueryParameter instance) =>
-    <String, dynamic>{
-      'programId': instance.programId,
-      'genre': _$GenreTypeEnumMap[instance.genre],
-    };
+Map<String, dynamic> _$$ProductQueryParameterImplToJson(
+  _$ProductQueryParameterImpl instance,
+) => <String, dynamic>{
+  'programId': instance.programId,
+  'genre': _$GenreTypeEnumMap[instance.genre],
+};

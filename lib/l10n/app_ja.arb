@@ -1,5 +1,6 @@
 {
   "@@locale": "ja",
+  "appTitle": "TLINY",
   "home": "ホーム",
   "hello": "こんにちは",
   "profile": "ユーザー情報",
@@ -12,6 +13,9 @@
   "signUp": "新規登録",
   "haveAnAccount": "すでにアカウントをお持ちの場合  ",
   "login": "Login",
+  "mail": "メール",
+  "mailAddress": "メールアドレス",
+  "password": "パスワード",
   "register": "登録",
   "update": "更新",
   "delete": "削除",
@@ -35,14 +39,27 @@
   "name": "名前",
   "phone": "電話番号",
   "pleaseEnterSomeText": "テキストを入力してください",
+  "pleaseEnterSomeNum": "数値を入力してください",
   "edit": "編集",
   "cancel": "キャンセル",
+  "backButton": "戻る",
   "message": "メッセージ",
   "pleaseEnterADateAfterTheSpecifiedDate": "指定した日付より後の日付を入力してください",
   "eventName": "名称",
   "detail": "詳細",
-  "dataTime": "{date}",
-  "@dataTime": {
+  "dateTime": "{date}",
+  "@dateTime": {
+    "description": "date parameter",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "isCustomDateFormat": "true",
+        "format": "yMMMEd Hm"
+      }
+    }
+  },
+  "date": "{date}",
+  "@date": {
     "description": "date parameter",
     "placeholders": {
       "date": {
@@ -80,5 +97,40 @@
         "format": "simpleCurrency"
       }
     }
-  }
+  },
+  "validPeriod": "有効期間",
+  "code": "コード",
+  "genre": "ジャンル",
+  "goods": "物品",
+  "foods": "食品",
+  "others": "その他",
+  "productName": "商品名",
+  "productDescription": "商品説明",
+  "stock": "在庫",
+  "price": "金額",
+  "purchaseHistory": "購入履歴",
+  "noPurchaseHistory": "購入履歴はありません",
+  "completion": "完了",
+  "outOfTerm": "販売期間外",
+  "awaitingPayment": "支払いを待っています。 支払い画面で支払いを完了して下さい。",
+  "openNewWindow": "支払い画面を開く",
+  "addToCart": "買物カゴに追加",
+  "addToCartQ": "買物カゴに追加しますか？",
+  "addedToCart": "買物カゴに追加されました",
+  "doYouWantToDeleteIt": "削除しますか？",
+  "processingData": "データー処理中",
+  "handoverProcessQ": "引渡し処理を完了しますか？",
+  "handoverProcess": "引渡し処理",
+  "wouldYouLikeToRegisterAsAStaffMember": "スタッフとして登録しますか？",
+  "confirm": "確認",
+  "theCodeIsWrong": "コードが間違っています",
+  "thankYouForYourPurchase": "ご購入いただきありがとうございます",
+  "processingInterrupted": "処理を中断しました",
+  "selectImage": "画像を選択",
+  "salesInformation": "販売情報",
+  "close": "閉じる",
+  "registered": "登録されました",
+  "notification": "通知",
+  "signIn": "サインイン",
+  "signOut": "サインアウト"
 }

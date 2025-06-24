@@ -15,15 +15,37 @@ String _$programRepositoryHash() => r'a3d2bc5e7b2fa173f2a462be8c64098874e773ce';
 final programRepositoryProvider = Provider<ProgramRepository>.internal(
   programRepository,
   name: r'programRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$programRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$programRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ProgramRepositoryRef = ProviderRef<ProgramRepository>;
-String _$programStreamHash() => r'165b4cec2cda9dea337e4d70c15ed2e25c60f647';
+String _$programsStreamHash() => r'158ced26dfd616ee4376f65228152f3afcc36d15';
+
+/// See also [programsStream].
+@ProviderFor(programsStream)
+final programsStreamProvider =
+    AutoDisposeStreamProvider<List<Program>>.internal(
+      programsStream,
+      name: r'programsStreamProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$programsStreamHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ProgramsStreamRef = AutoDisposeStreamProviderRef<List<Program>>;
+String _$programStreamHash() => r'24cd8ca012c555115a64c0e0dcd64bab989be998';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,8 +68,6 @@ class _SystemHash {
   }
 }
 
-typedef ProgramStreamRef = AutoDisposeStreamProviderRef<Program>;
-
 /// See also [programStream].
 @ProviderFor(programStream)
 const programStreamProvider = ProgramStreamFamily();
@@ -58,21 +78,15 @@ class ProgramStreamFamily extends Family<AsyncValue<Program>> {
   const ProgramStreamFamily();
 
   /// See also [programStream].
-  ProgramStreamProvider call(
-    String programId,
-  ) {
-    return ProgramStreamProvider(
-      programId,
-    );
+  ProgramStreamProvider call(String programId) {
+    return ProgramStreamProvider(programId);
   }
 
   @override
   ProgramStreamProvider getProviderOverride(
     covariant ProgramStreamProvider provider,
   ) {
-    return call(
-      provider.programId,
-    );
+    return call(provider.programId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -93,25 +107,55 @@ class ProgramStreamFamily extends Family<AsyncValue<Program>> {
 /// See also [programStream].
 class ProgramStreamProvider extends AutoDisposeStreamProvider<Program> {
   /// See also [programStream].
-  ProgramStreamProvider(
-    this.programId,
-  ) : super.internal(
-          (ref) => programStream(
-            ref,
-            programId,
-          ),
-          from: programStreamProvider,
-          name: r'programStreamProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$programStreamHash,
-          dependencies: ProgramStreamFamily._dependencies,
-          allTransitiveDependencies:
-              ProgramStreamFamily._allTransitiveDependencies,
-        );
+  ProgramStreamProvider(String programId)
+    : this._internal(
+        (ref) => programStream(ref as ProgramStreamRef, programId),
+        from: programStreamProvider,
+        name: r'programStreamProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$programStreamHash,
+        dependencies: ProgramStreamFamily._dependencies,
+        allTransitiveDependencies:
+            ProgramStreamFamily._allTransitiveDependencies,
+        programId: programId,
+      );
+
+  ProgramStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.programId,
+  }) : super.internal();
 
   final String programId;
+
+  @override
+  Override overrideWith(
+    Stream<Program> Function(ProgramStreamRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ProgramStreamProvider._internal(
+        (ref) => create(ref as ProgramStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        programId: programId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<Program> createElement() {
+    return _ProgramStreamProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -127,8 +171,23 @@ class ProgramStreamProvider extends AutoDisposeStreamProvider<Program> {
   }
 }
 
-String _$programFutureHash() => r'8ba334a0aedf1b390f4331dd688ecd36835c393e';
-typedef ProgramFutureRef = AutoDisposeFutureProviderRef<Program?>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin ProgramStreamRef on AutoDisposeStreamProviderRef<Program> {
+  /// The parameter `programId` of this provider.
+  String get programId;
+}
+
+class _ProgramStreamProviderElement
+    extends AutoDisposeStreamProviderElement<Program>
+    with ProgramStreamRef {
+  _ProgramStreamProviderElement(super.provider);
+
+  @override
+  String get programId => (origin as ProgramStreamProvider).programId;
+}
+
+String _$programFutureHash() => r'6e2441fda868a92c04790bdafbca522373c3c912';
 
 /// See also [programFuture].
 @ProviderFor(programFuture)
@@ -140,21 +199,15 @@ class ProgramFutureFamily extends Family<AsyncValue<Program?>> {
   const ProgramFutureFamily();
 
   /// See also [programFuture].
-  ProgramFutureProvider call(
-    String programId,
-  ) {
-    return ProgramFutureProvider(
-      programId,
-    );
+  ProgramFutureProvider call(String programId) {
+    return ProgramFutureProvider(programId);
   }
 
   @override
   ProgramFutureProvider getProviderOverride(
     covariant ProgramFutureProvider provider,
   ) {
-    return call(
-      provider.programId,
-    );
+    return call(provider.programId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -175,25 +228,55 @@ class ProgramFutureFamily extends Family<AsyncValue<Program?>> {
 /// See also [programFuture].
 class ProgramFutureProvider extends AutoDisposeFutureProvider<Program?> {
   /// See also [programFuture].
-  ProgramFutureProvider(
-    this.programId,
-  ) : super.internal(
-          (ref) => programFuture(
-            ref,
-            programId,
-          ),
-          from: programFutureProvider,
-          name: r'programFutureProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$programFutureHash,
-          dependencies: ProgramFutureFamily._dependencies,
-          allTransitiveDependencies:
-              ProgramFutureFamily._allTransitiveDependencies,
-        );
+  ProgramFutureProvider(String programId)
+    : this._internal(
+        (ref) => programFuture(ref as ProgramFutureRef, programId),
+        from: programFutureProvider,
+        name: r'programFutureProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$programFutureHash,
+        dependencies: ProgramFutureFamily._dependencies,
+        allTransitiveDependencies:
+            ProgramFutureFamily._allTransitiveDependencies,
+        programId: programId,
+      );
+
+  ProgramFutureProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.programId,
+  }) : super.internal();
 
   final String programId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Program?> Function(ProgramFutureRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ProgramFutureProvider._internal(
+        (ref) => create(ref as ProgramFutureRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        programId: programId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Program?> createElement() {
+    return _ProgramFutureProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -208,4 +291,22 @@ class ProgramFutureProvider extends AutoDisposeFutureProvider<Program?> {
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin ProgramFutureRef on AutoDisposeFutureProviderRef<Program?> {
+  /// The parameter `programId` of this provider.
+  String get programId;
+}
+
+class _ProgramFutureProviderElement
+    extends AutoDisposeFutureProviderElement<Program?>
+    with ProgramFutureRef {
+  _ProgramFutureProviderElement(super.provider);
+
+  @override
+  String get programId => (origin as ProgramFutureProvider).programId;
+}
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

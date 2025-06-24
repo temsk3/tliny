@@ -23,17 +23,26 @@
   "cSpell.words": [
     "ARGB",
     "autofocus",
+    "barcodes",
+    "BIZUDP",
     "cupertino",
+    "encrypter",
+    "eventarc",
     "firestore",
     "Fluttertoast",
     "fullscreen",
     "idempotency",
     "impal",
+    "LTRB",
     "Melanthios",
+    "Mincho",
     "noto",
     "nullsafety",
+    "predeploy",
     "prefcode",
     "prefs",
+    "qrcode",
+    "remoteconfig",
     "repositoty",
     "Scaned",
     "signin",
@@ -42,10 +51,16 @@
     "stripeversion",
     "timestampkey",
     "tliny",
+    "unfocus",
     "usecase",
     "uuidv",
     "zipcode"
   ],
-  "dart.flutterGenerateLocalizationsOnSave": "manual"
-  // "audioCues.lineHasError": "off"
+  "dart.flutterGenerateLocalizationsOnSave": "manual",
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "dart.flutterSdkPath": ".fvm/versions/3.29.3"
 }

@@ -1,5 +1,5 @@
-import { exportFunctionsModule } from '../../utils/deploy'
-import * as P from '../../utils/function_paths'
+import {exportFunctionsModule} from '../../utils/deploy';
+import * as P from '../../utils/function_paths';
 
 const domains = [
   // 'account_links',
@@ -12,6 +12,6 @@ const domains = [
   // 'persons',
   // 'setupIntent',
   'webhook',
-]
+];
 
-domains.forEach((d) => exportFunctionsModule([P.v1, P.stripe, d], exports))
+domains.forEach((d) => exportFunctionsModule([P.v1, P.stripe, d], exports));

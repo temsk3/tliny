@@ -13,15 +13,19 @@ String _$favoriteViewModelHash() => r'00fa60a1925e9eae58bc7f0882fb6c76c2b54c8b';
 /// See also [FavoriteViewModel].
 @ProviderFor(FavoriteViewModel)
 final favoriteViewModelProvider = AutoDisposeAsyncNotifierProvider<
-    FavoriteViewModel, List<Favorite>>.internal(
+  FavoriteViewModel,
+  List<Favorite>
+>.internal(
   FavoriteViewModel.new,
   name: r'favoriteViewModelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$favoriteViewModelHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$favoriteViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 typedef _$FavoriteViewModel = AutoDisposeAsyncNotifier<List<Favorite>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

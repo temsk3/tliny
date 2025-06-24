@@ -1,35 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
 
-final logger = Logger();
+import '../../utils/logger.dart';
 
+/// エラーが発生した場合に表示する画面
 class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({
-    super.key,
-    required this.e,
-    this.st,
-  });
+  const ErrorScreen({super.key, required this.e, this.st});
+
+  /// エラーオブジェクト
   final Object e;
+
+  /// スタックトレース
   final StackTrace? st;
 
   @override
   Widget build(BuildContext context) {
-    logger.e('Error', [e, st]);
-    // return Scaffold(
-    //   body: SingleChildScrollView(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         Text(e.toString()),
-    //         const SizedBox(height: 5),
-    //         Text(st.toString()),
-    //       ],
-    //     ),
-    //   ),
-    // );
-    return AlertDialog(
-      title: Text(e.toString()),
-      content: Text(st.toString()),
+    // エラーログを出力
+    logger.e(
+      'ErrorScreen: build',
+      time: DateTime.now(),
+      error: e,
+      stackTrace: st,
+    );
+    return Scaffold(
+      appBar: AppBar(title: const Text('エラー')),
+      body: Center(
+        child: ListView(
+          // Use ListView
+          shrinkWrap: true, // Important for ListView inside a Column
+          children: [
+            Padding(
+              // Add padding for better visual separation
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                // Put the Text widgets inside a padded Column
+                children: [
+                  Text(
+                    e.toString(),
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  if (st != null)
+                    Text(
+                      st.toString(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                ],
+              ),
+            ), // Add spacing here
+            Padding(
+              // Wrap the button in a Padding widget
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                child: const Text('ホームへ戻る'),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

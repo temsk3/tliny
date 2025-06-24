@@ -8,54 +8,61 @@ part of 'stripe_customer_params.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CustomerParams _$$_CustomerParamsFromJson(Map<String, dynamic> json) =>
-    _$_CustomerParams(
-      address: json['address'] == null
-          ? null
-          : AddressParams.fromJson(json['address'] as Map<String, dynamic>),
+_$CustomerParamsImpl _$$CustomerParamsImplFromJson(Map<String, dynamic> json) =>
+    _$CustomerParamsImpl(
+      address:
+          json['address'] == null
+              ? null
+              : AddressParams.fromJson(json['address'] as Map<String, dynamic>),
       description: json['description'] as String?,
       email: json['email'] as String?,
       metadata: json['metadata'] as Map<String, dynamic>?,
       name: json['name'] as String?,
       paymentMethod: json['payment_method'] as String?,
       phone: json['phone'] as String?,
-      shipping: json['shipping'] == null
-          ? null
-          : ShippingParams.fromJson(json['shipping'] as Map<String, dynamic>),
+      shipping:
+          json['shipping'] == null
+              ? null
+              : ShippingParams.fromJson(
+                json['shipping'] as Map<String, dynamic>,
+              ),
       source: json['source'] as String?,
     );
 
-Map<String, dynamic> _$$_CustomerParamsToJson(_$_CustomerParams instance) =>
-    <String, dynamic>{
-      'address': instance.address?.toJson(),
-      'description': instance.description,
-      'email': instance.email,
-      'metadata': instance.metadata,
-      'name': instance.name,
-      'payment_method': instance.paymentMethod,
-      'phone': instance.phone,
-      'shipping': instance.shipping?.toJson(),
-      'source': instance.source,
-    };
+Map<String, dynamic> _$$CustomerParamsImplToJson(
+  _$CustomerParamsImpl instance,
+) => <String, dynamic>{
+  'address': instance.address?.toJson(),
+  'description': instance.description,
+  'email': instance.email,
+  'metadata': instance.metadata,
+  'name': instance.name,
+  'payment_method': instance.paymentMethod,
+  'phone': instance.phone,
+  'shipping': instance.shipping?.toJson(),
+  'source': instance.source,
+};
 
-_$_ShippingParams _$$_ShippingParamsFromJson(Map<String, dynamic> json) =>
-    _$_ShippingParams(
-      address: json['address'] == null
-          ? null
-          : AddressParams.fromJson(json['address'] as Map<String, dynamic>),
+_$ShippingParamsImpl _$$ShippingParamsImplFromJson(Map<String, dynamic> json) =>
+    _$ShippingParamsImpl(
+      address:
+          json['address'] == null
+              ? null
+              : AddressParams.fromJson(json['address'] as Map<String, dynamic>),
       name: json['name'] as String?,
       phone: json['phone'] as String?,
     );
 
-Map<String, dynamic> _$$_ShippingParamsToJson(_$_ShippingParams instance) =>
-    <String, dynamic>{
-      'address': instance.address,
-      'name': instance.name,
-      'phone': instance.phone,
-    };
+Map<String, dynamic> _$$ShippingParamsImplToJson(
+  _$ShippingParamsImpl instance,
+) => <String, dynamic>{
+  'address': instance.address,
+  'name': instance.name,
+  'phone': instance.phone,
+};
 
-_$_AddressParams _$$_AddressParamsFromJson(Map<String, dynamic> json) =>
-    _$_AddressParams(
+_$AddressParamsImpl _$$AddressParamsImplFromJson(Map<String, dynamic> json) =>
+    _$AddressParamsImpl(
       city: json['city'] as String?,
       country: json['country'] as String?,
       line1: json['line1'] as String?,
@@ -64,7 +71,7 @@ _$_AddressParams _$$_AddressParamsFromJson(Map<String, dynamic> json) =>
       state: json['state'] as String?,
     );
 
-Map<String, dynamic> _$$_AddressParamsToJson(_$_AddressParams instance) =>
+Map<String, dynamic> _$$AddressParamsImplToJson(_$AddressParamsImpl instance) =>
     <String, dynamic>{
       'city': instance.city,
       'country': instance.country,

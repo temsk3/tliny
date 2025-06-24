@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as functions from 'firebase-functions'
 import Stripe from 'stripe'
 import { v4 as uuidv4 } from 'uuid'
@@ -7,12 +8,17 @@ import {
   checkAuth,
   db,
   getRequestingUserId,
+  getUserEmail,
   // getStripeConnectAccountId,
 } from '../../utils/firebase_utils'
 import * as P from '../../utils/function_paths'
-import paths from '../firestore//utils/db_paths'
-import { createPreOrder } from './order'
-import { stripe, stripeOptions } from '../stripe/utils/stripe_config'
+import paths from '../firestore/utils/db_paths'
+import { createPreOrder, cancelOrder } from './order'
+import {
+  stripe,
+  stripeOptions,
+  APPLICATION_FEE_PERCENT,
+} from '../stripe/utils/stripe_config'
 import stripeErrors from '../stripe/utils/stripe_error'
 import { getStripeCustomerId } from '../stripe/utils/stripe_utils'
 
@@ -33,25 +39,24 @@ _exportFunction('onPayment', () =>
       // 認証済みユーザーかどうかチェックする
       checkAuth(context)
       const uid = getRequestingUserId(context)
+      const email = await getUserEmail(uid)
       console.log(uid)
       const customerId = await getStripeCustomerId(uid)
       if (customerId === null) {
         throw new functions.https.HttpsError(
           'failed-precondition',
-          'User has no Stripe ID'
+          'User has no Stripe ID',
         )
       }
 
       // 在庫の確保を行う
-      // const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-      //   data.lineItems
-      // const orderId = data.orderId
       const preOrder = await createPreOrder(uid, eventId)
       const orderId = preOrder.orderID
       const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
         preOrder.lineItems
-      console.log(lineItems)
+      console.log('lineItem' + lineItems)
       const accountId = preOrder.accountId
+      console.log('accountId' + accountId)
 
       // 有効なCheckout URLを複数発行しないための施策【二重決済対策】
       // 1. 生成したCheckout URLを一覧で取得
@@ -60,24 +65,34 @@ _exportFunction('onPayment', () =>
       })
       // 2. 現在有効中のURLをフィルターする
       const openSessionList = sessionList.filter(
-        (sessionItem) => sessionItem.status === 'open'
+        (sessionItem) => sessionItem.status === 'open',
       )
       // 3. 有効中のURLを無効化する
       await Promise.all(
         openSessionList.map((openSessionItem) =>
-          stripe.checkout.sessions.expire(openSessionItem.id)
-        )
+          stripe.checkout.sessions.expire(openSessionItem.id),
+        ),
+      )
+
+      // 手数料計算
+      const applicationFeeAmount = Math.round(
+        preOrder.subtotal * (APPLICATION_FEE_PERCENT / 100),
       )
 
       // 決済URLを発行
       const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData =
         {
-          transfer_group: orderId,
-          setup_future_usage: 'off_session',
+          // transfer_group: orderId,
+          // setup_future_usage: 'off_session',
+          application_fee_amount: applicationFeeAmount,
+          // transfer_data: {
+          //   destination: accountId,
+          // },
         }
       const params: Stripe.Checkout.SessionCreateParams = {
         mode: 'payment',
         // customer: customerId,
+        customer_email: email,
         line_items: lineItems,
         success_url: successUrl,
         cancel_url: cancelUrl,
@@ -93,36 +108,54 @@ _exportFunction('onPayment', () =>
         .create(params, stripeOptions)
         .then(
           (result: Stripe.Response<Stripe.Checkout.Session>) => {
-            const checkoutSessionId = result.id
-            const url = result.url
-            const status = result.status
-            return { checkoutSessionId: checkoutSessionId, url: url, status }
+            // const checkoutSessionId = result.id
+            // const url = result.url
+            // const status = result.status
+            return result
           },
           (error: any) => {
+            console.log('================================================')
+            console.log('Stripe Checkout Sessions Create Error')
             stripeErrors(error)
-            console.log('Stripe Checkout Create Error')
+            console.log('================================================')
+            console.log('================================================')
+            console.log('Stripe Checkout Order cancel')
+            cancelOrder(orderId)
+            console.log('================================================')
             throw new Error(error.message)
-          }
+          },
         )
       //
       await db
         .collection(paths.ordersCollectionPath)
         .doc(orderId)
-        .set({ checkoutSessionId: response.checkoutSessionId }, { merge: true })
+        .set({ checkoutSessionId: response.id }, { merge: true })
       //
       await db
         .collection(paths.usersCollectionPath)
         .doc(uid)
         .collection(paths.settlementCollectionPath)
-        .doc()
-        .create({ checkout_session_id: response.checkoutSessionId })
+        .doc(response.id)
+        .create({
+          checkout_session_id: response.id,
+          order_id: orderId,
+          account_id: accountId,
+        })
 
-      return response
+      return {
+        checkoutSessionId: response.id,
+        url: response.url,
+        status: response.status,
+        accountId: accountId,
+        lineItem: preOrder.lineItems,
+        orderId: orderId,
+      }
     } catch (error: any) {
+      console.log('Checkout Payment Error')
       console.log(error)
       throw new Error(error)
     }
-  })
+  }),
 )
 
 // MARK: - Checkout.Sessionのsetup urlを返す
@@ -138,7 +171,7 @@ _exportFunction('onSetup', () =>
     if (customerId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ID'
+        'User has no Stripe ID',
       )
     }
     const params: Stripe.Checkout.SessionCreateParams = {
@@ -169,12 +202,14 @@ _exportFunction('onSetup', () =>
         stripeErrors(error)
         console.log('Stripe Checkout onSetup Error')
         throw new Error(error.message)
-      }
+      },
     )
-  })
+  }),
 )
 
-// MARK: - Checkout.Sessionのsubscription urlを返す
+/**
+ * サブスクリプション用の Checkout セッションを作成する
+ */
 _exportFunction('onSubscription', () =>
   onCall(async (data, context) => {
     const orderId = data.orderId
@@ -188,7 +223,7 @@ _exportFunction('onSubscription', () =>
     if (customerId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ID'
+        'User has no Stripe ID',
       )
     }
     const params: Stripe.Checkout.SessionCreateParams = {
@@ -212,12 +247,14 @@ _exportFunction('onSubscription', () =>
         stripeErrors(error)
         console.log('Stripe Checkout onSubscription Error')
         throw new Error(error.message)
-      }
+      },
     )
-  })
+  }),
 )
 
-// MARK: - を返す
+/**
+ * Checkout セッションを期限切れにする
+ */
 _exportFunction('onExpire', () =>
   onCall(async (data, context) => {
     const checkoutSessionId = data.checkoutSessionId
@@ -228,7 +265,7 @@ _exportFunction('onExpire', () =>
     if (customerId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ID'
+        'User has no Stripe ID',
       )
     }
 
@@ -245,12 +282,14 @@ _exportFunction('onExpire', () =>
           stripeErrors(error)
           console.log('Stripe Checkout onExpire Error')
           throw new Error(error.message)
-        }
+        },
       )
-  })
+  }),
 )
 
-// MARK: - を返す
+/**
+ * Checkout セッションを取得する
+ */
 _exportFunction('onRetrieve', () =>
   onCall(async (data, context) => {
     console.log('Checkout Retrieve')
@@ -263,11 +302,12 @@ _exportFunction('onRetrieve', () =>
     if (customerId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ID'
+        'User has no Stripe ID',
       )
     }
 
     stripeOptions.idempotencyKey = uuidv4()
+    stripeOptions.stripeAccount = data.accountId
 
     return await stripe.checkout.sessions
       .retrieve(checkoutSessionId, stripeOptions)
@@ -280,12 +320,14 @@ _exportFunction('onRetrieve', () =>
           stripeErrors(error)
           console.log('Stripe Checkout Retrieve Error')
           throw new Error(error.message)
-        }
+        },
       )
-  })
+  }),
 )
 
-// MARK: - を返す
+/**
+ * Checkout セッションのラインアイテムを取得する
+ */
 _exportFunction('onListOfLineItems', () =>
   onCall(async (data, context) => {
     const checkoutSessionId = data.checkoutSessionId
@@ -296,7 +338,7 @@ _exportFunction('onListOfLineItems', () =>
     if (customerId === null) {
       throw new functions.https.HttpsError(
         'failed-precondition',
-        'User has no Stripe ID'
+        'User has no Stripe ID',
       )
     }
 
@@ -313,7 +355,26 @@ _exportFunction('onListOfLineItems', () =>
           stripeErrors(error)
           console.log('Stripe Checkout listLineItems Error')
           throw new Error(error.message)
-        }
+        },
       )
-  })
+  }),
+)
+
+/**
+ * 注文をキャンセルする
+ */
+_exportFunction('onCancel', () =>
+  onCall(async (data, context) => {
+    // 認証済みユーザーかどうかチェックする
+    try {
+      checkAuth(context)
+
+      cancelOrder(data.orderId)
+
+      return
+    } catch (error: any) {
+      console.log(error)
+      throw new Error(error)
+    }
+  }),
 )

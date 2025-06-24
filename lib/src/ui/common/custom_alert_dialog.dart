@@ -1,90 +1,134 @@
 import 'dart:io' show Platform;
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:logger/logger.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../settings/hooks/use_router.dart';
+import '../../utils/logger.dart';
 
-final logger = Logger();
+/// Fluttertoast を表示する関数
+Future<void> showFluttertoast(
+  String msg, {
+  Color? backgroundColor,
+  Color? textColor,
+  String? webBgColor,
+}) async {
+  logger.d('showFluttertoast: msg=$msg', time: DateTime.now());
+  try {
+    await Fluttertoast.showToast(
+      msg: msg,
+      webShowClose: true,
+      webPosition: 'center',
+      webBgColor: webBgColor ?? '#eb4034',
+      timeInSecForIosWeb: 2,
+      backgroundColor: backgroundColor ?? Colors.red,
+      textColor: textColor ?? Colors.white,
+      toastLength: Toast.LENGTH_LONG,
+    );
+  } on Exception catch (e, st) {
+    logger.e('showFluttertoast: error=$e, stackTrace=$st',
+        time: DateTime.now());
+    rethrow;
+  }
+}
 
+/// テキストダイアログを表示する関数
 Future<void> showTextDialog(
-  BuildContext context,
-  StackRouter appRoute, {
+  BuildContext context, {
   required String title,
   required String message,
   required String defaultActionText,
 }) async {
-  final builder = CustomAlertDialog(
-    title: title,
-    contentWidget: Text(message),
-    defaultActionText: defaultActionText,
-    action: () {
-      appRoute.pop();
-    },
-  );
-  bool platform;
-  if (kIsWeb) {
-    platform = false;
-  } else {
-    platform = Platform.isIOS;
-  }
-  if (platform) {
-    return showCupertinoDialog(
-      context: context,
-      builder: (context) => builder,
+  logger.d(
+      'showTextDialog: title=$title, message=$message, defaultActionText=$defaultActionText',
+      time: DateTime.now());
+  try {
+    final builder = CustomAlertDialog(
+      title: title,
+      contentWidget: Text(message),
+      defaultActionText: defaultActionText,
+      action: () {
+        // appRoute.pop();
+        context.pop();
+      },
     );
-  } else {
-    return showDialog(
-      context: context,
-      builder: (context) => builder,
-    );
+    bool platform;
+    if (kIsWeb) {
+      platform = false;
+    } else {
+      platform = Platform.isIOS;
+    }
+    if (platform) {
+      await showCupertinoDialog(
+        context: context,
+        builder: (context) => builder,
+      );
+    } else {
+      await showDialog(
+        context: context,
+        builder: (context) => builder,
+      );
+    }
+  } on Exception catch (e, st) {
+    logger.e('showTextDialog: error=$e, stackTrace=$st', time: DateTime.now());
+    rethrow;
   }
 }
 
-/// 確認用ダイアログ（bool を返す）
+/// 確認用ダイアログを表示する関数（bool を返す）
 Future<bool?> showConfirmDialog(
   BuildContext context,
-  StackRouter appRoute, {
+  // StackRouter appRoute,
+  {
   required String title,
   required Widget contentWidget,
   required String cancelText,
   required String decisionText,
 }) async {
-  final builder = CustomAlertDialog(
-    title: title,
-    contentWidget: contentWidget,
-    cancelActionText: cancelText,
-    cancelAction: () {
-      appRoute.pop(false);
-    },
-    defaultActionText: decisionText,
-    action: () {
-      appRoute.pop(true);
-    },
-  );
-  bool platform;
-  if (kIsWeb) {
-    platform = false;
-  } else {
-    platform = Platform.isIOS;
-  }
-  if (platform) {
-    return showCupertinoDialog<bool>(
-      context: context,
-      builder: (context) => builder,
+  logger.d(
+      'showConfirmDialog: title=$title, cancelText=$cancelText, decisionText=$decisionText',
+      time: DateTime.now());
+  try {
+    final builder = CustomAlertDialog(
+      title: title,
+      contentWidget: contentWidget,
+      cancelActionText: cancelText,
+      cancelAction: () {
+        // appRoute.pop(false);
+      },
+      defaultActionText: decisionText,
+      action: () {
+        // appRoute.pop(true);
+      },
     );
-  } else {
-    return showDialog<bool>(
-      context: context,
-      builder: (context) => builder,
-    );
+    bool platform;
+    if (kIsWeb) {
+      platform = false;
+    } else {
+      platform = Platform.isIOS;
+    }
+    if (platform) {
+      return await showCupertinoDialog<bool>(
+        context: context,
+        builder: (buildContext) => builder,
+      );
+    } else {
+      return await showDialog<bool>(
+        context: context,
+        builder: (buildContext) => builder,
+      );
+    }
+  } on Exception catch (e, st) {
+    logger.e('showConfirmDialog: error=$e, stackTrace=$st',
+        time: DateTime.now());
+    rethrow;
   }
 }
 
+/// カスタムダイアログを表示するWidget
 class CustomAlertDialog extends HookWidget {
   const CustomAlertDialog({
     super.key,
@@ -104,7 +148,7 @@ class CustomAlertDialog extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     bool platform;
     if (kIsWeb) {
       platform = false;
@@ -123,7 +167,7 @@ class CustomAlertDialog extends HookWidget {
                 if (cancelAction != null) {
                   cancelAction!();
                 }
-                appRoute.pop(false);
+                Navigator.of(context).pop(false);
               },
             ),
           TextButton(
@@ -132,7 +176,7 @@ class CustomAlertDialog extends HookWidget {
               if (action != null) {
                 action!();
               }
-              appRoute.pop(true);
+              Navigator.of(context).pop(true);
             },
           ),
         ],
@@ -149,7 +193,7 @@ class CustomAlertDialog extends HookWidget {
                 if (cancelAction != null) {
                   cancelAction!();
                 }
-                appRoute.pop(false);
+                Navigator.of(context).pop(false);
               },
             ),
           TextButton(
@@ -158,7 +202,7 @@ class CustomAlertDialog extends HookWidget {
               if (action != null) {
                 action!();
               }
-              appRoute.pop(true);
+              Navigator.of(context).pop(true);
             },
           ),
         ],

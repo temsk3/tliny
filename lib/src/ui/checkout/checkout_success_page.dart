@@ -1,30 +1,46 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tliny/src/settings/routes/routes.dart';
 
-@RoutePage()
+import '../../settings/hooks/use_l10n.dart';
+import '../common/main_body.dart';
+
+/// チェックアウト成功画面
 class CheckoutSuccessPage extends HookConsumerWidget {
-  const CheckoutSuccessPage({
-    super.key,
-    @QueryParam('session_id') required this.sessionId,
-  });
+  const CheckoutSuccessPage({super.key, required this.sessionId});
 
+  /// チェックアウトセッションID
   final String? sessionId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // ref.read(stripeViewModelProvider);
-    String text;
-    if (sessionId != null) {
-      text = sessionId as String;
-    } else {
-      text = 'null';
-    }
+    // ローカリゼーションを取得
+    final l10n = useL10n();
+
     return Scaffold(
-      body: Center(
-        child: Text(
-          text,
-          style: Theme.of(context).textTheme.displayLarge,
+      body: MainBodyWidget(
+        width: 400,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // 購入完了メッセージを表示
+              Text(
+                l10n.thankYouForYourPurchase,
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              const SizedBox(height: 32),
+              // ホーム画面へ戻るボタンを表示
+              ElevatedButton(
+                onPressed:
+                    () =>
+                    // appRoute.replace(const HomeRoute()),
+                    context.go(AppRoutes.topPage),
+                child: Text(l10n.backButton),
+              ),
+            ],
+          ),
         ),
       ),
     );

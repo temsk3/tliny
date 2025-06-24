@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../../../data/model/program_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
-import '../../../settings/hooks/use_router.dart';
-import '../../../settings/routes/app_route.gr.dart';
-import '../../../settings/theme/app_text_theme.dart';
-import '../../../settings/theme/app_theme.dart';
+import '../../../settings/routes/routes.dart';
 import '../../image/image_screen.dart';
 import '../program_view_model.dart';
 import 'program_button.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
 class EventCard extends HookConsumerWidget {
   EventCard({super.key, required this.program});
@@ -21,9 +17,9 @@ class EventCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
+    // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     final viewModel = ref.watch(programViewModelProvider.notifier);
 
     // final authState = ref.watch(authViewModelProvider);
@@ -116,7 +112,8 @@ class EventCard extends HookConsumerWidget {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: InkWell(
         onTap: () {
-          appRoute.push(ProgramDetailsRoute(program: program));
+          // appRoute.push(ProgramDetailsRoute(program: program));
+          ProgramDetailRoute($extra: program).push(context);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,8 +128,10 @@ class EventCard extends HookConsumerWidget {
                   Container(
                     width: 200,
                     decoration: const BoxDecoration(color: Colors.blue),
-                    child: PictureDetailView(
+                    child: PictureView(
                       picture: program.pictureURL,
+                      index: 0,
+                      tap: false,
                     ),
                   ),
                   // FavoriteProgramIconButton(
@@ -151,14 +150,14 @@ class EventCard extends HookConsumerWidget {
                   children: <Widget>[
                     Text(
                       program.name.toString(),
-                      style: theme.textTheme.h20.bold(),
+                      // style: theme.textTheme.h20.bold(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 2)),
                     Text(
                       l10n.periods,
-                      style: theme.textTheme.h10,
+                      // style: theme.textTheme.h10,
                     ),
                     // const Padding(padding: EdgeInsets.symmetric(vertical: 1.0)),
                     Row(
@@ -167,8 +166,8 @@ class EventCard extends HookConsumerWidget {
                         FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
-                            '${l10n.dataTime(program.eventFrom!)}〜${l10n.dataTime(program.eventTo!)}',
-                            style: theme.textTheme.h10,
+                            '${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
+                            // style: theme.textTheme.h10,
                           ),
                         ),
                       ],
@@ -176,7 +175,7 @@ class EventCard extends HookConsumerWidget {
                     const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
                     Text(
                       program.message.toString(),
-                      style: theme.textTheme.h10,
+                      // style: theme.textTheme.h10,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

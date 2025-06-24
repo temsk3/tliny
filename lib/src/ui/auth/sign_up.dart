@@ -1,87 +1,92 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 
-import '../../settings/hooks/use_router.dart';
+import '../../settings/hooks/use_dialog.dart';
+import '../../settings/hooks/use_l10n.dart';
+import '../../settings/routes/routes.dart';
+import '../../utils/logger.dart';
+import '../common/form_validator.dart';
+import '../common/main_body.dart';
 import 'auth_view_model.dart';
 
-final logger = Logger();
-
-@RoutePage()
+/// サインアップ画面
 class SignUpPage extends HookConsumerWidget {
   const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final theme = ref.watch(appThemeProvider);
-    // final l10n = useL10n();
-    final appRoute = useRouter();
-    // final appMQ = useMediaQuery();
+    final l10n = useL10n();
+    final dialogController = useDialog(); // snackbar controller を初期化
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final formKey = useMemoized(GlobalKey<FormState>.new);
 
-    final emailController = useTextEditingController(text: '');
-    final passwordController = useTextEditingController(text: '');
+    // バリデーション関数を変数として定義
+    String? validateEmail(String? value) => FormValidator.validateEmail(value);
+    String? validatePassword(String? value) =>
+        FormValidator.validatePassword(value);
+
+    final viewModel = ref.read(authViewModelProvider.notifier);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('新規登録')),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 24,
-          horizontal: 32,
-        ),
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.mail),
-                label: Text('メールアドレス'),
-                hintText: 'test@gmail.com',
-              ),
-              controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.lock),
-                label: Text('パスワード'),
-                hintText: 'password',
-              ),
-              controller: passwordController,
-              obscureText: true,
-            ),
-            const SizedBox(
-              height: 48,
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                minimumSize:
-                    MaterialStateProperty.all<Size>(const Size(128, 32)),
-              ),
-              onPressed: () async {
-                try {
-                  if (emailController.text.isEmpty) {
-                    throw 'メールアドレスを入力してください';
-                  }
-                  if (passwordController.text.isEmpty) {
-                    throw 'パスワードを入力してください';
-                  }
-                  await ref.read(authViewModelProvider.notifier).signUp(
+      appBar: AppBar(title: Text(l10n.signUp)),
+      body: MainBodyWidget(
+        width: 400,
+        body: Form(
+          // Formウィジェットを追加
+          key: formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.mail),
+                    label: Text(l10n.mailAddress),
+                    hintText: 'test@gmail.com',
+                  ),
+                  validator: validateEmail, // バリデーターを設定
+                ),
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.lock),
+                    label: Text(l10n.password),
+                    hintText: 'password',
+                  ),
+                  validator: validatePassword, // バリデーターを設定
+                ),
+                const SizedBox(height: 48),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (!formKey.currentState!.validate()) {
+                      return;
+                    }
+                    try {
+                      await viewModel.signUp(
                         emailController.text,
                         passwordController.text,
                       );
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //   MaterialPageRoute(builder: (context) => const MyHomePage()),
-                  //   (_) => false,
-                  // );
-                  appRoute.popUntilRoot();
-                } catch (e) {
-                  logger.e(e);
-                }
-              },
-              child: const Text('新規登録'),
+                      context.go(AppRoutes.topPage);
+                    } catch (e) {
+                      logger.e('signUpButton: error=$e');
+                      dialogController.showErrorDialog(
+                        'サインアップエラー',
+                        e.toString(),
+                      ); // snackbar を使ってエラーを表示
+                    }
+                  },
+                  child: Text(l10n.signUp),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

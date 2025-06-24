@@ -1,13 +1,11 @@
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tliny/src/data/repository/order_repository.dart';
 
 import '../../data/model/order_model.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../utils/logger.dart';
 
 part 'order_view_model.g.dart';
-
-final logger = Logger();
 
 @riverpod
 class OrderViewModel extends _$OrderViewModel {

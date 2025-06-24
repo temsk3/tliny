@@ -16,16 +16,19 @@ String _$favoriteRepositoryHash() =>
 final favoriteRepositoryProvider = Provider<FavoriteRepository>.internal(
   favoriteRepository,
   name: r'favoriteRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$favoriteRepositoryHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$favoriteRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FavoriteRepositoryRef = ProviderRef<FavoriteRepository>;
 String _$favoriteCheckExistenceHash() =>
-    r'142aa67ab21570acf012cc71bea0e66fa481d586';
+    r'0a0994d6e3600c0f668273ede9310ae6c2a101c4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -48,8 +51,6 @@ class _SystemHash {
   }
 }
 
-typedef FavoriteCheckExistenceRef = AutoDisposeStreamProviderRef<bool>;
-
 /// See also [favoriteCheckExistence].
 @ProviderFor(favoriteCheckExistence)
 const favoriteCheckExistenceProvider = FavoriteCheckExistenceFamily();
@@ -60,21 +61,15 @@ class FavoriteCheckExistenceFamily extends Family<AsyncValue<bool>> {
   const FavoriteCheckExistenceFamily();
 
   /// See also [favoriteCheckExistence].
-  FavoriteCheckExistenceProvider call(
-    String favoriteId,
-  ) {
-    return FavoriteCheckExistenceProvider(
-      favoriteId,
-    );
+  FavoriteCheckExistenceProvider call(String favoriteId) {
+    return FavoriteCheckExistenceProvider(favoriteId);
   }
 
   @override
   FavoriteCheckExistenceProvider getProviderOverride(
     covariant FavoriteCheckExistenceProvider provider,
   ) {
-    return call(
-      provider.favoriteId,
-    );
+    return call(provider.favoriteId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -95,25 +90,58 @@ class FavoriteCheckExistenceFamily extends Family<AsyncValue<bool>> {
 /// See also [favoriteCheckExistence].
 class FavoriteCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
   /// See also [favoriteCheckExistence].
-  FavoriteCheckExistenceProvider(
-    this.favoriteId,
-  ) : super.internal(
-          (ref) => favoriteCheckExistence(
-            ref,
-            favoriteId,
-          ),
-          from: favoriteCheckExistenceProvider,
-          name: r'favoriteCheckExistenceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$favoriteCheckExistenceHash,
-          dependencies: FavoriteCheckExistenceFamily._dependencies,
-          allTransitiveDependencies:
-              FavoriteCheckExistenceFamily._allTransitiveDependencies,
-        );
+  FavoriteCheckExistenceProvider(String favoriteId)
+    : this._internal(
+        (ref) => favoriteCheckExistence(
+          ref as FavoriteCheckExistenceRef,
+          favoriteId,
+        ),
+        from: favoriteCheckExistenceProvider,
+        name: r'favoriteCheckExistenceProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$favoriteCheckExistenceHash,
+        dependencies: FavoriteCheckExistenceFamily._dependencies,
+        allTransitiveDependencies:
+            FavoriteCheckExistenceFamily._allTransitiveDependencies,
+        favoriteId: favoriteId,
+      );
+
+  FavoriteCheckExistenceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.favoriteId,
+  }) : super.internal();
 
   final String favoriteId;
+
+  @override
+  Override overrideWith(
+    Stream<bool> Function(FavoriteCheckExistenceRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FavoriteCheckExistenceProvider._internal(
+        (ref) => create(ref as FavoriteCheckExistenceRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        favoriteId: favoriteId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<bool> createElement() {
+    return _FavoriteCheckExistenceProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -129,4 +157,23 @@ class FavoriteCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin FavoriteCheckExistenceRef on AutoDisposeStreamProviderRef<bool> {
+  /// The parameter `favoriteId` of this provider.
+  String get favoriteId;
+}
+
+class _FavoriteCheckExistenceProviderElement
+    extends AutoDisposeStreamProviderElement<bool>
+    with FavoriteCheckExistenceRef {
+  _FavoriteCheckExistenceProviderElement(super.provider);
+
+  @override
+  String get favoriteId =>
+      (origin as FavoriteCheckExistenceProvider).favoriteId;
+}
+
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

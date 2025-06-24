@@ -1,19 +1,17 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 import 'package:tliny/src/ui/program/program_state.dart';
 
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_router.dart';
-import '../../settings/routes/app_route.gr.dart';
+import '../../settings/routes/routes.dart';
+import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
 import 'history_view_model.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
-@RoutePage()
+// @RoutePage()
 class UsageHistoryPage extends HookConsumerWidget {
   const UsageHistoryPage({super.key});
 
@@ -21,18 +19,21 @@ class UsageHistoryPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     // final appMQ = useMediaQuery();
     final state = ref.watch(usageHistoryViewModelProvider);
     final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
     return AsyncValueWidget(
       value: state,
       data: (data) {
+        if (data.isNotEmpty) {
+          data.sort((a, b) => -a.dateOfUse!.compareTo(b.dateOfUse!));
+        }
         logger.d(data);
         return Scaffold(
           appBar: AppBar(
-            title: const Text('UsageHistory'),
-            leading: const AutoLeadingButton(),
+            title: Text(l10n.usageHistory),
+            // leading: const AutoLeadingButton(),
           ),
           body: MainBodyWidget(
             body: data.isNotEmpty
@@ -55,13 +56,16 @@ class UsageHistoryPage extends HookConsumerWidget {
                       );
                       name = program.name!;
                       return ListTile(
-                        title: Text(l10n.dataTime(usageHistory.dateOfUse!)),
-                        subtitle: Text(name),
-                        onTap: () => appRoute.push(
-                          UsageHistoryDetailsRoute(
-                            list: usageHistory.useTicket!,
-                          ),
+                        title: Text(
+                          '${l10n.date(usageHistory.dateOfUse!)} ${l10n.time(usageHistory.dateOfUse!)}',
                         ),
+                        subtitle: Text(name),
+                        onTap: () =>
+                            // appRoute.push(
+                            UsageHistoryDetailsRoute(
+                          $extra: usageHistory.useTicket!,
+                        ).push(context),
+                        // ),
                       );
                     },
                   )

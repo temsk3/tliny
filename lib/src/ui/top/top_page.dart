@@ -1,56 +1,198 @@
-import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
-import 'package:tliny/src/ui/top/my_program_screen.dart';
-import 'package:tliny/src/ui/top/program_screen.dart';
 
-import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
-import '../../settings/hooks/use_router.dart';
-import '../../settings/theme/app_theme.dart';
+import '../../data/model/program_model.dart';
+import '../../settings/routes/routes.dart';
 import '../../ui/common/main_body.dart';
-import '../common/search_bar.dart';
+import '../common/asyncvalue_widget.dart';
+import '../program/program_state.dart';
 import '../program/widget/program_button.dart';
+import 'program_screen.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
-@RoutePage()
+final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
+final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
+  (ref) => <int>{},
+);
+
+// @RoutePage()
 class TopPage extends HookConsumerWidget {
   const TopPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
-    final appRoute = useRouter();
-    final appMediaQuery = useMediaQuery();
+    // final theme = ref.watch(appThemeProvider);
+    // final l10n = useL10n();
+    // final appRoute = useRouter();
+    // final appMediaQuery = useMediaQuery();
 
-    return Scaffold(
-      appBar: const SearchBar(),
-      body: MainBodyWidget(
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                EventScreen(),
-                SizedBox(
-                  height: 32,
-                ),
-                Divider(),
-                MyProgramScreen(),
-              ],
+    final onSearchNotifier = ref.watch(onSearchProvider.notifier);
+    final onSearch = ref.watch(onSearchProvider);
+    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
+
+    //   return Scaffold(
+    //     appBar: const SearchBar(),
+    //     body: MainBodyWidget(
+    //       body: SingleChildScrollView(
+    //         child: Container(
+    //           padding: const EdgeInsets.all(24),
+    //           child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: const [
+    //               EventScreen(),
+    //               SizedBox(
+    //                 height: 32,
+    //               ),
+    //               Divider(),
+    //               MyProgramScreen(),
+    //             ],
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //     floatingActionButton: const AddProgramFloatingActionButton(),
+    //   );
+
+    return AsyncValueWidget(
+      value: ref.watch(programListStateProvider),
+      data: (list) {
+        final data =
+            list
+                .where(
+                  (element) =>
+                      element.isPublish == true && element.isActive == true,
+                )
+                .toList();
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            automaticallyImplyLeading: false,
+            title:
+                onSearch
+                    ? _searchTextField(context, ref, data)
+                    : null, // const Text('Search'),
+            actions:
+                onSearch
+                    ? [
+                      IconButton(
+                        onPressed: () {
+                          onSearchNotifier.state = false;
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ]
+                    : [
+                      IconButton(
+                        onPressed: () {
+                          onSearchNotifier.state = true;
+                          searchIndexListNotifier.state = {};
+                        },
+                        icon: Icon(
+                          Icons.search,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+          ),
+          body:
+              onSearch
+                  ? MainBodyWidget(
+                    body: Container(
+                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                      child: _searchListView(ref, data),
+                    ),
+                  )
+                  : const EventScreen(), // TikTok風の全画面表示
+          floatingActionButton: const AddProgramFloatingActionButton(),
+        );
+      },
+    );
+  }
+
+  Widget _searchTextField(
+    BuildContext context,
+    WidgetRef ref,
+    List<Program> data,
+  ) {
+    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
+    return SizedBox(
+      height: 40,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: TextField(
+            style: const TextStyle(color: Colors.black),
+            decoration: const InputDecoration(
+              hintText: 'Search Text',
+              contentPadding: EdgeInsets.only(left: 8),
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              isDense: true,
             ),
+            autofocus: true,
+            onChanged: (String text) {
+              searchIndexListNotifier.state = {};
+              for (var i = 0; i < data.length; i++) {
+                final map = data[i].toJson();
+                for (final key in map.keys) {
+                  final value = map[key];
+                  if (value.toString().contains(text)) {
+                    searchIndexListNotifier.state.add(i);
+                  }
+                }
+              }
+            },
           ),
         ),
       ),
-      floatingActionButton: const AddProgramFloatingActionButton(
-          // onPressed: () async {
-          //   await appRoute.push(ProgramEditRoute(program: Program.empty()));
-          // },
-          ),
     );
   }
+
+  Widget _searchListView(
+    WidgetRef ref,
+    List<Program> data,
+    // StackRouter appRoute,
+  ) {
+    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
+    final searchIndexList = ref.watch(searchIndexListProvider);
+    return ListView.builder(
+      itemCount: searchIndexList.length,
+      itemBuilder: (context, int index) {
+        index = searchIndexListNotifier.state.toList()[index];
+        return Card(
+          child: ListTile(
+            onTap: () {
+              // appRoute.push(ProgramDetailsRoute(program: data[index]));
+              ProgramDetailRoute($extra: data[index]).push(context);
+            },
+            title: Text(data[index].name.toString()),
+          ),
+        );
+      },
+    );
+  }
+
+  // Widget _defaultListView(List<Program> data) {
+  //   return ListView.builder(
+  //     itemCount: data.length,
+  //     itemBuilder: (context, index) {
+  //       return Card(
+  //         child: ListTile(
+  //           onTap: () {},
+  //           title: Text(data[index].name.toString()),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }

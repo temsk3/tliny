@@ -3,7 +3,12 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  desktop_webview_auth
+  cloud_firestore
+  file_selector_windows
+  firebase_auth
+  firebase_core
+  firebase_storage
+  printing
   url_launcher_windows
 )
 

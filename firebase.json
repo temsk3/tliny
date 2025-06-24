@@ -21,41 +21,58 @@
   ],
   "hosting": {
     "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+    "ignore": ["firebase.json", "**/.* !**/.env", "**/node_modules/**"]
   },
-  "storage": {
-    "rules": "storage.rules"
-  },
+  "storage": { "rules": "storage.rules" },
   "emulators": {
-    "auth": {
-      "port": 9099
-    },
-    "functions": {
-      "port": 5001
-    },
-    "firestore": {
-      "port": 8081
-    },
-    "hosting": {
-      "port": 5002
-    },
-    "pubsub": {
-      "port": 8087
-    },
-    "storage": {
-      "port": 9199
-    },
-    "eventarc": {
-      "port": 9299
-    },
-    "ui": {
-      "enabled": true
-    },
+    "auth": { "port": 9099 },
+    "functions": { "port": 5001 },
+    "firestore": { "port": 8081 },
+    "hosting": { "port": 5002 },
+    "pubsub": { "port": 8085 },
+    "storage": { "port": 9199 },
+    "eventarc": { "port": 9299 },
+    "ui": { "enabled": true },
     "singleProjectMode": true
   },
-  "remoteconfig": {}
+  "remoteconfig": { "template": "remoteconfig.template.json" },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tliny-sample",
+          "appId": "1:312506082989:android:84101f58a7eddd02450824",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "tliny-sample",
+          "appId": "1:312506082989:ios:d71d0879776e2e27450824",
+          "uploadDebugSymbols": true,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "tliny-sample",
+          "appId": "1:312506082989:ios:d71d0879776e2e27450824",
+          "uploadDebugSymbols": true,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tliny-sample",
+          "configurations": {
+            "android": "1:312506082989:android:84101f58a7eddd02450824",
+            "ios": "1:312506082989:ios:d71d0879776e2e27450824",
+            "macos": "1:312506082989:ios:d71d0879776e2e27450824",
+            "web": "1:312506082989:web:c9afeda5018001cd450824",
+            "windows": "1:312506082989:web:405d7646fcb1f0f6450824"
+          }
+        }
+      }
+    }
+  }
 }

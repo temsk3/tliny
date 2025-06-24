@@ -2,29 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 
 import '../../../data/model/staff_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
-import '../../../settings/hooks/use_router.dart';
-import '../../../settings/theme/app_text_theme.dart';
-import '../../../settings/theme/app_theme.dart';
 import '../../auth/auth_view_model.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
 class StaffCard extends HookConsumerWidget {
   StaffCard({super.key, required this.staff});
   Staff staff;
 
-  List<bool> isSelected = [
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ];
+  List<bool> isSelected = <bool>[true, false, false, false, false, false];
   List<IconData> iconList = [
     Icons.ac_unit,
     Icons.call,
@@ -36,15 +25,16 @@ class StaffCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = ref.watch(appThemeProvider);
+    // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
 
     final authState = ref.watch(authViewModelProvider);
     final uid = authState?.uid;
 
-    final dateFormatter =
-        DateFormat.yMMMEd(Localizations.localeOf(context).toString());
+    final dateFormatter = DateFormat.yMMMEd(
+      Localizations.localeOf(context).toString(),
+    );
 
     final isActive = useState(isSelected);
 
@@ -69,10 +59,7 @@ class StaffCard extends HookConsumerWidget {
                   decoration: BoxDecoration(
                     color: isSelected[index] ? Colors.redAccent : Colors.white,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Colors.redAccent,
-                      width: 3,
-                    ),
+                    border: Border.all(color: Colors.redAccent, width: 3),
                   ),
                   child: Icon(
                     iconList[index],
@@ -117,12 +104,14 @@ class StaffCard extends HookConsumerWidget {
             //         )
             //       : null,
             // ),
-            title:
-                Text(staff.name.toString(), style: theme.textTheme.h30.bold()),
+            title: Text(
+              staff.name.toString(),
+              // style: theme.textTheme.h30.bold(),
+            ),
             subtitle: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                iconContent()
+                iconContent(),
                 // Text(l10n.periods, style: theme.textTheme.h10),
                 // FittedBox(
                 //   fit: BoxFit.fitWidth,

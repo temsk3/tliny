@@ -1,5 +1,13 @@
 {
   "projects": {
-    "default": "tliny-58de7"
+    "default": "tliny-sample"
+  },
+  "targets": {},
+  "etags": {
+    "tliny-sample": {
+      "extensionInstances": {
+        "firestore-stripe-payments": "d19d02d63afb21d322ce43e514fd6372ecb9c2358b6f067c864475a5b74b9650"
+      }
+    }
   }
 }

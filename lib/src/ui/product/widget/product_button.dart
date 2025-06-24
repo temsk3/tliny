@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
 
 import '../../../data/model/product_model.dart';
 import '../../../data/model/program_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
-import '../../../settings/hooks/use_router.dart';
-import '../../../settings/routes/app_route.gr.dart';
+import '../../../settings/routes/routes.dart';
+import '../../../utils/logger.dart';
 import '../../cart/cart_view_model.dart';
 import '../../common/asyncvalue_widget.dart';
 import '../../common/base_button_widget.dart';
 import '../../common/custom_alert_dialog.dart';
 import '../product_state.dart';
 import '../product_view_model.dart';
-
-final logger = Logger();
 
 class AddProductFloatingActionButton extends StatelessWidget {
   const AddProductFloatingActionButton({
@@ -34,12 +32,14 @@ class AddProductFloatingActionButton extends StatelessWidget {
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
           value: ref.watch(addProductButtonStateProvider(program)),
-          data: (visible) => visible
-              ? BaseFloatingActionButton(
-                  onPressed: onPressed,
-                  child: child!,
-                )
-              : Container(),
+          data:
+              (visible) =>
+                  visible
+                      ? BaseFloatingActionButton(
+                        onPressed: onPressed,
+                        child: child!,
+                      )
+                      : Container(),
         );
       },
     );
@@ -116,31 +116,37 @@ class EditProductIconButton extends StatelessWidget {
   }
 }
 
-class GenreDropdownButton extends StatelessWidget {
+class GenreDropdownButton extends HookWidget {
   const GenreDropdownButton({
     super.key,
     required this.product,
     required this.value,
+    this.focusNode,
     required this.onChanged,
     required this.onSaved,
   });
   final Product product;
   final GenreType? value;
+  final FocusNode? focusNode;
   final void Function(GenreType?) onSaved;
   final void Function(GenreType?) onChanged;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n();
     return Flexible(
       child: DropdownButtonFormField<GenreType>(
-        items: GenreType.values
-            .map(
-              (GenreType genre) => DropdownMenuItem<GenreType>(
-                value: genre,
-                child: Text(genre.name),
-              ),
-            )
-            .toList(),
+        alignment: Alignment.center,
+        focusNode: focusNode,
+        items:
+            GenreType.values
+                .map(
+                  (GenreType genre) => DropdownMenuItem<GenreType>(
+                    value: genre,
+                    child: Text(genre.name),
+                  ),
+                )
+                .toList(),
         value: value,
         validator: (value) {
           if (value == null) {
@@ -148,7 +154,7 @@ class GenreDropdownButton extends StatelessWidget {
           }
           return null;
         },
-        decoration: const InputDecoration(labelText: 'genre'),
+        decoration: InputDecoration(labelText: l10n.genre),
         onSaved: onSaved,
         onChanged: onChanged,
       ),
@@ -170,17 +176,19 @@ class AmountDropdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
-      items: List.generate(
-        int.parse(product.stock.toString()),
-        (index) => 1 + index,
-      )
-          .map(
-            (quantity) => DropdownMenuItem<String>(
-              value: quantity.toString(),
-              child: Text(quantity.toString()),
-            ),
-          )
-          .toList(),
+      alignment: AlignmentDirectional.centerEnd,
+      items:
+          List.generate(
+                int.parse(product.stock.toString()),
+                (index) => 1 + index,
+              )
+              .map(
+                (quantity) => DropdownMenuItem<String>(
+                  value: quantity.toString(),
+                  child: Text(quantity.toString()),
+                ),
+              )
+              .toList(),
       value: value,
       onChanged: onChanged,
     );
@@ -192,46 +200,57 @@ class InCartElevatedButton extends HookWidget {
     super.key,
     required this.product,
     required this.quantity,
-    required this.programId,
+    required this.program,
   });
   final Product product;
   final int quantity;
-  final String programId;
+  final Program program;
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
+    final now = DateTime.now();
+    final salesStart = program.salesStart!;
+    final salesEnd = program.salesEnd!;
+    final isOpened = salesStart.isBefore(now) && salesEnd.isAfter(now);
+    final stateIndicate = isOpened && product.stock != 0;
     return Consumer(
-      child: const Text('買物カゴに追加'),
-      builder: (context, ref, child) {
+      builder: (innerContext, ref, child) {
+        final auth = ref.watch(authStateChangesProvider).value;
         return BaseElevatedButton(
-          onPressed: (product.stock != 0)
-              ? () async {
-                  final result = await showConfirmDialog(
-                    context,
-                    appRoute,
-                    cancelText: l10n.no,
-                    decisionText: l10n.yes,
-                    contentWidget:
-                        Text('${product.name!}\n ${l10n.quantity} : $quantity'),
-                    title: 'Add to cart?',
-                  );
-                  if (result!) {
-                    await Fluttertoast.showToast(
-                      msg: 'Added to cart',
-                      fontSize: 14,
-                    );
-                    logger.d('inCart');
-                    await ref.watch(cartViewModelProvider.notifier).cart(
-                          quantity,
-                          product.id.toString(),
-                          programId,
+          onPressed:
+              stateIndicate && auth!
+                  ? () async {
+                    try {
+                      const result = true;
+                      if (result) {
+                        logger.d('inCart');
+                        await ref
+                            .watch(cartViewModelProvider.notifier)
+                            .cart(quantity, product.id.toString(), program.id!);
+                        await showFluttertoast(
+                          '${product.name!} ${l10n.addedToCart}',
+                          webBgColor: 'amber',
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          textColor: Theme.of(context).colorScheme.onPrimary,
                         );
-                    await appRoute.pop();
+                        logger.d('pop');
+                        // await appRoute.pop();
+                        context.pop();
+                      }
+                    } on Exception catch (e, st) {
+                      logger.e(
+                        'Error',
+                        time: DateTime.now(),
+                        error: e,
+                        stackTrace: st,
+                      );
+                      rethrow;
+                    }
                   }
-                }
-              : null,
-          child: child!,
+                  : null,
+          child: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.addToCart)),
         );
       },
     );
@@ -249,7 +268,7 @@ class EditProductElevatedButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     return Consumer(
       child: Text(l10n.edit),
       builder: (context, ref, child) {
@@ -259,10 +278,10 @@ class EditProductElevatedButton extends HookWidget {
             return Visibility(
               visible: visible,
               child: BaseElevatedButton(
-                onPressed: () {
-                  appRoute.push(
-                    ProductEditRoute(program: program, product: product),
-                  );
+                onPressed: () async {
+                  // appRoute.push(
+                  ProductEditRoute($extra: (program, product)).push(context);
+                  // );
                 },
                 child: child!,
               ),
@@ -275,16 +294,13 @@ class EditProductElevatedButton extends HookWidget {
 }
 
 class DeleteProductElevatedButton extends HookWidget {
-  const DeleteProductElevatedButton({
-    super.key,
-    required this.product,
-  });
+  const DeleteProductElevatedButton({super.key, required this.product});
   final Product product;
 
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     return Consumer(
       child: Text(l10n.delete),
       builder: (context, ref, child) {
@@ -294,11 +310,22 @@ class DeleteProductElevatedButton extends HookWidget {
             return Visibility(
               visible: visible,
               child: BaseElevatedButton(
-                onPressed: () {
-                  ref.watch(productViewModelProvider.notifier).deleteProduct(
-                        product.id.toString(),
-                      );
-                  appRoute.pop();
+                onPressed: () async {
+                  final result = await showConfirmDialog(
+                    context,
+                    // appRoute,
+                    title: l10n.delete,
+                    contentWidget: Text(l10n.doYouWantToDeleteIt),
+                    cancelText: l10n.no,
+                    decisionText: l10n.yes,
+                  );
+                  if (result!) {
+                    await showFluttertoast(l10n.processingData);
+                    await ref
+                        .watch(productViewModelProvider.notifier)
+                        .deleteProduct(product.id.toString());
+                    context.pop();
+                  }
                 },
                 child: child!,
               ),
@@ -311,10 +338,7 @@ class DeleteProductElevatedButton extends HookWidget {
 }
 
 class RegisterProductElevatedButton extends HookWidget {
-  const RegisterProductElevatedButton({
-    super.key,
-    required this.onPressed,
-  });
+  const RegisterProductElevatedButton({super.key, required this.onPressed});
   final VoidCallback onPressed;
   @override
   Widget build(BuildContext context) {
@@ -323,7 +347,7 @@ class RegisterProductElevatedButton extends HookWidget {
       child: Text(l10n.register),
       builder: (context, ref, child) {
         return BaseElevatedButton(
-          onPressed: onPressed,
+          onPressed: () async => onPressed(),
           child: child!,
         );
       },
@@ -335,13 +359,13 @@ class CancelElevatedButton extends HookWidget {
   const CancelElevatedButton({super.key});
   @override
   Widget build(BuildContext context) {
-    final appRoute = useRouter();
+    // final appRoute = useRouter();
     final l10n = useL10n();
     return Consumer(
       child: Text(l10n.cancel),
       builder: (context, ref, child) {
         return BaseElevatedButton(
-          onPressed: appRoute.pop,
+          onPressed: () async => context.pop(),
           child: child!,
         );
       },

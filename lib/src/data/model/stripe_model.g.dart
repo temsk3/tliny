@@ -8,33 +8,36 @@ part of 'stripe_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_LineItem _$$_LineItemFromJson(Map<String, dynamic> json) => _$_LineItem(
-      quantity: json['quantity'] as int,
+_$LineItemImpl _$$LineItemImplFromJson(Map<String, dynamic> json) =>
+    _$LineItemImpl(
+      quantity: (json['quantity'] as num).toInt(),
       priceDate: PriceData.fromJson(json['price_date'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_LineItemToJson(_$_LineItem instance) =>
+Map<String, dynamic> _$$LineItemImplToJson(_$LineItemImpl instance) =>
     <String, dynamic>{
       'quantity': instance.quantity,
       'price_date': instance.priceDate.toJson(),
     };
 
-_$_PriceData _$$_PriceDataFromJson(Map<String, dynamic> json) => _$_PriceData(
-      unitAmount: json['unit_amount'] as int,
+_$PriceDataImpl _$$PriceDataImplFromJson(Map<String, dynamic> json) =>
+    _$PriceDataImpl(
+      unitAmount: (json['unit_amount'] as num).toInt(),
       currency: json['currency'] as String,
-      productData:
-          ProductData.fromJson(json['product_data'] as Map<String, dynamic>),
+      productData: ProductData.fromJson(
+        json['product_data'] as Map<String, dynamic>,
+      ),
     );
 
-Map<String, dynamic> _$$_PriceDataToJson(_$_PriceData instance) =>
+Map<String, dynamic> _$$PriceDataImplToJson(_$PriceDataImpl instance) =>
     <String, dynamic>{
       'unit_amount': instance.unitAmount,
       'currency': instance.currency,
       'product_data': instance.productData.toJson(),
     };
 
-_$_ProductData _$$_ProductDataFromJson(Map<String, dynamic> json) =>
-    _$_ProductData(
+_$ProductDataImpl _$$ProductDataImplFromJson(Map<String, dynamic> json) =>
+    _$ProductDataImpl(
       name: json['name'] as String,
       description: json['description'] as String,
       images:
@@ -42,7 +45,7 @@ _$_ProductData _$$_ProductDataFromJson(Map<String, dynamic> json) =>
       metaData: MetaData.fromJson(json['meta_data'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ProductDataToJson(_$_ProductData instance) =>
+Map<String, dynamic> _$$ProductDataImplToJson(_$ProductDataImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'description': instance.description,
@@ -50,11 +53,8 @@ Map<String, dynamic> _$$_ProductDataToJson(_$_ProductData instance) =>
       'meta_data': instance.metaData.toJson(),
     };
 
-_$_MetaData _$$_MetaDataFromJson(Map<String, dynamic> json) => _$_MetaData(
-      productId: json['product_id'] as String,
-    );
+_$MetaDataImpl _$$MetaDataImplFromJson(Map<String, dynamic> json) =>
+    _$MetaDataImpl(productId: json['product_id'] as String);
 
-Map<String, dynamic> _$$_MetaDataToJson(_$_MetaData instance) =>
-    <String, dynamic>{
-      'product_id': instance.productId,
-    };
+Map<String, dynamic> _$$MetaDataImplToJson(_$MetaDataImpl instance) =>
+    <String, dynamic>{'product_id': instance.productId};

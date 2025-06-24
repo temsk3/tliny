@@ -8,20 +8,22 @@ part of 'program_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$programViewModelHash() => r'b097b417ca9b8d94161be91c80134e9042c3c662';
+String _$programViewModelHash() => r'e8fec37bba114695e3130cbaa39342cc6294ec8e';
 
 /// See also [ProgramViewModel].
 @ProviderFor(ProgramViewModel)
 final programViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<ProgramViewModel, ProgramState>.internal(
-  ProgramViewModel.new,
-  name: r'programViewModelProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$programViewModelHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+    AutoDisposeAsyncNotifierProvider<ProgramViewModel, List<Program>>.internal(
+      ProgramViewModel.new,
+      name: r'programViewModelProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$programViewModelHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
-typedef _$ProgramViewModel = AutoDisposeAsyncNotifier<ProgramState>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+typedef _$ProgramViewModel = AutoDisposeAsyncNotifier<List<Program>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

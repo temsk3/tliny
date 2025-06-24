@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as functions from 'firebase-functions'
 import Stripe from 'stripe'
 import { v4 as uuidv4 } from 'uuid'
@@ -13,6 +14,7 @@ import * as P from '../../utils/function_paths'
 import { stripe, stripeOptions } from './utils/stripe_config'
 import stripeErrors from './utils/stripe_error'
 import { getStripeCustomerId } from './utils/stripe_utils'
+import { cancelOrder } from '../method/order'
 
 const _exportFunction = (name: string, f: () => any) =>
   exportFunction([P.v1, P.stripe, 'checkout', name], exports, f)
@@ -97,12 +99,21 @@ _exportFunction('onPayment', () =>
         },
         (error: any) => {
           stripeErrors(error)
+          console.log('================================================')
           console.log('Stripe Checkout Create Error')
+          console.log(error)
+          console.log('================================================')
+          console.log('================================================')
+          console.log('Stripe Checkout Order cancel')
+          cancelOrder(orderId)
+          console.log('================================================')
           throw new Error(error.message)
         }
       )
     } catch (error: any) {
+      console.log('========== チェックアウト処理に失敗 ===============')
       console.log(error)
+      console.log('=========================')
       throw new Error(error)
     }
   })

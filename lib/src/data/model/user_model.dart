@@ -31,3 +31,18 @@ class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
+
+//
+@freezed
+class PublicUsers with _$PublicUsers {
+  factory PublicUsers({
+    String? id,
+    String? displayName,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+  }) = _PublicUsers;
+
+  factory PublicUsers.fromJson(Map<String, dynamic> json) =>
+      _$PublicUsersFromJson(json);
+}

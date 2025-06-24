@@ -53,3 +53,6 @@ node_modules
 
 # Emu
 emulators
+
+# FVM Version Cache
+.fvm/

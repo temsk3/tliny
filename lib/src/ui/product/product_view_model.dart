@@ -1,14 +1,14 @@
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/product_repository.dart';
+import '../../utils/logger.dart';
 
 part 'product_view_model.g.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
 @riverpod
 class ProductViewModel extends _$ProductViewModel {
@@ -79,11 +79,12 @@ class ProductViewModel extends _$ProductViewModel {
     });
   }
 
-  Future<void> registerProduct(Program program, Product product) async {
+  Future<bool> registerProduct(Program program, Product product) async {
     if (product.id == null) {
       await addProduct(program, product);
     } else {
       await updateProduct(product);
     }
+    return true;
   }
 }

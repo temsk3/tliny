@@ -1,9 +1,10 @@
+/* eslint-disable max-len */
 // import * as firebaseAdmin from 'firebase-admin'
 // import Stripe from 'stripe'
 
-import { onCall } from '../../utils/base_function'
-import { exportFunction } from '../../utils/deploy'
-import * as P from '../../utils/function_paths'
+import {onCall} from '../../utils/base_function';
+import {exportFunction} from '../../utils/deploy';
+import * as P from '../../utils/function_paths';
 // import dbPaths from '../firestore/utils/db_paths'
 // import Document from '../firestore/utils/document'
 // import * as Model from '../firestore/utils/model'
@@ -11,7 +12,7 @@ import * as P from '../../utils/function_paths'
 // import stripeErrors from '../stripe/utils/stripe_error'
 
 const _exportFunction = (name: string, f: () => any): void =>
-  exportFunction([P.v1, P.method, 'product', name], exports, f)
+  exportFunction([P.v1, P.method, 'product', name], exports, f);
 
 _exportFunction('onUpdate', () =>
   onCall(async (data, context) => {
@@ -116,7 +117,7 @@ _exportFunction('onUpdate', () =>
     //     { merge: true }
     //   )
   })
-)
+);
 
 _exportFunction('onDelete', () =>
   onCall(async (snapshot, context) => {
@@ -127,6 +128,6 @@ _exportFunction('onDelete', () =>
     //   .doc(snapshot.after.ref.path)
     //   .set({ priceId: priceId }, { merge: true })
 
-    console.log(snapshot, context)
+    console.log(snapshot, context);
   })
-)
+);

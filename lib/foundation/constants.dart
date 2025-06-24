@@ -10,7 +10,6 @@ class Constants {
       case Flavor.dev:
         return Constants._dev();
       case Flavor.prod:
-      default:
         return Constants._prod();
     }
   }

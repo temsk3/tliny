@@ -1,13 +1,13 @@
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/ticket_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/ticket_repository.dart';
+import '../../utils/logger.dart';
 
 part 'history_view_model.g.dart';
 
-final logger = Logger();
+// final logger = Logger();
 
 @riverpod
 class UsageHistoryViewModel extends _$UsageHistoryViewModel {
@@ -38,17 +38,18 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
 
   // 追加
   Future<void> addUsageHistory(
+    String uid,
     String eventId,
     List<String> useTicket,
   ) async {
     logger.d('addUsageHistory');
     final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
-    if (uid != null) {
+    final id = uidAsyncValue.value;
+    if (id != null) {
       final data = UsageHistory(
         dateOfUse: DateTime.now(),
         eventId: eventId,
-        receptionistId: uid,
+        receptionistId: id,
         useTicket: useTicket,
       );
       state = const AsyncLoading();

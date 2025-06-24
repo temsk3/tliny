@@ -1,56 +1,72 @@
-import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:logger/logger.dart';
 
 import '../../data/repository/auth_repository.dart';
+import '../../utils/logger.dart';
 
-final logger = Logger();
-
-final authViewModelProvider =
-    StateNotifierProvider.autoDispose<AuthViewModel, User?>(
-  AuthViewModel.new, //..state,
+/// 認証状態を管理する ViewModel
+final authViewModelProvider = StateNotifierProvider<AuthViewModel, User?>(
+  AuthViewModel.new,
 );
 
 class AuthViewModel extends StateNotifier<User?> {
   AuthViewModel(this._ref) : super(null);
   final Ref _ref;
-  StreamSubscription<User?>? _userStreamSubscription;
-  // {
-  //   _userStreamSubscription?.cancel();
-  //   _userStreamSubscription = _ref
-  //       .read(authRepositoryProvider)
-  //       .authStateChanges
-  //       .listen((user) => state = user);
-  // }
-  @override
-  User? get state {
-    final user = _ref.read(authRepositoryProvider).getCurrentUser();
-    logger.i(user);
-    return user;
-  }
 
+  /// 現在のユーザー情報を取得する
   @override
-  void dispose() {
-    _userStreamSubscription?.cancel();
-    super.dispose();
-  }
+  User? get state => _ref.read(authRepositoryProvider).getCurrentUser();
 
+  /// メールアドレスとパスワードを使用してサインインする
   Future<void> signIn(String email, String password) async {
     try {
       await _ref.read(authRepositoryProvider).signInWithEmail(email, password);
-    } on Exception catch (e) {
-      throw e.toString();
+      logger.i('Successfully signed in with email: $email'); // 成功ログを追加
+    } on FirebaseAuthException catch (e) {
+      logger.e('signIn failed: ${e.code} - ${e.message}');
+      rethrow; // Firebase例外は再スロー
+    } catch (e, st) {
+      logger.e('signIn failed: $e', stackTrace: st);
+      rethrow; // その他の例外も再スロー
     }
   }
 
-  Future<void> signUp(String email, String password) async {
-    await _ref.read(authRepositoryProvider).signUp(email, password);
-    // Firestoreにユーザデータを追加したり
+  /// パスワードリセットメールを送信する
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _ref.read(authRepositoryProvider).sendPasswordResetEmail(email);
+      logger.i('Password reset email sent to: $email'); // 成功ログを追加
+    } on FirebaseAuthException catch (e) {
+      logger.e('sendPasswordResetEmail failed: ${e.code} - ${e.message}');
+      rethrow;
+    } catch (e, st) {
+      logger.e('sendPasswordResetEmail failed: $e', stackTrace: st);
+      rethrow;
+    }
   }
 
+  /// メールアドレスとパスワードを使用してサインアップする
+  Future<void> signUp(String email, String password) async {
+    try {
+      await _ref.read(authRepositoryProvider).signUp(email, password);
+      logger.i('Successfully signed up with email: $email'); // 成功ログを追加
+    } on FirebaseAuthException catch (e) {
+      logger.e('signUp failed: ${e.code} - ${e.message}');
+      rethrow;
+    } catch (e, st) {
+      logger.e('signUp failed: $e', stackTrace: st);
+      rethrow;
+    }
+  }
+
+  /// サインアウトする
   Future<void> signOut() async {
-    await _ref.read(authRepositoryProvider).signOut();
+    try {
+      await _ref.read(authRepositoryProvider).signOut();
+      logger.i('Successfully signed out.'); // 成功ログを追加
+    } catch (e, st) {
+      logger.e('signOut failed: $e', stackTrace: st);
+      rethrow;
+    }
   }
 }

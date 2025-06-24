@@ -1,18 +1,19 @@
+/* eslint-disable max-len */
 /* eslint-disable valid-jsdoc */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable require-jsdoc */
 // import { UserRecord } from 'firebase-functions/lib/common/providers/identity'
 // import { CallableContext } from 'firebase-functions/lib/common/providers/https'
 // import * as functions from 'firebase-functions'
-import * as logging from '@google-cloud/logging'
-import { ApiResponse } from '@google-cloud/logging/build/src/log'
-import * as firebaseAdmin from 'firebase-admin'
-import { UserRecord } from 'firebase-functions/v1/auth'
-import Stripe from 'stripe'
+import * as logging from '@google-cloud/logging';
+import {ApiResponse} from '@google-cloud/logging/build/src/log';
+import * as firebaseAdmin from 'firebase-admin';
+import {UserRecord} from 'firebase-functions/v1/auth';
+import Stripe from 'stripe';
 // @ts-ignore
 // import { Stripe } from 'stripe'
 
-const logger = new logging.Logging()
+const logger = new logging.Logging();
 // const region = 'asia-northeast1'
 // const memory = '128MB'
 
@@ -27,35 +28,35 @@ export function adminVisibilityForState(state: ReservationState | null) {
   return (
     state === ReservationState.PAYMENT_RESERVED ||
     state === ReservationState.CHECKING_OUT
-  )
+  );
 }
 
 export function clientVisibilityForState(state: ReservationState | null) {
-  return state !== null && state !== ReservationState.CHECKED_OUT
+  return state !== null && state !== ReservationState.CHECKED_OUT;
 }
 
 export function intentToStatus(
-  intent: Stripe.PaymentIntent // Stripe.paymentIntents.IPaymentIntent
+    intent: Stripe.PaymentIntent // Stripe.paymentIntents.IPaymentIntent
 ): ReservationState | null {
   if (intent.status === 'succeeded') {
-    return null
+    return null;
   } else if (intent.status === 'requires_capture') {
-    return ReservationState.PAYMENT_RESERVED
+    return ReservationState.PAYMENT_RESERVED;
   } else if (intent.status === 'requires_action') {
-    return ReservationState.PAYMENT_AUTH_REQUIRED
+    return ReservationState.PAYMENT_AUTH_REQUIRED;
   } else if (intent.status === 'requires_payment_method') {
-    return ReservationState.PAYMENT_METHOD_REQUIRED
+    return ReservationState.PAYMENT_METHOD_REQUIRED;
   } else if (intent.status === 'canceled') {
-    return null
+    return null;
   } else if (intent.status === 'processing') {
-    console.error(intent.status)
-    return null
+    console.error(intent.status);
+    return null;
   } else if (intent.status === 'requires_confirmation') {
-    console.error(intent.status)
-    return null
+    console.error(intent.status);
+    return null;
     // return ReservationState.REQUIRES_CONFIRMATION
   }
-  return null
+  return null;
 } // @ts-ignore
 /**
  * Convenience function to create a https call function.
@@ -83,38 +84,38 @@ export function intentToStatus(
 
 // noinspection JSUnusedGlobalSymbols
 export async function getStripeCustomerId(
-  userId: string
+    userId: string
 ): Promise<string | null> {
   //   return Promise.resolve('cus_H4r1TrKqsPpZpS')
-  const user = await firebaseAdmin.auth().getUser(userId)
-  return getStripeCustomerIdForUser(user)
+  const user = await firebaseAdmin.auth().getUser(userId);
+  return getStripeCustomerIdForUser(user);
 }
 
 export async function getStripeCustomerIdForUser(
-  user: UserRecord
+    user: UserRecord
 ): Promise<string | null> {
   if (
     user.customClaims &&
     Object.hasOwnProperty.call(user.customClaims, 'customerId')
   ) {
-    return (user.customClaims as any).customerId
+    return (user.customClaims as any).customerId;
   } else {
     console.error(
-      Error(`Missing customClaims.customerID for user: ${user.uid}`)
-    )
-    return null
+        Error(`Missing customClaims.customerID for user: ${user.uid}`)
+    );
+    return null;
   }
 }
 
 export async function reportError(
-  err: any,
-  context = {}
+    err: any,
+    context = {}
 ): Promise<ApiResponse> {
   // This is the name of the StackDriver log stream that will receive the log
   // entry. This name can be any valid log stream name, but must contain "err"
   // in order for the error to be picked up by StackDriver Error Reporting.
-  const logName = 'errors'
-  const log = logger.log(logName)
+  const logName = 'errors';
+  const log = logger.log(logName);
 
   // https://cloud.google.com/logging/docs/api/ref_v2beta1/rest/v2beta1/MonitoredResource
   const meta = {
@@ -125,7 +126,7 @@ export async function reportError(
         function_name: process.env.FUNCTION_NAME.toString(),
       },
     },
-  }
+  };
 
   // https://cloud.google.com/error-reporting/reference/rest/v1beta1/ErrorEvent
   const errorEvent = {
@@ -135,9 +136,9 @@ export async function reportError(
       resourceType: 'cloud_function',
     },
     context: context,
-  }
+  };
 
-  return log.write(log.entry(meta, errorEvent))
+  return log.write(log.entry(meta, errorEvent));
 }
 
 export enum HangerState {

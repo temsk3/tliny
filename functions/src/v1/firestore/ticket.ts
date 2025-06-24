@@ -1,108 +1,49 @@
-import { chunk, db } from '../../utils/firebase_utils'
-import paths from './utils/db_paths'
-import Document from './utils/document'
-import * as Model from './utils/model'
+// import * as firebaseAdmin from 'firebase-admin'
+// // import { db } from '../../utils/firebase_utils'
+// import functions from '../../utils/base_function'
+// import { exportFunction } from '../../utils/deploy'
+// import * as P from '../../utils/function_paths'
+// import triggerOnce from '../../utils/trigger_once'
+// import paths from './utils/db_paths'
 
-export const createTicketDocument = async (orderId: string) => {
-  console.log('create ticket')
-  try {
-    // order情報の取得
-    const order = await db
-      .collection(paths.ordersCollectionPath)
-      .doc(orderId)
-      .get()
-      .then((s) => new Document<Model.Order>(s))
-    // order status の確認
-    if (order.data.status !== 'pre') {
-      console.log('check order status: ' + order.data.status)
-      return
-    }
-    // orderの確定
-    await order.ref.set({ status: 'order' }, { merge: true })
+// const path = '/v/{version}/users/{userId}/'
+// const _exportFunction = (name: string, f: () => any): void =>
+//   exportFunction([P.v1, P.firestore, 'ticket', name], exports, f)
 
-    // user 購入履歴
-    // ユーザー情報の取得
-    const userId = order.data.userId
-    const user = await db
-      .collection(paths.usersCollectionPath)
-      .doc(userId)
-      .get()
-      .then((s) => new Document<Model.User>(s))
-    await user.ref
-      .collection('orders')
-      .doc(orderId)
-      .set({ orderDocRef: order.ref.path }, { merge: true })
-    // event 販売履歴
-    const eventId = order.data.eventId
-    await db
-      .collection(paths.eventsCollectionPath)
-      .doc(eventId)
-      .collection('orders')
-      .doc(orderId)
-      .set({ orderDocRef: order.ref.path }, { merge: true })
+// _exportFunction('onCreate', () =>
+//   functions()
+//     .firestore.document(
+//       paths.usersCollectionPath + '/{userId}' + paths.ticketsCollectionPath
+//     )
+//     .onCreate(
+//       // 冪等性の担保(eventIdの重複対策用function)
+//       triggerOnce('ticketCreateNotification', async (snapshot, context) => {
+//         // try {
+//         console.log(snapshot, context)
 
-    // 発券
-    const ticketDocRef = db
-      .collection(paths.usersCollectionPath)
-      .doc(userId)
-      .collection(paths.ticketsCollectionPath)
-      .doc()
-    const products = order.data.snapshotProducts
-    for (const chunkProduct of chunk(products, 100)) {
-      const batch = db.batch()
-      chunkProduct.forEach((product) => {
-        // for (const product of products) {
-        for (let index = 0; index < product.quantity; index++) {
-          const ticketParams: Model.Ticket = {
-            // 購入者
-            paidUserId: product.userId,
-            paidUserName: product.userName,
-            purchaseTime: order.data.purchaseTime,
-            // 所有者
-            ownerId: product.userId,
-            ownerName: product.userName,
-            assignment: [
-              {
-                from: product.organizerId,
-                to: product.userName,
-                assignmentDate: order.data.purchaseTime,
-              },
-            ],
-            isActive: true,
-            isPrinting: false,
-            // 商品情報
-            productId: product.productId,
-            exchangeNumber: product.exchangeNumber,
-            code: product.code,
-            name: product.name,
-            desc: product.desc,
-            price: product.price,
-            pictureURL: product.pictureURL,
-            expirationFrom: product.expirationFrom,
-            expirationTo: product.expirationTo,
-            // 登録者
-            register: product.register,
-            // 開催者
-            organizerDocRef: product.organizerDocRef,
-            organizerId: product.organizerId,
-            // イベント情報
-            eventDocRef: product.eventDocRef,
-            eventId: product.eventId,
-            eventName: product.eventName,
-            expirationLink: product.expirationLink,
-          }
-          batch.create(ticketDocRef, ticketParams)
-        }
-        // }
-      })
-      await batch.commit()
-    }
+//         await firebaseAdmin
+//           .firestore()
+//           .collection(paths.eventsCollectionPath)
+//           .doc(snapshot.data().eventId)
+//           .collection(paths.ticketsCollectionPath)
+//           .doc(snapshot.id)
+//           .create(snapshot.data())
+//         // } catch (error: any) {
+//         //   console.log('Ticket Create Error')
+//         //   throw new Error(error.message)
+//         // }
+//       })
+//     )
+// )
+// _exportFunction('onUpdate', () =>
+//   functions()
+//     .firestore.document(path)
+//     .onCreate(
+//       // 冪等性の担保(eventIdの重複対策用function)
+//       triggerOnce('updateNotification', async (snapshot, context) => {
+//         //
 
-    return
-  } catch (error: any) {
-    console.log('========== 発券処理に失敗===============')
-    console.log(error)
-    console.log('=========================')
-    throw new Error(error)
-  }
-}
+//         console.log(snapshot, context)
+//       })
+//     )
+// )

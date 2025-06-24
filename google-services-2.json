@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "312506082989",
+    "firebase_url": "https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tliny-sample",
+    "storage_bucket": "tliny-sample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312506082989:android:8b0f2271abde4e5f450824",
+        "android_client_info": {
+          "package_name": "com.spel1.tliny"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf93IBNSI6tfN76hilPJ6Jw2OPbY1IwGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

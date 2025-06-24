@@ -12,7 +12,8 @@ part of 'program_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 Program _$ProgramFromJson(Map<String, dynamic> json) {
   return _Program.fromJson(json);
@@ -33,6 +34,7 @@ mixin _$Program {
   @timestampKey
   DateTime? get eventTo => throw _privateConstructorUsedError;
   String? get place => throw _privateConstructorUsedError;
+  String? get storageId => throw _privateConstructorUsedError;
   List<String> get pictureURL => throw _privateConstructorUsedError;
   @timestampKey
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -46,8 +48,12 @@ mixin _$Program {
   List<Staff>? get staff => throw _privateConstructorUsedError;
   List<Product>? get product => throw _privateConstructorUsedError;
 
+  /// Serializes this Program to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Program
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ProgramCopyWith<Program> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -56,25 +62,27 @@ abstract class $ProgramCopyWith<$Res> {
   factory $ProgramCopyWith(Program value, $Res Function(Program) then) =
       _$ProgramCopyWithImpl<$Res, Program>;
   @useResult
-  $Res call(
-      {String? id,
-      String? organizerId,
-      String? name,
-      String? message,
-      @timestampKey DateTime? salesStart,
-      @timestampKey DateTime? salesEnd,
-      @timestampKey DateTime? eventFrom,
-      @timestampKey DateTime? eventTo,
-      String? place,
-      List<String> pictureURL,
-      @timestampKey DateTime? createdAt,
-      @timestampKey DateTime? updatedAt,
-      @timestampKey DateTime? deletedAt,
-      bool? isActive,
-      bool? isPublish,
-      String? staffCode,
-      List<Staff>? staff,
-      List<Product>? product});
+  $Res call({
+    String? id,
+    String? organizerId,
+    String? name,
+    String? message,
+    @timestampKey DateTime? salesStart,
+    @timestampKey DateTime? salesEnd,
+    @timestampKey DateTime? eventFrom,
+    @timestampKey DateTime? eventTo,
+    String? place,
+    String? storageId,
+    List<String> pictureURL,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+    bool? isActive,
+    bool? isPublish,
+    String? staffCode,
+    List<Staff>? staff,
+    List<Product>? product,
+  });
 }
 
 /// @nodoc
@@ -87,6 +95,8 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Program
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -99,6 +109,7 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? eventFrom = freezed,
     Object? eventTo = freezed,
     Object? place = freezed,
+    Object? storageId = freezed,
     Object? pictureURL = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -109,118 +120,151 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? staff = freezed,
     Object? product = freezed,
   }) {
-    return _then(_value.copyWith(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      organizerId: freezed == organizerId
-          ? _value.organizerId
-          : organizerId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-      salesStart: freezed == salesStart
-          ? _value.salesStart
-          : salesStart // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      salesEnd: freezed == salesEnd
-          ? _value.salesEnd
-          : salesEnd // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      eventFrom: freezed == eventFrom
-          ? _value.eventFrom
-          : eventFrom // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      eventTo: freezed == eventTo
-          ? _value.eventTo
-          : eventTo // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      place: freezed == place
-          ? _value.place
-          : place // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pictureURL: null == pictureURL
-          ? _value.pictureURL
-          : pictureURL // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      deletedAt: freezed == deletedAt
-          ? _value.deletedAt
-          : deletedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      isActive: freezed == isActive
-          ? _value.isActive
-          : isActive // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isPublish: freezed == isPublish
-          ? _value.isPublish
-          : isPublish // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      staffCode: freezed == staffCode
-          ? _value.staffCode
-          : staffCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      staff: freezed == staff
-          ? _value.staff
-          : staff // ignore: cast_nullable_to_non_nullable
-              as List<Staff>?,
-      product: freezed == product
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as List<Product>?,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                freezed == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            organizerId:
+                freezed == organizerId
+                    ? _value.organizerId
+                    : organizerId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            name:
+                freezed == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            message:
+                freezed == message
+                    ? _value.message
+                    : message // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            salesStart:
+                freezed == salesStart
+                    ? _value.salesStart
+                    : salesStart // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            salesEnd:
+                freezed == salesEnd
+                    ? _value.salesEnd
+                    : salesEnd // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            eventFrom:
+                freezed == eventFrom
+                    ? _value.eventFrom
+                    : eventFrom // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            eventTo:
+                freezed == eventTo
+                    ? _value.eventTo
+                    : eventTo // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            place:
+                freezed == place
+                    ? _value.place
+                    : place // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            storageId:
+                freezed == storageId
+                    ? _value.storageId
+                    : storageId // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            pictureURL:
+                null == pictureURL
+                    ? _value.pictureURL
+                    : pictureURL // ignore: cast_nullable_to_non_nullable
+                        as List<String>,
+            createdAt:
+                freezed == createdAt
+                    ? _value.createdAt
+                    : createdAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            updatedAt:
+                freezed == updatedAt
+                    ? _value.updatedAt
+                    : updatedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            deletedAt:
+                freezed == deletedAt
+                    ? _value.deletedAt
+                    : deletedAt // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            isActive:
+                freezed == isActive
+                    ? _value.isActive
+                    : isActive // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            isPublish:
+                freezed == isPublish
+                    ? _value.isPublish
+                    : isPublish // ignore: cast_nullable_to_non_nullable
+                        as bool?,
+            staffCode:
+                freezed == staffCode
+                    ? _value.staffCode
+                    : staffCode // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            staff:
+                freezed == staff
+                    ? _value.staff
+                    : staff // ignore: cast_nullable_to_non_nullable
+                        as List<Staff>?,
+            product:
+                freezed == product
+                    ? _value.product
+                    : product // ignore: cast_nullable_to_non_nullable
+                        as List<Product>?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
-abstract class _$$_ProgramCopyWith<$Res> implements $ProgramCopyWith<$Res> {
-  factory _$$_ProgramCopyWith(
-          _$_Program value, $Res Function(_$_Program) then) =
-      __$$_ProgramCopyWithImpl<$Res>;
+abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
+  factory _$$ProgramImplCopyWith(
+    _$ProgramImpl value,
+    $Res Function(_$ProgramImpl) then,
+  ) = __$$ProgramImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String? id,
-      String? organizerId,
-      String? name,
-      String? message,
-      @timestampKey DateTime? salesStart,
-      @timestampKey DateTime? salesEnd,
-      @timestampKey DateTime? eventFrom,
-      @timestampKey DateTime? eventTo,
-      String? place,
-      List<String> pictureURL,
-      @timestampKey DateTime? createdAt,
-      @timestampKey DateTime? updatedAt,
-      @timestampKey DateTime? deletedAt,
-      bool? isActive,
-      bool? isPublish,
-      String? staffCode,
-      List<Staff>? staff,
-      List<Product>? product});
+  $Res call({
+    String? id,
+    String? organizerId,
+    String? name,
+    String? message,
+    @timestampKey DateTime? salesStart,
+    @timestampKey DateTime? salesEnd,
+    @timestampKey DateTime? eventFrom,
+    @timestampKey DateTime? eventTo,
+    String? place,
+    String? storageId,
+    List<String> pictureURL,
+    @timestampKey DateTime? createdAt,
+    @timestampKey DateTime? updatedAt,
+    @timestampKey DateTime? deletedAt,
+    bool? isActive,
+    bool? isPublish,
+    String? staffCode,
+    List<Staff>? staff,
+    List<Product>? product,
+  });
 }
 
 /// @nodoc
-class __$$_ProgramCopyWithImpl<$Res>
-    extends _$ProgramCopyWithImpl<$Res, _$_Program>
-    implements _$$_ProgramCopyWith<$Res> {
-  __$$_ProgramCopyWithImpl(_$_Program _value, $Res Function(_$_Program) _then)
-      : super(_value, _then);
+class __$$ProgramImplCopyWithImpl<$Res>
+    extends _$ProgramCopyWithImpl<$Res, _$ProgramImpl>
+    implements _$$ProgramImplCopyWith<$Res> {
+  __$$ProgramImplCopyWithImpl(
+    _$ProgramImpl _value,
+    $Res Function(_$ProgramImpl) _then,
+  ) : super(_value, _then);
 
+  /// Create a copy of Program
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -233,6 +277,7 @@ class __$$_ProgramCopyWithImpl<$Res>
     Object? eventFrom = freezed,
     Object? eventTo = freezed,
     Object? place = freezed,
+    Object? storageId = freezed,
     Object? pictureURL = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -243,112 +288,138 @@ class __$$_ProgramCopyWithImpl<$Res>
     Object? staff = freezed,
     Object? product = freezed,
   }) {
-    return _then(_$_Program(
-      id: freezed == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      organizerId: freezed == organizerId
-          ? _value.organizerId
-          : organizerId // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
-      salesStart: freezed == salesStart
-          ? _value.salesStart
-          : salesStart // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      salesEnd: freezed == salesEnd
-          ? _value.salesEnd
-          : salesEnd // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      eventFrom: freezed == eventFrom
-          ? _value.eventFrom
-          : eventFrom // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      eventTo: freezed == eventTo
-          ? _value.eventTo
-          : eventTo // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      place: freezed == place
-          ? _value.place
-          : place // ignore: cast_nullable_to_non_nullable
-              as String?,
-      pictureURL: null == pictureURL
-          ? _value._pictureURL
-          : pictureURL // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      createdAt: freezed == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updatedAt: freezed == updatedAt
-          ? _value.updatedAt
-          : updatedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      deletedAt: freezed == deletedAt
-          ? _value.deletedAt
-          : deletedAt // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      isActive: freezed == isActive
-          ? _value.isActive
-          : isActive // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isPublish: freezed == isPublish
-          ? _value.isPublish
-          : isPublish // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      staffCode: freezed == staffCode
-          ? _value.staffCode
-          : staffCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      staff: freezed == staff
-          ? _value._staff
-          : staff // ignore: cast_nullable_to_non_nullable
-              as List<Staff>?,
-      product: freezed == product
-          ? _value._product
-          : product // ignore: cast_nullable_to_non_nullable
-              as List<Product>?,
-    ));
+    return _then(
+      _$ProgramImpl(
+        id:
+            freezed == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        organizerId:
+            freezed == organizerId
+                ? _value.organizerId
+                : organizerId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        name:
+            freezed == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        message:
+            freezed == message
+                ? _value.message
+                : message // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        salesStart:
+            freezed == salesStart
+                ? _value.salesStart
+                : salesStart // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        salesEnd:
+            freezed == salesEnd
+                ? _value.salesEnd
+                : salesEnd // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        eventFrom:
+            freezed == eventFrom
+                ? _value.eventFrom
+                : eventFrom // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        eventTo:
+            freezed == eventTo
+                ? _value.eventTo
+                : eventTo // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        place:
+            freezed == place
+                ? _value.place
+                : place // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        storageId:
+            freezed == storageId
+                ? _value.storageId
+                : storageId // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        pictureURL:
+            null == pictureURL
+                ? _value._pictureURL
+                : pictureURL // ignore: cast_nullable_to_non_nullable
+                    as List<String>,
+        createdAt:
+            freezed == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        updatedAt:
+            freezed == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        deletedAt:
+            freezed == deletedAt
+                ? _value.deletedAt
+                : deletedAt // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        isActive:
+            freezed == isActive
+                ? _value.isActive
+                : isActive // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        isPublish:
+            freezed == isPublish
+                ? _value.isPublish
+                : isPublish // ignore: cast_nullable_to_non_nullable
+                    as bool?,
+        staffCode:
+            freezed == staffCode
+                ? _value.staffCode
+                : staffCode // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        staff:
+            freezed == staff
+                ? _value._staff
+                : staff // ignore: cast_nullable_to_non_nullable
+                    as List<Staff>?,
+        product:
+            freezed == product
+                ? _value._product
+                : product // ignore: cast_nullable_to_non_nullable
+                    as List<Product>?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_Program extends _Program {
-  const _$_Program(
-      {this.id,
-      required this.organizerId,
-      required this.name,
-      required this.message,
-      @timestampKey required this.salesStart,
-      @timestampKey required this.salesEnd,
-      @timestampKey required this.eventFrom,
-      @timestampKey required this.eventTo,
-      required this.place,
-      final List<String> pictureURL = const [],
-      @timestampKey this.createdAt,
-      @timestampKey this.updatedAt,
-      @timestampKey this.deletedAt,
-      required this.isActive,
-      required this.isPublish,
-      this.staffCode,
-      final List<Staff>? staff,
-      final List<Product>? product})
-      : _pictureURL = pictureURL,
-        _staff = staff,
-        _product = product,
-        super._();
+class _$ProgramImpl extends _Program {
+  const _$ProgramImpl({
+    this.id,
+    required this.organizerId,
+    required this.name,
+    required this.message,
+    @timestampKey required this.salesStart,
+    @timestampKey required this.salesEnd,
+    @timestampKey required this.eventFrom,
+    @timestampKey required this.eventTo,
+    required this.place,
+    this.storageId,
+    final List<String> pictureURL = const [],
+    @timestampKey this.createdAt,
+    @timestampKey this.updatedAt,
+    @timestampKey this.deletedAt,
+    required this.isActive,
+    required this.isPublish,
+    this.staffCode,
+    final List<Staff>? staff,
+    final List<Product>? product,
+  }) : _pictureURL = pictureURL,
+       _staff = staff,
+       _product = product,
+       super._();
 
-  factory _$_Program.fromJson(Map<String, dynamic> json) =>
-      _$$_ProgramFromJson(json);
+  factory _$ProgramImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ProgramImplFromJson(json);
 
   @override
   final String? id;
@@ -372,6 +443,8 @@ class _$_Program extends _Program {
   final DateTime? eventTo;
   @override
   final String? place;
+  @override
+  final String? storageId;
   final List<String> _pictureURL;
   @override
   @JsonKey()
@@ -394,7 +467,7 @@ class _$_Program extends _Program {
   final bool? isActive;
   @override
   final bool? isPublish;
-//
+  //
   @override
   final String? staffCode;
   final List<Staff>? _staff;
@@ -419,14 +492,14 @@ class _$_Program extends _Program {
 
   @override
   String toString() {
-    return 'Program(id: $id, organizerId: $organizerId, name: $name, message: $message, salesStart: $salesStart, salesEnd: $salesEnd, eventFrom: $eventFrom, eventTo: $eventTo, place: $place, pictureURL: $pictureURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, isActive: $isActive, isPublish: $isPublish, staffCode: $staffCode, staff: $staff, product: $product)';
+    return 'Program(id: $id, organizerId: $organizerId, name: $name, message: $message, salesStart: $salesStart, salesEnd: $salesEnd, eventFrom: $eventFrom, eventTo: $eventTo, place: $place, storageId: $storageId, pictureURL: $pictureURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, isActive: $isActive, isPublish: $isPublish, staffCode: $staffCode, staff: $staff, product: $product)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Program &&
+            other is _$ProgramImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.organizerId, organizerId) ||
                 other.organizerId == organizerId) &&
@@ -440,8 +513,12 @@ class _$_Program extends _Program {
                 other.eventFrom == eventFrom) &&
             (identical(other.eventTo, eventTo) || other.eventTo == eventTo) &&
             (identical(other.place, place) || other.place == place) &&
-            const DeepCollectionEquality()
-                .equals(other._pictureURL, _pictureURL) &&
+            (identical(other.storageId, storageId) ||
+                other.storageId == storageId) &&
+            const DeepCollectionEquality().equals(
+              other._pictureURL,
+              _pictureURL,
+            ) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -458,66 +535,70 @@ class _$_Program extends _Program {
             const DeepCollectionEquality().equals(other._product, _product));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      organizerId,
-      name,
-      message,
-      salesStart,
-      salesEnd,
-      eventFrom,
-      eventTo,
-      place,
-      const DeepCollectionEquality().hash(_pictureURL),
-      createdAt,
-      updatedAt,
-      deletedAt,
-      isActive,
-      isPublish,
-      staffCode,
-      const DeepCollectionEquality().hash(_staff),
-      const DeepCollectionEquality().hash(_product));
+  int get hashCode => Object.hashAll([
+    runtimeType,
+    id,
+    organizerId,
+    name,
+    message,
+    salesStart,
+    salesEnd,
+    eventFrom,
+    eventTo,
+    place,
+    storageId,
+    const DeepCollectionEquality().hash(_pictureURL),
+    createdAt,
+    updatedAt,
+    deletedAt,
+    isActive,
+    isPublish,
+    staffCode,
+    const DeepCollectionEquality().hash(_staff),
+    const DeepCollectionEquality().hash(_product),
+  ]);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Program
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ProgramCopyWith<_$_Program> get copyWith =>
-      __$$_ProgramCopyWithImpl<_$_Program>(this, _$identity);
+  _$$ProgramImplCopyWith<_$ProgramImpl> get copyWith =>
+      __$$ProgramImplCopyWithImpl<_$ProgramImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ProgramToJson(
-      this,
-    );
+    return _$$ProgramImplToJson(this);
   }
 }
 
 abstract class _Program extends Program {
-  const factory _Program(
-      {final String? id,
-      required final String? organizerId,
-      required final String? name,
-      required final String? message,
-      @timestampKey required final DateTime? salesStart,
-      @timestampKey required final DateTime? salesEnd,
-      @timestampKey required final DateTime? eventFrom,
-      @timestampKey required final DateTime? eventTo,
-      required final String? place,
-      final List<String> pictureURL,
-      @timestampKey final DateTime? createdAt,
-      @timestampKey final DateTime? updatedAt,
-      @timestampKey final DateTime? deletedAt,
-      required final bool? isActive,
-      required final bool? isPublish,
-      final String? staffCode,
-      final List<Staff>? staff,
-      final List<Product>? product}) = _$_Program;
+  const factory _Program({
+    final String? id,
+    required final String? organizerId,
+    required final String? name,
+    required final String? message,
+    @timestampKey required final DateTime? salesStart,
+    @timestampKey required final DateTime? salesEnd,
+    @timestampKey required final DateTime? eventFrom,
+    @timestampKey required final DateTime? eventTo,
+    required final String? place,
+    final String? storageId,
+    final List<String> pictureURL,
+    @timestampKey final DateTime? createdAt,
+    @timestampKey final DateTime? updatedAt,
+    @timestampKey final DateTime? deletedAt,
+    required final bool? isActive,
+    required final bool? isPublish,
+    final String? staffCode,
+    final List<Staff>? staff,
+    final List<Product>? product,
+  }) = _$ProgramImpl;
   const _Program._() : super._();
 
-  factory _Program.fromJson(Map<String, dynamic> json) = _$_Program.fromJson;
+  factory _Program.fromJson(Map<String, dynamic> json) = _$ProgramImpl.fromJson;
 
   @override
   String? get id;
@@ -542,6 +623,8 @@ abstract class _Program extends Program {
   @override
   String? get place;
   @override
+  String? get storageId;
+  @override
   List<String> get pictureURL;
   @override
   @timestampKey
@@ -555,15 +638,18 @@ abstract class _Program extends Program {
   @override
   bool? get isActive;
   @override
-  bool? get isPublish;
-  @override //
+  bool? get isPublish; //
+  @override
   String? get staffCode;
   @override
   List<Staff>? get staff;
   @override
   List<Product>? get product;
+
+  /// Create a copy of Program
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_ProgramCopyWith<_$_Program> get copyWith =>
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ProgramImplCopyWith<_$ProgramImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

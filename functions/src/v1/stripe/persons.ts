@@ -1,14 +1,14 @@
-import * as f from 'firebase-functions'
+import * as f from 'firebase-functions';
 
-import functions from '../../utils/base_function'
-import { exportFunction } from '../../utils/deploy'
-import * as P from '../../utils/function_paths'
+import functions from '../../utils/base_function';
+import {exportFunction} from '../../utils/deploy';
+import * as P from '../../utils/function_paths';
 
-import { stripe } from './utils/stripe_config'
-import stripeErrors from './utils/stripe_error'
+import {stripe} from './utils/stripe_config';
+import stripeErrors from './utils/stripe_error';
 
 const _exportFunction = (name: string, f: () => any) =>
-  exportFunction([P.v1, P.stripe, 'persons', name], exports, f)
+  exportFunction([P.v1, P.stripe, 'persons', name], exports, f);
 
 // Create a person
 _exportFunction('onCreate', () =>
@@ -16,27 +16,27 @@ _exportFunction('onCreate', () =>
     // 認証済みユーザーかどうかチェックする
     if (!context.auth || !context.auth.uid) {
       throw new f.https.HttpsError(
-        'unauthenticated',
-        'User is not authenticated.'
-      )
+          'unauthenticated',
+          'User is not authenticated.'
+      );
     }
-    const accountId = data.accountId
-    const personToken = data.personToken
+    const accountId = data.accountId;
+    const personToken = data.personToken;
     await stripe.accounts
-      .createPerson(accountId, {
-        person_token: personToken,
-      })
-      .then(
-        (result: any) => {
-          const personId = result.id
-          return { bank_account: personId }
-        },
-        (error: any) => {
-          stripeErrors(error)
-        }
-      )
+        .createPerson(accountId, {
+          person_token: personToken,
+        })
+        .then(
+            (result: any) => {
+              const personId = result.id;
+              return {bank_account: personId};
+            },
+            (error: any) => {
+              stripeErrors(error);
+            }
+        );
   })
-)
+);
 
 // Retrieve a person
 _exportFunction('onRetrieve', () =>
@@ -44,22 +44,22 @@ _exportFunction('onRetrieve', () =>
     // 認証済みユーザーかどうかチェックする
     if (!context.auth || !context.auth.uid) {
       throw new f.https.HttpsError(
-        'unauthenticated',
-        'User is not authenticated.'
-      )
+          'unauthenticated',
+          'User is not authenticated.'
+      );
     }
-    const accountId = data.accountId
-    const personId = data.personId
+    const accountId = data.accountId;
+    const personId = data.personId;
     await stripe.accounts.retrievePerson(accountId, personId).then(
-      (result: any) => {
-        return result
-      },
-      (error: any) => {
-        stripeErrors(error)
-      }
-    )
+        (result: any) => {
+          return result;
+        },
+        (error: any) => {
+          stripeErrors(error);
+        }
+    );
   })
-)
+);
 
 // Update a person
 _exportFunction('onUpdate', () =>
@@ -67,28 +67,28 @@ _exportFunction('onUpdate', () =>
     // 認証済みユーザーかどうかチェックする
     if (!context.auth || !context.auth.uid) {
       throw new f.https.HttpsError(
-        'unauthenticated',
-        'User is not authenticated.'
-      )
+          'unauthenticated',
+          'User is not authenticated.'
+      );
     }
-    const accountId = data.accountId
-    const personId = data.personId
-    const metadata = data.metadata // order_id:"xxx" etc
+    const accountId = data.accountId;
+    const personId = data.personId;
+    const metadata = data.metadata; // order_id:"xxx" etc
     await stripe.accounts
-      .updatePerson(accountId, personId, {
-        metadata: metadata,
-      })
-      .then(
-        (result: any) => {
-          const personId = result.id
-          return { personId: personId }
-        },
-        (error: any) => {
-          stripeErrors(error)
-        }
-      )
+        .updatePerson(accountId, personId, {
+          metadata: metadata,
+        })
+        .then(
+            (result: any) => {
+              const personId = result.id;
+              return {personId: personId};
+            },
+            (error: any) => {
+              stripeErrors(error);
+            }
+        );
   })
-)
+);
 
 // Delete a person
 _exportFunction('onDelete', () =>
@@ -96,22 +96,22 @@ _exportFunction('onDelete', () =>
     // 認証済みユーザーかどうかチェックする
     if (!context.auth || !context.auth.uid) {
       throw new f.https.HttpsError(
-        'unauthenticated',
-        'User is not authenticated.'
-      )
+          'unauthenticated',
+          'User is not authenticated.'
+      );
     }
-    const accountId = data.accountId
-    const personId = data.personId
+    const accountId = data.accountId;
+    const personId = data.personId;
     await stripe.accounts.deletePerson(accountId, personId).then(
-      (result: any) => {
-        return result
-      },
-      (error: any) => {
-        stripeErrors(error)
-      }
-    )
+        (result: any) => {
+          return result;
+        },
+        (error: any) => {
+          stripeErrors(error);
+        }
+    );
   })
-)
+);
 
 // List all person
 _exportFunction('onList', () =>
@@ -119,18 +119,18 @@ _exportFunction('onList', () =>
     // 認証済みユーザーかどうかチェックする
     if (!context.auth || !context.auth.uid) {
       throw new f.https.HttpsError(
-        'unauthenticated',
-        'User is not authenticated.'
-      )
+          'unauthenticated',
+          'User is not authenticated.'
+      );
     }
-    const accountId = data.accountId
+    const accountId = data.accountId;
     await stripe.accounts.listPersons(accountId).then(
-      (result: any) => {
-        return result
-      },
-      (error: any) => {
-        stripeErrors(error)
-      }
-    )
+        (result: any) => {
+          return result;
+        },
+        (error: any) => {
+          stripeErrors(error);
+        }
+    );
   })
-)
+);
