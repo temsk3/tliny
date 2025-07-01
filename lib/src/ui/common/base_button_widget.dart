@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../utils/logger.dart';
+import 'error_handler.dart';
 
 /// 押下時に処理中の状態を表示する FloatingActionButton
 class BaseFloatingActionButton extends HookWidget {
@@ -9,6 +10,7 @@ class BaseFloatingActionButton extends HookWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    this.heroTag,
   });
 
   /// 押下時に実行されるコールバック関数
@@ -17,11 +19,15 @@ class BaseFloatingActionButton extends HookWidget {
   /// ボタンに表示する子Widget
   final Widget child;
 
+  /// Heroアニメーション用のタグ
+  final Object? heroTag;
+
   @override
   Widget build(BuildContext context) {
     // 処理中の状態を管理する useState
     final waiting = useState(false);
     return FloatingActionButton(
+      heroTag: heroTag,
       // 処理中の場合は押下不可にする
       onPressed:
           waiting.value
@@ -42,10 +48,7 @@ class BaseFloatingActionButton extends HookWidget {
                     'BaseFloatingActionButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  // エラーメッセージを表示
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ErrorHandler.showErrorSnackBar(context, e);
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;
@@ -98,10 +101,7 @@ class BaseIconButton extends HookWidget {
                     'BaseIconButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  // エラーメッセージを表示
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ErrorHandler.showErrorSnackBar(context, e);
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;
@@ -147,10 +147,7 @@ class BaseElevatedButton extends HookWidget {
                     'BaseElevatedButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  // エラーメッセージを表示
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ErrorHandler.showErrorSnackBar(context, e);
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;

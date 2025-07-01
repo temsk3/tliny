@@ -21,19 +21,40 @@ class PictureCover extends HookConsumerWidget {
     return Container(
       // color: theme.appColors.primary,
       child: Center(
-        child: (picture == null || picture == '')
-            ? const Text(
-                'NoImage',
-                // style: theme.textTheme.h30,
-              )
-            : SizedBox.expand(
-                child: CachedNetworkImage(
-                  imageUrl: picture.toString(),
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+        child:
+            (picture == null || picture == '')
+                ? const Text(
+                  'NoImage',
+                  // style: theme.textTheme.h30,
+                )
+                : SizedBox.expand(
+                  child: CachedNetworkImage(
+                    imageUrl: picture.toString(),
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) {
+                      logger.e('CachedNetworkImage error: $error');
+                      return Container(
+                        color: Colors.grey[300],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.error, color: Colors.red),
+                            const SizedBox(height: 4),
+                            Text(
+                              '画像読み込みエラー',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.red[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
       ),
     );
   }
@@ -52,23 +73,41 @@ class PictureDetail extends HookConsumerWidget {
     return Container(
       height: 100,
       width: 160,
-      color: Colors.grey.withOpacity(0.3),
+      color: Colors.grey.withValues(alpha: 0.3),
       alignment: Alignment.center,
-      child: (picture == null)
-          ? (oldPicture == '' || oldPicture == null)
-              ? const Icon(Icons.add_photo_alternate)
-              : SizedBox.expand(
-                  child: CachedNetworkImage(
-                    imageUrl: oldPicture!,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                )
-          : SizedBox.expand(
-              child: Image.memory(picture!),
-            ),
+      child:
+          (picture == null)
+              ? (oldPicture == '' || oldPicture == null)
+                  ? const Icon(Icons.add_photo_alternate)
+                  : SizedBox.expand(
+                    child: CachedNetworkImage(
+                      imageUrl: oldPicture!,
+                      placeholder:
+                          (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) {
+                        logger.e('CachedNetworkImage error: $error');
+                        return Container(
+                          color: Colors.grey[300],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error, color: Colors.red),
+                              const SizedBox(height: 4),
+                              Text(
+                                '画像読み込みエラー',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.red[700],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  )
+              : SizedBox.expand(child: Image.memory(picture!)),
     );
   }
 }

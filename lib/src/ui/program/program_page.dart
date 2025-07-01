@@ -34,20 +34,23 @@ class ProgramPage extends HookConsumerWidget {
         // final list = data.programList;
         return Scaffold(
           body: MainBodyWidget(
-            body: list.isNotEmpty
-                ? ListView.builder(
-                    padding: const EdgeInsets.all(24),
-                    itemExtent: 100,
-                    // physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: list.length,
-                    itemBuilder: (_, index) {
-                      final program = list[index];
-                      return EventCard(program: program);
-                    },
-                  )
-                : Container(),
+            body:
+                list.isNotEmpty
+                    ? ListView.builder(
+                      padding: const EdgeInsets.all(24),
+                      itemExtent: 100,
+                      // physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: list.length,
+                      itemBuilder: (_, index) {
+                        final program = list[index];
+                        return EventCard(program: program);
+                      },
+                    )
+                    : Container(),
           ),
-          floatingActionButton: const AddProgramFloatingActionButton(),
+          floatingActionButton: const AddProgramFloatingActionButton(
+            heroTag: 'program_page_fab',
+          ),
         );
       },
     );

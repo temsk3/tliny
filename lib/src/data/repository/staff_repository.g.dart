@@ -8,7 +8,7 @@ part of 'staff_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$staffRepositoryHash() => r'9c2a312caad9861a2f7730e92ada37c85f8ac2d1';
+String _$staffRepositoryHash() => r'd5898172867636b4cd4411bdec6b3389c7d48f9e';
 
 /// See also [staffRepository].
 @ProviderFor(staffRepository)
@@ -27,7 +27,7 @@ final staffRepositoryProvider = Provider<StaffRepository>.internal(
 // ignore: unused_element
 typedef StaffRepositoryRef = ProviderRef<StaffRepository>;
 String _$staffCheckExistenceHash() =>
-    r'f1b142961226ac27e86f0e8a18d1b88bf2f53c10';
+    r'db2e2a955bb619f533cf7cbfe7d23c8f0fac4ef3';
 
 /// Copied from Dart SDK
 class _SystemHash {

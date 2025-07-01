@@ -29,7 +29,7 @@ export const stripeOptions: Stripe.RequestOptions = {
   apiVersion: apiVersion,
 }
 
-export const APPLICATION_FEE_PERCENT = 5.0 // 3.4
+export const APPLICATION_FEE_PERCENT = 1.4 // 3.4
 
 export const currency = 'JPY'
 

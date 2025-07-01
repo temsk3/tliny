@@ -8,7 +8,7 @@ part of 'staff_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$staffViewModelHash() => r'6d67787a4dd6704485e947deee7705a2b79c6f44';
+String _$staffViewModelHash() => r'9c9847cc176c63a6b1164e097fdcfb1d4b29005c';
 
 /// Copied from Dart SDK
 class _SystemHash {

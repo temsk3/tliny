@@ -8,7 +8,7 @@ part of 'uuid_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$uuidRepositoryHash() => r'4b878f92e0b32aa76227fa24fee27450189843f6';
+String _$uuidRepositoryHash() => r'f6dff6fa8d888f6b17691258934a7d967166d626';
 
 /// See also [uuidRepository].
 @ProviderFor(uuidRepository)

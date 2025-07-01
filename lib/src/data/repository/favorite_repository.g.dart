@@ -9,7 +9,7 @@ part of 'favorite_repository.dart';
 // **************************************************************************
 
 String _$favoriteRepositoryHash() =>
-    r'88da7e1a51b44a2808044321305391122a3e18c2';
+    r'8862be4235a49c94fac8bb9a16ea326c190d67cc';
 
 /// See also [favoriteRepository].
 @ProviderFor(favoriteRepository)
@@ -28,7 +28,7 @@ final favoriteRepositoryProvider = Provider<FavoriteRepository>.internal(
 // ignore: unused_element
 typedef FavoriteRepositoryRef = ProviderRef<FavoriteRepository>;
 String _$favoriteCheckExistenceHash() =>
-    r'0a0994d6e3600c0f668273ede9310ae6c2a101c4';
+    r'e4d94062278b3778d7acdba5a1d88d6618a133ee';
 
 /// Copied from Dart SDK
 class _SystemHash {

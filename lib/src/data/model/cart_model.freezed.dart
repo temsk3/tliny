@@ -23,14 +23,13 @@ Cart _$CartFromJson(Map<String, dynamic> json) {
 mixin _$Cart {
   String? get id => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
-  @documentReferenceKey
-  DocumentReference<Map<String, dynamic>>? get productDocRef =>
-      throw _privateConstructorUsedError;
+  @DocumentReferenceNullStringConverter()
+  String? get productDocRef => throw _privateConstructorUsedError;
   String? get productId => throw _privateConstructorUsedError;
   String? get programId => throw _privateConstructorUsedError;
-  @timestampKey
+  @TimestampConverter()
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  @timestampKey
+  @TimestampConverter()
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this Cart to a JSON map.
@@ -50,12 +49,11 @@ abstract class $CartCopyWith<$Res> {
   $Res call({
     String? id,
     int quantity,
-    @documentReferenceKey
-    DocumentReference<Map<String, dynamic>>? productDocRef,
+    @DocumentReferenceNullStringConverter() String? productDocRef,
     String? productId,
     String? programId,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
+    @TimestampConverter() DateTime? createdAt,
+    @TimestampConverter() DateTime? updatedAt,
   });
 }
 
@@ -98,7 +96,7 @@ class _$CartCopyWithImpl<$Res, $Val extends Cart>
                 freezed == productDocRef
                     ? _value.productDocRef
                     : productDocRef // ignore: cast_nullable_to_non_nullable
-                        as DocumentReference<Map<String, dynamic>>?,
+                        as String?,
             productId:
                 freezed == productId
                     ? _value.productId
@@ -136,12 +134,11 @@ abstract class _$$CartImplCopyWith<$Res> implements $CartCopyWith<$Res> {
   $Res call({
     String? id,
     int quantity,
-    @documentReferenceKey
-    DocumentReference<Map<String, dynamic>>? productDocRef,
+    @DocumentReferenceNullStringConverter() String? productDocRef,
     String? productId,
     String? programId,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
+    @TimestampConverter() DateTime? createdAt,
+    @TimestampConverter() DateTime? updatedAt,
   });
 }
 
@@ -181,7 +178,7 @@ class __$$CartImplCopyWithImpl<$Res>
             freezed == productDocRef
                 ? _value.productDocRef
                 : productDocRef // ignore: cast_nullable_to_non_nullable
-                    as DocumentReference<Map<String, dynamic>>?,
+                    as String?,
         productId:
             freezed == productId
                 ? _value.productId
@@ -213,11 +210,11 @@ class _$CartImpl extends _Cart {
   const _$CartImpl({
     this.id,
     required this.quantity,
-    @documentReferenceKey this.productDocRef,
+    @DocumentReferenceNullStringConverter() this.productDocRef,
     required this.productId,
     required this.programId,
-    @timestampKey this.createdAt,
-    @timestampKey this.updatedAt,
+    @TimestampConverter() this.createdAt,
+    @TimestampConverter() this.updatedAt,
   }) : super._();
 
   factory _$CartImpl.fromJson(Map<String, dynamic> json) =>
@@ -228,17 +225,17 @@ class _$CartImpl extends _Cart {
   @override
   final int quantity;
   @override
-  @documentReferenceKey
-  final DocumentReference<Map<String, dynamic>>? productDocRef;
+  @DocumentReferenceNullStringConverter()
+  final String? productDocRef;
   @override
   final String? productId;
   @override
   final String? programId;
   @override
-  @timestampKey
+  @TimestampConverter()
   final DateTime? createdAt;
   @override
-  @timestampKey
+  @TimestampConverter()
   final DateTime? updatedAt;
 
   @override
@@ -297,12 +294,11 @@ abstract class _Cart extends Cart {
   const factory _Cart({
     final String? id,
     required final int quantity,
-    @documentReferenceKey
-    final DocumentReference<Map<String, dynamic>>? productDocRef,
+    @DocumentReferenceNullStringConverter() final String? productDocRef,
     required final String? productId,
     required final String? programId,
-    @timestampKey final DateTime? createdAt,
-    @timestampKey final DateTime? updatedAt,
+    @TimestampConverter() final DateTime? createdAt,
+    @TimestampConverter() final DateTime? updatedAt,
   }) = _$CartImpl;
   const _Cart._() : super._();
 
@@ -313,17 +309,17 @@ abstract class _Cart extends Cart {
   @override
   int get quantity;
   @override
-  @documentReferenceKey
-  DocumentReference<Map<String, dynamic>>? get productDocRef;
+  @DocumentReferenceNullStringConverter()
+  String? get productDocRef;
   @override
   String? get productId;
   @override
   String? get programId;
   @override
-  @timestampKey
+  @TimestampConverter()
   DateTime? get createdAt;
   @override
-  @timestampKey
+  @TimestampConverter()
   DateTime? get updatedAt;
 
   /// Create a copy of Cart

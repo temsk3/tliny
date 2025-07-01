@@ -132,5 +132,7 @@
   "registered": "登録されました",
   "notification": "通知",
   "signIn": "サインイン",
-  "signOut": "サインアウト"
+  "signOut": "サインアウト",
+  "memberSince": "登録日",
+  "lastUpdated": "最終更新"
 }

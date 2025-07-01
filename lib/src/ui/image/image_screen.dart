@@ -9,8 +9,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tliny/src/ui/common/asyncvalue_widget.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../utils/logger.dart';
+import '../common/error_handler.dart';
 import 'image_view_model.dart';
 
 class ImageScreen extends HookConsumerWidget {
@@ -39,6 +41,14 @@ class ImageScreen extends HookConsumerWidget {
         imageState.value = imageTemp;
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
+        if (context.mounted) {
+          ErrorHandler.showErrorSnackBar(context, e);
+        }
+      } on Exception catch (e) {
+        logger.e('Failed to pick image: $e');
+        if (context.mounted) {
+          ErrorHandler.showErrorSnackBar(context, e);
+        }
       }
     }
 
@@ -56,6 +66,14 @@ class ImageScreen extends HookConsumerWidget {
         imageState.value = imageTemp;
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
+        if (context.mounted) {
+          ErrorHandler.showErrorSnackBar(context, e);
+        }
+      } on Exception catch (e) {
+        logger.e('Failed to pick image: $e');
+        if (context.mounted) {
+          ErrorHandler.showErrorSnackBar(context, e);
+        }
       }
     }
 
@@ -66,7 +84,7 @@ class ImageScreen extends HookConsumerWidget {
             await pickImage();
           },
           child: Text(l10n.selectImage),
-        )
+        ),
       ],
     );
   }
@@ -92,16 +110,17 @@ class EditCircleAvatar extends HookConsumerWidget {
               logger.e('Failed to add temp image: $e');
             }
           },
-          child: data == null
-              ? CircleAvatar(
-                  radius: 75,
-                  backgroundImage:
-                      photoUrl == null ? null : NetworkImage(photoUrl!),
-                )
-              : CircleAvatar(
-                  radius: 75,
-                  backgroundImage: NetworkImage(data.path),
-                ),
+          child:
+              data == null
+                  ? CircleAvatar(
+                    radius: 75,
+                    backgroundImage:
+                        photoUrl == null ? null : NetworkImage(photoUrl!),
+                  )
+                  : CircleAvatar(
+                    radius: 75,
+                    backgroundImage: NetworkImage(data.path),
+                  ),
         );
       },
     );
@@ -137,14 +156,33 @@ class EditPictureView extends HookConsumerWidget {
           return;
         }
         logger.d('Picked image: ${image.name}');
-        // await ref
-        //     .watch(tempImageListViewModelProvider.notifier)
-        await imageViewModel.setTempImage(index, image);
-        final imageTemp = await image.readAsBytes();
 
-        imageState.value = imageTemp;
+        // setTempImageでエラーハンドリング
+        try {
+          await imageViewModel.setTempImage(index, image);
+          final imageTemp = await image.readAsBytes();
+          imageState.value = imageTemp;
+        } on AppException catch (e) {
+          logger.e('setTempImage AppException: ${e.message}');
+          if (context.mounted) {
+            ErrorHandler.showErrorSnackBar(context, e);
+          }
+        } on Exception catch (e) {
+          logger.e('setTempImage Exception: $e');
+          if (context.mounted) {
+            ErrorHandler.showErrorSnackBar(context, e);
+          }
+        }
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
+        if (context.mounted) {
+          ErrorHandler.showErrorSnackBar(context, e);
+        }
+      } on Exception catch (e) {
+        logger.e('Failed to pick image: $e');
+        if (context.mounted) {
+          ErrorHandler.showErrorSnackBar(context, e);
+        }
       }
     }
 
@@ -154,35 +192,57 @@ class EditPictureView extends HookConsumerWidget {
           await pickImage();
         } on Exception catch (e) {
           logger.e('Failed to pick image: $e');
+          if (context.mounted) {
+            ErrorHandler.showErrorSnackBar(context, e);
+          }
         }
       },
-      child: imageState.value == null
-          ? Container(
-              height: height ?? 90,
-              width: width ?? 160,
-              color: Colors.grey.withOpacity(0.3),
-              alignment: Alignment.center,
-              child: (picture.isEmpty)
-                  ? const Icon(Icons.add_photo_alternate)
-                  : SizedBox.expand(
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: picture[index],
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
-                    ),
-            )
-          : SizedBox(
-              height: height ?? 90,
-              width: width ?? 160,
-              child: Image.memory(
-                imageState.value!,
-                fit: BoxFit.scaleDown,
+      child:
+          imageState.value == null
+              ? Container(
+                height: height ?? 90,
+                width: width ?? 160,
+                color: Colors.grey.withValues(alpha: 0.3),
+                alignment: Alignment.center,
+                child:
+                    (picture.isEmpty)
+                        ? const Icon(Icons.add_photo_alternate)
+                        : SizedBox.expand(
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: picture[index],
+                            placeholder:
+                                (context, url) => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                            errorWidget: (context, url, error) {
+                              logger.e('CachedNetworkImage error: $error');
+                              return Container(
+                                color: Colors.grey[300],
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.error, color: Colors.red),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '画像読み込みエラー',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+              )
+              : SizedBox(
+                height: height ?? 90,
+                width: width ?? 160,
+                child: Image.memory(imageState.value!, fit: BoxFit.scaleDown),
               ),
-            ),
     );
   }
 }
@@ -208,95 +268,144 @@ class PictureView extends HookWidget {
     return Container(
       height: height ?? 45,
       width: width ?? 80,
-      color: Colors.grey.withOpacity(0.3),
+      color: Colors.grey.withValues(alpha: 0.3),
       alignment: Alignment.center,
-      child: (picture.isEmpty)
-          ? const Text(
-              'NoImage',
-            )
-          : InkWell(
-              onTap: tap
-                  ? () {
-                      try {
-                        showGeneralDialog(
-                          transitionDuration:
-                              const Duration(milliseconds: 1000),
-                          barrierDismissible: true,
-                          barrierLabel: '',
-                          context: context,
-                          pageBuilder: (context, animation1, animation2) {
-                            return DefaultTextStyle(
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyLarge!,
-                              child: Center(
-                                child: SizedBox(
-                                  // height: 500,
-                                  // width: 500,
-                                  child: SingleChildScrollView(
-                                    child: Stack(
-                                      children: [
-                                        InteractiveViewer(
-                                          minScale: 0.1,
-                                          maxScale: 5,
-                                          child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
-                                            imageUrl: picture[0],
-                                            placeholder: (
-                                              context,
-                                              url,
-                                            ) =>
-                                                const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
+      child:
+          (picture.isEmpty)
+              ? const Text('NoImage')
+              : InkWell(
+                onTap:
+                    tap
+                        ? () {
+                          try {
+                            showGeneralDialog(
+                              transitionDuration: const Duration(
+                                milliseconds: 1000,
+                              ),
+                              barrierDismissible: true,
+                              barrierLabel: '',
+                              context: context,
+                              pageBuilder: (context, animation1, animation2) {
+                                return DefaultTextStyle(
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).primaryTextTheme.bodyLarge!,
+                                  child: Center(
+                                    child: SizedBox(
+                                      // height: 500,
+                                      // width: 500,
+                                      child: SingleChildScrollView(
+                                        child: Stack(
+                                          children: [
+                                            InteractiveViewer(
+                                              minScale: 0.1,
+                                              maxScale: 5,
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                imageUrl: picture[0],
+                                                placeholder:
+                                                    (
+                                                      context,
+                                                      url,
+                                                    ) => const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                errorWidget: (
+                                                  context,
+                                                  url,
+                                                  error,
+                                                ) {
+                                                  logger.e(
+                                                    'CachedNetworkImage error: $error',
+                                                  );
+                                                  return Container(
+                                                    color: Colors.grey[300],
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.error,
+                                                          color: Colors.red,
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 4,
+                                                        ),
+                                                        Text(
+                                                          '画像読み込みエラー',
+                                                          style: TextStyle(
+                                                            fontSize: 10,
+                                                            color:
+                                                                Colors.red[700],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              ),
                                             ),
-                                            errorWidget: (
-                                              context,
-                                              url,
-                                              error,
-                                            ) =>
-                                                const Icon(
-                                              Icons.error,
+                                            // SafeArea(
+                                            //   child: IconButton(
+                                            //     onPressed: appRoute.pop,
+                                            //     icon: const Icon(
+                                            //       Icons.close,
+                                            //     ),
+                                            //   ),
+                                            // )
+                                            TextButton(
+                                              onPressed: () => context.pop(),
+                                              child: const Icon(
+                                                Icons.close,
+                                                color: Colors.white,
+                                              ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                        // SafeArea(
-                                        //   child: IconButton(
-                                        //     onPressed: appRoute.pop,
-                                        //     icon: const Icon(
-                                        //       Icons.close,
-                                        //     ),
-                                        //   ),
-                                        // )
-                                        TextButton(
-                                          onPressed: () => context.pop(),
-                                          child: const Icon(
-                                            Icons.close,
-                                            color: Colors.white,
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             );
-                          },
-                        );
-                      } on Exception catch (e) {
-                        logger.e('Failed to show dialog: $e');
-                      }
-                    }
-                  : null,
-              child: SizedBox.expand(
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: picture[index],
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                          } on Exception catch (e) {
+                            logger.e('Failed to show dialog: $e');
+                          }
+                        }
+                        : null,
+                child: SizedBox.expand(
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: picture[index],
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) {
+                      logger.e('CachedNetworkImage error: $error');
+                      return Container(
+                        color: Colors.grey[300],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.error, color: Colors.red),
+                            const SizedBox(height: 4),
+                            Text(
+                              '画像読み込みエラー',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.red[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../l10n/app_localizations.dart';
 import 'settings/routes/app_router.dart';
 import 'settings/theme/app_theme.dart';
+import 'ui/common/loading_screen.dart';
 
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
@@ -30,6 +31,9 @@ class MyApp extends HookConsumerWidget {
             routerDelegate: router.routerDelegate,
             routeInformationProvider: router.routeInformationProvider,
             routeInformationParser: router.routeInformationParser,
+            builder: (context, child) {
+              return Stack(children: [child!, const GlobalLoadingOverlay()]);
+            },
           ),
     );
   }

@@ -43,15 +43,21 @@ class ProductCard extends HookConsumerWidget {
       children: [
         InkWell(
           onTap: () async {
-            // await appRoute.push(
-            ProductDetailsRoute($extra: (program, product)).push(context);
-            // );
+            if (program.id != null && product.id != null) {
+              // await appRoute.push(
+              ProductDetailsRoute(
+                programId: program.id!,
+                productId: product.id!,
+              ).push(context);
+              // );
+            }
           },
           child: Card(
-            color: stateIndicate ? null : Colors.black.withOpacity(0.3),
+            color: stateIndicate ? null : Colors.black.withValues(alpha: 0.3),
             // : theme.appColors.background,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             margin: const EdgeInsets.all(10),
             elevation: 10,
@@ -108,7 +114,7 @@ class ProductCard extends HookConsumerWidget {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -128,23 +134,23 @@ class ProductCard extends HookConsumerWidget {
         // ),
         (product.stock == 0)
             ? const Positioned(
-                top: 4,
-                child: Text(
-                  'SOLD OUT',
-                  // style: theme.textTheme.h60.bold(),
-                  // .copyWith(color: theme.appColors.onPrimary),
-                ),
-              )
+              top: 4,
+              child: Text(
+                'SOLD OUT',
+                // style: theme.textTheme.h60.bold(),
+                // .copyWith(color: theme.appColors.onPrimary),
+              ),
+            )
             : isOpened
-                ? const Positioned(child: Text(''))
-                : Positioned(
-                    top: 4,
-                    child: Text(
-                      l10n.outOfTerm,
-                      //  style: theme.textTheme.h60.bold(),
-                      // .copyWith(color: theme.appColors.onPrimary),
-                    ),
-                  ),
+            ? const Positioned(child: Text(''))
+            : Positioned(
+              top: 4,
+              child: Text(
+                l10n.outOfTerm,
+                //  style: theme.textTheme.h60.bold(),
+                // .copyWith(color: theme.appColors.onPrimary),
+              ),
+            ),
       ],
     );
   }

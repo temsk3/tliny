@@ -36,35 +36,37 @@ class MyProgramPage extends HookConsumerWidget {
           // bodyにMainBodyWidgetを表示
           body: MainBodyWidget(
             // bodyにマイプログラムのリストを表示
-            body: data.isNotEmpty
-                // マイプログラムのリストが空でない場合
-                ? Column(
-                    // マイプログラムのリストを左寄せで表示
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // マイプログラムのリストをListView.builderで表示
-                      ListView.builder(
-                        // スクロールを禁止
-                        physics: const NeverScrollableScrollPhysics(),
-                        // リストの高さをコンテンツの高さに合わせる
-                        shrinkWrap: true,
-                        // リストのアイテム数を設定
-                        itemCount: data.length,
-                        // リストのアイテムを構築する関数
-                        itemBuilder: (context, index) {
-                          // マイプログラムのデータを取得
-                          final myProgram = data[index];
-                          // マイプログラムのIDを表示
-                          return Text(myProgram.programId!);
-                        },
-                      ),
-                    ],
-                  )
-                // マイプログラムのリストが空の場合、空のコンテナを表示
-                : Container(),
+            body:
+                data.isNotEmpty
+                    // マイプログラムのリストが空でない場合
+                    ? Column(
+                      // マイプログラムのリストを左寄せで表示
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // マイプログラムのリストをListView.builderで表示
+                        ListView.builder(
+                          // スクロールを禁止
+                          physics: const NeverScrollableScrollPhysics(),
+                          // リストの高さをコンテンツの高さに合わせる
+                          shrinkWrap: true,
+                          // リストのアイテム数を設定
+                          itemCount: data.length,
+                          // リストのアイテムを構築する関数
+                          itemBuilder: (context, index) {
+                            // マイプログラムのデータを取得
+                            final myProgram = data[index];
+                            // マイプログラムのIDを表示
+                            return Text(myProgram.programId!);
+                          },
+                        ),
+                      ],
+                    )
+                    // マイプログラムのリストが空の場合、空のコンテナを表示
+                    : Container(),
           ),
           // フローティングアクションボタンを作成
           floatingActionButton: FloatingActionButton(
+            heroTag: 'my_program_fab',
             // ボタンを押したときの処理
             onPressed: () {
               // エラー処理

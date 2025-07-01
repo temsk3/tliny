@@ -42,7 +42,7 @@ class Product with _$Product {
     String? register,
     // 開催者
     @documentReferenceKey
-        DocumentReference<Map<String, dynamic>>? organizerDocRef,
+    DocumentReference<Map<String, dynamic>>? organizerDocRef,
     String? organizerId,
     // イベント情報
     @documentReferenceKey DocumentReference<Map<String, dynamic>>? eventDocRef,
@@ -59,21 +59,22 @@ class Product with _$Product {
   const Product._();
 
   factory Product.empty() => Product(
-        register: '',
-        code: '',
-        name: '',
-        genre: GenreType.others,
-        desc: '',
-        stock: 0,
-        price: 50,
-        pictureURL: [],
-        expirationFrom: DateTime(1999, 12, 31, 23, 59),
-        expirationTo: DateTime(1999, 12, 31, 23, 59),
-        isActive: true,
-        isPublish: true,
-        salesStart: DateTime(1999, 12, 31, 23, 59),
-        salesEnd: DateTime(1999, 12, 31, 23, 59),
-      );
+    register: '',
+    code: '',
+    name: '',
+    genre: GenreType.others,
+    desc: '',
+    pictureURL: [],
+    expirationFrom: DateTime(1999, 12, 31, 23, 59),
+    expirationTo: DateTime(1999, 12, 31, 23, 59),
+    isActive: true,
+    isPublish: true,
+    salesStart: DateTime(1999, 12, 31, 23, 59),
+    salesEnd: DateTime(1999, 12, 31, 23, 59),
+    organizerId: '',
+    eventId: '',
+    eventName: '',
+  );
 
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
@@ -81,10 +82,8 @@ class Product with _$Product {
 
 @freezed
 class ProductQueryParameter with _$ProductQueryParameter {
-  factory ProductQueryParameter(
-    String? programId,
-    GenreType? genre,
-  ) = _ProductQueryParameter;
+  factory ProductQueryParameter(String? programId, GenreType? genre) =
+      _ProductQueryParameter;
 
   factory ProductQueryParameter.fromJson(Map<String, dynamic> json) =>
       _$ProductQueryParameterFromJson(json);

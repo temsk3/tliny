@@ -327,7 +327,6 @@ import {
   APPLICATION_FEE_PERCENT,
   currency,
 } from './utils/stripe_config'
-import stripeErrors from './utils/stripe_error'
 import {
   createTransferDocument,
   createWebhookEventDocument,
@@ -700,52 +699,52 @@ _exportFunction('handleWebhookEvents', () =>
             event.data.object as Stripe.Account,
             response,
           )
-          break
+          return
         case 'payment_intent.succeeded':
           await handlePaymentIntentSucceeded(
             event.data.object as Stripe.PaymentIntent,
             response,
           )
-          break
+          return
         case 'payment_intent.canceled':
           await handlePaymentIntentCanceled(
             event.data.object as Stripe.PaymentIntent,
             response,
           )
-          break
+          return
         case 'payment_intent.payment_failed':
           await handlePaymentIntentFailed(
             event.data.object as Stripe.PaymentIntent,
             response,
           )
-          break
+          return
         case 'checkout.session.completed':
           await handleCheckoutSessionCompleted(
             event.data.object as Stripe.Checkout.Session,
             response,
           )
-          break
+          return
         case 'checkout.session.async_payment_succeeded':
           await handleCheckoutSessionSucceeded(
             event.data.object as Stripe.Checkout.Session,
             response,
           )
-          break
+          return
         case 'checkout.session.async_payment_failed':
           await handleCheckoutSessionFailed(
             event.data.object as Stripe.Checkout.Session,
             response,
           )
-          break
+          return
         case 'checkout.session.expired':
           await handleCheckoutSessionExpired(
             event.data.object as Stripe.Checkout.Session,
             response,
           )
-          break
+          return
         case 'payment_method.attached':
           await handlePaymentMethodAttached(event.data.object, response)
-          break
+          return
         default:
           // 想定外のイベントタイプの場合はエラー
           console.error('====WEB HOOK ERROR====')
@@ -757,8 +756,6 @@ _exportFunction('handleWebhookEvents', () =>
           )
           return response.status(400).end()
       }
-      // イベント処理成功ログを出力
-      logs.webhookHandlerSucceeded(event.id, event.type)
     } catch (error: any) {
       // エラーが発生した場合
       logs.webhookHandlerError(error, event.id, event.type)
@@ -768,6 +765,12 @@ _exportFunction('handleWebhookEvents', () =>
         500,
         'Webhook handler failed. View function logs in Firebase.',
       )
+      return
+    }
+
+    // デフォルトのレスポンス（何も送信されていない場合のフォールバック）
+    if (!response.headersSent) {
+      response.json({ received: true })
     }
   }),
 )

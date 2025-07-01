@@ -1,26 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
+import '../model/exception/app_exception.dart';
 
 part 'auth_repository.g.dart';
 
 // AuthRepositoryProvider
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   return AuthRepository(ref.watch(firebaseAuthProvider));
 }
 
 // 認証状態プロバイダー
 @riverpod
-Stream<bool> authStateChanges(AuthStateChangesRef ref) {
+Stream<bool> authStateChanges(Ref ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
 }
 
 // UserIdプロバイダー
 @riverpod
-Stream<String?> userId(UserIdRef ref) {
+Stream<String?> userId(Ref ref) {
   return ref.watch(authRepositoryProvider).userId;
 }
 
@@ -34,7 +36,12 @@ class AuthRepository {
 
   /// ユーザーIDを監視するストリーム
   Stream<String?> get userId {
+    logger.d('userId: ストリーム開始', time: DateTime.now());
     return _auth.authStateChanges().map((user) {
+      logger.d(
+        'userId: authStateChanges - user=${user?.uid}',
+        time: DateTime.now(),
+      );
       if (user != null) {
         return user.uid;
       } else {
@@ -51,7 +58,10 @@ class AuthRepository {
       logger.i('signInWithEmail: サインイン成功');
     } on FirebaseAuthException catch (e) {
       logger.e('signInWithEmail: サインイン失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -63,7 +73,10 @@ class AuthRepository {
       logger.i('sendPasswordResetEmail: パスワードリセットメール送信成功');
     } on FirebaseAuthException catch (e) {
       logger.e('sendPasswordResetEmail: パスワードリセットメール送信失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -79,7 +92,11 @@ class AuthRepository {
       return result;
     } on FirebaseAuthException catch (e) {
       logger.e('signUp: ユーザー登録失敗', error: e);
-      throw convertAuthError(e.code);
+      throw AuthenticationException(
+        message: convertAuthError(e.code),
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -91,7 +108,10 @@ class AuthRepository {
       logger.i('signOut: サインアウト成功');
     } on FirebaseAuthException catch (e) {
       logger.e('signOut: サインアウト失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -104,7 +124,10 @@ class AuthRepository {
       return user;
     } on FirebaseAuthException catch (e) {
       logger.e('getCurrentUser: 現在のユーザー取得失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -119,7 +142,10 @@ class AuthRepository {
       }
     } on FirebaseAuthException catch (e) {
       logger.e('updateDisplayName: ユーザーの表示名更新失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -129,12 +155,15 @@ class AuthRepository {
     try {
       if (_auth.currentUser!.email != email ||
           _auth.currentUser!.email != null) {
-        _auth.currentUser!.updateEmail(email);
+        _auth.currentUser!.verifyBeforeUpdateEmail(email);
         logger.i('updateEmail: ユーザーのメールアドレス更新成功');
       }
     } on FirebaseAuthException catch (e) {
       logger.e('updateEmail: ユーザーのメールアドレス更新失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -146,7 +175,10 @@ class AuthRepository {
       logger.i('updatePassword: ユーザーのパスワード更新成功');
     } on FirebaseAuthException catch (e) {
       logger.e('updatePassword: ユーザーのパスワード更新失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 
@@ -154,14 +186,16 @@ class AuthRepository {
   void updatePhotoUrl(String? photoUrl) {
     logger.i('updatePhotoUrl: ユーザーのプロフィール画像のURLを更新します');
     try {
-      if (_auth.currentUser!.photoURL != photoUrl ||
-          _auth.currentUser!.photoURL != null) {
+      if (photoUrl != null) {
         _auth.currentUser!.updatePhotoURL(photoUrl);
         logger.i('updatePhotoUrl: ユーザーのプロフィール画像のURL更新成功');
       }
     } on FirebaseAuthException catch (e) {
       logger.e('updatePhotoUrl: ユーザーのプロフィール画像のURL更新失敗', error: e);
-      throw convertAuthError(e.code);
+      throw GeneralException(
+        message: convertAuthError(e.code),
+        stackTrace: e.stackTrace,
+      );
     }
   }
 }

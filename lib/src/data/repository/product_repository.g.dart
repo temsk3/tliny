@@ -8,7 +8,7 @@ part of 'product_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productRepositoryHash() => r'e3c2eb71b28c272d8eb2a34276676a83492a97fa';
+String _$productRepositoryHash() => r'93a29e114c0f2197ebcbb1c29ac3b96cb0c786de';
 
 /// See also [productRepository].
 @ProviderFor(productRepository)
@@ -26,7 +26,7 @@ final productRepositoryProvider = Provider<ProductRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ProductRepositoryRef = ProviderRef<ProductRepository>;
-String _$productsStreamHash() => r'f8bfbee583a452c77a2084f8f6fd68f15ff72c05';
+String _$productsStreamHash() => r'08fe08fdfd972bff22f4f3afe02e5a125565997d';
 
 /// See also [productsStream].
 @ProviderFor(productsStream)
@@ -45,7 +45,7 @@ final productsStreamProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ProductsStreamRef = AutoDisposeStreamProviderRef<List<Product>>;
-String _$productDocStreamHash() => r'a00d6ee08fb3561720a95b80f8ac78d6322e4c07';
+String _$productDocStreamHash() => r'9f94bca57ae5fd3b1e880d3960de84216a464585';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -78,9 +78,7 @@ class ProductDocStreamFamily extends Family<AsyncValue<Product>> {
   const ProductDocStreamFamily();
 
   /// See also [productDocStream].
-  ProductDocStreamProvider call(
-    DocumentReference<Map<String, dynamic>> productDocRef,
-  ) {
+  ProductDocStreamProvider call(DocumentReference<Product> productDocRef) {
     return ProductDocStreamProvider(productDocRef);
   }
 
@@ -109,9 +107,8 @@ class ProductDocStreamFamily extends Family<AsyncValue<Product>> {
 /// See also [productDocStream].
 class ProductDocStreamProvider extends AutoDisposeStreamProvider<Product> {
   /// See also [productDocStream].
-  ProductDocStreamProvider(
-    DocumentReference<Map<String, dynamic>> productDocRef,
-  ) : this._internal(
+  ProductDocStreamProvider(DocumentReference<Product> productDocRef)
+    : this._internal(
         (ref) => productDocStream(ref as ProductDocStreamRef, productDocRef),
         from: productDocStreamProvider,
         name: r'productDocStreamProvider',
@@ -135,7 +132,7 @@ class ProductDocStreamProvider extends AutoDisposeStreamProvider<Product> {
     required this.productDocRef,
   }) : super.internal();
 
-  final DocumentReference<Map<String, dynamic>> productDocRef;
+  final DocumentReference<Product> productDocRef;
 
   @override
   Override overrideWith(
@@ -179,7 +176,7 @@ class ProductDocStreamProvider extends AutoDisposeStreamProvider<Product> {
 // ignore: unused_element
 mixin ProductDocStreamRef on AutoDisposeStreamProviderRef<Product> {
   /// The parameter `productDocRef` of this provider.
-  DocumentReference<Map<String, dynamic>> get productDocRef;
+  DocumentReference<Product> get productDocRef;
 }
 
 class _ProductDocStreamProviderElement
@@ -188,11 +185,11 @@ class _ProductDocStreamProviderElement
   _ProductDocStreamProviderElement(super.provider);
 
   @override
-  DocumentReference<Map<String, dynamic>> get productDocRef =>
+  DocumentReference<Product> get productDocRef =>
       (origin as ProductDocStreamProvider).productDocRef;
 }
 
-String _$productStreamHash() => r'ef3a50ef8c6df7e2da08dc8a73192097e99e8e51';
+String _$productStreamHash() => r'200afe35ff39ef405332646f24832f86a4b174e4';
 
 /// See also [productStream].
 @ProviderFor(productStream)

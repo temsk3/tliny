@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:logger/logger.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../general_provider.dart';
+import '../model/exception/app_exception.dart';
 import '../model/favorite_model.dart';
 import 'auth_repository.dart';
 
@@ -16,7 +18,7 @@ const _subCollectionPath = 'favorite';
 
 // FavoriteRepositoryProvider
 @Riverpod(keepAlive: true)
-FavoriteRepository favoriteRepository(FavoriteRepositoryRef ref) {
+FavoriteRepository favoriteRepository(Ref ref) {
   return FavoriteRepository(ref.watch(firebaseFirestoreProvider));
 }
 
@@ -30,14 +32,16 @@ class FavoriteRepository {
         .doc(uid)
         .collection(_subCollectionPath)
         .withConverter<Favorite>(
-          fromFirestore: (snapshot, _) =>
-              Favorite.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-          toFirestore: (model, _) => {
-            ...model.toJson()..remove('id'),
-            if (model.createdAt == null)
-              'createdAt': FieldValue.serverTimestamp(),
-            'updatedAt': FieldValue.serverTimestamp(),
-          },
+          fromFirestore:
+              (snapshot, _) =>
+                  Favorite.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+          toFirestore:
+              (model, _) => {
+                ...model.toJson()..remove('id'),
+                if (model.createdAt == null)
+                  'createdAt': FieldValue.serverTimestamp(),
+                'updatedAt': FieldValue.serverTimestamp(),
+              },
         );
   }
 
@@ -50,9 +54,13 @@ class FavoriteRepository {
         return snapshot.docs.map((doc) => doc.data()).toList();
       });
       return list;
-    } on FirebaseException catch (e) {
-      logger.e('streamFavoriteList: お気に入りのリスト取得に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      logger.e(
+        'streamFavoriteList: お気に入りのリスト取得に失敗しました',
+        error: e,
+        stackTrace: st,
+      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -68,9 +76,13 @@ class FavoriteRepository {
         logger.i('streamFavorite: 特定のお気に入りデータを取得しました');
         return doc.data()!;
       });
-    } on FirebaseException catch (e) {
-      logger.e('streamFavorite: 特定のお気に入りデータ取得に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      logger.e(
+        'streamFavorite: 特定のお気に入りデータ取得に失敗しました',
+        error: e,
+        stackTrace: st,
+      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -81,9 +93,9 @@ class FavoriteRepository {
       final querySnapshot = await _collectionRef(uid).get();
       logger.i('readFavorites: お気に入りのリストを一度に取得しました');
       return querySnapshot.docs.map((doc) => doc.data()).toList();
-    } on FirebaseException catch (e) {
-      logger.e('readFavorites: お気に入りのリスト取得に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      logger.e('readFavorites: お気に入りのリスト取得に失敗しました', error: e, stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -94,9 +106,9 @@ class FavoriteRepository {
       await _collectionRef(uid).doc(favorite.programId).set(favorite);
       logger.i('createFavorite: お気に入りを登録しました');
       return favorite.programId!;
-    } on FirebaseException catch (e) {
-      logger.e('createFavorite: お気に入りの登録に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      logger.e('createFavorite: お気に入りの登録に失敗しました', error: e, stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -108,9 +120,9 @@ class FavoriteRepository {
       await docRef.set(favorite, SetOptions(merge: true));
       logger.i('updateFavorite: お気に入りを更新しました');
       return docRef.id;
-    } on FirebaseException catch (e) {
-      logger.e('updateFavorite: お気に入りの更新に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      logger.e('updateFavorite: お気に入りの更新に失敗しました', error: e, stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -120,9 +132,9 @@ class FavoriteRepository {
     try {
       await _collectionRef(uid).doc(favoriteId).delete();
       logger.i('deleteFavorite: お気に入りを削除しました');
-    } on FirebaseException catch (e) {
-      logger.e('deleteFavorite: お気に入りの削除に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      logger.e('deleteFavorite: お気に入りの削除に失敗しました', error: e, stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -130,36 +142,56 @@ class FavoriteRepository {
   Stream<bool> watchExistenceFavorite(String uid, String favoriteId) {
     logger.i('watchExistenceFavorite: お気に入りの存在を確認するストリームを開始します');
     try {
-      return _collectionRef(uid)
-          .doc(favoriteId)
-          .snapshots()
-          .map((event) => event.exists);
-    } on FirebaseException catch (e) {
-      logger.e('watchExistenceFavorite: お気に入りの存在確認に失敗しました', error: e);
-      throw e;
+      return _collectionRef(
+        uid,
+      ).doc(favoriteId).snapshots().map((event) => event.exists);
+    } on Exception catch (e, st) {
+      logger.e(
+        'watchExistenceFavorite: お気に入りの存在確認に失敗しました',
+        error: e,
+        stackTrace: st,
+      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 }
 
 // お気に入りの存在を確認するプロバイダー
 @riverpod
-Stream<bool> favoriteCheckExistence(
-  FavoriteCheckExistenceRef ref,
-  String favoriteId,
-) {
+Stream<bool> favoriteCheckExistence(Ref ref, String favoriteId) {
   logger.i('favoriteCheckExistence: お気に入りの存在を確認します');
   final uidAsyncValue = ref.watch(userIdProvider);
-  final uid = uidAsyncValue.value;
-  if (uid == null) {
-    logger.i('favoriteCheckExistence: ユーザーIDが取得できませんでした');
-    return Stream.value(false);
-  }
-  try {
-    return ref
-        .watch(favoriteRepositoryProvider)
-        .watchExistenceFavorite(uid, favoriteId);
-  } on FirebaseException catch (e) {
-    logger.e('favoriteCheckExistence: お気に入りの存在確認に失敗しました', error: e);
-    throw e;
-  }
+
+  return uidAsyncValue.when(
+    data: (uid) {
+      if (uid == null) {
+        logger.i('favoriteCheckExistence: ユーザーIDが取得できませんでした');
+        return Stream.value(false);
+      }
+      try {
+        return ref
+            .watch(favoriteRepositoryProvider)
+            .watchExistenceFavorite(uid, favoriteId);
+      } on Exception catch (e, st) {
+        logger.e(
+          'favoriteCheckExistence: お気に入りの存在確認に失敗しました',
+          error: e,
+          stackTrace: st,
+        );
+        throw GeneralException(message: e.toString(), stackTrace: st);
+      }
+    },
+    loading: () {
+      logger.i('favoriteCheckExistence: 認証状態を確認中');
+      return Stream.value(false);
+    },
+    error: (error, stackTrace) {
+      logger.e(
+        'favoriteCheckExistence: 認証状態の取得に失敗しました',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return Stream.value(false);
+    },
+  );
 }

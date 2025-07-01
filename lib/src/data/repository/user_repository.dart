@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
+import '../model/exception/app_exception.dart';
 import '../model/user_model.dart';
 
 part 'user_repository.g.dart';
@@ -15,7 +17,7 @@ const _accountCollectionPath = '$_defaultPath/stripe_connect_accounts';
 
 // UserRepositoryProvider
 @Riverpod(keepAlive: true)
-UserRepository userRepository(UserRepositoryRef ref) {
+UserRepository userRepository(Ref ref) {
   return UserRepository(ref.watch(firebaseFirestoreProvider));
 }
 
@@ -23,24 +25,37 @@ class UserRepository {
   UserRepository(this._db);
   final FirebaseFirestore _db;
 
-  late final CollectionReference<User> _collectionRef =
-      _db.collection(_userCollectionPath).withConverter<User>(
-            fromFirestore: (snapshot, _) =>
+  late final CollectionReference<User> _collectionRef = _db
+      .collection(_userCollectionPath)
+      .withConverter<User>(
+        fromFirestore:
+            (snapshot, _) =>
                 User.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-            toFirestore: (model, _) => {
+        toFirestore:
+            (model, _) => {
               ...model.toJson()..remove('id'),
               if (model.createdAt == null)
                 'createdAt': FieldValue.serverTimestamp(),
               'updatedAt': FieldValue.serverTimestamp(),
             },
-          );
+      );
 
   // ユーザー情報を取得するストリーム
   Stream<User> watchUser(String uid) {
     logger.d('watchUser: uid=$uid');
     try {
       final docRef = _collectionRef.doc(uid);
-      return docRef.snapshots().map((user) => user.data()!);
+      return docRef.snapshots().map((user) {
+        final data = user.data();
+        if (data == null) {
+          logger.e('watchUser: data is null for uid=$uid');
+          throw GeneralException(
+            message: 'ユーザーデータが存在しません',
+            stackTrace: StackTrace.current,
+          );
+        }
+        return data;
+      });
     } on Exception catch (e, st) {
       logger.e('watchUser: error=$e, stackTrace=$st');
       rethrow;
@@ -56,7 +71,10 @@ class UserRepository {
       final data = snap.data();
       if (data == null) {
         logger.e('readUser: data is null');
-        throw Error();
+        throw GeneralException(
+          message: 'データが存在しません',
+          stackTrace: StackTrace.current,
+        );
       }
       return data;
     } on Exception catch (e, st) {
@@ -142,24 +160,42 @@ class UserRepository {
       rethrow;
     }
   }
+
+  // Stripe Connect Account の status (ストリーム)
+  Stream<bool> streamCheckAccountStatus(String uid) {
+    logger.d('streamCheckAccountStatus: uid=$uid');
+    try {
+      final snapshot =
+          _db.collection(_accountCollectionPath).doc(uid).snapshots();
+      return snapshot.map((doc) {
+        final data = doc.data();
+        if (data == null) return false;
+        final status = data['status'];
+        return status is String ? status == 'verified' : false;
+      });
+    } on Exception catch (e, st) {
+      logger.e('streamCheckAccountStatus: error=$e, stackTrace=$st');
+      rethrow;
+    }
+  }
 }
 
 // Stream
 @riverpod
-Stream<User> userStream(UserStreamRef ref, String uid) {
-  logger.d('userStream: uid=$uid');
+Stream<User> userStream(Ref ref, String uid) {
+  logger.i('userStream: ユーザーストリームを開始します uid=$uid');
   try {
     return ref.watch(userRepositoryProvider).watchUser(uid);
   } on Exception catch (e, st) {
-    logger.e('userStream: error=$e, stackTrace=$st');
-    rethrow;
+    logger.e('userStream: ユーザーストリームエラー', error: e, stackTrace: st);
+    throw GeneralException(message: 'ユーザー情報の取得に失敗しました', stackTrace: st);
   }
 }
 
 // publicUser
 // UserRepositoryProvider
 @Riverpod(keepAlive: true)
-PublicUserRepository publicUserRepository(PublicUserRepositoryRef ref) {
+PublicUserRepository publicUserRepository(Ref ref) {
   return PublicUserRepository(ref.watch(firebaseFirestoreProvider));
 }
 
@@ -170,14 +206,17 @@ class PublicUserRepository {
   late final CollectionReference<PublicUsers> _collectionRef = _db
       .collection(_publicUsersCollectionPath)
       .withConverter<PublicUsers>(
-        fromFirestore: (snapshot, _) =>
-            PublicUsers.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-        toFirestore: (model, _) => {
-          ...model.toJson()..remove('id'),
-          if (model.createdAt == null)
-            'createdAt': FieldValue.serverTimestamp(),
-          'updatedAt': FieldValue.serverTimestamp(),
-        },
+        fromFirestore:
+            (snapshot, _) => PublicUsers.fromJson(
+              snapshot.data()!,
+            ).copyWith(id: snapshot.id),
+        toFirestore:
+            (model, _) => {
+              ...model.toJson()..remove('id'),
+              if (model.createdAt == null)
+                'createdAt': FieldValue.serverTimestamp(),
+              'updatedAt': FieldValue.serverTimestamp(),
+            },
       );
 
   // 公開ユーザー情報を取得するストリーム
@@ -185,7 +224,17 @@ class PublicUserRepository {
     logger.d('watchUser: uid=$uid');
     try {
       final docRef = _collectionRef.doc(uid);
-      return docRef.snapshots().map((user) => user.data()!);
+      return docRef.snapshots().map((user) {
+        final data = user.data();
+        if (data == null) {
+          logger.e('watchUser: data is null for uid=$uid');
+          throw GeneralException(
+            message: '公開ユーザーデータが存在しません',
+            stackTrace: StackTrace.current,
+          );
+        }
+        return data;
+      });
     } on Exception catch (e, st) {
       logger.e('watchUser: error=$e, stackTrace=$st');
       rethrow;
@@ -201,7 +250,10 @@ class PublicUserRepository {
       final data = snap.data();
       if (data == null) {
         logger.e('readUser: data is null');
-        throw Error();
+        throw GeneralException(
+          message: 'データが存在しません',
+          stackTrace: StackTrace.current,
+        );
       }
       return data;
     } on Exception catch (e, st) {
@@ -217,6 +269,7 @@ class PublicUserRepository {
       final publicUser = PublicUsers(
         id: user.id,
         displayName: user.displayName,
+        profileImageURL: user.photoUrl,
         createdAt: user.createdAt,
       );
       final docRef = _collectionRef.doc(publicUser.id);
@@ -231,7 +284,7 @@ class PublicUserRepository {
 
 // Stream
 @riverpod
-Stream<PublicUsers> publicUserStream(PublicUserStreamRef ref, String uid) {
+Stream<PublicUsers> publicUserStream(Ref ref, String uid) {
   logger.d('publicUserStream: uid=$uid');
   try {
     return ref.watch(publicUserRepositoryProvider).watchUser(uid);
@@ -242,7 +295,7 @@ Stream<PublicUsers> publicUserStream(PublicUserStreamRef ref, String uid) {
 }
 
 @riverpod
-Future<PublicUsers> publicUserFuture(PublicUserFutureRef ref, String uid) {
+Future<PublicUsers> publicUserFuture(Ref ref, String uid) {
   logger.d('publicUserFuture: uid=$uid');
   try {
     return ref.watch(publicUserRepositoryProvider).readUser(uid);

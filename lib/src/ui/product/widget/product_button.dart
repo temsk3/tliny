@@ -36,6 +36,7 @@ class AddProductFloatingActionButton extends StatelessWidget {
               (visible) =>
                   visible
                       ? BaseFloatingActionButton(
+                        heroTag: 'add_product_fab_${program.id}',
                         onPressed: onPressed,
                         child: child!,
                       )
@@ -219,7 +220,7 @@ class InCartElevatedButton extends HookWidget {
         final auth = ref.watch(authStateChangesProvider).value;
         return BaseElevatedButton(
           onPressed:
-              stateIndicate && auth!
+              stateIndicate && auth != null && product.id != null
                   ? () async {
                     try {
                       const result = true;
@@ -227,7 +228,8 @@ class InCartElevatedButton extends HookWidget {
                         logger.d('inCart');
                         await ref
                             .watch(cartViewModelProvider.notifier)
-                            .cart(quantity, product.id.toString(), program.id!);
+                            .cart(quantity, product.id!, program.id!);
+                        logger.d('showFluttertoast: start');
                         await showFluttertoast(
                           '${product.name!} ${l10n.addedToCart}',
                           webBgColor: 'amber',
@@ -235,6 +237,7 @@ class InCartElevatedButton extends HookWidget {
                               Theme.of(context).colorScheme.primary,
                           textColor: Theme.of(context).colorScheme.onPrimary,
                         );
+                        logger.d('showFluttertoast: end');
                         logger.d('pop');
                         // await appRoute.pop();
                         context.pop();
@@ -280,7 +283,9 @@ class EditProductElevatedButton extends HookWidget {
               child: BaseElevatedButton(
                 onPressed: () async {
                   // appRoute.push(
-                  ProductEditRoute($extra: (program, product)).push(context);
+                  if (program.id != null && product.id != null) {
+                    ProductEditRoute($extra: (program, product)).push(context);
+                  }
                   // );
                 },
                 child: child!,

@@ -28,6 +28,7 @@ List<RouteBase> get $appRoutes => [
   $userRoute,
   $managementRoute,
   $termsRoute,
+  $ownerDetailRoute,
 ];
 
 RouteBase get $appShellRoute => StatefulShellRouteData.$route(
@@ -356,20 +357,24 @@ RouteBase get $productDetailsRoute => GoRouteData.$route(
 
 extension $ProductDetailsRouteExtension on ProductDetailsRoute {
   static ProductDetailsRoute _fromState(GoRouterState state) =>
-      ProductDetailsRoute($extra: state.extra as (Program, Product));
+      ProductDetailsRoute(
+        programId: state.uri.queryParameters['program-id']!,
+        productId: state.uri.queryParameters['product-id']!,
+      );
 
-  String get location => GoRouteData.$location('/product-detail');
+  String get location => GoRouteData.$location(
+    '/product-detail',
+    queryParams: {'program-id': programId, 'product-id': productId},
+  );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
 
 RouteBase get $productEditRoute => GoRouteData.$route(
@@ -717,6 +722,31 @@ extension $TermsRouteExtension on TermsRoute {
 
   String get location =>
       GoRouteData.$location('/terms', queryParams: {'uid': uid});
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $ownerDetailRoute => GoRouteData.$route(
+  path: '/owner-detail',
+
+  factory: $OwnerDetailRouteExtension._fromState,
+);
+
+extension $OwnerDetailRouteExtension on OwnerDetailRoute {
+  static OwnerDetailRoute _fromState(GoRouterState state) =>
+      OwnerDetailRoute(ownerId: state.uri.queryParameters['owner-id']!);
+
+  String get location => GoRouteData.$location(
+    '/owner-detail',
+    queryParams: {'owner-id': ownerId},
+  );
 
   void go(BuildContext context) => context.go(location);
 

@@ -11,6 +11,7 @@ import '../../settings/routes/routes.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
 import '../image/image_screen.dart';
+import 'available_events_page.dart';
 import 'ticket_list_view_model.dart';
 
 class TicketListPage extends HookConsumerWidget {
@@ -29,7 +30,7 @@ class TicketListPage extends HookConsumerWidget {
         value: ticketsAsyncValue,
         data: (tickets) {
           if (tickets.isEmpty) {
-            return const Center(child: Text('No tickets available'));
+            return _buildEmptyTicketsWidget(context, l10n);
           }
 
           final sortedTickets = sortTickets(tickets, sortOrder.value);
@@ -241,6 +242,53 @@ class TicketListPage extends HookConsumerWidget {
           ),
           if (ticket.isPrinting)
             const Icon(Icons.print_outlined, color: Colors.green),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyTicketsWidget(BuildContext context, AppLocalizations l10n) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.confirmation_number_outlined,
+            size: 80,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'チケットがありません',
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(color: Colors.grey[600]),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '購入したチケットがここに表示されます',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AvailableEventsPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.event),
+            label: const Text('イベントを見る'),
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            ),
+          ),
         ],
       ),
     );

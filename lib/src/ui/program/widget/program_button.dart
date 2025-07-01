@@ -23,9 +23,11 @@ import '../program_view_model.dart';
 class AddProgramFloatingActionButton extends HookWidget {
   const AddProgramFloatingActionButton({
     super.key,
+    this.heroTag,
     // required this.onPressed,
   });
   // final VoidCallback onPressed;
+  final Object? heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class AddProgramFloatingActionButton extends HookWidget {
           data: (visible) {
             if (visible) {
               return BaseFloatingActionButton(
+                heroTag: heroTag ?? 'add_program_fab',
                 onPressed: () async {
                   // await appRoute
                   //     .push(ProgramEditRoute(program: Program.empty()));
@@ -280,41 +283,34 @@ class FavoriteProgramIconButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    // final icon = useState(Icons.favorite_outline);
-    // final onPressed = useState(() {});
-    IconData icon;
-    VoidCallback onPressed;
+
     return AsyncValueButtonWidget(
       value: ref.watch(authStateChangesProvider),
-      data: (visible) {
+      data: (isAuthenticated) {
+        if (!isAuthenticated) {
+          return const SizedBox.shrink();
+        }
+
         return AsyncValueButtonWidget(
           value: ref.watch(favoriteCheckExistenceProvider(programId)),
-          data: (favorite) {
-            if (favorite) {
-              icon = Icons.favorite;
-              onPressed = () {
+          data: (isFavorite) {
+            final icon = isFavorite ? Icons.favorite : Icons.favorite_outline;
+            void onPressed() {
+              if (isFavorite) {
                 ref
                     .watch(favoriteViewModelProvider.notifier)
                     .deleteFavorite(programId);
-              };
-            } else {
-              icon = Icons.favorite_outline;
-              onPressed = () {
+              } else {
                 ref
                     .watch(favoriteViewModelProvider.notifier)
                     .addFavorite(Favorite(programId: programId));
-              };
+              }
             }
-            return Visibility(
-              visible: visible,
-              child: BaseIconButton(
-                icon: Icon(
-                  icon,
-                  // color: ref.watch(appThemeProvider).appColors.secondary,
-                ),
-                tooltip: l10n.favorite,
-                onPressed: onPressed,
-              ),
+
+            return BaseIconButton(
+              icon: Icon(icon),
+              tooltip: l10n.favorite,
+              onPressed: onPressed,
             );
           },
         );

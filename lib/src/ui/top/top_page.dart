@@ -108,7 +108,9 @@ class TopPage extends HookConsumerWidget {
                     ),
                   )
                   : const EventScreen(), // TikTok風の全画面表示
-          floatingActionButton: const AddProgramFloatingActionButton(),
+          floatingActionButton: const AddProgramFloatingActionButton(
+            heroTag: 'top_page_fab',
+          ),
         );
       },
     );
@@ -173,7 +175,9 @@ class TopPage extends HookConsumerWidget {
           child: ListTile(
             onTap: () {
               // appRoute.push(ProgramDetailsRoute(program: data[index]));
-              ProgramDetailRoute($extra: data[index]).push(context);
+              if (data[index].id != null) {
+                ProgramDetailRoute($extra: data[index]).push(context);
+              }
             },
             title: Text(data[index].name.toString()),
           ),

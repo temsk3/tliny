@@ -8,7 +8,7 @@ part of 'program_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$programRepositoryHash() => r'a3d2bc5e7b2fa173f2a462be8c64098874e773ce';
+String _$programRepositoryHash() => r'50d01370ee4b4eedac548501d03dff7d9d8a8975';
 
 /// See also [programRepository].
 @ProviderFor(programRepository)
@@ -26,7 +26,7 @@ final programRepositoryProvider = Provider<ProgramRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ProgramRepositoryRef = ProviderRef<ProgramRepository>;
-String _$programsStreamHash() => r'158ced26dfd616ee4376f65228152f3afcc36d15';
+String _$programsStreamHash() => r'9b5ccb4a0654d7a29f795136fb4648d38a21ad61';
 
 /// See also [programsStream].
 @ProviderFor(programsStream)
@@ -45,7 +45,7 @@ final programsStreamProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ProgramsStreamRef = AutoDisposeStreamProviderRef<List<Program>>;
-String _$programStreamHash() => r'24cd8ca012c555115a64c0e0dcd64bab989be998';
+String _$programStreamHash() => r'bc5242811f6cdd9baac018abd2efd14163fb9a61';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -187,7 +187,7 @@ class _ProgramStreamProviderElement
   String get programId => (origin as ProgramStreamProvider).programId;
 }
 
-String _$programFutureHash() => r'6e2441fda868a92c04790bdafbca522373c3c912';
+String _$programFutureHash() => r'e270c5f833c5ab1fa7c4cb2a63b5c5bd0184e76a';
 
 /// See also [programFuture].
 @ProviderFor(programFuture)
@@ -306,6 +306,137 @@ class _ProgramFutureProviderElement
 
   @override
   String get programId => (origin as ProgramFutureProvider).programId;
+}
+
+String _$programsByOrganizerStreamHash() =>
+    r'45d4df871321e7ced10ebd80ce9d3853a3e55026';
+
+/// See also [programsByOrganizerStream].
+@ProviderFor(programsByOrganizerStream)
+const programsByOrganizerStreamProvider = ProgramsByOrganizerStreamFamily();
+
+/// See also [programsByOrganizerStream].
+class ProgramsByOrganizerStreamFamily
+    extends Family<AsyncValue<List<Program>>> {
+  /// See also [programsByOrganizerStream].
+  const ProgramsByOrganizerStreamFamily();
+
+  /// See also [programsByOrganizerStream].
+  ProgramsByOrganizerStreamProvider call(String organizerId) {
+    return ProgramsByOrganizerStreamProvider(organizerId);
+  }
+
+  @override
+  ProgramsByOrganizerStreamProvider getProviderOverride(
+    covariant ProgramsByOrganizerStreamProvider provider,
+  ) {
+    return call(provider.organizerId);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'programsByOrganizerStreamProvider';
+}
+
+/// See also [programsByOrganizerStream].
+class ProgramsByOrganizerStreamProvider
+    extends AutoDisposeStreamProvider<List<Program>> {
+  /// See also [programsByOrganizerStream].
+  ProgramsByOrganizerStreamProvider(String organizerId)
+    : this._internal(
+        (ref) => programsByOrganizerStream(
+          ref as ProgramsByOrganizerStreamRef,
+          organizerId,
+        ),
+        from: programsByOrganizerStreamProvider,
+        name: r'programsByOrganizerStreamProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$programsByOrganizerStreamHash,
+        dependencies: ProgramsByOrganizerStreamFamily._dependencies,
+        allTransitiveDependencies:
+            ProgramsByOrganizerStreamFamily._allTransitiveDependencies,
+        organizerId: organizerId,
+      );
+
+  ProgramsByOrganizerStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.organizerId,
+  }) : super.internal();
+
+  final String organizerId;
+
+  @override
+  Override overrideWith(
+    Stream<List<Program>> Function(ProgramsByOrganizerStreamRef provider)
+    create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ProgramsByOrganizerStreamProvider._internal(
+        (ref) => create(ref as ProgramsByOrganizerStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        organizerId: organizerId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<Program>> createElement() {
+    return _ProgramsByOrganizerStreamProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProgramsByOrganizerStreamProvider &&
+        other.organizerId == organizerId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, organizerId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin ProgramsByOrganizerStreamRef
+    on AutoDisposeStreamProviderRef<List<Program>> {
+  /// The parameter `organizerId` of this provider.
+  String get organizerId;
+}
+
+class _ProgramsByOrganizerStreamProviderElement
+    extends AutoDisposeStreamProviderElement<List<Program>>
+    with ProgramsByOrganizerStreamRef {
+  _ProgramsByOrganizerStreamProviderElement(super.provider);
+
+  @override
+  String get organizerId =>
+      (origin as ProgramsByOrganizerStreamProvider).organizerId;
 }
 
 // ignore_for_file: type=lint

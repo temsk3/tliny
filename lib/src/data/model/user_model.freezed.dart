@@ -384,6 +384,7 @@ PublicUsers _$PublicUsersFromJson(Map<String, dynamic> json) {
 mixin _$PublicUsers {
   String? get id => throw _privateConstructorUsedError;
   String? get displayName => throw _privateConstructorUsedError;
+  String? get profileImageURL => throw _privateConstructorUsedError;
   @timestampKey
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @timestampKey
@@ -411,6 +412,7 @@ abstract class $PublicUsersCopyWith<$Res> {
   $Res call({
     String? id,
     String? displayName,
+    String? profileImageURL,
     @timestampKey DateTime? createdAt,
     @timestampKey DateTime? updatedAt,
     @timestampKey DateTime? deletedAt,
@@ -434,6 +436,7 @@ class _$PublicUsersCopyWithImpl<$Res, $Val extends PublicUsers>
   $Res call({
     Object? id = freezed,
     Object? displayName = freezed,
+    Object? profileImageURL = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -449,6 +452,11 @@ class _$PublicUsersCopyWithImpl<$Res, $Val extends PublicUsers>
                 freezed == displayName
                     ? _value.displayName
                     : displayName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            profileImageURL:
+                freezed == profileImageURL
+                    ? _value.profileImageURL
+                    : profileImageURL // ignore: cast_nullable_to_non_nullable
                         as String?,
             createdAt:
                 freezed == createdAt
@@ -483,6 +491,7 @@ abstract class _$$PublicUsersImplCopyWith<$Res>
   $Res call({
     String? id,
     String? displayName,
+    String? profileImageURL,
     @timestampKey DateTime? createdAt,
     @timestampKey DateTime? updatedAt,
     @timestampKey DateTime? deletedAt,
@@ -505,6 +514,7 @@ class __$$PublicUsersImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? displayName = freezed,
+    Object? profileImageURL = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
@@ -520,6 +530,11 @@ class __$$PublicUsersImplCopyWithImpl<$Res>
             freezed == displayName
                 ? _value.displayName
                 : displayName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        profileImageURL:
+            freezed == profileImageURL
+                ? _value.profileImageURL
+                : profileImageURL // ignore: cast_nullable_to_non_nullable
                     as String?,
         createdAt:
             freezed == createdAt
@@ -547,6 +562,7 @@ class _$PublicUsersImpl implements _PublicUsers {
   _$PublicUsersImpl({
     this.id,
     this.displayName,
+    this.profileImageURL,
     @timestampKey this.createdAt,
     @timestampKey this.updatedAt,
     @timestampKey this.deletedAt,
@@ -560,6 +576,8 @@ class _$PublicUsersImpl implements _PublicUsers {
   @override
   final String? displayName;
   @override
+  final String? profileImageURL;
+  @override
   @timestampKey
   final DateTime? createdAt;
   @override
@@ -571,7 +589,7 @@ class _$PublicUsersImpl implements _PublicUsers {
 
   @override
   String toString() {
-    return 'PublicUsers(id: $id, displayName: $displayName, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+    return 'PublicUsers(id: $id, displayName: $displayName, profileImageURL: $profileImageURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
   @override
@@ -582,6 +600,8 @@ class _$PublicUsersImpl implements _PublicUsers {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.displayName, displayName) ||
                 other.displayName == displayName) &&
+            (identical(other.profileImageURL, profileImageURL) ||
+                other.profileImageURL == profileImageURL) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -596,6 +616,7 @@ class _$PublicUsersImpl implements _PublicUsers {
     runtimeType,
     id,
     displayName,
+    profileImageURL,
     createdAt,
     updatedAt,
     deletedAt,
@@ -619,6 +640,7 @@ abstract class _PublicUsers implements PublicUsers {
   factory _PublicUsers({
     final String? id,
     final String? displayName,
+    final String? profileImageURL,
     @timestampKey final DateTime? createdAt,
     @timestampKey final DateTime? updatedAt,
     @timestampKey final DateTime? deletedAt,
@@ -631,6 +653,8 @@ abstract class _PublicUsers implements PublicUsers {
   String? get id;
   @override
   String? get displayName;
+  @override
+  String? get profileImageURL;
   @override
   @timestampKey
   DateTime? get createdAt;

@@ -54,8 +54,14 @@ void main() {
     },
     // エラー発生時の処理
     (error, stackTrace) {
-      // Crashlyticsにエラーを報告
-      FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
+      // Crashlyticsにエラーを報告（Web環境以外）
+      if (!kIsWeb) {
+        FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          fatal: true,
+        );
+      }
       // エラーログを出力
       logger.e(
         '致命的なエラーが発生しました',
@@ -72,6 +78,11 @@ Future<void> _initializeFirebase() async {
   // Firebaseの初期化
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // Crashlyticsの初期化（Web環境ではスキップ）
+  if (!kIsWeb) {
+    await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  }
+
   // Flutterエラー発生時の処理
   FlutterError.onError = (errorDetails) {
     logger.e(errorDetails, time: DateTime.now());
@@ -83,7 +94,9 @@ Future<void> _initializeFirebase() async {
 
   // プラットフォームエラー発生時の処理
   PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    if (!kIsWeb) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    }
     logger.e('プラットフォームエラー', error: error, stackTrace: stack);
     return true;
   };
@@ -99,6 +112,9 @@ Future<void> _connectToEmulators() async {
   final db = FirebaseFirestore.instance;
   const localhost = 'localhost';
   try {
+    // エミュレーター起動の安定化のため少し待機
+    await Future.delayed(const Duration(milliseconds: 500));
+
     // Cloud Functionsエミュレータへの接続
     FirebaseFunctions.instanceFor(
       region: 'asia-northeast1',
@@ -125,8 +141,9 @@ Future<void> _connectToEmulators() async {
       );
       logger.i('Firestore Persistence enabled');
     }
-    // エミュレータ起動時のエラー処理
-  } on Exception catch (e) {
-    logger.e('Error starting emulators', error: e);
+  } on Exception catch (e, st) {
+    logger.e('エミュレーター接続エラー', error: e, stackTrace: st);
+    // エミュレーター接続に失敗してもアプリは起動を続行
+    logger.w('エミュレーター接続に失敗しましたが、アプリは起動を続行します');
   }
 }

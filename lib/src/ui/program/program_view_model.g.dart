@@ -8,7 +8,7 @@ part of 'program_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$programViewModelHash() => r'e8fec37bba114695e3130cbaa39342cc6294ec8e';
+String _$programViewModelHash() => r'39bfaac999217fff0c7e63cd8e962e011ab12078';
 
 /// See also [ProgramViewModel].
 @ProviderFor(ProgramViewModel)

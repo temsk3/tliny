@@ -5,18 +5,22 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/stripe_repository.dart';
 import '../../settings/routes/routes.dart';
 import '../../utils/logger.dart';
+import '../common/loading_screen.dart';
 
 part 'checkout_view_model.g.dart';
 
 @riverpod
 class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
   /// 依存するリポジトリを初期化
-  late final authRepository = ref.watch(authRepositoryProvider);
-  late final stripeRepository = ref.watch(stripeRepositoryProvider);
+  late final AuthRepository authRepository = ref.watch(authRepositoryProvider);
+  late final StripeRepository stripeRepository = ref.watch(
+    stripeRepositoryProvider,
+  );
 
   /// ViewModel が初期化された際に呼ばれる
   @override
@@ -33,8 +37,15 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
         logger.e('openUrl: Could not launch URL');
         throw ArgumentError('Error launching $url');
       }
+    } on AppException catch (e, st) {
+      logger.e('openUrl: AppException - ${e.message}', stackTrace: st);
+      rethrow;
     } on Exception catch (e, st) {
       logger.e('openUrl: error=$e, stackTrace=$st', time: DateTime.now());
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -48,9 +59,10 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
     logger.d('getCheckoutPaymentLink: eventId=$eventId', time: DateTime.now());
     try {
       // チェックアウトセッションを作成
-      final response = await stripeRepository.paymentCheckoutSession(
-        eventId,
-      );
+      final loading = ref.read(globalLoadingControllerProvider.notifier);
+      final response = await loading.guardFuture(() async {
+        return stripeRepository.paymentCheckoutSession(eventId);
+      });
       // チェックアウトセッションの URL、セッションID、アカウントID、注文ID を取得
       final url = response['url'].toString();
       final sessionId = response['checkoutSessionId'].toString();
@@ -59,14 +71,22 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       // ログ出力
       logger
         ..d('getCheckoutPaymentLink: url=$url', time: DateTime.now())
-        ..d('getCheckoutPaymentLink: status=${response['status'].toString()}',
-            time: DateTime.now())
-        ..d('getCheckoutPaymentLink: sessionId=$sessionId',
-            time: DateTime.now())
-        ..d('getCheckoutPaymentLink: lineItem=${response['lineItem'].toString()}',
-            time: DateTime.now())
-        ..d('getCheckoutPaymentLink: accountId=$accountId',
-            time: DateTime.now())
+        ..d(
+          'getCheckoutPaymentLink: status=${response['status']}',
+          time: DateTime.now(),
+        )
+        ..d(
+          'getCheckoutPaymentLink: sessionId=$sessionId',
+          time: DateTime.now(),
+        )
+        ..d(
+          'getCheckoutPaymentLink: lineItem=${response['lineItem']}',
+          time: DateTime.now(),
+        )
+        ..d(
+          'getCheckoutPaymentLink: accountId=$accountId',
+          time: DateTime.now(),
+        )
         ..d('getCheckoutPaymentLink: orderId=$orderId', time: DateTime.now());
       // 画面がマウントされている場合、支払い処理を開始
       if (context.mounted) {
@@ -80,10 +100,20 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
         );
       }
       return true;
+    } on AppException catch (e, st) {
+      logger.e(
+        'getCheckoutPaymentLink: AppException - ${e.message}',
+        stackTrace: st,
+      );
+      return false;
     } on Exception catch (e, st) {
       logger.e(
         'getCheckoutPaymentLinkError: error=$e, stackTrace=$st',
         time: DateTime.now(),
+      );
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
       );
       return false;
     }
@@ -99,8 +129,9 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
     String orderId,
   ) async {
     logger.d(
-        'paymentWithBrowser: url=$url, sessionId=$sessionId, accountId=$accountId, orderId=$orderId',
-        time: DateTime.now());
+      'paymentWithBrowser: url=$url, sessionId=$sessionId, accountId=$accountId, orderId=$orderId',
+      time: DateTime.now(),
+    );
     // 支払い処理の完了を通知するための Completer を作成
     final completer = Completer<Map<String, dynamic>>();
     // フォーカスイベントのリスナーを作成
@@ -108,22 +139,40 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
     // フォーカスイベントが発生した場合、チェックアウトセッションの状態を取得
     subscription = html.window.onFocus.listen((event) async {
       logger.d('paymentWithBrowser: onFocus', time: DateTime.now());
-      final intent =
-          await stripeRepository.retrieveCheckoutSession(sessionId, accountId);
-      // 支払いが完了した場合、チェックアウト成功画面へ遷移
-      if (intent['payment_status'] != 'unpaid') {
-        logger.d(
+      try {
+        final loading = ref.read(globalLoadingControllerProvider.notifier);
+        final intent = await loading.guardFuture(() async {
+          return stripeRepository.retrieveCheckoutSession(sessionId, accountId);
+        });
+        // 支払いが完了した場合、チェックアウト成功画面へ遷移
+        if (intent['payment_status'] != 'unpaid') {
+          logger.d(
             'paymentWithBrowser: payment_status=${intent['payment_status']}',
-            time: DateTime.now());
-        // await appRoute.replace(CheckoutSuccessRoute(sessionId: sessionId));
-        CheckoutSuccessRoute(sessionId: sessionId).go(context);
-        // リスナーを解除
-        await subscription.cancel();
-        // 3 秒間待機
-        await Future.delayed(const Duration(seconds: 3));
-        // Completer を完了
-        completer.complete(intent);
-        return;
+            time: DateTime.now(),
+          );
+          // await appRoute.replace(CheckoutSuccessRoute(sessionId: sessionId));
+          CheckoutSuccessRoute(sessionId: sessionId).go(context);
+          // リスナーを解除
+          await subscription.cancel();
+          // 3 秒間待機
+          await Future.delayed(const Duration(seconds: 3));
+          // Completer を完了
+          completer.complete(intent);
+          return;
+        }
+      } on AppException catch (e, st) {
+        logger.e(
+          'paymentWithBrowser: AppException - ${e.message}',
+          stackTrace: st,
+        );
+        completer.completeError(e);
+      } on Exception catch (e, st) {
+        logger.e('paymentWithBrowser: Exception - $e', stackTrace: st);
+        final appException = GeneralException(
+          message: e.toString(),
+          stackTrace: st,
+        );
+        completer.completeError(appException);
       }
     });
 
@@ -135,46 +184,52 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       await showDialog<void>(
         context: context,
         barrierDismissible: false,
-        builder: (_) => SimpleDialog(
-          title: const Text(
-            // 'awaiting payment. Complete the payment in the window that opens.',
-            '支払いを待っています。 支払い画面で支払いを完了して下さい。',
-            // l10n.awaitingPayment,
-          ),
-          children: [
-            SimpleDialogOption(
-              // child: Text(l10n.cancel),
-              child: const Text('キャンセル'),
-              onPressed: () {
-                logger.d('paymentWithBrowser: cancel', time: DateTime.now());
-                // キャンセル処理を実行
-                stripeRepository.cancelOrder(orderId);
-                // チェックアウトキャンセル画面へ遷移
-                // appRoute.replace(CheckoutCancelRoute(sessionId: sessionId));
-                CheckoutCancelRoute(sessionId: sessionId).go(context);
-                // リスナーを解除
-                subscription.cancel();
-                // Completer を完了
-                completer.complete(
-                  stripeRepository.retrieveCheckoutSession(
-                    sessionId,
-                    accountId,
-                  ),
-                );
-              },
+        builder:
+            (_) => SimpleDialog(
+              title: const Text(
+                // 'awaiting payment. Complete the payment in the window that opens.',
+                '支払いを待っています。 支払い画面で支払いを完了して下さい。',
+                // l10n.awaitingPayment,
+              ),
+              children: [
+                SimpleDialogOption(
+                  // child: Text(l10n.cancel),
+                  child: const Text('キャンセル'),
+                  onPressed: () {
+                    logger.d(
+                      'paymentWithBrowser: cancel',
+                      time: DateTime.now(),
+                    );
+                    // キャンセル処理を実行
+                    stripeRepository.cancelOrder(orderId);
+                    // チェックアウトキャンセル画面へ遷移
+                    // appRoute.replace(CheckoutCancelRoute(sessionId: sessionId));
+                    CheckoutCancelRoute(sessionId: sessionId).go(context);
+                    // リスナーを解除
+                    subscription.cancel();
+                    // Completer を完了
+                    completer.complete(
+                      stripeRepository.retrieveCheckoutSession(
+                        sessionId,
+                        accountId,
+                      ),
+                    );
+                  },
+                ),
+                SimpleDialogOption(
+                  // child: Text(l10n.openNewWindow),
+                  child: const Text('支払い画面を開く'),
+                  onPressed: () {
+                    logger.d(
+                      'paymentWithBrowser: open new window',
+                      time: DateTime.now(),
+                    );
+                    // チェックアウトセッションの URL をブラウザで開く
+                    openUrl(url);
+                  },
+                ),
+              ],
             ),
-            SimpleDialogOption(
-              // child: Text(l10n.openNewWindow),
-              child: const Text('支払い画面を開く'),
-              onPressed: () {
-                logger.d('paymentWithBrowser: open new window',
-                    time: DateTime.now());
-                // チェックアウトセッションの URL をブラウザで開く
-                openUrl(url);
-              },
-            )
-          ],
-        ),
       );
     }
 
@@ -190,13 +245,27 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       final uid = ref.watch(userIdProvider).value;
       // ユーザーIDが null でない場合、決済情報を取得し、注文をキャンセル
       if (uid != null) {
-        final settlement = await stripeRepository.getSettlement(uid, sessionId);
+        final loading = ref.read(globalLoadingControllerProvider.notifier);
+        final settlement = await loading.guardFuture(() async {
+          return stripeRepository.getSettlement(uid, sessionId);
+        });
         final orderId = settlement['order_id'].toString();
-        await stripeRepository.cancelOrder(orderId);
+        await loading.guardFuture(() async {
+          await stripeRepository.cancelOrder(orderId);
+        });
       }
+    } on AppException catch (e, st) {
+      logger.e('cancelCheckout: AppException - ${e.message}', stackTrace: st);
+      rethrow;
     } on Exception catch (e, st) {
-      logger.e('cancelCheckout: error=$e, stackTrace=$st',
-          time: DateTime.now());
+      logger.e(
+        'cancelCheckout: error=$e, stackTrace=$st',
+        time: DateTime.now(),
+      );
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
+      );
       rethrow;
     }
   }

@@ -8,7 +8,7 @@ part of 'user_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userRepositoryHash() => r'e31ca2e76ac0456c799c355f4f47d726dcb95870';
+String _$userRepositoryHash() => r'7b838d76413a4ed7caa642e36081918247857705';
 
 /// See also [userRepository].
 @ProviderFor(userRepository)
@@ -26,7 +26,7 @@ final userRepositoryProvider = Provider<UserRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UserRepositoryRef = ProviderRef<UserRepository>;
-String _$userStreamHash() => r'884a8b7e9501a396e1be0ad4c962a6897a954b2e';
+String _$userStreamHash() => r'2cf4b17d65e881eb21b099203c985d8c3e341b81';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -165,7 +165,7 @@ class _UserStreamProviderElement extends AutoDisposeStreamProviderElement<User>
 }
 
 String _$publicUserRepositoryHash() =>
-    r'0a611294c67000333db76c14c6f765f30aba8fe1';
+    r'506faab5f233a028a1d40fb4e2141c6b34535da3';
 
 /// See also [publicUserRepository].
 @ProviderFor(publicUserRepository)
@@ -183,7 +183,7 @@ final publicUserRepositoryProvider = Provider<PublicUserRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PublicUserRepositoryRef = ProviderRef<PublicUserRepository>;
-String _$publicUserStreamHash() => r'48670c857de42a3145849eeaee0dd69fbc92b9b0';
+String _$publicUserStreamHash() => r'a4bebdc2b6382db7796a963ed4541007fe8aa8db';
 
 /// See also [publicUserStream].
 @ProviderFor(publicUserStream)
@@ -304,7 +304,7 @@ class _PublicUserStreamProviderElement
   String get uid => (origin as PublicUserStreamProvider).uid;
 }
 
-String _$publicUserFutureHash() => r'ed4166f8e6ac2a9e915b6f9669942365dff3ee19';
+String _$publicUserFutureHash() => r'9138b3dce22b8a26edb47af9b5f0937e77d51623';
 
 /// See also [publicUserFuture].
 @ProviderFor(publicUserFuture)

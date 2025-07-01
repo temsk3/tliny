@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
+import '../model/exception/app_exception.dart';
 import '../model/ticket_model.dart';
 
 part 'ticket_repository.g.dart';
@@ -88,7 +89,10 @@ class TicketRepository {
       final ticket = docSnapshot.data();
       if (ticket == null) {
         logger.e('searchTicket: ticket is null');
-        throw Error();
+        throw GeneralException(
+          message: 'データが存在しません',
+          stackTrace: StackTrace.current,
+        );
       }
       return ticket;
     } on Exception catch (e, st) {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -10,7 +11,7 @@ part 'stripe_repository.g.dart';
 
 // StripeRepositoryProvider
 @Riverpod(keepAlive: true)
-StripeRepository stripeRepository(StripeRepositoryRef ref) {
+StripeRepository stripeRepository(Ref ref) {
   return StripeRepository(
     ref.watch(firebaseFunctionsProvider),
     ref.watch(firebaseFirestoreProvider),
@@ -51,9 +52,7 @@ class StripeRepository {
 
   // checkout
   /// チェックアウトセッションを作成する
-  Future<Map<String, dynamic>> paymentCheckoutSession(
-    String eventId,
-  ) async {
+  Future<Map<String, dynamic>> paymentCheckoutSession(String eventId) async {
     logger.d('paymentCheckoutSession: eventId=$eventId');
     try {
       final params = {
@@ -84,7 +83,8 @@ class StripeRepository {
     String accountId,
   ) async {
     logger.d(
-        'retrieveCheckoutSession: sessionId=$sessionId, accountId=$accountId');
+      'retrieveCheckoutSession: sessionId=$sessionId, accountId=$accountId',
+    );
     try {
       final checkoutSession = await _call<Map<String, dynamic>>(
         'v1-method-checkout-onRetrieve',
@@ -107,10 +107,7 @@ class StripeRepository {
   Future<void> cancelOrder(String orderId) async {
     logger.d('cancelOrder: orderId=$orderId');
     try {
-      await _call<void>(
-        'v1-method-checkout-onCancel',
-        {'orderId': orderId},
-      );
+      await _call<void>('v1-method-checkout-onCancel', {'orderId': orderId});
     } on Exception catch (e, st) {
       logger.e(
         'order cancel Error',
@@ -147,9 +144,7 @@ class StripeRepository {
   }
 
   /// Stripe アカウント作成用のリンクを取得する
-  Future<String> getAccountLink(
-    String email,
-  ) async {
+  Future<String> getAccountLink(String email) async {
     logger.d('getAccountLink: email=$email');
     logger.i('getAccountLink');
 
@@ -183,12 +178,13 @@ class StripeRepository {
   ) async {
     logger.d('getSettlement: uid=$uid, sessionId=$sessionId');
     try {
-      final docRef = await _db
-          .collection('users')
-          .doc(uid)
-          .collection('settlement')
-          .doc(sessionId)
-          .get();
+      final docRef =
+          await _db
+              .collection('users')
+              .doc(uid)
+              .collection('settlement')
+              .doc(sessionId)
+              .get();
       return docRef.data()!;
     } on Exception catch (e, st) {
       logger.e(

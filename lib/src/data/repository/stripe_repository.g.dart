@@ -8,7 +8,7 @@ part of 'stripe_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$stripeRepositoryHash() => r'89dfdd1c2695248557536d67ca2dcddb434d85c1';
+String _$stripeRepositoryHash() => r'863a23e680d4571974f5ded832e1137a11f3449d';
 
 /// See also [stripeRepository].
 @ProviderFor(stripeRepository)

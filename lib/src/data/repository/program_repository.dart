@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
+import '../model/exception/app_exception.dart';
 import '../model/program_model.dart';
 
 part 'program_repository.g.dart';
@@ -13,7 +15,7 @@ const _subCollectionPath = 'staffs';
 
 // ProgramRepositoryProvider
 @Riverpod(keepAlive: true)
-ProgramRepository programRepository(ProgramRepositoryRef ref) {
+ProgramRepository programRepository(Ref ref) {
   return ProgramRepository(ref.watch(firebaseFirestoreProvider));
 }
 
@@ -21,11 +23,14 @@ class ProgramRepository {
   ProgramRepository(this._db);
   final FirebaseFirestore _db;
 
-  late final _collectionRef =
-      _db.collection(_collectionPath).withConverter<Program>(
-            fromFirestore: (snapshot, _) =>
+  late final CollectionReference<Program> _collectionRef = _db
+      .collection(_collectionPath)
+      .withConverter<Program>(
+        fromFirestore:
+            (snapshot, _) =>
                 Program.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-            toFirestore: (model, _) => {
+        toFirestore:
+            (model, _) => {
               ...model.toJson()..remove('id'),
               if (model.createdAt == null)
                 'createdAt': FieldValue.serverTimestamp(),
@@ -33,7 +38,7 @@ class ProgramRepository {
               if (model.isActive == false)
                 'deletedAt': FieldValue.serverTimestamp(),
             },
-          );
+      );
 
   // イベント一覧を取得するストリーム
   Stream<List<Program>> watchEventList() {
@@ -57,16 +62,43 @@ class ProgramRepository {
   Stream<Program> watchEvent(String eventId) {
     logger.d('watchEvent: eventId=$eventId');
     try {
-      return _collectionRef.doc(eventId).snapshots().map((doc) {
-        logger.d('watchEvent: doc=$doc');
-        if (doc.data() == null) {
-          logger.e('watchEvent: doc.data() is null');
-          throw Error();
+      return _collectionRef.doc(eventId).snapshots().map((snapshot) {
+        logger.d('watchEvent: snapshot=$snapshot');
+        if (snapshot.exists) {
+          logger.d('watchEvent: イベントを取得しました');
+          return snapshot.data()!;
+        } else {
+          logger.e('watchEvent: イベントが存在しません');
+          throw GeneralException(
+            message: 'イベントが存在しません',
+            stackTrace: StackTrace.current,
+          );
         }
-        return doc.data()!;
       });
     } on Exception catch (e, st) {
       logger.e('watchEvent: error=$e, stackTrace=$st');
+      rethrow;
+    }
+  }
+
+  // オーナーIDでイベント一覧を取得するストリーム
+  Stream<List<Program>> watchEventsByOrganizer(String organizerId) {
+    logger.d('watchEventsByOrganizer: organizerId=$organizerId');
+    try {
+      return _collectionRef
+          .where('organizerId', isEqualTo: organizerId)
+          .where('isActive', isEqualTo: true)
+          .orderBy('createdAt', descending: true)
+          .snapshots()
+          .map((snapshot) {
+            logger.d('watchEventsByOrganizer: snapshot=$snapshot');
+            return snapshot.docs.map((doc) {
+              logger.d('watchEventsByOrganizer: doc=$doc');
+              return doc.data();
+            }).toList();
+          });
+    } on Exception catch (e, st) {
+      logger.e('watchEventsByOrganizer: error=$e, stackTrace=$st');
       rethrow;
     }
   }
@@ -140,17 +172,17 @@ class ProgramRepository {
   Future<Program> getProduct(String docRef) async {
     logger.d('getProduct: docRef=$docRef');
     try {
-      final snapshot = await _db.doc(docRef).get().then((snap) {
-        if (snap.exists) {
-          logger.d('getProduct: snap.exists');
-          return snap.data();
-        } else {
-          logger.e('getProduct: snap.exists is false');
-          throw Error();
-        }
-      });
-      logger.d('getProduct: snapshot=$snapshot');
-      return Program.fromJson(snapshot!);
+      final snapshot = await _collectionRef.doc(docRef).get();
+      if (snapshot.exists) {
+        logger.d('getProduct: イベントを取得しました');
+        return snapshot.data()!;
+      } else {
+        logger.e('getProduct: イベントが存在しません');
+        throw GeneralException(
+          message: 'イベントが存在しません',
+          stackTrace: StackTrace.current,
+        );
+      }
     } on Exception catch (e, st) {
       logger.e('getProduct: error=$e, stackTrace=$st');
       rethrow;
@@ -159,7 +191,7 @@ class ProgramRepository {
 }
 
 @riverpod
-Stream<List<Program>> programsStream(ProgramsStreamRef ref) {
+Stream<List<Program>> programsStream(Ref ref) {
   logger.d('programsStream');
   try {
     return ref.watch(programRepositoryProvider).watchEventList();
@@ -170,10 +202,7 @@ Stream<List<Program>> programsStream(ProgramsStreamRef ref) {
 }
 
 @riverpod
-Stream<Program> programStream(
-  ProgramStreamRef ref,
-  String programId,
-) {
+Stream<Program> programStream(Ref ref, String programId) {
   logger.d('programStream: programId=$programId');
   try {
     return ref.watch(programRepositoryProvider).watchEvent(programId);
@@ -184,15 +213,25 @@ Stream<Program> programStream(
 }
 
 @riverpod
-Future<Program?> programFuture(
-  ProgramFutureRef ref,
-  String programId,
-) {
+Future<Program?> programFuture(Ref ref, String programId) {
   logger.d('programFuture: programId=$programId');
   try {
     return ref.watch(programRepositoryProvider).readEvent(programId);
   } on Exception catch (e, st) {
     logger.e('programFuture: error=$e, stackTrace=$st');
+    rethrow;
+  }
+}
+
+@riverpod
+Stream<List<Program>> programsByOrganizerStream(Ref ref, String organizerId) {
+  logger.d('programsByOrganizerStream: organizerId=$organizerId');
+  try {
+    return ref
+        .watch(programRepositoryProvider)
+        .watchEventsByOrganizer(organizerId);
+  } on Exception catch (e, st) {
+    logger.e('programsByOrganizerStream: error=$e, stackTrace=$st');
     rethrow;
   }
 }

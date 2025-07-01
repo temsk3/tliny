@@ -26,7 +26,7 @@ final getPackageInfoProvider = AutoDisposeFutureProvider<PackageInfo>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetPackageInfoRef = AutoDisposeFutureProviderRef<PackageInfo>;
-String _$userStreamStateHash() => r'94ed6ac36d27b2142e9ce894d6c2c1640019dd6b';
+String _$userStreamStateHash() => r'c9336dea6f02f375b1c88dca031e15527375ebe8';
 
 /// See also [userStreamState].
 @ProviderFor(userStreamState)

@@ -38,47 +38,47 @@ Stream<List<Program>> myProgramListState(MyProgramListStateRef ref) {
 //       ref.watch(programRepositoryProvider).streamEvent(programId),
 // );
 
-final addProgramButtonStateProvider = StreamProvider.autoDispose(
-  (ref) {
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
-    if (uid != null) {
-      //
-      return ref.watch(userRepositoryProvider).streamCheckExistenceAccount(uid);
-    }
-    return Stream<bool>.value(false);
-  },
-);
+final AutoDisposeStreamProvider<bool>
+addProgramButtonStateProvider = StreamProvider.autoDispose((ref) {
+  final uidAsyncValue = ref.watch(userIdProvider);
+  final uid = uidAsyncValue.value;
+  if (uid != null) {
+    //
+    // return ref.watch(userRepositoryProvider).streamCheckExistenceAccount(uid);
+    return ref.watch(userRepositoryProvider).streamCheckAccountStatus(uid);
+  }
+  return Stream<bool>.value(false);
+});
 
-final editProgramButtonStateProvider =
-    StreamProvider.family.autoDispose<bool, Program>(
-  (ref, program) {
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
-    if (uid == program.organizerId) {
-      return Stream<bool>.value(true);
-    }
-    return Stream<bool>.value(false);
-  },
-);
+final AutoDisposeStreamProviderFamily<bool, Program>
+editProgramButtonStateProvider = StreamProvider.family
+    .autoDispose<bool, Program>((ref, program) {
+      final uidAsyncValue = ref.watch(userIdProvider);
+      final uid = uidAsyncValue.value;
+      if (uid == program.organizerId) {
+        return Stream<bool>.value(true);
+      }
+      return Stream<bool>.value(false);
+    });
 
-final addStaffButtonStateProvider =
-    StreamProvider.family.autoDispose<bool, Program>(
-  (ref, program) {
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
-    if (uid != null) {
-      if (uid == program.organizerId) return Stream<bool>.value(false); //
-      if (program.staffCode != null) {
-        if (program.staffCode!.isNotEmpty) {
-          final existence = ref.watch(staffCheckExistenceProvider(program.id!));
-          final result = existence.value;
-          if (result != null) {
-            return Stream<bool>.value(!result);
-          }
+final AutoDisposeStreamProviderFamily<bool, Program>
+addStaffButtonStateProvider = StreamProvider.family.autoDispose<bool, Program>((
+  ref,
+  program,
+) {
+  final uidAsyncValue = ref.watch(userIdProvider);
+  final uid = uidAsyncValue.value;
+  if (uid != null) {
+    if (uid == program.organizerId) return Stream<bool>.value(false); //
+    if (program.staffCode != null) {
+      if (program.staffCode!.isNotEmpty) {
+        final existence = ref.watch(staffCheckExistenceProvider(program.id!));
+        final result = existence.value;
+        if (result != null) {
+          return Stream<bool>.value(!result);
         }
       }
     }
-    return Stream<bool>.value(false);
-  },
-);
+  }
+  return Stream<bool>.value(false);
+});

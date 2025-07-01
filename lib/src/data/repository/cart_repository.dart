@@ -1,20 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
 import '../model/cart_model.dart';
+import '../model/exception/app_exception.dart';
 
 part 'cart_repository.g.dart';
 
 const _defaultPath = 'v/1';
 const _collectionPath = '$_defaultPath/users';
 const _subCollectionPath = 'cart';
-const _productCollectionPath = '$_defaultPath/products';
 
 // CartRepositoryProvider
 @Riverpod(keepAlive: true)
-CartRepository cartRepository(CartRepositoryRef ref) {
+CartRepository cartRepository(Ref ref) {
   return CartRepository(ref.watch(firebaseFirestoreProvider));
 }
 
@@ -28,14 +29,16 @@ class CartRepository {
         .doc(uid)
         .collection(_subCollectionPath)
         .withConverter<Cart>(
-          fromFirestore: (snapshot, _) =>
-              Cart.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-          toFirestore: (model, _) => {
-            ...model.toJson()..remove('id'),
-            if (model.createdAt == null)
-              'createdAt': FieldValue.serverTimestamp(),
-            'updatedAt': FieldValue.serverTimestamp(),
-          },
+          fromFirestore:
+              (snapshot, _) =>
+                  Cart.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+          toFirestore:
+              (model, _) => {
+                ...model.toJson()..remove('id'),
+                if (model.createdAt == null)
+                  'createdAt': FieldValue.serverTimestamp(),
+                'updatedAt': FieldValue.serverTimestamp(),
+              },
         );
   }
 
@@ -47,22 +50,34 @@ class CartRepository {
         logger.i('watchCart: カートのデータを取得しました');
         return snapshot.docs.map((doc) => doc.data()).toList();
       });
-    } on FirebaseException catch (e) {
-      logger.e('watchCart: カートのデータ取得に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    } catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
   // カートのデータを一度に取得する
   Future<List<Cart>> readCart(String uid) async {
-    logger.i('readCart: カートのデータを一度に取得します');
+    logger.i('readCart: カートのデータを一度に取得します uid=$uid');
     try {
-      final querySnapshot = await _collectionRef(uid).get();
-      logger.i('readCart: カートのデータを一度に取得しました');
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
-    } on FirebaseException catch (e) {
-      logger.e('readCart: カートのデータ取得に失敗しました', error: e);
-      throw e;
+      logger.d('readCart: _collectionRef(uid)を呼び出し', time: DateTime.now());
+      final collectionRef = _collectionRef(uid);
+      logger.d('readCart: collectionRef.get()を呼び出し', time: DateTime.now());
+      final querySnapshot = await collectionRef.get();
+      logger.d(
+        'readCart: querySnapshot取得完了, docs.length=${querySnapshot.docs.length}',
+        time: DateTime.now(),
+      );
+      final result = querySnapshot.docs.map((doc) => doc.data()).toList();
+      logger.i('readCart: カートのデータを一度に取得しました result=$result');
+      return result;
+    } on Exception catch (e, st) {
+      logger.e('readCart: Exception - $e', stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    } catch (e, st) {
+      logger.e('readCart: catch - $e', stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -72,15 +87,15 @@ class CartRepository {
     try {
       final item = cart.copyWith(
         id: cart.productId,
-        productDocRef:
-            _db.collection(_productCollectionPath).doc(cart.productId),
+        productDocRef: 'v/1/products/${cart.productId}',
       );
       await _collectionRef(uid).doc(cart.productId).set(item);
       logger.i('createCart: カートに商品を追加しました');
       return item;
-    } on FirebaseException catch (e) {
-      logger.e('createCart: カートへの商品追加に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    } catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -92,9 +107,10 @@ class CartRepository {
       await docRef.set(cart, SetOptions(merge: true));
       logger.i('updateCart: カートの商品を更新しました');
       return docRef.id;
-    } on FirebaseException catch (e) {
-      logger.e('updateCart: カートの商品更新に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    } catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -104,21 +120,23 @@ class CartRepository {
     try {
       await _collectionRef(uid).doc(cartId).delete();
       logger.i('deleteCart: カートの商品を削除しました');
-    } on FirebaseException catch (e) {
-      logger.e('deleteCart: カートの商品削除に失敗しました', error: e);
-      throw e;
+    } on Exception catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    } catch (e, st) {
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 }
 
 // カートのデータを取得するストリーム
 @riverpod
-Stream<List<Cart>> cartStream(CartStreamRef ref, String uid) {
+Stream<List<Cart>> cartStream(Ref ref, String uid) {
   logger.i('cartStream: カートのデータを取得するストリームを開始します');
   try {
     return ref.watch(cartRepositoryProvider).watchCart(uid);
-  } on FirebaseException catch (e) {
-    logger.e('cartStream: カートのデータ取得に失敗しました', error: e);
-    throw e;
+  } on Exception catch (e, st) {
+    throw GeneralException(message: e.toString(), stackTrace: st);
+  } catch (e, st) {
+    throw GeneralException(message: e.toString(), stackTrace: st);
   }
 }

@@ -23,11 +23,7 @@ class User with _$User {
   }) = _User;
   const User._();
 
-  factory User.empty() => const User(
-        name: '',
-        email: '',
-        phoneNumber: null,
-      );
+  factory User.empty() => const User(name: '', email: '', phoneNumber: null);
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
@@ -38,6 +34,7 @@ class PublicUsers with _$PublicUsers {
   factory PublicUsers({
     String? id,
     String? displayName,
+    String? profileImageURL,
     @timestampKey DateTime? createdAt,
     @timestampKey DateTime? updatedAt,
     @timestampKey DateTime? deletedAt,

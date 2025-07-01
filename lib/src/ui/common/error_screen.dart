@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../utils/logger.dart';
 
 /// エラーが発生した場合に表示する画面
@@ -21,6 +22,9 @@ class ErrorScreen extends StatelessWidget {
       error: e,
       stackTrace: st,
     );
+    // AppExceptionならuserMessageを優先表示
+    final message =
+        e is AppException ? (e as AppException).userMessage : e.toString();
     return Scaffold(
       appBar: AppBar(title: const Text('エラー')),
       body: Center(
@@ -35,7 +39,7 @@ class ErrorScreen extends StatelessWidget {
                 // Put the Text widgets inside a padded Column
                 children: [
                   Text(
-                    e.toString(),
+                    message,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 16),

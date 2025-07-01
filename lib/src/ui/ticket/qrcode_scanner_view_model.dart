@@ -1,34 +1,21 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/ticket_model.dart';
 import '../../data/repository/ticket_repository.dart';
 import '../../utils/logger.dart';
 
-// QRCodeScannerViewModelのProvider
-final qrCodeScannerViewModelProvider =
-    StateNotifierProvider<QRCodeScannerViewModel, String?>((ref) {
-      return QRCodeScannerViewModel(
-        ref.watch(ticketRepositoryProvider),
-        ref.read(authRepositoryProvider),
-        ref.watch(usageHistoryRepositoryProvider),
-      );
-    });
+part 'qrcode_scanner_view_model.g.dart';
 
-class QRCodeScannerViewModel extends StateNotifier<String?> {
-  QRCodeScannerViewModel(
-    this.ticketRepository,
-    this.authRepository,
-    this.usageHistoryRepository,
-  ) : super(null);
-
-  // チケットリポジトリ
-  final TicketRepository ticketRepository;
-  final AuthRepository authRepository;
-  final UsageHistoryRepository usageHistoryRepository;
+/// QRコードスキャナーのViewModel
+@riverpod
+class QRCodeScannerViewModel extends _$QRCodeScannerViewModel {
+  @override
+  String? build() => null;
 
   /// ユーザーIDを初期設定する
   void setInitialUserId(String userId) {
@@ -56,33 +43,44 @@ class QRCodeScannerViewModel extends StateNotifier<String?> {
   /// UUIDからチケット情報を取得する
   Future<List<Ticket>> findTicketsByUuid(String prefix, String uuid) async {
     try {
-      final tickets = await ticketRepository.readAllTicket();
+      final tickets = await ref.read(ticketRepositoryProvider).readAllTicket();
       // prefixに応じてUUIDを検索
       if (prefix == 'PDF') {
         return tickets.where((ticket) => ticket.pdfUuid == uuid).toList();
       } else if (prefix == 'REG') {
         return tickets.where((ticket) {
-          print('ticket.uuid: ${ticket.uuid}, uuid: $uuid');
-          print('ticket: $ticket');
+          logger.d('ticket.uuid: ${ticket.uuid}, uuid: $uuid');
+          logger.d('ticket: $ticket');
           return ticket.uuid == uuid;
         }).toList();
       } else {
         // prefixが不正な場合は空のリストを返す
         return [];
       }
-    } on Exception catch (e) {
-      logger.e('Failed to find tickets by UUID: $e');
-      return [];
+    } on AppException catch (e, st) {
+      logger.e('Failed to find tickets by UUID: ${e.message}', stackTrace: st);
+      rethrow;
+    } catch (e, st) {
+      logger.e('Failed to find tickets by UUID: $e', stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
   /// スキャンされたチケット情報をデータベースに更新する
   Future<void> updateDatabaseTickets(List<Ticket> scannedTickets) async {
     try {
-      final user = authRepository.getCurrentUser();
-      final uid = user?.uid;
-      final name = user?.displayName;
+      final user = ref.read(authRepositoryProvider).getCurrentUser();
+      if (user == null) {
+        throw const AuthenticationException(message: 'ユーザーが認証されていません');
+      }
+
+      final uid = user.uid;
+      final name = user.displayName;
       final eventId = scannedTickets.first.eventId;
+      if (eventId == null) {
+        throw const GeneralException(message: 'イベントIDが取得できません');
+      }
+
       final usageTicket = <String>[];
       for (final ticket in scannedTickets) {
         final data = ticket.copyWith(
@@ -93,16 +91,21 @@ class QRCodeScannerViewModel extends StateNotifier<String?> {
         );
         usageTicket.add(ticket.id!);
         // チケットの使用済みフラグをtrueに更新
-        print('data.uuid: ${data.uuid}');
-        final updatedTicket = await ticketRepository.updateTicket(data);
+        logger.d('data.uuid: ${data.uuid}');
+        final updatedTicket = await ref
+            .read(ticketRepositoryProvider)
+            .updateTicket(data);
         logger.d('Updated ticket: $updatedTicket');
       }
       // チケットの使用履歴を更新
-      await addUsageHistory(uid!, eventId!, usageTicket);
+      await addUsageHistory(uid, eventId, usageTicket);
       logger.d('All tickets updated successfully.');
-    } catch (e) {
-      logger.e('Failed to update tickets: $e');
-      rethrow; // エラーを再スロー
+    } on AppException catch (e, st) {
+      logger.e('Failed to update tickets: ${e.message}', stackTrace: st);
+      rethrow;
+    } catch (e, st) {
+      logger.e('Failed to update tickets: $e', stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -132,6 +135,9 @@ class QRCodeScannerViewModel extends StateNotifier<String?> {
       useTicket: useTicket,
     );
 
-    final id = await usageHistoryRepository.createUsageHistory(uid, data);
+    final id = await ref
+        .read(usageHistoryRepositoryProvider)
+        .createUsageHistory(uid, data);
+    logger.d('Usage history created with ID: $id');
   }
 }

@@ -1,9 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/ticket_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/ticket_repository.dart';
 import '../../utils/logger.dart';
+import '../common/loading_screen.dart';
 
 part 'history_view_model.g.dart';
 
@@ -11,15 +13,43 @@ part 'history_view_model.g.dart';
 
 @riverpod
 class UsageHistoryViewModel extends _$UsageHistoryViewModel {
-  late final usageHistoryRepository = ref.read(usageHistoryRepositoryProvider);
-  late final authRepository = ref.read(authRepositoryProvider);
+  late final UsageHistoryRepository usageHistoryRepository = ref.read(
+    usageHistoryRepositoryProvider,
+  );
+  late final AuthRepository authRepository = ref.read(authRepositoryProvider);
 
   @override
   FutureOr<List<UsageHistory>> build() {
-    return readUsageHistory();
+    return _readUsageHistoryDirectly();
   }
 
-  // 取得
+  // 直接利用履歴を取得（buildメソッド用）
+  Future<List<UsageHistory>> _readUsageHistoryDirectly() async {
+    logger.d('_readUsageHistoryDirectly');
+    final uidAsyncValue = ref.watch(userIdProvider);
+    final uid = uidAsyncValue.value;
+    if (uid == null) {
+      return [];
+    }
+    try {
+      return await usageHistoryRepository.readUsageHistory(uid);
+    } on AppException catch (e, st) {
+      logger.e(
+        '_readUsageHistoryDirectly: AppException - ${e.message}',
+        stackTrace: st,
+      );
+      rethrow;
+    } on Exception catch (e, st) {
+      logger.e('_readUsageHistoryDirectly: Exception - $e', stackTrace: st);
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
+      );
+      rethrow;
+    }
+  }
+
+  // 取得（ローディング付き）
   Future<List<UsageHistory>> readUsageHistory() async {
     logger.d('readUsageHistory');
     final uidAsyncValue = ref.watch(userIdProvider);
@@ -27,13 +57,26 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
     if (uid == null) {
       return [];
     }
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () async {
+    try {
+      final loading = ref.read(globalLoadingControllerProvider.notifier);
+      final history = await loading.guardFuture(() async {
         return usageHistoryRepository.readUsageHistory(uid);
-      },
-    );
-    return usageHistoryRepository.readUsageHistory(uid);
+      });
+      state = AsyncValue.data(history);
+      return history;
+    } on AppException catch (e, st) {
+      logger.e('readUsageHistory: AppException - ${e.message}', stackTrace: st);
+      state = AsyncValue.error(e, st);
+      rethrow;
+    } on Exception catch (e, st) {
+      logger.e('readUsageHistory: Exception - $e', stackTrace: st);
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
+      );
+      state = AsyncValue.error(appException, st);
+      rethrow;
+    }
   }
 
   // 追加
@@ -52,13 +95,29 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
         receptionistId: id,
         useTicket: useTicket,
       );
-      state = const AsyncLoading();
-      state = await AsyncValue.guard(
-        () async {
-          final id = await usageHistoryRepository.createUsageHistory(uid, data);
-          return [...?state.value, data.copyWith(id: id)];
-        },
-      );
+      try {
+        final loading = ref.read(globalLoadingControllerProvider.notifier);
+        final historyId = await loading.guardFuture(() async {
+          return usageHistoryRepository.createUsageHistory(uid, data);
+        });
+        final updatedHistory = [...?state.value, data.copyWith(id: historyId)];
+        state = AsyncValue.data(updatedHistory);
+      } on AppException catch (e, st) {
+        logger.e(
+          'addUsageHistory: AppException - ${e.message}',
+          stackTrace: st,
+        );
+        state = AsyncValue.error(e, st);
+        rethrow;
+      } on Exception catch (e, st) {
+        logger.e('addUsageHistory: Exception - $e', stackTrace: st);
+        final appException = GeneralException(
+          message: e.toString(),
+          stackTrace: st,
+        );
+        state = AsyncValue.error(appException, st);
+        rethrow;
+      }
     }
   }
 
@@ -68,16 +127,32 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
     final uidAsyncValue = ref.watch(userIdProvider);
     final uid = uidAsyncValue.value;
     if (uid != null) {
-      state = const AsyncLoading();
-      state = await AsyncValue.guard(
-        () async {
-          final id = await usageHistoryRepository.updateUsageHistory(uid, data);
-          return [
-            for (final ticket in state.value!)
-              if (ticket.id == id) data else ticket
-          ];
-        },
-      );
+      try {
+        final loading = ref.read(globalLoadingControllerProvider.notifier);
+        final id = await loading.guardFuture(() async {
+          return usageHistoryRepository.updateUsageHistory(uid, data);
+        });
+        final updatedHistory = [
+          for (final ticket in state.value!)
+            if (ticket.id == id) data else ticket,
+        ];
+        state = AsyncValue.data(updatedHistory);
+      } on AppException catch (e, st) {
+        logger.e(
+          'updateUsageHistory: AppException - ${e.message}',
+          stackTrace: st,
+        );
+        state = AsyncValue.error(e, st);
+        rethrow;
+      } on Exception catch (e, st) {
+        logger.e('updateUsageHistory: Exception - $e', stackTrace: st);
+        final appException = GeneralException(
+          message: e.toString(),
+          stackTrace: st,
+        );
+        state = AsyncValue.error(appException, st);
+        rethrow;
+      }
     }
   }
 }

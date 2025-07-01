@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
+import '../model/exception/app_exception.dart';
 import '../model/staff_model.dart';
 import 'auth_repository.dart';
 
@@ -10,11 +12,11 @@ part 'staff_repository.g.dart';
 
 const _defaultPath = 'v/1';
 const _eventCollectionPath = '$_defaultPath/events';
-const _collectionPath = 'staffs';
+const _collectionPath = '$_defaultPath/staff';
 
 // StaffRepositoryProvider
 @Riverpod(keepAlive: true)
-StaffRepository staffRepository(StaffRepositoryRef ref) {
+StaffRepository staffRepository(Ref ref) {
   return StaffRepository(ref.watch(firebaseFirestoreProvider));
 }
 
@@ -28,16 +30,18 @@ class StaffRepository {
         .doc(eventId)
         .collection(_collectionPath)
         .withConverter<Staff>(
-          fromFirestore: (snapshot, _) =>
-              Staff.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-          toFirestore: (model, _) => {
-            ...model.toJson()..remove('id'),
-            if (model.createdAt == null)
-              'createdAt': FieldValue.serverTimestamp(),
-            'updatedAt': FieldValue.serverTimestamp(),
-            if (model.isActive == false)
-              'deletedAt': FieldValue.serverTimestamp(),
-          },
+          fromFirestore:
+              (snapshot, _) =>
+                  Staff.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+          toFirestore:
+              (model, _) => {
+                ...model.toJson()..remove('id'),
+                if (model.createdAt == null)
+                  'createdAt': FieldValue.serverTimestamp(),
+                'updatedAt': FieldValue.serverTimestamp(),
+                if (model.isActive == false)
+                  'deletedAt': FieldValue.serverTimestamp(),
+              },
         );
   }
 
@@ -45,12 +49,10 @@ class StaffRepository {
   Stream<List<Staff>> streamStaffs(String eventId) {
     logger.d('streamStaffs: eventId=$eventId');
     try {
-      return _collectionRef(eventId).snapshots().map(
-        (snap) {
-          logger.d('streamStaffs: snap=$snap');
-          return snap.docs.map((doc) => doc.data()).toList();
-        },
-      );
+      return _collectionRef(eventId).snapshots().map((snap) {
+        logger.d('streamStaffs: snap=$snap');
+        return snap.docs.map((doc) => doc.data()).toList();
+      });
     } on Exception catch (e, st) {
       logger.e('streamStaffs: error=$e, stackTrace=$st');
       rethrow;
@@ -89,10 +91,7 @@ class StaffRepository {
     logger.d('updateStaff: eventId=$eventId, staff=$staff');
     try {
       final docRef = _collectionRef(eventId).doc(staff.id);
-      await docRef.set(
-        staff,
-        SetOptions(merge: true),
-      );
+      await docRef.set(staff, SetOptions(merge: true));
       logger.d('updateStaff: success');
       return docRef.id;
     } on Exception catch (e, st) {
@@ -143,14 +142,36 @@ class StaffRepository {
 
 /// イベントIDを指定して、ログイン中のユーザーがスタッフかどうかを確認するストリーム
 @riverpod
-Stream<bool> staffCheckExistence(StaffCheckExistenceRef ref, String eventId) {
-  logger.d('staffCheckExistence: eventId=$eventId');
+Stream<bool> staffCheckExistence(Ref ref, String eventId) {
+  logger.i('staffCheckExistence: スタッフの存在確認ストリームを開始します eventId=$eventId');
   final uidAsyncValue = ref.watch(userIdProvider);
-  final uid = uidAsyncValue.value;
-  if (uid == null) {
-    logger.d('staffCheckExistence: uid is null');
-    return Stream.value(false);
-  }
-  logger.d('staffCheckExistence: uid=$uid');
-  return ref.watch(staffRepositoryProvider).watchExistenceStaff(eventId, uid);
+
+  return uidAsyncValue.when(
+    data: (uid) {
+      if (uid == null) {
+        logger.i('staffCheckExistence: ユーザーIDが取得できませんでした');
+        return Stream.value(false);
+      }
+      try {
+        return ref
+            .watch(staffRepositoryProvider)
+            .watchExistenceStaff(eventId, uid);
+      } on Exception catch (e, st) {
+        logger.e('staffCheckExistence: 存在確認エラー', error: e, stackTrace: st);
+        throw GeneralException(message: 'スタッフの存在確認に失敗しました', stackTrace: st);
+      }
+    },
+    loading: () {
+      logger.i('staffCheckExistence: 認証状態を確認中');
+      return Stream.value(false);
+    },
+    error: (error, stackTrace) {
+      logger.e(
+        'staffCheckExistence: 認証状態の取得に失敗しました',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      return Stream.value(false);
+    },
+  );
 }

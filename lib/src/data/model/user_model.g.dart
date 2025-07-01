@@ -37,6 +37,7 @@ _$PublicUsersImpl _$$PublicUsersImplFromJson(Map<String, dynamic> json) =>
     _$PublicUsersImpl(
       id: json['id'] as String?,
       displayName: json['displayName'] as String?,
+      profileImageURL: json['profileImageURL'] as String?,
       createdAt: dateFromTimestampValue(json['createdAt']),
       updatedAt: dateFromTimestampValue(json['updatedAt']),
       deletedAt: dateFromTimestampValue(json['deletedAt']),
@@ -46,6 +47,7 @@ Map<String, dynamic> _$$PublicUsersImplToJson(_$PublicUsersImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'displayName': instance.displayName,
+      'profileImageURL': instance.profileImageURL,
       'createdAt': timestampFromDateValue(instance.createdAt),
       'updatedAt': timestampFromDateValue(instance.updatedAt),
       'deletedAt': timestampFromDateValue(instance.deletedAt),

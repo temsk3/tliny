@@ -1,10 +1,14 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
+import '../../data/repository/product_repository.dart';
+import '../../data/repository/program_repository.dart';
 import '../../ui/auth/sign_in.dart';
 import '../../ui/auth/sign_up.dart';
 import '../../ui/cart/cart_page.dart';
@@ -33,6 +37,7 @@ import '../../ui/ticket/ticket_pdf_page.dart';
 import '../../ui/top/top_page.dart';
 import '../../ui/usage_history/history_details.dart';
 import '../../ui/usage_history/history_page.dart';
+import '../../ui/user/owner_detail_page.dart';
 import '../../ui/user/user_edit_page.dart';
 import '../../ui/user/user_page.dart';
 
@@ -67,6 +72,7 @@ class AppRoutes {
   static const orderPage = '/order';
   static const userPage = '/user';
   static const userEditPage = 'user-edit';
+  static const ownerDetailPage = '/owner-detail';
   static const managementPage = '/management';
   static const earningsTab = 'earnings';
   static const earningsDetailPage = 'earnings-detail';
@@ -81,29 +87,20 @@ class AppRoutes {
 // ********************************************************
 
 // ShellRoute用のKey
-final _shellNavigatorKey = GlobalKey<NavigatorState>(
-  debugLabel: 'shell',
-);
+final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
 // ShellBranch用のKey
-final _topNavigatorKey = GlobalKey<NavigatorState>(
-  debugLabel: 'top',
-);
+final _topNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'top');
 
-final _cartNavigatorKey = GlobalKey<NavigatorState>(
-  debugLabel: 'cart',
-);
+final _cartNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'cart');
 
-final _ticketNavigatorKey = GlobalKey<NavigatorState>(
-  debugLabel: 'ticket',
-);
+final _ticketNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'ticket');
 
-final _authNavigatorKey = GlobalKey<NavigatorState>(
-  debugLabel: 'auth',
-);
+final _authNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'auth');
 
-final _managementNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'management');
+final _managementNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'management',
+);
 
 // ********************************************************
 // *
@@ -320,20 +317,45 @@ class ProductListTab extends GoRouteData {
 
 @TypedGoRoute<ProductDetailsRoute>(path: AppRoutes.productDetailPage)
 class ProductDetailsRoute extends GoRouteData {
-  const ProductDetailsRoute({required this.$extra});
-  final (Program, Product) $extra;
-
-  // static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+  const ProductDetailsRoute({required this.programId, required this.productId});
+  final String programId;
+  final String productId;
 
   @override
-  // Widget build(BuildContext context, GoRouterState state) =>
-  //     ProductDetailsPage(program: $extra.$1, product: $extra.$2);
-  Page<void> buildPage(BuildContext context, GoRouterState state) =>
-      MaterialPage<Object>(
-        fullscreenDialog: true,
-        key: state.pageKey,
-        child: ProductDetailsPage(program: $extra.$1, product: $extra.$2),
-      );
+  Widget build(BuildContext context, GoRouterState state) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final programAsync = ref.watch(programStreamProvider(programId));
+        // productStreamProviderを使用
+        final productAsync = ref.watch(productStreamProvider(productId));
+
+        return programAsync.when(
+          data:
+              (program) => productAsync.when(
+                data:
+                    (product) =>
+                        ProductDetailsPage(program: program, product: product),
+                loading:
+                    () => const Scaffold(
+                      body: Center(child: CircularProgressIndicator()),
+                    ),
+                error:
+                    (error, stack) => Scaffold(
+                      body: Center(child: Text('商品の読み込みに失敗しました: $error')),
+                    ),
+              ),
+          loading:
+              () => const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              ),
+          error:
+              (error, stack) => Scaffold(
+                body: Center(child: Text('プログラムの読み込みに失敗しました: $error')),
+              ),
+        );
+      },
+    );
+  }
 }
 
 @TypedGoRoute<ProductEditRoute>(path: AppRoutes.productEditPage)
@@ -534,4 +556,16 @@ class TermsRoute extends GoRouteData {
         key: state.pageKey,
         child: TermsPage(uid: uid),
       );
+}
+
+@TypedGoRoute<OwnerDetailRoute>(path: AppRoutes.ownerDetailPage)
+class OwnerDetailRoute extends GoRouteData {
+  const OwnerDetailRoute({required this.ownerId});
+  final String ownerId;
+
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      OwnerDetailPage(ownerId: ownerId);
 }

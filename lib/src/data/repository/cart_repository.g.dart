@@ -8,7 +8,7 @@ part of 'cart_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cartRepositoryHash() => r'ff0b37228775edfc1dabc396150ff981b85c2fa5';
+String _$cartRepositoryHash() => r'dc5f40f430d8fdc57240a0529f3651cff5214961';
 
 /// See also [cartRepository].
 @ProviderFor(cartRepository)
@@ -26,7 +26,7 @@ final cartRepositoryProvider = Provider<CartRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CartRepositoryRef = ProviderRef<CartRepository>;
-String _$cartStreamHash() => r'0e65a966ddc94e768127dc6093636510a88d61f8';
+String _$cartStreamHash() => r'07a66d6a90ef5b68908868ffa45ef0240138f444';
 
 /// Copied from Dart SDK
 class _SystemHash {

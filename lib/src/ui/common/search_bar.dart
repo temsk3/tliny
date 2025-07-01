@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/program_model.dart';
 import '../../utils/logger.dart';
+import '../common/error_handler.dart';
 
 // 検索状態を管理する StateProvider
 final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
@@ -149,16 +150,11 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
         ),
       );
     } on Exception catch (e, st) {
-      // エラーが発生した場合、エラーログを出力
       logger.e(
         '_searchTextField: error=$e, stackTrace=$st',
         time: DateTime.now(),
       );
-      // エラーメッセージを表示
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
-      // エラー画面を表示
+      ErrorHandler.showErrorSnackBar(context, e);
       return const Scaffold(body: Center(child: Text('エラーが発生しました')));
     }
   }

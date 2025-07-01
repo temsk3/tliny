@@ -23,13 +23,17 @@ class QRCodeScannerPage extends HookConsumerWidget {
     final snackBar = useSnackBar();
     // モバイルスキャナーコントローラー
     final mobileScannerController = useMemoized(MobileScannerController.new);
-    final viewModel = ref.read(qrCodeScannerViewModelProvider.notifier);
+    final viewModel = ref.read(qRCodeScannerViewModelProvider.notifier);
     // スキャン済みチケットのリスト
     final scannedTickets = useState<Set<Ticket>>({});
     // スキャン成功状態
     final showSuccess = useState(false);
     // 処理中フラグ
     final isScanning = useState(false);
+    // ダイアログ表示中フラグ
+    final isDialogShowing = useState(false);
+    // 最後にスキャンしたコード（重複スキャン防止用）
+    final lastScannedCode = useState<String>('');
 
     // スキャン開始と同時にアニメーションを開始
     final animationController = useAnimationController(
@@ -58,11 +62,17 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
     // QRコードスキャン処理
     Future<void> handleScan(String code) async {
-      try {
-        if (code == '') return;
-        isScanning.value = true;
+      // 空のコード、ダイアログ表示中、処理中、同じコードの重複スキャンの場合は早期リターン
+      if (code.isEmpty ||
+          isDialogShowing.value ||
+          isScanning.value ||
+          lastScannedCode.value == code) {
+        return;
+      }
 
-        await mobileScannerController.stop();
+      try {
+        isScanning.value = true;
+        lastScannedCode.value = code;
 
         final qrData = await decodeQrCode(code, snackBar);
         if (qrData == null) return; // 復号またはフォーマットエラーの場合は早期リターン
@@ -78,8 +88,6 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
         final newTickets = await viewModel.findTicketsByUuid(prefix, uuid);
         if (newTickets.isNotEmpty) {
-          // snackBar.showAlertSnackBar('Ticket not found.');
-          // return; // チケットが見つからない場合は早期リターン
           // 重複チェック
           for (final newTicket in newTickets) {
             // IDが一致するチケットがscannedTicketsに存在しない場合に追加
@@ -91,8 +99,6 @@ class QRCodeScannerPage extends HookConsumerWidget {
           }
         }
 
-        // scannedTickets.value = [...scannedTickets.value, ...newTickets];
-
         showSuccess.value = true;
         animationController.stop();
         await Future.delayed(const Duration(seconds: 1));
@@ -102,9 +108,13 @@ class QRCodeScannerPage extends HookConsumerWidget {
         snackBar.showSuccessSnackBar('Ticket scanned successfully.');
       } on Exception catch (e) {
         snackBar.showAlertSnackBar('Failed to process QR code: $e');
+      } finally {
+        isScanning.value = false;
+        // 少し遅延を入れてからlastScannedCodeをクリア（連続スキャン防止のため）
+        Timer(const Duration(milliseconds: 500), () {
+          lastScannedCode.value = '';
+        });
       }
-      isScanning.value = false;
-      await mobileScannerController.start(); // スキャナーを再開
     }
 
     useEffect(() {
@@ -116,7 +126,10 @@ class QRCodeScannerPage extends HookConsumerWidget {
         title: const Text('Scan QR Codes'),
         actions: [
           IconButton(
-            onPressed: mobileScannerController.switchCamera,
+            onPressed:
+                isDialogShowing.value
+                    ? null
+                    : mobileScannerController.switchCamera,
             icon: ValueListenableBuilder(
               valueListenable: mobileScannerController,
               builder: (context, state, child) {
@@ -136,20 +149,6 @@ class QRCodeScannerPage extends HookConsumerWidget {
           children: [
             Expanded(
               flex: 3,
-              // child: MobileScanner(
-              //   controller: mobileScannerController,
-              //   errorBuilder: (context, error, child) =>
-              //       ScannerErrorWidget(error: error),
-              //   onDetect: (capture) async {
-              //     await mobileScannerController.stop();
-              //     final code = capture.barcodes.firstOrNull?.rawValue;
-              //     if (code != null) {
-              //       await handleScan(code);
-              //     } else {
-              //       snackBar.showAlertSnackBar('Invalid QR code.');
-              //     }
-              //   },
-              // ),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 child: ClipRRect(
@@ -158,52 +157,18 @@ class QRCodeScannerPage extends HookConsumerWidget {
                     children: [
                       MobileScanner(
                         controller: mobileScannerController,
-                        // scanWindow: Rect.fromCenter(
-                        //   center: const Offset(
-                        //     // MediaQuery.of(context).size.width / 2,
-                        //     // MediaQuery.of(context).size.height / 4,
-                        //     16,
-                        //     16,
-                        //   ), // 画面中央上部を指定
-                        //   width: 250, // スキャン範囲の幅
-                        //   height: 250, // スキャン範囲の高さ
-                        // ),
                         scanWindowUpdateThreshold: 10,
-                        // fit: BoxFit.contain,
-                        // onDetect: (capture) async {
-                        //   if (isProcessing.value) return; // 処理中は新しいスキャンを無視
-                        //   await mobileScannerController.stop();
-                        //   final code = capture.barcodes.firstOrNull?.rawValue;
-                        //   if (code != null) {
-                        //     await handleScan(code);
-                        //   } else {
-                        //     snackBar.showAlertSnackBar('Invalid QR code.');
-                        //   }
-                        // },
                         onDetect:
-                            (capture) => handleScan(
-                              capture.barcodes.firstOrNull?.rawValue ?? '',
-                            ), // 直接呼び出し
+                            isDialogShowing.value
+                                ? null
+                                : (capture) => handleScan(
+                                  capture.barcodes.firstOrNull?.rawValue ?? '',
+                                ), // ダイアログ表示中は無効化
                       ),
                       ScannerOverlay(
                         animationController: animationController,
                         showSuccess: showSuccess.value,
                       ),
-                      // 処理中表示（オプション）
-                      // if (isScanning.value)
-                      //   ColoredBox(
-                      //     color: Colors.black.withOpacity(0.3),
-                      //     child: const Center(
-                      //       child: Text(
-                      //         '読み取り待機中...',
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 16,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
                     ],
                   ),
                 ),
@@ -234,14 +199,17 @@ class QRCodeScannerPage extends HookConsumerWidget {
       floatingActionButton:
           scannedTickets.value.isNotEmpty
               ? FloatingActionButton(
+                heroTag: 'qr_scanner_fab',
                 onPressed: () async {
                   print('FloatingActionButton onPressed'); // 追加
+                  isDialogShowing.value = true;
                   await mobileScannerController.stop();
                   bool? confirmed = false;
                   final tickets = scannedTickets.value.toList();
 
                   await showDialog<void>(
                     context: context,
+                    barrierDismissible: false,
                     builder:
                         (context) => AlertDialog(
                           title: const Text('Scanned Tickets'),
@@ -259,6 +227,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
                   confirmed = await showDialog<bool>(
                     context: context,
+                    barrierDismissible: false,
                     builder:
                         (context) => AlertDialog(
                           title: const Text('Confirm Action'),
@@ -294,6 +263,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
                       snackBar.showAlertSnackBar('チケットの更新に失敗しました: $e');
                     }
                   }
+                  isDialogShowing.value = false;
                   await mobileScannerController.start();
                 },
                 child: const Icon(Icons.check),
@@ -358,7 +328,10 @@ class ScannerFrame extends StatelessWidget {
           height: 250,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: frameColor.withOpacity(0.3), width: 2),
+            border: Border.all(
+              color: frameColor.withValues(alpha: 0.3),
+              width: 2,
+            ),
           ),
         ),
 
@@ -409,9 +382,9 @@ class ScannerFrame extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    frameColor.withOpacity(0),
-                    frameColor.withOpacity(0.5),
-                    frameColor.withOpacity(0),
+                    frameColor.withValues(alpha: 0),
+                    frameColor.withValues(alpha: 0.5),
+                    frameColor.withValues(alpha: 0),
                   ],
                 ),
               ),
@@ -464,7 +437,7 @@ class SuccessOverlay extends StatelessWidget {
         width: 250,
         height: 250,
         decoration: BoxDecoration(
-          color: Colors.green.withOpacity(0.2),
+          color: Colors.green.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Stack(
@@ -474,7 +447,7 @@ class SuccessOverlay extends StatelessWidget {
               width: 90,
               height: 90,
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.2),
+                color: Colors.green.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
             ),

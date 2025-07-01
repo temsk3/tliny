@@ -74,32 +74,33 @@ class ProgramEditPage extends HookConsumerWidget {
 
     Uint8List? file;
     final imageState = useState(file);
-    return WidgetWithLoading(
-      // child: Focus(
-      //   focusNode: focusNode,
-      //   child: GestureDetector(
-      //     onTap: focusNode.requestFocus,
-      child: Scaffold(
-        // resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text(l10n.event + l10n.register),
-        ),
-        body: MainBodyWidget(
-          width: 400,
-          body: SingleChildScrollView(
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.all(32),
-                child: Form(
-                  key: form,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
+
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(l10n.event + l10n.register),
+      ),
+      body: MainBodyWidget(
+        width: 400,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: form,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // イベント表示設定
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('イベント表示（非表示／表示）'),
+                          const Text(
+                            'イベント表示（非表示／表示）',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
                           Switch(
                             value: isPublish.value,
                             onChanged: (bool? value) {
@@ -112,12 +113,16 @@ class ProgramEditPage extends HookConsumerWidget {
                           ),
                         ],
                       ),
+                    ),
+                  ),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                      ),
-                      //
-                      InkWell(
+                  const SizedBox(height: 16),
+
+                  // 画像アップロード
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: InkWell(
                         child: EditPictureView(
                           imageViewModel: imageViewModel,
                           picture: program.pictureURL,
@@ -125,16 +130,22 @@ class ProgramEditPage extends HookConsumerWidget {
                           imageState: imageState,
                         ),
                       ),
+                    ),
+                  ),
 
-                      //
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                      ),
-                      TextFormField(
-                        // autofocus: true,
+                  const SizedBox(height: 16),
+
+                  // イベント名
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextFormField(
                         textInputAction: TextInputAction.next,
                         controller: nameEditingController,
-                        decoration: InputDecoration(labelText: l10n.eventName),
+                        decoration: InputDecoration(
+                          labelText: l10n.eventName,
+                          border: const OutlineInputBorder(),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return l10n.pleaseEnterSomeText;
@@ -150,16 +161,25 @@ class ProgramEditPage extends HookConsumerWidget {
                               context,
                             ).requestFocus(messageFocusNode),
                       ),
+                    ),
+                  ),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                      ),
-                      TextFormField(
+                  const SizedBox(height: 16),
+
+                  // 詳細説明
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextFormField(
                         textInputAction: TextInputAction.next,
                         controller: messageEditingController,
                         maxLength: 60,
-                        maxLines: 2,
-                        decoration: InputDecoration(labelText: l10n.detail),
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          labelText: l10n.detail,
+                          border: const OutlineInputBorder(),
+                          helperText: '最大60文字',
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return l10n.pleaseEnterSomeText;
@@ -175,196 +195,234 @@ class ProgramEditPage extends HookConsumerWidget {
                               context,
                             ).requestFocus(placeFocusNode),
                       ),
+                    ),
+                  ),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                      ),
-                      //
-                      Row(
+                  const SizedBox(height: 16),
+
+                  // 販売期間
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(),
-                            child: Text(l10n.salesPeriod),
-                            onPressed: () async {
-                              final dateRange = await showDateRangePicker(
-                                context: context,
-                                initialDateRange: DateTimeRange(
-                                  start: now,
-                                  end: now,
-                                ),
-                                firstDate: now,
-                                lastDate: DateTime(DateTime.now().year + 3),
-                                // builder: (context, child) {
-                                //   return Theme(
-                                //     data: theme.data..copyWith(
-                                //       colorScheme:
-                                //           theme.data.colorScheme.copyWith(
-                                //         surface: theme.appColors.primary,
-                                //       ),
-                                //     ),
-                                //     child: child as Widget,
-                                //   );
-                                // },
-                              );
-                              if (dateRange != null) {
-                                salesStartEditingController.text = dateFormat
-                                    .format(dateRange.start);
-                                salesEndEditingController.text = dateFormat
-                                    .format(dateRange.end);
-                              }
-                            },
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                          ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: false,
-                              controller: salesStartEditingController,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: 'From',
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return l10n.pleaseEnterSomeText;
-                                }
-                                if (startDayFormatter(value).isAfter(
-                                  startDayFormatter(
-                                    eventFromEditingController.text,
-                                  ),
-                                )) {
-                                  return l10n
-                                      .pleaseEnterADateAfterTheSpecifiedDate;
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                salesStartEditingController.text =
-                                    value.toString();
-                              },
+                          const Text(
+                            '販売期間',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                          ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: false,
-                              controller: salesEndEditingController,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: 'To',
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller: salesStartEditingController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: '開始日',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return l10n.pleaseEnterSomeText;
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    salesStartEditingController.text =
+                                        value.toString();
+                                  },
+                                ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return l10n.pleaseEnterSomeText;
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller: salesEndEditingController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: '終了日',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return l10n.pleaseEnterSomeText;
+                                    }
+                                    if (endDayFormatter(
+                                      salesEndEditingController.text,
+                                    ).isAfter(endDayFormatter(value))) {
+                                      return l10n
+                                          .pleaseEnterADateAfterTheSpecifiedDate;
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    salesEndEditingController.text =
+                                        value.toString();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                final dateRange = await showDateRangePicker(
+                                  context: context,
+                                  initialDateRange: DateTimeRange(
+                                    start: DateTime.parse(
+                                      salesStartEditingController.text,
+                                    ),
+                                    end: DateTime.parse(
+                                      salesEndEditingController.text,
+                                    ),
+                                  ),
+                                  firstDate: DateTime(
+                                    now.year,
+                                    now.month,
+                                    now.day,
+                                  ),
+                                  lastDate: DateTime(now.year + 3),
+                                );
+                                if (dateRange != null) {
+                                  salesStartEditingController.text = dateFormat
+                                      .format(dateRange.start);
+                                  salesEndEditingController.text = dateFormat
+                                      .format(dateRange.end);
                                 }
-                                return null;
                               },
-                              onSaved: (value) {
-                                salesEndEditingController.text =
-                                    value.toString();
-                              },
+                              icon: const Icon(Icons.calendar_today),
+                              label: const Text('期間を選択'),
                             ),
                           ),
                         ],
                       ),
-                      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // イベント期間
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(),
-                            child: Text(l10n.periods),
-                            onPressed: () async {
-                              final dateRange = await showDateRangePicker(
-                                context: context,
-                                initialDateRange: DateTimeRange(
-                                  start: DateTime.parse(
-                                    salesStartEditingController.text,
-                                  ),
-                                  end: DateTime.parse(
-                                    salesEndEditingController.text,
-                                  ),
-                                ),
-                                firstDate: DateTime(
-                                  now.year,
-                                  now.month,
-                                  now.day,
-                                ),
-                                lastDate: DateTime(now.year + 3),
-                              );
-                              if (dateRange != null) {
-                                eventFromEditingController.text =
-                                    dateFormat
-                                        .format(dateRange.start)
-                                        .toString();
-                                eventToEditingController.text =
-                                    dateFormat.format(dateRange.end).toString();
-                              }
-                            },
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                          ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: false,
-                              controller: eventFromEditingController,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: 'From',
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return l10n.pleaseEnterSomeText;
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                eventFromEditingController.text =
-                                    value.toString();
-                              },
+                          const Text(
+                            'イベント期間',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5),
-                          ),
-                          Flexible(
-                            child: TextFormField(
-                              enabled: false,
-                              controller: eventToEditingController,
-                              decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                labelText: 'To',
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller: eventFromEditingController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: '開始日',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return l10n.pleaseEnterSomeText;
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    eventFromEditingController.text =
+                                        value.toString();
+                                  },
+                                ),
                               ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return l10n.pleaseEnterSomeText;
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller: eventToEditingController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: '終了日',
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return l10n.pleaseEnterSomeText;
+                                    }
+                                    if (endDayFormatter(
+                                      salesEndEditingController.text,
+                                    ).isAfter(endDayFormatter(value))) {
+                                      return l10n
+                                          .pleaseEnterADateAfterTheSpecifiedDate;
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    eventToEditingController.text =
+                                        value.toString();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                final dateRange = await showDateRangePicker(
+                                  context: context,
+                                  initialDateRange: DateTimeRange(
+                                    start: DateTime.parse(
+                                      eventFromEditingController.text,
+                                    ),
+                                    end: DateTime.parse(
+                                      eventToEditingController.text,
+                                    ),
+                                  ),
+                                  firstDate: DateTime(
+                                    now.year,
+                                    now.month,
+                                    now.day,
+                                  ),
+                                  lastDate: DateTime(now.year + 3),
+                                );
+                                if (dateRange != null) {
+                                  eventFromEditingController.text = dateFormat
+                                      .format(dateRange.start);
+                                  eventToEditingController.text = dateFormat
+                                      .format(dateRange.end);
                                 }
-                                if (endDayFormatter(
-                                  salesEndEditingController.text,
-                                ).isAfter(endDayFormatter(value))) {
-                                  return l10n
-                                      .pleaseEnterADateAfterTheSpecifiedDate;
-                                  // return 'Please enter a date after the specified date';
-                                }
-                                return null;
                               },
-                              onSaved: (value) {
-                                eventToEditingController.text =
-                                    value.toString();
-                              },
+                              icon: const Icon(Icons.calendar_today),
+                              label: const Text('期間を選択'),
                             ),
                           ),
                         ],
                       ),
-                      //
-                      TextFormField(
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  // 開催場所
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextFormField(
                         textInputAction: TextInputAction.done,
                         controller: placeEditingController,
-                        decoration: InputDecoration(labelText: l10n.place),
+                        decoration: InputDecoration(
+                          labelText: l10n.place,
+                          border: const OutlineInputBorder(),
+                        ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return l10n.pleaseEnterSomeText;
@@ -374,16 +432,18 @@ class ProgramEditPage extends HookConsumerWidget {
                         onSaved: (value) {
                           placeEditingController.text = value.toString();
                         },
-                        onChanged: (value) {
-                          // _name.text = value.toString();
-                        },
                         focusNode: placeFocusNode,
                       ),
+                    ),
+                  ),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                      ),
-                      TextFormField(
+                  const SizedBox(height: 16),
+
+                  // スタッフコード
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextFormField(
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
                             RegExp(r'[a-zA-Z0-9@_-]'),
@@ -392,94 +452,92 @@ class ProgramEditPage extends HookConsumerWidget {
                         textInputAction: TextInputAction.done,
                         controller: staffCodeEditingController,
                         maxLength: 10,
-                        decoration: InputDecoration(labelText: l10n.staffCode),
+                        decoration: InputDecoration(
+                          labelText: l10n.staffCode,
+                          border: const OutlineInputBorder(),
+                          helperText: '英数字、@、_、- のみ使用可能（最大10文字）',
+                        ),
                         validator: (value) {
-                          // if (value == null || value.isEmpty) {
-                          //   return l10n.pleaseEnterSomeText;
-                          // }
                           return null;
                         },
                         onSaved: (value) {
                           staffCodeEditingController.text = value.toString();
                         },
                       ),
+                    ),
+                  ),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const CancelElevatedButton(),
-                          const SizedBox(width: 16),
-                          RegisterProgramElevatedButton(
-                            onPressed: () async {
-                              if (form.currentState!.validate()) {
-                                form.currentState!.save();
+                  const SizedBox(height: 32),
 
-                                final storageId =
-                                    await imageViewModel.createUuid;
-                                final photo = await imageViewModel.getTempImage(
-                                  'program/$storageId',
-                                  program.pictureURL,
-                                );
+                  // ボタン
+                  Row(
+                    children: [
+                      const Expanded(child: CancelElevatedButton()),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: RegisterProgramElevatedButton(
+                          onPressed: () async {
+                            if (form.currentState!.validate()) {
+                              form.currentState!.save();
 
-                                final data = program.copyWith(
-                                  id: id,
-                                  organizerId: organizerId,
-                                  name: nameEditingController.text,
-                                  message: messageEditingController.text,
-                                  salesStart: startDayFormatter(
-                                    salesStartEditingController.text,
-                                  ),
-                                  salesEnd: endDayFormatter(
-                                    salesEndEditingController.text,
-                                  ),
-                                  eventFrom: startDayFormatter(
-                                    eventFromEditingController.text,
-                                  ),
-                                  eventTo: endDayFormatter(
-                                    eventToEditingController.text,
-                                  ),
-                                  place: placeEditingController.text,
-                                  isActive: isActive.value,
-                                  isPublish: isPublish.value,
-                                  storageId: storageId,
-                                  pictureURL: photo,
-                                  staffCode: staffCodeEditingController.text,
-                                );
+                              final storageId = await imageViewModel.createUuid;
+                              final photo = await imageViewModel.getTempImage(
+                                'program/$storageId',
+                                program.pictureURL,
+                              );
 
-                                logger.d(data);
-                                final result = await ref
-                                    .read(isLoadingProvider.notifier)
-                                    .guardFuture<bool>(
-                                      () async => ref
-                                          .watch(
-                                            programViewModelProvider.notifier,
-                                          )
-                                          .registerProgram(data),
-                                    );
-                                // await ref
-                                //     .watch(programViewModelProvider.notifier)
-                                //     .registerProgram(data);
-                                if (context.mounted && result) {
-                                  context.pop();
-                                }
+                              final data = program.copyWith(
+                                id: id,
+                                organizerId: organizerId,
+                                name: nameEditingController.text,
+                                message: messageEditingController.text,
+                                salesStart: startDayFormatter(
+                                  salesStartEditingController.text,
+                                ),
+                                salesEnd: endDayFormatter(
+                                  salesEndEditingController.text,
+                                ),
+                                eventFrom: startDayFormatter(
+                                  eventFromEditingController.text,
+                                ),
+                                eventTo: endDayFormatter(
+                                  eventToEditingController.text,
+                                ),
+                                place: placeEditingController.text,
+                                isActive: isActive.value,
+                                isPublish: isPublish.value,
+                                storageId: storageId,
+                                pictureURL: photo,
+                                staffCode: staffCodeEditingController.text,
+                              );
+
+                              logger.d(data);
+                              final result = await ref
+                                  .read(
+                                    globalLoadingControllerProvider.notifier,
+                                  )
+                                  .guardFuture<bool>(
+                                    () async => ref
+                                        .watch(
+                                          programViewModelProvider.notifier,
+                                        )
+                                        .registerProgram(data),
+                                  );
+                              if (context.mounted && result) {
+                                context.pop();
                               }
-                            },
-                          ),
-                        ],
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
           ),
         ),
       ),
-      //   ),
-      // ),
     );
   }
 }

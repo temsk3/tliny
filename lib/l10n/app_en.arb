@@ -132,5 +132,7 @@
   "registered": "Registered",
   "notification": "Notification",
   "signIn": "Sign In",
-  "signOut": "Sign Out"
+  "signOut": "Sign Out",
+  "memberSince": "Member Since",
+  "lastUpdated": "Last Updated"
 }

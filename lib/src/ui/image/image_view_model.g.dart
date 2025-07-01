@@ -8,7 +8,7 @@ part of 'image_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$imageViewModelHash() => r'fe32c52d8cb1401fc2a0790f6a607e4a4c9189ce';
+String _$imageViewModelHash() => r'bef9288007c5d6202b282c3be4fa1b82d6c661f8';
 
 /// 画像のURLリストを管理する StateNotifierProvider
 ///
@@ -28,7 +28,7 @@ final imageViewModelProvider =
 
 typedef _$ImageViewModel = AutoDisposeAsyncNotifier<List<String>>;
 String _$tempImageViewModelHash() =>
-    r'56e83c3b66b20b52216362de23c600d0bd238c7f';
+    r'9b44b0069aec0d529e72da7773e65dd0d9d9d87e';
 
 /// 一時的な画像ファイルの情報を管理する StateNotifierProvider
 ///
@@ -48,7 +48,7 @@ final tempImageViewModelProvider =
 
 typedef _$TempImageViewModel = AutoDisposeAsyncNotifier<XFile?>;
 String _$tempImageListViewModelHash() =>
-    r'865fc8df46e034291cc83243425513fdb86969eb';
+    r'1001c4d43ac55f7a817b491c4b66e38d6680d94f';
 
 /// 一時的な画像ファイルのリストを管理する StateNotifierProvider
 ///
