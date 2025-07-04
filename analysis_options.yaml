@@ -9,6 +9,8 @@
 # packages, and plugins designed to encourage good coding practices.
 # include: package:flutter_lints/flutter.yaml
 include: package:pedantic_mono/analysis_options.yaml
+# include: package:riverpod_lint/analysis_options.yaml
+# include: package:custom_lint/analysis_options.yaml
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -29,6 +31,12 @@ linter:
 # https://dart.dev/guides/language/analysis-options
 
 analyzer:
-  plugins:
-    - custom_lint
-    - riverpod_lint
+  exclude:
+    - '**/*.g.dart'
+    - '**/*.freezed.dart'
+    - '**/*.gr.dart'
+    - 'build/**'
+    - 'lib/generated/**'
+  # plugins:
+  #   - custom_lint
+  #   - riverpod_lint

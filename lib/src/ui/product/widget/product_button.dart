@@ -9,6 +9,7 @@ import '../../../data/model/program_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
 import '../../../settings/routes/routes.dart';
 import '../../../utils/logger.dart';
+import '../../../utils/router_utils.dart';
 import '../../cart/cart_view_model.dart';
 import '../../common/asyncvalue_widget.dart';
 import '../../common/base_button_widget.dart';
@@ -240,7 +241,7 @@ class InCartElevatedButton extends HookWidget {
                         logger.d('showFluttertoast: end');
                         logger.d('pop');
                         // await appRoute.pop();
-                        context.pop();
+                        RouterUtils.safePop(context);
                       }
                     } on Exception catch (e, st) {
                       logger.e(
@@ -370,7 +371,7 @@ class CancelElevatedButton extends HookWidget {
       child: Text(l10n.cancel),
       builder: (context, ref, child) {
         return BaseElevatedButton(
-          onPressed: () async => context.pop(),
+          onPressed: () async => RouterUtils.safePop(context),
           child: child!,
         );
       },

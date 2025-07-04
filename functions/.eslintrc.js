@@ -21,11 +21,13 @@ module.exports = {
   },
   ignorePatterns: [
     '/lib/**/*', // Ignore built files.
+    '/src/v1/**/*', // Ignore v1 files (deprecated)
   ],
   plugins: ['@typescript-eslint', 'import'],
   rules: {
     // "quotes": ["error", "double"],
     'import/no-unresolved': 0,
     // "indent": ["error", 2],
+    'valid-jsdoc': 'off', // JSDocルールを無効化（TypeScriptの型情報で十分）
   },
 }

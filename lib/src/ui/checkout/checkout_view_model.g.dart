@@ -9,7 +9,7 @@ part of 'checkout_view_model.dart';
 // **************************************************************************
 
 String _$stripeCheckoutViewModelHash() =>
-    r'fcb876703e8b139df10af38b317bdf00e6ccac1f';
+    r'2d0327a066268bd39331227c406fc85eaba449f5';
 
 /// See also [StripeCheckoutViewModel].
 @ProviderFor(StripeCheckoutViewModel)

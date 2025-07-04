@@ -27,7 +27,7 @@ dependencies:
   flutter_hooks:
   riverpod_annotation:
 
-  json_annotation: ^4.9.0
+  json_annotation:
   freezed_annotation:
 
   google_fonts:
@@ -81,8 +81,9 @@ dependencies:
   pdf:
   printing:
   flutter_native_splash:
-  go_router: ^14.8.0
-  flutter_gen: ^5.9.0
+  go_router:
+  flutter_gen:
+  pedantic_mono:
 
 dev_dependencies:
   flutter_test:
@@ -92,14 +93,14 @@ dev_dependencies:
   custom_lint:
   riverpod_lint:
   build_runner:
-  json_serializable: ^6.9.4
-  freezed: ^2.5.8
+  json_serializable:
+  freezed:
   riverpod_generator:
   retrofit_generator:
   dependency_validator:
   go_router_builder:
-  mockito: ^5.4.5
-  fake_cloud_firestore: ^3.1.0
+  mockito:
+  fake_cloud_firestore:
 
 flutter:
   generate: true

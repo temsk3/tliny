@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tliny/src/ui/common/asyncvalue_widget.dart';
@@ -12,6 +11,7 @@ import 'package:tliny/src/ui/common/asyncvalue_widget.dart';
 import '../../data/model/exception/app_exception.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../utils/logger.dart';
+import '../../utils/router_utils.dart';
 import '../common/error_handler.dart';
 import 'image_view_model.dart';
 
@@ -357,7 +357,10 @@ class PictureView extends HookWidget {
                                             //   ),
                                             // )
                                             TextButton(
-                                              onPressed: () => context.pop(),
+                                              onPressed:
+                                                  () => RouterUtils.safePop(
+                                                    context,
+                                                  ),
                                               child: const Icon(
                                                 Icons.close,
                                                 color: Colors.white,

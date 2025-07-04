@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/ui/checkout/checkout_view_model.dart';
 
@@ -16,6 +15,7 @@ import '../../../ui/common/asyncvalue_widget.dart';
 import '../../../ui/common/error_handler.dart';
 import '../../../ui/program/program_state.dart';
 import '../../../utils/logger.dart';
+import '../../../utils/router_utils.dart';
 import '../../common/base_button_widget.dart';
 import '../../common/loading_screen.dart';
 import '../cart_state.dart';
@@ -217,9 +217,15 @@ class PaymentButton extends HookWidget {
 
                               try {
                                 final result = await ref
-                                    .read(isLoadingProvider.notifier)
-                                    .guardFuture<bool>(
-                                      () async => ref
+                                    .read(
+                                      globalLoadingControllerProvider.notifier,
+                                    )
+                                    .guardFuture<bool>(() async {
+                                      // mountedチェックを追加
+                                      if (!context.mounted) {
+                                        return false;
+                                      }
+                                      return ref
                                           .watch(
                                             stripeCheckoutViewModelProvider
                                                 .notifier,
@@ -228,15 +234,15 @@ class PaymentButton extends HookWidget {
                                             // appRoute,
                                             ctx,
                                             eventId!,
-                                          ),
-                                    );
+                                          );
+                                    });
                                 if (context.mounted && result) {
                                   logger.d(
                                     'PaymentButton: result=$result',
                                     time: DateTime.now(),
                                   );
                                   // await appRoute.pop();
-                                  ctx.pop();
+                                  RouterUtils.safePop(ctx);
                                 }
                               } catch (e) {
                                 logger.e(
@@ -248,11 +254,13 @@ class PaymentButton extends HookWidget {
                                 if (e.toString().contains(
                                   'less stock than the quantity',
                                 )) {
-                                  await _showStockInsufficientDialog(
-                                    ctx,
-                                    ref,
-                                    newList,
-                                  );
+                                  if (context.mounted) {
+                                    await _showStockInsufficientDialog(
+                                      ctx,
+                                      ref,
+                                      newList,
+                                    );
+                                  }
                                 } else {
                                   // その他のエラーは適切にユーザーに表示
                                   if (context.mounted) {

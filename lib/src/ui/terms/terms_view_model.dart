@@ -249,6 +249,9 @@ class TermsViewModel extends _$TermsViewModel {
       logger.i(url);
       //
       await sendUrl(url);
+
+      // 成功メッセージを表示
+      logger.i('Account link successfully launched in new tab');
     } on AppException catch (e, st) {
       logger.e('getAccountLink: AppException - ${e.message}', stackTrace: st);
       rethrow;
@@ -296,12 +299,27 @@ class TermsViewModel extends _$TermsViewModel {
   }
 
   Future<void> sendUrl(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url), webOnlyWindowName: '_self');
-    } else {
-      logger.e('Could not launch URL');
-      final Error error = ArgumentError('Error launching $url');
-      throw error;
+    logger.i('sendUrl: attempting to launch URL: $url');
+    try {
+      if (await canLaunchUrl(Uri.parse(url))) {
+        logger.i('sendUrl: canLaunchUrl returned true, launching URL...');
+        final result = await launchUrl(
+          Uri.parse(url),
+          webOnlyWindowName: '_blank',
+        );
+        logger.i('sendUrl: launchUrl result: $result');
+        if (!result) {
+          logger.e('sendUrl: launchUrl returned false');
+          throw ArgumentError('Failed to launch URL: $url');
+        }
+      } else {
+        logger.e('sendUrl: canLaunchUrl returned false');
+        final Error error = ArgumentError('Cannot launch URL: $url');
+        throw error;
+      }
+    } catch (e, st) {
+      logger.e('sendUrl: Exception occurred: $e', stackTrace: st);
+      rethrow;
     }
   }
 }

@@ -1,12 +1,11 @@
-import { EventContext } from 'firebase-functions'
 import * as firebaseAdmin from 'firebase-admin'
 
 // 冪等性の担保
 const triggerOnce =
   <T>(
     suffix: string,
-    handler: (data: T, context: EventContext) => PromiseLike<any> | any,
-  ): ((data: T, context: EventContext) => PromiseLike<any> | any) =>
+    handler: (data: T, context: any) => PromiseLike<any> | any,
+  ): ((data: T, context: any) => PromiseLike<any> | any) =>
   async (data, context) => {
     if (await hasAlreadyTriggered(context.eventId, suffix)) {
       return undefined

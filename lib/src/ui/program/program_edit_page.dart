@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../ui/common/main_body.dart';
 import '../../utils/date_formatter.dart';
+import '../../utils/logger.dart';
+import '../../utils/router_utils.dart';
 import '../common/loading_screen.dart';
+import '../common/main_body.dart';
 import '../image/image_screen.dart';
 import '../image/image_view_model.dart';
 import 'program_view_model.dart';
@@ -524,7 +525,7 @@ class ProgramEditPage extends HookConsumerWidget {
                                         .registerProgram(data),
                                   );
                               if (context.mounted && result) {
-                                context.pop();
+                                RouterUtils.safePop(context);
                               }
                             }
                           },

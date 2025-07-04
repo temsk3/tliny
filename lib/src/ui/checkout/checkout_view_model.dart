@@ -195,25 +195,60 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
                 SimpleDialogOption(
                   // child: Text(l10n.cancel),
                   child: const Text('キャンセル'),
-                  onPressed: () {
+                  onPressed: () async {
                     logger.d(
                       'paymentWithBrowser: cancel',
                       time: DateTime.now(),
                     );
-                    // キャンセル処理を実行
-                    stripeRepository.cancelOrder(orderId);
-                    // チェックアウトキャンセル画面へ遷移
-                    // appRoute.replace(CheckoutCancelRoute(sessionId: sessionId));
-                    CheckoutCancelRoute(sessionId: sessionId).go(context);
-                    // リスナーを解除
-                    subscription.cancel();
-                    // Completer を完了
-                    completer.complete(
-                      stripeRepository.retrieveCheckoutSession(
-                        sessionId,
-                        accountId,
-                      ),
+                    final loading = ref.read(
+                      globalLoadingControllerProvider.notifier,
                     );
+                    try {
+                      await loading.guardFuture(() async {
+                        await stripeRepository.cancelOrder(orderId);
+                      });
+                      // ローディングを明示的に解除
+                      loading.stopLoading();
+                      // チェックアウトキャンセル画面へ遷移
+                      CheckoutCancelRoute(sessionId: sessionId).go(context);
+                      await subscription.cancel();
+                      completer.complete(
+                        await stripeRepository.retrieveCheckoutSession(
+                          sessionId,
+                          accountId,
+                        ),
+                      );
+                    } on AppException catch (e, st) {
+                      loading.stopLoading();
+                      logger.e(
+                        'paymentWithBrowser: cancel AppException - [${e.message}',
+                        stackTrace: st,
+                      );
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('キャンセル処理に失敗しました: ${e.message}'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      completer.completeError(e);
+                    } on Exception catch (e, st) {
+                      loading.stopLoading();
+                      logger.e(
+                        'paymentWithBrowser: cancel Exception - $e',
+                        stackTrace: st,
+                      );
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('キャンセル処理に失敗しました'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      completer.completeError(e);
+                    }
                   },
                 ),
                 SimpleDialogOption(
@@ -240,33 +275,45 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
   /// チェックアウトセッションをキャンセルする
   Future<void> cancelCheckout(String sessionId) async {
     logger.d('cancelCheckout: sessionId=$sessionId', time: DateTime.now());
+    final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
       // ユーザーIDを取得
       final uid = ref.watch(userIdProvider).value;
-      // ユーザーIDが null でない場合、決済情報を取得し、注文をキャンセル
-      if (uid != null) {
-        final loading = ref.read(globalLoadingControllerProvider.notifier);
-        final settlement = await loading.guardFuture(() async {
-          return stripeRepository.getSettlement(uid, sessionId);
-        });
-        final orderId = settlement['order_id'].toString();
-        await loading.guardFuture(() async {
-          await stripeRepository.cancelOrder(orderId);
-        });
+      if (uid == null) {
+        logger.w(
+          'cancelCheckout: uid is null, skipping cancellation',
+          time: DateTime.now(),
+        );
+        return;
       }
+
+      logger.d('cancelCheckout: uid=$uid', time: DateTime.now());
+
+      // 決済情報を取得
+      final settlement = await loading.guardFuture(() async {
+        return stripeRepository.getSettlement(uid, sessionId);
+      });
+
+      final orderId = settlement['order_id'].toString();
+      logger.d('cancelCheckout: orderId=$orderId', time: DateTime.now());
+
+      // 注文をキャンセル
+      await loading.guardFuture(() async {
+        await stripeRepository.cancelOrder(orderId);
+      });
+
+      logger.d('cancelCheckout: completed successfully', time: DateTime.now());
     } on AppException catch (e, st) {
       logger.e('cancelCheckout: AppException - ${e.message}', stackTrace: st);
-      rethrow;
+      // エラーが発生しても処理を継続（ローディングは自動で解除される）
+      // エラーは上位でハンドリングされるため、ここではrethrowしない
     } on Exception catch (e, st) {
       logger.e(
         'cancelCheckout: error=$e, stackTrace=$st',
         time: DateTime.now(),
       );
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      // エラーが発生しても処理を継続（ローディングは自動で解除される）
+      // エラーは上位でハンドリングされるため、ここではrethrowしない
     }
   }
 }

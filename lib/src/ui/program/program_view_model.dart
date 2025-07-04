@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/exception/app_exception.dart';
@@ -10,11 +9,10 @@ import '../../data/repository/product_repository.dart';
 import '../../data/repository/program_repository.dart';
 import '../../data/repository/staff_repository.dart';
 import '../../data/repository/user_repository.dart';
+import '../../utils/logger.dart';
 import '../common/loading_screen.dart';
 
 part 'program_view_model.g.dart';
-
-final logger = Logger();
 
 @riverpod
 class ProgramViewModel extends _$ProgramViewModel {

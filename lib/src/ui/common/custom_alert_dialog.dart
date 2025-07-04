@@ -5,9 +5,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../utils/logger.dart';
+import '../../utils/router_utils.dart';
 
 /// Fluttertoast を表示する関数
 Future<void> showFluttertoast(
@@ -29,8 +29,10 @@ Future<void> showFluttertoast(
       toastLength: Toast.LENGTH_LONG,
     );
   } on Exception catch (e, st) {
-    logger.e('showFluttertoast: error=$e, stackTrace=$st',
-        time: DateTime.now());
+    logger.e(
+      'showFluttertoast: error=$e, stackTrace=$st',
+      time: DateTime.now(),
+    );
     rethrow;
   }
 }
@@ -43,8 +45,9 @@ Future<void> showTextDialog(
   required String defaultActionText,
 }) async {
   logger.d(
-      'showTextDialog: title=$title, message=$message, defaultActionText=$defaultActionText',
-      time: DateTime.now());
+    'showTextDialog: title=$title, message=$message, defaultActionText=$defaultActionText',
+    time: DateTime.now(),
+  );
   try {
     final builder = CustomAlertDialog(
       title: title,
@@ -52,7 +55,7 @@ Future<void> showTextDialog(
       defaultActionText: defaultActionText,
       action: () {
         // appRoute.pop();
-        context.pop();
+        RouterUtils.safePop(context);
       },
     );
     bool platform;
@@ -67,10 +70,7 @@ Future<void> showTextDialog(
         builder: (context) => builder,
       );
     } else {
-      await showDialog(
-        context: context,
-        builder: (context) => builder,
-      );
+      await showDialog(context: context, builder: (context) => builder);
     }
   } on Exception catch (e, st) {
     logger.e('showTextDialog: error=$e, stackTrace=$st', time: DateTime.now());
@@ -80,17 +80,17 @@ Future<void> showTextDialog(
 
 /// 確認用ダイアログを表示する関数（bool を返す）
 Future<bool?> showConfirmDialog(
-  BuildContext context,
+  BuildContext context, {
   // StackRouter appRoute,
-  {
   required String title,
   required Widget contentWidget,
   required String cancelText,
   required String decisionText,
 }) async {
   logger.d(
-      'showConfirmDialog: title=$title, cancelText=$cancelText, decisionText=$decisionText',
-      time: DateTime.now());
+    'showConfirmDialog: title=$title, cancelText=$cancelText, decisionText=$decisionText',
+    time: DateTime.now(),
+  );
   try {
     final builder = CustomAlertDialog(
       title: title,
@@ -122,8 +122,10 @@ Future<bool?> showConfirmDialog(
       );
     }
   } on Exception catch (e, st) {
-    logger.e('showConfirmDialog: error=$e, stackTrace=$st',
-        time: DateTime.now());
+    logger.e(
+      'showConfirmDialog: error=$e, stackTrace=$st',
+      time: DateTime.now(),
+    );
     rethrow;
   }
 }

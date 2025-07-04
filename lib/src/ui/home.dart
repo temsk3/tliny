@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../settings/hooks/use_l10n.dart';
 import '../settings/routes/routes.dart';
 import '../utils/logger.dart';
+import '../utils/router_utils.dart';
 import 'drawer/drawer.dart';
 
 enum PageIndex { top, cart, ticket }
@@ -48,7 +49,7 @@ class HomePage extends HookConsumerWidget {
   // 戻るボタン
   Widget _leadButton(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.pop(),
+      onTap: () => RouterUtils.safePop(context),
       child: const Icon(Icons.arrow_back),
     );
   }
@@ -63,7 +64,10 @@ class HomePage extends HookConsumerWidget {
   }
 
   BottomNavigationBar _bottomNavigationBar(
-      BuildContext context, ValueNotifier<int> currentIndex, WidgetRef ref) {
+    BuildContext context,
+    ValueNotifier<int> currentIndex,
+    WidgetRef ref,
+  ) {
     final l10n = useL10n();
     const quantity = 0;
     return BottomNavigationBar(

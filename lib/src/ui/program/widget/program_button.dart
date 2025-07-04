@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
 import 'package:tliny/src/ui/favorite/favorite_view_model.dart';
@@ -11,6 +10,7 @@ import '../../../data/model/program_model.dart';
 import '../../../data/repository/favorite_repository.dart';
 import '../../../settings/hooks/use_l10n.dart';
 import '../../../settings/routes/routes.dart';
+import '../../../utils/router_utils.dart';
 import '../../common/asyncvalue_widget.dart';
 import '../../common/base_button_widget.dart';
 import '../../common/custom_alert_dialog.dart';
@@ -96,7 +96,7 @@ class DeleteProgramIconButton extends HookWidget {
                         .watch(programViewModelProvider.notifier)
                         .deleteProgram(program.id.toString());
                     // appRoute.popUntilRoot();
-                    context.pop();
+                    RouterUtils.safePop(context);
                   }
                 },
               ),
@@ -268,7 +268,7 @@ class CancelElevatedButton extends HookWidget {
       child: Text(l10n.cancel),
       builder: (context, ref, child) {
         return BaseElevatedButton(
-          onPressed: () => context.pop(),
+          onPressed: () => RouterUtils.safePop(context),
           child: child!,
         );
       },

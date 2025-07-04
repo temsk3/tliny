@@ -113,3 +113,11 @@ build-ios-dev:
 .PHONY: build-ios-prod
 build-ios-prod:
 	fvm flutter build ios --release --dart-define=FLAVOR=$(PROD_FLAVOR) --target lib/main.dart
+
+################################################################################################
+## エミュレータ
+################################################################################################
+# run dev
+.PHONY: run-emulator
+run-emulator:
+	firebase emulators:start --import=./emulator/data --export-on-exit=./emulator/data

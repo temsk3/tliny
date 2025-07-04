@@ -450,8 +450,6 @@ class OrderRoute extends GoRouteData {
 class UserRoute extends GoRouteData {
   const UserRoute();
 
-  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
-
   @override
   Widget build(BuildContext context, GoRouterState state) => const UserPage();
 }

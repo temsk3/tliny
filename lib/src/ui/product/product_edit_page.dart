@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +11,7 @@ import '../../ui/common/main_body.dart';
 import '../../ui/product/widget/product_button.dart';
 import '../../utils/date_formatter.dart';
 import '../../utils/logger.dart';
+import '../../utils/router_utils.dart';
 import '../common/custom_alert_dialog.dart';
 import '../common/loading_screen.dart';
 import '../image/image_screen.dart';
@@ -409,7 +409,7 @@ class ProductEditPage extends HookConsumerWidget {
                                 // appRoute.popUntilRouteWithName(
                                 //   'ProgramDetailsRoute',
                                 // );
-                                context.pop();
+                                RouterUtils.safePop(context);
                               }
                             }
                           },

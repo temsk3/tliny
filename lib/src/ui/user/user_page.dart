@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
@@ -9,6 +8,7 @@ import '../../settings/hooks/use_media_query.dart';
 import '../../settings/routes/routes.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
+import '../../utils/router_utils.dart';
 import '../common/asyncvalue_widget.dart';
 import 'user_view_model.dart';
 
@@ -62,39 +62,22 @@ class UserPage extends HookConsumerWidget {
                           backgroundImage: CachedNetworkImageProvider(photoUrl),
                         ),
                       const SizedBox(height: 40),
-                      Text(
-                        email,
-                        maxLines: 1,
-                      ),
+                      Text(email, maxLines: 1),
                       const SizedBox(height: 40),
-                      Text(
-                        displayName,
-                        maxLines: 1,
-                      ),
+                      Text(displayName, maxLines: 1),
                       const SizedBox(height: 40),
-                      Text(
-                        name,
-                        maxLines: 1,
-                      ),
+                      Text(name, maxLines: 1),
                       const SizedBox(height: 40),
-                      Text(
-                        phone,
-                        maxLines: 1,
-                      ),
+                      Text(phone, maxLines: 1),
                       const SizedBox(height: 40),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            onPressed: () =>
-                                // appRoute.replaceAll([const HomeRoute()]),
-                                context.pop(),
-                            // appRoute.navigate(AppRoutes.mainPage),
+                            onPressed: () => RouterUtils.safePop(context),
                             child: Text(l10n.backButton),
                           ),
-                          const SizedBox(
-                            width: 12,
-                          ),
+                          const SizedBox(width: 12),
                           ElevatedButton(
                             onPressed: () {
                               // appRoute.navigate(UserEditRoute(uid: data.id!));
@@ -110,29 +93,36 @@ class UserPage extends HookConsumerWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () async {
-                              await viewModel.getAccountLink(email);
+                              try {
+                                await viewModel.getAccountLink(email);
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.toString()),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
                             },
                             child: const Text('出品者登録・更新'),
                           ),
-                          const SizedBox(
-                            width: 12,
-                          ),
+                          const SizedBox(width: 12),
                           ElevatedButton(
                             onPressed: () async {
-                              // const url =
-                              //     'https://dashboard.stripe.com/dashboard';
-                              // if (await canLaunchUrl(Uri.parse(url))) {
-                              //   await launchUrl(
-                              //     Uri.parse(url),
-                              //     webOnlyWindowName: '_self',
-                              //   );
-                              // } else {
-                              //   logger.e('Could not launch URL');
-                              //   final Error error =
-                              //       ArgumentError('Error launching $url');
-                              //   throw error;
-                              // }
-                              await viewModel.createLoginLink();
+                              try {
+                                await viewModel.createLoginLink();
+                              } catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(e.toString()),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
                             },
                             child: const Text('管理サイト'),
                           ),

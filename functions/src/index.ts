@@ -1,4 +1,4 @@
-import * as firebaseAdmin from 'firebase-admin';
+import * as firebaseAdmin from 'firebase-admin'
 
 // import * as functions from "firebase-functions";
 
@@ -11,7 +11,7 @@ import * as firebaseAdmin from 'firebase-admin';
 // });
 
 // firebaseAdmin.initializeApp(functions.config().firebase);
-firebaseAdmin.initializeApp();
+firebaseAdmin.initializeApp()
 
 // import * as order from "./order";
 // import * as purchase from "./purchase";
@@ -21,9 +21,9 @@ firebaseAdmin.initializeApp();
 // export { stripe, user, purchase, order };
 
 //
-import {exportFunctionsModule} from './utils/deploy';
-import * as P from './utils/function_paths';
+import { exportFunctionsModule } from './utils/deploy'
+import * as P from './utils/function_paths'
 
-const domains = [P.v1];
+const domains = [P.v2]
 
-domains.forEach((d) => exportFunctionsModule([d], exports));
+domains.forEach((d) => exportFunctionsModule([d], exports))

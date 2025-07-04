@@ -10,10 +10,7 @@ import 'checkout_view_model.dart';
 
 /// チェックアウトキャンセル画面
 class CheckoutCancelPage extends HookConsumerWidget {
-  const CheckoutCancelPage({
-    super.key,
-    required this.sessionId,
-  });
+  const CheckoutCancelPage({super.key, required this.sessionId});
 
   /// チェックアウトセッションID
   final String? sessionId;
@@ -25,40 +22,67 @@ class CheckoutCancelPage extends HookConsumerWidget {
 
     // ローカリゼーションを取得
     final l10n = useL10n();
-    // ルーターを取得
-    // final appRoute = useRouter();
 
-    // チェックアウトセッションIDが null でない場合、キャンセル処理を実行
-    if (sessionId != null) {
-      logger.d('CheckoutCancelPage: sessionId=$sessionId',
-          time: DateTime.now());
-      try {
-        // チェックアウトキャンセル処理を実行
-        ref
-            .watch(stripeCheckoutViewModelProvider.notifier)
-            .cancelCheckout(sessionId!);
-        // ホーム画面へ遷移
-        // appRoute.replace(const HomeRoute());
-        context.go(AppRoutes.topPage);
-      } on Exception catch (e, st) {
-        // エラーが発生した場合、エラーログを出力
-        logger.e('CheckoutCancelPage: error=$e, stackTrace=$st',
-            time: DateTime.now());
-        // エラーメッセージを表示
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(l10n.processingInterrupted),
-          ),
+    // 画面表示後にキャンセル処理と画面遷移を実行
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (sessionId != null) {
+        logger.d(
+          'CheckoutCancelPage: sessionId=$sessionId',
+          time: DateTime.now(),
         );
-      }
-    }
+        try {
+          // チェックアウトキャンセル処理を実行（awaitで完了を待つ）
+          await ref
+              .read(stripeCheckoutViewModelProvider.notifier)
+              .cancelCheckout(sessionId!);
 
-    // キャンセル処理中の画面表示
+          logger.d(
+            'CheckoutCancelPage: cancelCheckout completed successfully',
+            time: DateTime.now(),
+          );
+        } on Exception catch (e, st) {
+          // エラーが発生した場合、エラーログを出力
+          logger.e(
+            'CheckoutCancelPage: error=$e, stackTrace=$st',
+            time: DateTime.now(),
+          );
+          // エラーメッセージを表示
+          if (context.mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(l10n.processingInterrupted)));
+          }
+        } finally {
+          // 成功・失敗に関わらず3秒後にカート画面へ遷移
+          if (context.mounted) {
+            Future.delayed(const Duration(seconds: 3), () {
+              if (context.mounted) {
+                context.go(AppRoutes.cartPage);
+              }
+            });
+          }
+        }
+      } else {
+        // sessionIdがnullの場合は即座にカート画面へ遷移
+        if (context.mounted) {
+          context.go(AppRoutes.cartPage);
+        }
+      }
+    });
+
+    // キャンセル処理中の画面表示（ローディングインジケータは削除）
     return Scaffold(
       body: Center(
-        child: Text(
-          l10n.processingInterrupted,
-          style: Theme.of(context).textTheme.displayLarge,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.processingInterrupted,
+              style: Theme.of(context).textTheme.displayLarge,
+            ),
+            const SizedBox(height: 16),
+            Text('カート画面に戻ります...', style: Theme.of(context).textTheme.bodyLarge),
+          ],
         ),
       ),
     );

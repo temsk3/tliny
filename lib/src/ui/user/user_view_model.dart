@@ -229,14 +229,13 @@ class UserViewModel extends _$UserViewModel {
         return stripeRepository.getAccountLink(email);
       });
       logger.i(url);
-      //
       await sendUrl(url);
     } on AppException catch (e, st) {
       logger.e('getAccountLink: AppException - ${e.message}', stackTrace: st);
       rethrow;
     } on Exception catch (e, st) {
       logger.e(
-        'createAccountLinkError',
+        'getAccountLink: Exception - $e',
         time: DateTime.now(),
         error: e,
         stackTrace: st,
@@ -275,14 +274,9 @@ class UserViewModel extends _$UserViewModel {
   }
 
   Future<void> sendUrl(String url) async {
-    // if (await canLaunchUrl(Uri.parse(url))) {
-    //   await launchUrl(Uri.parse(url), webOnlyWindowName: '_self');
-    // } else {
-    //   logger.e('Could not launch URL');
-    //   final Error error = ArgumentError('Error launching $url');
-    //   throw error;
-    // }
-    if (!await launchUrl(Uri.parse(url), webOnlyWindowName: '_self')) {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), webOnlyWindowName: '_self');
+    } else {
       logger.e('Could not launch URL');
       final Error error = ArgumentError('Error launching $url');
       throw error;

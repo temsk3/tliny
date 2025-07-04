@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/ui/image/image_view_model.dart';
 
@@ -9,6 +8,7 @@ import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
+import '../../utils/router_utils.dart';
 import '../../utils/validation_utils.dart';
 import '../common/asyncvalue_widget.dart';
 import '../image/image_screen.dart';
@@ -57,7 +57,8 @@ class UserEditPage extends HookConsumerWidget {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text(l10n.profile), automaticallyImplyLeading: false,
+            title: Text(l10n.profile),
+            automaticallyImplyLeading: false,
             // leading: const AutoLeadingButton(),
           ),
           body: MainBodyWidget(
@@ -94,8 +95,9 @@ class UserEditPage extends HookConsumerWidget {
                         TextFormField(
                           textInputAction: TextInputAction.next,
                           controller: displayName,
-                          decoration:
-                              InputDecoration(labelText: l10n.displayName),
+                          decoration: InputDecoration(
+                            labelText: l10n.displayName,
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return l10n.pleaseEnterSomeText;
@@ -150,16 +152,14 @@ class UserEditPage extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                              onPressed: () => context.pop(),
+                              onPressed: () => RouterUtils.safePop(context),
                               // appRoute.navigate(AppRoutes.mainPage),
                               // appRoute.replaceAll(
                               //   [const HomeRoute(), const UserRoute()],
                               // ),
                               child: Text(l10n.cancel),
                             ),
-                            const SizedBox(
-                              width: 12,
-                            ),
+                            const SizedBox(width: 12),
                             ElevatedButton(
                               onPressed: () async {
                                 final User data;
@@ -167,8 +167,10 @@ class UserEditPage extends HookConsumerWidget {
                                 final photo =
                                     ref.watch(tempImageViewModelProvider).value;
                                 if (photo != null) {
-                                  final url =
-                                      await viewModel.updatePhoto(uid, photo);
+                                  final url = await viewModel.updatePhoto(
+                                    uid,
+                                    photo,
+                                  );
                                   data = User(
                                     id: uid,
                                     displayName: displayName.text,
@@ -189,7 +191,7 @@ class UserEditPage extends HookConsumerWidget {
 
                                 await viewModel.updateUser(data);
                                 // await appRoute.navigate(const UserRoute());
-                                context.pop();
+                                RouterUtils.safePop(context);
                               },
                               child: Text(l10n.update),
                             ),
