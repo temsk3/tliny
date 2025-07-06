@@ -317,7 +317,7 @@ class TermsViewModel extends _$TermsViewModel {
         final Error error = ArgumentError('Cannot launch URL: $url');
         throw error;
       }
-    } catch (e, st) {
+    } on Exception catch (e, st) {
       logger.e('sendUrl: Exception occurred: $e', stackTrace: st);
       rethrow;
     }

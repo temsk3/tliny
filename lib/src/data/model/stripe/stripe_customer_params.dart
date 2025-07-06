@@ -6,13 +6,13 @@ part 'stripe_customer_params.g.dart';
 ////////////////////////////////////////////////////////////////
 // Customer
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CustomerParams with _$CustomerParams {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory CustomerParams({
     required AddressParams? address,
     required String? description,
     required String? email,
-    required Map? metadata,
+    required Map<String, dynamic>? metadata,
     required String? name,
     required String? paymentMethod,
     required String? phone,
@@ -26,7 +26,7 @@ class CustomerParams with _$CustomerParams {
 
 // Customer Shipping
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class ShippingParams with _$ShippingParams {
   const factory ShippingParams({
     required AddressParams? address,
@@ -40,7 +40,7 @@ class ShippingParams with _$ShippingParams {
 
 // Customer Address
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class AddressParams with _$AddressParams {
   const factory AddressParams({
     required String? city,

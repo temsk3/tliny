@@ -8,26 +8,25 @@ part of 'program_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$programListStateHash() => r'33b5c3bf5058d7c6adaa1a0c466ad78e7181a1a6';
+String _$programsStateHash() => r'ad3d1dda06125f9a1c29dd99fde2b80e102778bb';
 
-/// See also [programListState].
-@ProviderFor(programListState)
-final programListStateProvider =
-    AutoDisposeStreamProvider<List<Program>>.internal(
-      programListState,
-      name: r'programListStateProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$programListStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+/// See also [programsState].
+@ProviderFor(programsState)
+final programsStateProvider = AutoDisposeStreamProvider<List<Program>>.internal(
+  programsState,
+  name: r'programsStateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$programsStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ProgramListStateRef = AutoDisposeStreamProviderRef<List<Program>>;
-String _$programStateHash() => r'2ef6af69b04bc54448134c5727002a99d2eaaaeb';
+typedef ProgramsStateRef = AutoDisposeStreamProviderRef<List<Program>>;
+String _$programStateHash() => r'c6fe483208bfe5fcded5085b735818d2cea3a164';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -170,7 +169,7 @@ class _ProgramStateProviderElement
 }
 
 String _$myProgramListStateHash() =>
-    r'deb42ba3f04bdd9fbec76c498731541bc453554b';
+    r'39901ee3093ccc77e32af291a9400a595ddc2993';
 
 /// See also [myProgramListState].
 @ProviderFor(myProgramListState)

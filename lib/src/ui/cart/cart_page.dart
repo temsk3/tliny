@@ -9,7 +9,6 @@ import '../../data/model/cart_model.dart';
 import '../../data/model/product_model.dart';
 import '../../data/repository/program_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
@@ -32,8 +31,6 @@ class CartPage extends HookConsumerWidget {
     final l10n = useL10n();
     // ルーターを取得
     // final appRoute = useRouter();
-    // メディアクエリを取得
-    final appMediaQuery = useMediaQuery();
 
     // カートの状態を取得
     final cartState = ref.watch(cartViewModelProvider);
@@ -46,11 +43,7 @@ class CartPage extends HookConsumerWidget {
         logger.d('CartPage: useEffect - 在庫調整を実行します', time: DateTime.now());
         WidgetsBinding.instance.addPostFrameCallback((_) {
           cartViewModel.adjustCartForStock(
-            showConfirmationDialog: (
-              product,
-              currentQuantity,
-              availableStock,
-            ) async {
+            showConfirmationDialog: (product, currentQuantity, availableStock) {
               return _showStockAdjustmentDialog(
                 context,
                 product,
@@ -86,7 +79,7 @@ class CartPage extends HookConsumerWidget {
                                 product,
                                 currentQuantity,
                                 availableStock,
-                              ) async {
+                              ) {
                                 return _showStockAdjustmentDialog(
                                   context,
                                   product,
@@ -167,7 +160,8 @@ class CartPage extends HookConsumerWidget {
                                                 fit: BoxFit.scaleDown,
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                  '${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
+                                                  '${l10n.date(program.eventFrom!)}'
+                                                  '〜${l10n.date(program.eventTo!)}',
                                                   // style: theme.textTheme.h10,
                                                 ),
                                               ),
@@ -192,7 +186,8 @@ class CartPage extends HookConsumerWidget {
                           },
                           indexedItemBuilder: (context, element, index) {
                             logger.d(
-                              'CartPage: indexedItemBuilder: element=$element, index=$index',
+                              'CartPage: indexedItemBuilder: '
+                              'element=$element, index=$index',
                               time: DateTime.now(),
                             );
                             return Dismissible(

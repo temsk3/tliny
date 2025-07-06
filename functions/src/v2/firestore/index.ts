@@ -1,8 +1,11 @@
-import { exportFunctionsModule } from '../../utils/deploy'
-import * as P from '../../utils/function_paths'
+// Firestore domain functions - direct exports
+// Export all functions directly from their respective files
 
-// v2のfirestoreドメインを定義
-const domains = ['user', 'ticket', 'product', 'price']
+// User functions
+// export * from './user_'
 
-// 各ドメインのモジュールをエクスポート
-domains.forEach((d) => exportFunctionsModule([P.v2, P.firestore, d], exports))
+// Ticket functions
+export * from './ticket'
+
+// Price functions
+export * from './price'

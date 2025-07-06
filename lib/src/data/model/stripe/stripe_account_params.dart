@@ -8,8 +8,8 @@ part 'stripe_account_params.g.dart';
 ////////////////////////////////////////////////////////////////
 // Account
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class AccountParams with _$AccountParams {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory AccountParams({
     @JsonKey(unknownEnumValue: null) required Type? type,
     @JsonKey(unknownEnumValue: null) required Country? country,
@@ -30,11 +30,11 @@ class AccountParams with _$AccountParams {
 
 // Account Capabilities
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class CapabilitiesParams with _$CapabilitiesParams {
   const factory CapabilitiesParams({
     @JsonKey(name: 'bank_transfer_payments')
-        required RequestedParams bankTransferPayments,
+    required RequestedParams bankTransferPayments,
     @JsonKey(name: 'card_payments') required RequestedParams cardPayments,
     @JsonKey(name: 'jcb_payments') required RequestedParams jcbPayments,
     @JsonKey(name: 'konbini_payments') required RequestedParams konbiniPayments,
@@ -47,11 +47,9 @@ class CapabilitiesParams with _$CapabilitiesParams {
 
 // Account Requested
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class RequestedParams with _$RequestedParams {
-  const factory RequestedParams({
-    required bool? required,
-  }) = _RequestedParams;
+  const factory RequestedParams({required bool? required}) = _RequestedParams;
 
   factory RequestedParams.fromJson(Map<String, dynamic> json) =>
       _$RequestedParamsFromJson(json);
@@ -59,7 +57,7 @@ class RequestedParams with _$RequestedParams {
 
 // Account BusinessProfile
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class BusinessProfileParams with _$BusinessProfileParams {
   const factory BusinessProfileParams({
     required String? mcc,
@@ -73,7 +71,7 @@ class BusinessProfileParams with _$BusinessProfileParams {
 
 // Account TosAcceptance
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class TosAcceptanceParams with _$TosAcceptanceParams {
   const factory TosAcceptanceParams({
     required String? ip,
@@ -86,7 +84,7 @@ class TosAcceptanceParams with _$TosAcceptanceParams {
 
 // Account Individual 個人のみ
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class IndividualParams with _$IndividualParams {
   const factory IndividualParams({
     @JsonKey(name: 'first_name_kana') required String? firstNameKana,
@@ -106,7 +104,7 @@ class IndividualParams with _$IndividualParams {
 
 // Account Company
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CompanyParams with _$CompanyParams {
   const factory CompanyParams({
     required String? name, // 法人の場合必須 //ローマ字または英語表記
@@ -124,7 +122,7 @@ class CompanyParams with _$CompanyParams {
 
 // Account Representative
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class RepresentativeParams with _$RepresentativeParams {
   const factory RepresentativeParams({
     @JsonKey(name: 'first_name_kana') required String? firstNameKana,
@@ -144,7 +142,7 @@ class RepresentativeParams with _$RepresentativeParams {
 
 // Account Dob
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class DobParams with _$DobParams {
   const factory DobParams({
     required String? day,
@@ -158,7 +156,7 @@ class DobParams with _$DobParams {
 
 // Account AddressKana
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class AddressKanaParams with _$AddressKanaParams {
   const factory AddressKanaParams({
     required String? line1,
@@ -174,7 +172,7 @@ class AddressKanaParams with _$AddressKanaParams {
 
 // Account AddressKanji
 @freezed
-// @JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class AddressKanjiParams with _$AddressKanjiParams {
   const factory AddressKanjiParams({
     required String? line1,

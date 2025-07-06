@@ -381,8 +381,7 @@ class __$$AccountParamsImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class _$AccountParamsImpl implements _AccountParams {
   const _$AccountParamsImpl({
     @JsonKey(unknownEnumValue: null) required this.type,

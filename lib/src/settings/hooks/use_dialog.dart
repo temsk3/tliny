@@ -13,25 +13,19 @@ class DialogController {
   final BuildContext context;
 
   void showErrorDialog(String title, String content) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(content),
-        );
+        return AlertDialog(title: Text(title), content: Text(content));
       },
     );
   }
 
   void showSuccessDialog(String title, String content) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(content),
-        );
+        return AlertDialog(title: Text(title), content: Text(content));
       },
     );
   }

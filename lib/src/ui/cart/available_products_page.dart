@@ -182,7 +182,7 @@ class AvailableProductsPage extends HookConsumerWidget {
                                 ),
                               );
                             }
-                          } catch (e) {
+                          } on Exception catch (e) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

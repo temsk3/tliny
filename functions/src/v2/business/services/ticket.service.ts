@@ -1,5 +1,5 @@
 import { db } from '../../../utils/firebase_utils'
-import { logger } from 'firebase-functions'
+import { logger, V2Logger } from '../../../utils/logger'
 import { ErrorHandler } from '../../../utils/error_handler'
 import {
   generateTicketKey,
@@ -12,9 +12,11 @@ import {
  * @return {Promise<void>} 作成完了
  */
 export const createTicketDocument = async (orderId: string): Promise<void> => {
-  logger.info('Creating ticket document', { orderId })
+  const methodName = 'createTicketDocument'
 
   try {
+    V2Logger.start(methodName, { orderId })
+
     // 冪等性保証: 既存のチケットをチェック
     const existingTicketsQuery = await db
       .collection('v/1/tickets')
@@ -23,10 +25,14 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
       .get()
 
     if (!existingTicketsQuery.empty) {
-      logger.info('Tickets already exist for order, skipping creation', {
-        orderId,
-        existingTicketsCount: existingTicketsQuery.size,
-      })
+      V2Logger.warn(
+        methodName,
+        'Tickets already exist for order, skipping creation',
+        {
+          orderId,
+          existingTicketsCount: existingTicketsQuery.size,
+        },
+      )
       return
     }
 
@@ -43,10 +49,14 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
 
     // 注文ステータスの確認
     if (orderData.status !== 'pre') {
-      logger.info('Order status is not pre, skipping ticket creation', {
-        orderId,
-        status: orderData.status,
-      })
+      V2Logger.warn(
+        methodName,
+        'Order status is not pre, skipping ticket creation',
+        {
+          orderId,
+          status: orderData.status,
+        },
+      )
       return
     }
 
@@ -75,64 +85,77 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
     const products = orderData.snapshotProducts
 
     // トランザクション内でチケット作成
-    await db.runTransaction(async (transaction) => {
-      for (const product of products) {
-        for (let index = 0; index < product.quantity; index++) {
-          const ticketId = generateTicketKey(orderId, product.productId, index)
+    await V2Logger.measure(
+      'createTicketsTransaction',
+      async () => {
+        return await db.runTransaction(async (transaction) => {
+          for (const product of products) {
+            for (let index = 0; index < product.quantity; index++) {
+              const ticketId = generateTicketKey(
+                orderId,
+                product.productId,
+                index,
+              )
 
-          const ticketParams = {
-            // 購入者
-            paidUserId: product.userId,
-            paidUserName: product.userName,
-            purchaseTime: orderData.purchaseTime,
-            // 所有者
-            ownerId: product.userId,
-            ownerName: product.userName,
-            assignment: [
-              {
-                from: product.organizerId,
-                to: product.userId,
-                assignmentDate: orderData.purchaseTime,
-              },
-            ],
-            isPrinting: false,
-            isUsed: false,
-            uuid: null,
-            pdfUuid: null,
-            // 商品情報
-            productDocRef: product.productDocRef,
-            productId: product.productId,
-            code: product.code,
-            name: product.name,
-            desc: product.desc,
-            price: product.price,
-            pictureURL: product.pictureURL,
-            expirationFrom: product.expirationFrom,
-            expirationTo: product.expirationTo,
-            // 開催者
-            organizerDocRef: product.organizerDocRef,
-            organizerId: product.organizerId,
-            // イベント情報
-            eventDocRef: eventDocRef,
-            eventId: product.eventId,
-            eventName: product.eventName,
-            // 注文情報
-            orderId: orderId,
+              const ticketParams = {
+                // 購入者
+                paidUserId: product.userId,
+                paidUserName: product.userName,
+                purchaseTime: orderData.purchaseTime,
+                // 所有者
+                ownerId: product.userId,
+                ownerName: product.userName,
+                assignment: [
+                  {
+                    from: product.organizerId,
+                    to: product.userId,
+                    assignmentDate: orderData.purchaseTime,
+                  },
+                ],
+                isPrinting: false,
+                isUsed: false,
+                uuid: null,
+                pdfUuid: null,
+                // 商品情報
+                productDocRef: db
+                  .collection('v/1/products')
+                  .doc(product.productId),
+                productId: product.productId,
+                code: product.code,
+                name: product.name,
+                desc: product.desc,
+                price: product.price,
+                pictureURL: product.pictureURL,
+                expirationFrom: product.expirationFrom,
+                expirationTo: product.expirationTo,
+                // 開催者
+                organizerDocRef: product.organizerDocRef,
+                organizerId: product.organizerId,
+                // イベント情報
+                eventDocRef: eventDocRef,
+                eventId: product.eventId,
+                eventName: product.eventName,
+                // 注文情報
+                orderId: orderId,
+              }
+
+              // トランザクション内で冪等性を保証してチケット作成
+              await createDocumentWithIdempotency(
+                'v/1/tickets',
+                ticketId,
+                ticketParams,
+                true,
+              )
+            }
           }
+        })
+      },
+      { orderId, productsCount: products.length },
+    )
 
-          // トランザクション内で冪等性を保証してチケット作成
-          await createDocumentWithIdempotency(
-            'v/1/tickets',
-            ticketId,
-            ticketParams,
-            true,
-          )
-        }
-      }
-    })
-
-    logger.info('Tickets created successfully', { orderId })
+    V2Logger.success(methodName, { orderId })
   } catch (error: any) {
+    V2Logger.error(methodName, error, { orderId })
     ErrorHandler.logError(error, error.stack, 'ticket.service.ts')
     const appEx = ErrorHandler.convertToAppException(error, 'ticket.service.ts')
     throw ErrorHandler.convertToHttpsError(appEx)

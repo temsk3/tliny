@@ -22,31 +22,35 @@ class ManagementPage extends HookConsumerWidget {
     // ルーターを取得
     // final appRoute = useRouter();
 
-    final _tabTitles = <String>['販売', '売上', '在庫'];
+    final tabTitles = <String>['販売', '売上', '在庫'];
 
     // タブバーを作成
     return DefaultTabController(
-      length: _tabTitles.length,
+      length: tabTitles.length,
       child: Scaffold(
-          // AppBarを作成
-          appBar: AppBar(
-            // タイトルを設定
-            title: Text(l10n.salesInformation),
-            // タブバーをAppBarの下に表示
-            bottom: TabBar(
-              tabs: _tabTitles.map((title) => Tab(text: title)).toList(),
-            ),
+        // AppBarを作成
+        appBar: AppBar(
+          // タイトルを設定
+          title: Text(l10n.salesInformation),
+          // タブバーをAppBarの下に表示
+          bottom: TabBar(
+            tabs: tabTitles.map((title) => Tab(text: title)).toList(),
           ),
-          body: TabBarView(
-            children: [
-              EarningsTab(eventId: eventId)
-                  .build(context, GoRouterState.of(context)),
-              SalesTab(eventId: eventId)
-                  .build(context, GoRouterState.of(context)),
-              StockTab(eventId: eventId)
-                  .build(context, GoRouterState.of(context)),
-            ],
-          )),
+        ),
+        body: TabBarView(
+          children: [
+            EarningsTab(
+              eventId: eventId,
+            ).build(context, GoRouterState.of(context)),
+            SalesTab(
+              eventId: eventId,
+            ).build(context, GoRouterState.of(context)),
+            StockTab(
+              eventId: eventId,
+            ).build(context, GoRouterState.of(context)),
+          ],
+        ),
+      ),
     );
   }
 }

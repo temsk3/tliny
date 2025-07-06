@@ -134,8 +134,7 @@ class __$$LineItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class _$LineItemImpl implements _LineItem {
   const _$LineItemImpl({required this.quantity, required this.priceDate});
 
@@ -341,8 +340,7 @@ class __$$PriceDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class _$PriceDataImpl implements _PriceData {
   _$PriceDataImpl({
     required this.unitAmount,
@@ -585,8 +583,7 @@ class __$$ProductDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class _$ProductDataImpl implements _ProductData {
   _$ProductDataImpl({
     required this.name,
@@ -776,8 +773,7 @@ class __$$MetaDataImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable()
 class _$MetaDataImpl implements _MetaData {
   _$MetaDataImpl({required this.productId});
 

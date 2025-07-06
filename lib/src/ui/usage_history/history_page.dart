@@ -47,17 +47,18 @@ class UsageHistoryPage extends HookConsumerWidget {
                       itemBuilder: (_, index) {
                         final usageHistory = data[index];
                         final programAsyncValue = ref.watch(
-                          programListStateProvider,
+                          programsStateProvider,
                         );
                         final programList = programAsyncValue.value;
                         String name;
                         if (programList == null) {
                           name = '';
+                        } else {
+                          final program = programList.firstWhere(
+                            (element) => element.id == usageHistory.eventId,
+                          );
+                          name = program.name ?? '';
                         }
-                        final program = programList!.firstWhere(
-                          (element) => element.id == usageHistory.eventId,
-                        );
-                        name = program.name!;
                         return ListTile(
                           title: Text(
                             '${l10n.date(usageHistory.dateOfUse!)} ${l10n.time(usageHistory.dateOfUse!)}',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/settings/routes/routes.dart';
@@ -15,6 +16,9 @@ class CheckoutSuccessPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // スプラッシュスクリーン表示終了
+    FlutterNativeSplash.remove();
+
     // ローカリゼーションを取得
     final l10n = useL10n();
 

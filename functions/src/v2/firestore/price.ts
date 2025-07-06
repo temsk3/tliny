@@ -1,23 +1,9 @@
-/* eslint-disable max-len */
 // import * as firebaseAdmin from 'firebase-admin'
 
-import {
-  onDocumentCreated,
-  onDocumentUpdated,
-  onDocumentDeleted,
-} from 'firebase-functions/v2/firestore'
-import { exportFunction } from '../../utils/deploy'
-import * as P from '../../utils/function_paths'
-import triggerOnce from '../../utils/trigger_once'
-import { logger } from '../../utils/logger'
-// import { currency, stripe, stripeOptions } from '../stripe/utils/stripe_config'
-// import stripeErrors from '../stripe/utils/stripe_error'
-// import Stripe from 'stripe'
-
-const _exportFunction = (name: string, f: () => any): void =>
-  exportFunction([P.v2, P.firestore, 'product', name], exports, f)
-
-const path = '/v/{version}/price/{productID}'
+import { onCall } from '../../utils/base_function'
+import { getStripe, stripeOptions } from '../payment/utils'
+import { checkAuth } from '../../utils/firebase_utils'
+import Stripe from 'stripe'
 // _exportFunction('onXxx', () =>
 //   functions()
 //     .firestore.document(path)
@@ -31,48 +17,37 @@ const path = '/v/{version}/price/{productID}'
 //     )
 // )
 
-_exportFunction('onCreate', () =>
-  onDocumentCreated(path, async (event) => {
-    const snapshot = event.data
-    if (!snapshot) return
+// Firestore Price: Create
+const firestorePriceOnCreate = onCall(async (request) => {
+  checkAuth(request)
+  const params: Stripe.PriceCreateParams = (request.data as any).params
+  stripeOptions.idempotencyKey = `create_price_${params.product}`
+  return await getStripe().prices.create(params, stripeOptions)
+})
 
-    await triggerOnce(
-      'priceCreateNotification',
-      async (data: any, context: any) => {
-        logger.info('Price created:', { snapshotId: snapshot.id })
-        logger.info('Price data:', { name: snapshot.data()?.name })
-        logger.info('Price operation completed', { snapshot, context })
-      },
-    )
-  }),
-)
+// Firestore Price: Update
+const firestorePriceOnUpdate = onCall(async (request) => {
+  checkAuth(request)
+  const priceId: string = (request.data as any).priceId
+  const params: Stripe.PriceUpdateParams = (request.data as any).params
+  stripeOptions.idempotencyKey = `update_price_${priceId}`
+  return await getStripe().prices.update(priceId, params, stripeOptions)
+})
 
-_exportFunction('onUpdate', () =>
-  onDocumentUpdated(path, async (event) => {
-    const snapshot = event.data
-    if (!snapshot) return
+// Firestore Price: Archive (Stripeでは削除ではなくarchive)
+const firestorePriceOnDelete = onCall(async (request) => {
+  checkAuth(request)
+  const priceId: string = (request.data as any).priceId
+  stripeOptions.idempotencyKey = `archive_price_${priceId}`
+  return await getStripe().prices.update(
+    priceId,
+    { active: false },
+    stripeOptions,
+  )
+})
 
-    const after = snapshot.after.data()
-
-    await triggerOnce(
-      'priceUpdateNotification',
-      async (data: any, context: any) => {
-        logger.info('Price updated:', { after, context })
-      },
-    )
-  }),
-)
-
-_exportFunction('onDelete', () =>
-  onDocumentDeleted(path, async (event) => {
-    const snapshot = event.data
-    if (!snapshot) return
-
-    await triggerOnce(
-      'priceDeleteNotification',
-      async (data: any, context: any) => {
-        logger.info('Price deleted:', { snapshot, context })
-      },
-    )
-  }),
-)
+export {
+  firestorePriceOnCreate as 'v2_firestore_price_onCreate',
+  firestorePriceOnUpdate as 'v2_firestore_price_onUpdate',
+  firestorePriceOnDelete as 'v2_firestore_price_onDelete',
+}

@@ -31,31 +31,8 @@ class TopPage extends HookConsumerWidget {
     final onSearch = ref.watch(onSearchProvider);
     final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
 
-    //   return Scaffold(
-    //     appBar: const SearchBar(),
-    //     body: MainBodyWidget(
-    //       body: SingleChildScrollView(
-    //         child: Container(
-    //           padding: const EdgeInsets.all(24),
-    //           child: Column(
-    //             crossAxisAlignment: CrossAxisAlignment.start,
-    //             children: const [
-    //               EventScreen(),
-    //               SizedBox(
-    //                 height: 32,
-    //               ),
-    //               Divider(),
-    //               MyProgramScreen(),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //     floatingActionButton: const AddProgramFloatingActionButton(),
-    //   );
-
     return AsyncValueWidget(
-      value: ref.watch(programListStateProvider),
+      value: ref.watch(programsStateProvider),
       data: (list) {
         final data =
             list

@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 const defaultPath = '/v/1'
 // App
 const usersCollectionPath = `${defaultPath}/users`

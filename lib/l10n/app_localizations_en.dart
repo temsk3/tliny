@@ -141,7 +141,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get message => 'message';
 
   @override
-  String get pleaseEnterADateAfterTheSpecifiedDate => 'Please enter a date after the specified date';
+  String get pleaseEnterADateAfterTheSpecifiedDate =>
+      'Please enter a date after the specified date';
 
   @override
   String get eventName => 'Name';
@@ -151,7 +152,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dateTime(DateTime date) {
-    final intl.DateFormat dateDateFormat = intl.DateFormat('yMMMEd Hm', localeName);
+    final intl.DateFormat dateDateFormat = intl.DateFormat(
+      'yMMMEd Hm',
+      localeName,
+    );
     final String dateString = dateDateFormat.format(date);
 
     return '$dateString';
@@ -175,7 +179,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String decimalPattern(int value) {
-    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat = intl
+        .NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -183,10 +188,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String currency(int value) {
-    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.simpleCurrency(
-      locale: localeName,
-      
-    );
+    final intl.NumberFormat valueNumberFormat = intl
+        .NumberFormat.simpleCurrency(locale: localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -235,7 +238,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get outOfTerm => 'Out of term';
 
   @override
-  String get awaitingPayment => 'awaiting payment. Complete the payment in the window that opens.';
+  String get awaitingPayment =>
+      'awaiting payment. Complete the payment in the window that opens.';
 
   @override
   String get openNewWindow => 'Open new window';
@@ -256,13 +260,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get processingData => 'Processing Data';
 
   @override
-  String get handoverProcessQ => 'Do you want to complete the handover process?';
+  String get handoverProcessQ =>
+      'Do you want to complete the handover process?';
 
   @override
   String get handoverProcess => 'Handover process';
 
   @override
-  String get wouldYouLikeToRegisterAsAStaffMember => 'Would you like to register as a staff member?';
+  String get wouldYouLikeToRegisterAsAStaffMember =>
+      'Would you like to register as a staff member?';
 
   @override
   String get confirm => 'confirm';

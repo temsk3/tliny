@@ -28,7 +28,7 @@ class AppRouter extends _$AppRouter {
         return const bool.fromEnvironment('FLUTTER_TEST') ||
             (const String.fromEnvironment('TEST') == 'true') ||
             (const String.fromEnvironment('FLUTTER_TEST') == 'true');
-      } catch (e) {
+      } on Exception {
         return const bool.fromEnvironment('FLUTTER_TEST') ||
             (const String.fromEnvironment('TEST') == 'true');
       }

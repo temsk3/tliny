@@ -7,7 +7,6 @@ import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_media_query.dart';
-import '../../ui/program/program_state.dart';
 import '../common/main_body.dart';
 import '../product/widget/product_button.dart';
 import 'program_view_model.dart';
@@ -25,7 +24,6 @@ class ProgramDetailsPage extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     final appMediaQuery = useMediaQuery();
-    final state = ref.watch(programListStateProvider);
     // final state = ref.watch(programStateProvider(program.id.toString()));
     // final state = ref.watch(programViewModelProvider);
     final viewModel = ref.watch(programViewModelProvider.notifier);
@@ -93,8 +91,10 @@ class ProgramDetailsPage extends HookConsumerWidget {
         body: DefaultTabController(
           length: 4,
           child: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (
+              BuildContext context,
+              bool innerBoxIsScrolled,
+            ) {
               return <Widget>[
                 _headerSection(context, program.message!),
                 _tabSection(context),
@@ -168,24 +168,22 @@ class ProgramDetailsPage extends HookConsumerWidget {
 //header部分
 Widget _headerSection(BuildContext context, String message) {
   return SliverList(
-    delegate: SliverChildListDelegate(
-      [
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 65),
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            // height: 65,
-            child: Text(
-              message,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            ),
+    delegate: SliverChildListDelegate([
+      ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 65),
+        child: Container(
+          color: Theme.of(context).colorScheme.surface,
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          // height: 65,
+          child: Text(
+            message,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
-      ],
-    ),
+      ),
+    ]),
   );
 }
 
@@ -201,7 +199,7 @@ Widget _tabSection(BuildContext context) {
           Tab(text: '全品'),
           Tab(text: '食品'),
           Tab(text: '物品'),
-          Tab(text: 'その他')
+          Tab(text: 'その他'),
         ],
       ),
     ),

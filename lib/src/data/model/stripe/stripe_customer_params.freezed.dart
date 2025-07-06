@@ -24,7 +24,7 @@ mixin _$CustomerParams {
   AddressParams? get address => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
-  Map<dynamic, dynamic>? get metadata => throw _privateConstructorUsedError;
+  Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get paymentMethod => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $CustomerParamsCopyWith<$Res> {
     AddressParams? address,
     String? description,
     String? email,
-    Map<dynamic, dynamic>? metadata,
+    Map<String, dynamic>? metadata,
     String? name,
     String? paymentMethod,
     String? phone,
@@ -110,7 +110,7 @@ class _$CustomerParamsCopyWithImpl<$Res, $Val extends CustomerParams>
                 freezed == metadata
                     ? _value.metadata
                     : metadata // ignore: cast_nullable_to_non_nullable
-                        as Map<dynamic, dynamic>?,
+                        as Map<String, dynamic>?,
             name:
                 freezed == name
                     ? _value.name
@@ -183,7 +183,7 @@ abstract class _$$CustomerParamsImplCopyWith<$Res>
     AddressParams? address,
     String? description,
     String? email,
-    Map<dynamic, dynamic>? metadata,
+    Map<String, dynamic>? metadata,
     String? name,
     String? paymentMethod,
     String? phone,
@@ -242,7 +242,7 @@ class __$$CustomerParamsImplCopyWithImpl<$Res>
             freezed == metadata
                 ? _value._metadata
                 : metadata // ignore: cast_nullable_to_non_nullable
-                    as Map<dynamic, dynamic>?,
+                    as Map<String, dynamic>?,
         name:
             freezed == name
                 ? _value.name
@@ -274,14 +274,13 @@ class __$$CustomerParamsImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
+@JsonSerializable()
 class _$CustomerParamsImpl extends _CustomerParams {
   const _$CustomerParamsImpl({
     required this.address,
     required this.description,
     required this.email,
-    required final Map<dynamic, dynamic>? metadata,
+    required final Map<String, dynamic>? metadata,
     required this.name,
     required this.paymentMethod,
     required this.phone,
@@ -299,9 +298,9 @@ class _$CustomerParamsImpl extends _CustomerParams {
   final String? description;
   @override
   final String? email;
-  final Map<dynamic, dynamic>? _metadata;
+  final Map<String, dynamic>? _metadata;
   @override
-  Map<dynamic, dynamic>? get metadata {
+  Map<String, dynamic>? get metadata {
     final value = _metadata;
     if (value == null) return null;
     if (_metadata is EqualUnmodifiableMapView) return _metadata;
@@ -381,7 +380,7 @@ abstract class _CustomerParams extends CustomerParams {
     required final AddressParams? address,
     required final String? description,
     required final String? email,
-    required final Map<dynamic, dynamic>? metadata,
+    required final Map<String, dynamic>? metadata,
     required final String? name,
     required final String? paymentMethod,
     required final String? phone,
@@ -400,7 +399,7 @@ abstract class _CustomerParams extends CustomerParams {
   @override
   String? get email;
   @override
-  Map<dynamic, dynamic>? get metadata;
+  Map<String, dynamic>? get metadata;
   @override
   String? get name;
   @override

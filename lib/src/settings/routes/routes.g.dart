@@ -184,18 +184,16 @@ extension $SignUpRouteExtension on SignUpRoute {
 }
 
 RouteBase get $checkoutSuccessRoute => GoRouteData.$route(
-  path: '/checkout-success/:sessionId',
+  path: '/checkout-success',
 
   factory: $CheckoutSuccessRouteExtension._fromState,
 );
 
 extension $CheckoutSuccessRouteExtension on CheckoutSuccessRoute {
   static CheckoutSuccessRoute _fromState(GoRouterState state) =>
-      CheckoutSuccessRoute(sessionId: state.pathParameters['sessionId']!);
+      const CheckoutSuccessRoute();
 
-  String get location => GoRouteData.$location(
-    '/checkout-success/${Uri.encodeComponent(sessionId)}',
-  );
+  String get location => GoRouteData.$location('/checkout-success');
 
   void go(BuildContext context) => context.go(location);
 
@@ -208,18 +206,16 @@ extension $CheckoutSuccessRouteExtension on CheckoutSuccessRoute {
 }
 
 RouteBase get $checkoutCancelRoute => GoRouteData.$route(
-  path: '/checkout-cancel/:sessionId',
+  path: '/checkout-cancel',
 
   factory: $CheckoutCancelRouteExtension._fromState,
 );
 
 extension $CheckoutCancelRouteExtension on CheckoutCancelRoute {
   static CheckoutCancelRoute _fromState(GoRouterState state) =>
-      CheckoutCancelRoute(sessionId: state.pathParameters['sessionId']!);
+      const CheckoutCancelRoute();
 
-  String get location => GoRouteData.$location(
-    '/checkout-cancel/${Uri.encodeComponent(sessionId)}',
-  );
+  String get location => GoRouteData.$location('/checkout-cancel');
 
   void go(BuildContext context) => context.go(location);
 

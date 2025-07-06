@@ -70,7 +70,7 @@ Future<void> showTextDialog(
         builder: (context) => builder,
       );
     } else {
-      await showDialog(context: context, builder: (context) => builder);
+      await showDialog<void>(context: context, builder: (context) => builder);
     }
   } on Exception catch (e, st) {
     logger.e('showTextDialog: error=$e, stackTrace=$st', time: DateTime.now());

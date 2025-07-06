@@ -34,7 +34,7 @@ class ToProductDetailsTextButton extends HookWidget {
       child: Text(l10n.productDetails),
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
-          value: ref.watch(programListStateProvider),
+          value: ref.watch(programsStateProvider),
           data: (list) {
             logger.d(
               'ToProductDetailsTextButton: list=$list',
@@ -55,7 +55,7 @@ class ToProductDetailsTextButton extends HookWidget {
                     ProductDetailsRoute(
                       programId: program.id!,
                       productId: cart.productId!,
-                    ).push(context);
+                    ).push<void>(context);
                   } else {
                     logger.e(
                       'ToProductDetailsTextButton: program.id or cart.productId is null. program.id=${program.id}, cart.productId=${cart.productId}',
@@ -208,7 +208,7 @@ class PaymentButton extends HookWidget {
 
                   return BaseElevatedButton(
                     onPressed:
-                        sales
+                        isButtonEnabled
                             ? () async {
                               logger.d(
                                 'PaymentButton: onPressed, eventId=$eventId, value=$value',
@@ -244,7 +244,7 @@ class PaymentButton extends HookWidget {
                                   // await appRoute.pop();
                                   RouterUtils.safePop(ctx);
                                 }
-                              } catch (e) {
+                              } on Exception catch (e) {
                                 logger.e(
                                   'PaymentButton: 決済エラー - $e',
                                   time: DateTime.now(),
@@ -330,7 +330,7 @@ class PaymentButton extends HookWidget {
                   .watchProduct(productId)
                   .first;
 
-          if (cart.quantity > (productAsync.stock ?? 0)) {
+          if (cart.quantity > productAsync.stock) {
             logger.d(
               '_checkStockAvailability: 在庫不足 - productId=$productId, cart.quantity=${cart.quantity}, stock=${productAsync.stock}',
             );
@@ -340,7 +340,7 @@ class PaymentButton extends HookWidget {
       }
       logger.d('_checkStockAvailability: 在庫充足');
       return false; // 在庫不足なし
-    } catch (e) {
+    } on Exception catch (e) {
       logger.e('_checkStockAvailability: エラー - $e');
       return true; // エラー時は安全のため在庫不足とみなす
     }
@@ -365,12 +365,12 @@ class PaymentButton extends HookWidget {
                   .watchProduct(productId)
                   .first;
 
-          if (cart.quantity > (product.stock ?? 0)) {
+          if (cart.quantity > product.stock) {
             stockIssues.add({
               'cart': cart,
               'product': product,
               'currentQuantity': cart.quantity,
-              'availableStock': product.stock ?? 0,
+              'availableStock': product.stock,
             });
           }
         }
@@ -406,7 +406,7 @@ class PaymentButton extends HookWidget {
       }
 
       return shouldAdjust;
-    } catch (e) {
+    } on Exception catch (e) {
       logger.e('_handleStockAdjustment: エラー - $e');
       return false; // エラー時は処理を中断
     }
@@ -506,12 +506,12 @@ class PaymentButton extends HookWidget {
                 .watchProduct(productId)
                 .first;
 
-        if (cart.quantity > (product.stock ?? 0)) {
+        if (cart.quantity > product.stock) {
           stockIssues.add({
             'cart': cart,
             'product': product,
             'currentQuantity': cart.quantity,
-            'availableStock': product.stock ?? 0,
+            'availableStock': product.stock,
           });
         }
       }

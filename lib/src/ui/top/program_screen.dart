@@ -21,7 +21,7 @@ class EventScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final state = ref.watch(programListStateProvider);
+    final state = ref.watch(programsStateProvider);
     final current = useState(0);
     final pageController = useState(PageController());
 

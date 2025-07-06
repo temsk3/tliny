@@ -27,7 +27,7 @@ dependencies:
   flutter_hooks:
   riverpod_annotation:
 
-  json_annotation:
+  json_annotation: ^4.9.0
   freezed_annotation:
 
   google_fonts:
@@ -93,7 +93,7 @@ dev_dependencies:
   custom_lint:
   riverpod_lint:
   build_runner:
-  json_serializable:
+  json_serializable: ^6.9.5
   freezed:
   riverpod_generator:
   retrofit_generator:

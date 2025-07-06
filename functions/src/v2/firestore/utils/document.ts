@@ -15,7 +15,6 @@ export default class Document<T> {
   get data(): T {
     return this.snapshot.data() as T
   }
-  // eslint-disable-next-line require-jsdoc
   constructor(snapshot: FirebaseFirestore.DocumentSnapshot) {
     this.snapshot = snapshot
   }

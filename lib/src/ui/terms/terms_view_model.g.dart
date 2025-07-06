@@ -8,7 +8,7 @@ part of 'terms_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$termsViewModelHash() => r'b6d8632726cfd0e295c5d2c12e6194457fb117e6';
+String _$termsViewModelHash() => r'd3ea98cf074b996e9d221824f8a52c9610026a92';
 
 /// Copied from Dart SDK
 class _SystemHash {

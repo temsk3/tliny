@@ -65,8 +65,8 @@ class AppRoutes {
   static const ticketPage = '/ticket';
   static const qRCodeDisplayPage = '/qr-code';
   static const ticketPrintPage = '/ticket-print';
-  static const checkoutSuccessPage = '/checkout-success/:sessionId';
-  static const checkoutCancelPage = '/checkout-cancel/:sessionId';
+  static const checkoutSuccessPage = '/checkout-success';
+  static const checkoutCancelPage = '/checkout-cancel';
   static const usageHistoryPage = '/usage-history';
   static const usageHistoryDetailPage = 'usage-history-detail';
   static const orderPage = '/order';
@@ -236,26 +236,26 @@ class SignUpRoute extends GoRouteData {
 
 @TypedGoRoute<CheckoutSuccessRoute>(path: AppRoutes.checkoutSuccessPage)
 class CheckoutSuccessRoute extends GoRouteData {
-  const CheckoutSuccessRoute({required this.sessionId});
-  final String sessionId;
-
+  const CheckoutSuccessRoute();
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      CheckoutSuccessPage(sessionId: sessionId);
+  Widget build(BuildContext context, GoRouterState state) {
+    final sessionId = state.uri.queryParameters['session_id'];
+    return CheckoutSuccessPage(sessionId: sessionId);
+  }
 }
 
 @TypedGoRoute<CheckoutCancelRoute>(path: AppRoutes.checkoutCancelPage)
 class CheckoutCancelRoute extends GoRouteData {
-  const CheckoutCancelRoute({required this.sessionId});
-  final String sessionId;
-
+  const CheckoutCancelRoute();
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      CheckoutCancelPage(sessionId: sessionId);
+  Widget build(BuildContext context, GoRouterState state) {
+    final sessionId = state.uri.queryParameters['session_id'];
+    return CheckoutCancelPage(sessionId: sessionId);
+  }
 }
 
 // TOPレベルでない場合は、`@TypedGoRoute`をつけない

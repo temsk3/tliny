@@ -34,7 +34,9 @@ class ImageScreen extends HookConsumerWidget {
       try {
         final image = await picker.pickImage(source: ImageSource.gallery);
         // 画像がnullの場合戻る
-        if (image == null) return;
+        if (image == null) {
+          return;
+        }
 
         final imageTemp = File(image.path);
 

@@ -91,14 +91,6 @@ export const createPreOrder = async (
         ...doc.data(),
         ref: doc.ref,
       }))
-      logger.info('Fetched cartItems', {
-        count: cartItems.length,
-        items: cartItems.map((item) => ({
-          productId: item.productId,
-          productDocRef: item.productDocRef,
-          type: typeof item.productDocRef,
-        })),
-      })
     } catch (err: any) {
       logger.error('Error fetching cartItems', {
         error:
@@ -127,16 +119,6 @@ export const createPreOrder = async (
               cartItem.productDocRef,
             )) as unknown as DocumentSnapshot
             if (!productDoc.exists) {
-              logger.error('Product not found in transaction', {
-                productId: cartItem.productId,
-                productDocRef: cartItem.productDocRef.path,
-                cartItem: {
-                  id: cartItem.ref?.id,
-                  productId: cartItem.productId,
-                  quantity: cartItem.quantity,
-                  programId: cartItem.programId,
-                },
-              })
               throw new Error('Product not found!')
             }
 
@@ -175,37 +157,6 @@ export const createPreOrder = async (
     // 注文情報の作成
     const now = Timestamp.now()
 
-    // デバッグ: cartItemsの詳細情報をログ出力
-    logger.info('Cart items details for product retrieval', {
-      cartItemsCount: cartItems.length,
-      cartItems: cartItems.map((item, index) => ({
-        index,
-        productId: item.productId,
-        quantity: item.quantity,
-        programId: item.programId,
-        productDocRef: {
-          path: item.productDocRef.path,
-          id: item.productDocRef.id,
-          type: typeof item.productDocRef,
-          hasGet: typeof item.productDocRef.get === 'function',
-        },
-      })),
-    })
-
-    // デバッグ: Promise.allの直前で詳細ログ
-    logger.info('About to start Promise.all for product retrieval', {
-      cartItemsLength: cartItems.length,
-      firstCartItem: cartItems[0]
-        ? {
-            productId: cartItems[0].productId,
-            productDocRefType: typeof cartItems[0].productDocRef,
-            productDocRefPath: cartItems[0].productDocRef?.path,
-            productDocRefId: cartItems[0].productDocRef?.id,
-            hasGetMethod: typeof cartItems[0].productDocRef?.get === 'function',
-          }
-        : null,
-    })
-
     const products = await Promise.all(
       cartItems.map((c: any) => {
         let docRef: admin.firestore.DocumentReference
@@ -217,13 +168,6 @@ export const createPreOrder = async (
         return docRef
           .get()
           .then((doc: admin.firestore.DocumentSnapshot) => {
-            logger.info('Product document retrieval result', {
-              productId: c.productId,
-              productDocRef: docRef.path,
-              exists: doc.exists,
-              hasData: !!doc.data(),
-              dataKeys: doc.exists ? Object.keys(doc.data() || {}) : [],
-            })
             return doc.data() as Model.Product
           })
           .catch((err: any) => {
@@ -240,24 +184,6 @@ export const createPreOrder = async (
       }),
     )
 
-    // デバッグ: products配列の内容を確認
-    logger.info('Products array before mapping', {
-      productsLength: products.length,
-      products: products.map((product: any, index: number) => ({
-        index,
-        product: product
-          ? {
-              id: product.id,
-              name: product.name,
-              price: product.price,
-              stock: product.stock,
-            }
-          : null,
-        isUndefined: product === undefined,
-        isNull: product === null,
-      })),
-    })
-
     // 購入日時と、購入した時点での商品の情報を配列として持たせる
     const order: Model.Order = {
       status: Model.OrderStatus.pre,
@@ -272,7 +198,7 @@ export const createPreOrder = async (
 
         return {
           // cart情報
-          productDocRef: productId,
+          productDocRef: db.collection('v/1/products').doc(productId),
           quantity: quantity,
           // 購入者
           userId: userId,
@@ -358,9 +284,9 @@ export const cancelOrder = async (orderId: string): Promise<void> => {
 
     const orderData = orderDoc.data()
     if (orderData?.status === Model.OrderStatus.order) {
-      throw new Error('already confirmed')
+      throw new Error('Order is already confirmed and cannot be canceled')
     } else if (orderData?.status === Model.OrderStatus.cancel) {
-      throw new Error('already canceled')
+      throw new Error('Order is already canceled')
     }
 
     // orderの確定
@@ -375,18 +301,19 @@ export const cancelOrder = async (orderId: string): Promise<void> => {
       const promises: Promise<void>[] = []
       for (const orderItem of orderItems) {
         promises.push(
-          transaction
-            .get(db.collection('v/1/products').doc(orderItem.productDocRef))
-            .then((productDoc) => {
-              if (!productDoc.exists) {
-                throw new Error('Product not found')
-              }
-              const productData = productDoc.data()
-              // `Product`の在庫を増やす
-              transaction.update(productDoc.ref, {
-                stock: productData?.stock + orderItem.quantity,
-              })
-            }),
+          (async () => {
+            const productDoc = (await transaction.get(
+              orderItem.productDocRef,
+            )) as unknown as admin.firestore.DocumentSnapshot
+            if (!productDoc.exists) {
+              throw new Error('Product not found')
+            }
+            const productData = productDoc.data()
+            // `Product`の在庫を増やす
+            transaction.update(productDoc.ref, {
+              stock: productData?.stock + orderItem.quantity,
+            })
+          })(),
         )
       }
       return Promise.all(promises)

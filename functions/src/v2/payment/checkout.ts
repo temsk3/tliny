@@ -1,344 +1,344 @@
-/* eslint-disable max-len */
-import { onCall } from '../../utils/base_function'
-import { exportFunction } from '../../utils/deploy'
-import { logger } from 'firebase-functions'
-import { requireAuth } from '../../utils/auth-guard'
-import { PaymentService } from './services/payment.service'
-import { getStripe } from './utils'
-import { db } from '../../utils/firebase_utils'
 import Stripe from 'stripe'
+import { onCall } from '../../utils/base_function'
+import { logger, V2Logger } from '../../utils/logger'
+import { requireAuth } from '../../utils/auth-guard'
+import { getStripe } from './utils'
+import { PaymentService } from './services/payment.service'
+import { cancelOrder } from '../business/services/order.service'
 
-const _exportFunction = (name: string, f: () => any) =>
-  exportFunction(['v2', 'payment', 'checkout', name], exports, f)
+// Direct exports - no more _exportFunction
+export const v2_payment_checkout_onSetup = onCall(async (request) => {
+  const methodName = 'v2_payment_checkout_onSetup'
 
-const paymentService = new PaymentService()
-
-// v1互換: 決済セッション作成
-_exportFunction('onPayment', () =>
-  onCall(async (request) => {
-    const uid = requireAuth(request)
-    const eventId = request.data.eventId
-
-    logger.info('Creating payment session (v1 compatible)', { uid, eventId })
-    return await paymentService.createCheckoutSession(request)
-  }),
-)
-
-// v1互換: セットアップセッション作成
-_exportFunction('onSetup', () =>
-  onCall(async (request) => {
-    const uid = requireAuth(request)
-    const successUrl = request.data.successUrl
-    const cancelUrl = request.data.cancelUrl
-
-    logger.info('Creating setup session (v1 compatible)', { uid })
-
-    try {
-      const params: Stripe.Checkout.SessionCreateParams = {
-        payment_method_types: ['card'],
-        mode: 'setup',
-        customer_update: { name: 'auto' as const },
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-      }
-
-      const session = await getStripe().checkout.sessions.create(params)
-      logger.info('Setup session created', { sessionId: session.id })
-
-      return {
-        checkoutSessionId: session.id,
-        url: session.url,
-      }
-    } catch (error: any) {
-      logger.error('Failed to create setup session', { error })
-      throw error
-    }
-  }),
-)
-
-// v1互換: サブスクリプションセッション作成
-_exportFunction('onSubscription', () =>
-  onCall(async (request) => {
-    const uid = requireAuth(request)
-    const orderId = request.data.orderId
-    const lineItems = request.data.lineItems
-    const successUrl = request.data.successUrl
-    const cancelUrl = request.data.cancelUrl
-
-    logger.info('Creating subscription session (v1 compatible)', {
-      uid,
-      orderId,
+  try {
+    V2Logger.start(methodName, {
+      hasAuth: !!request.auth,
+      authUid: request.auth?.uid,
     })
 
-    try {
-      const params: Stripe.Checkout.SessionCreateParams = {
-        mode: 'subscription' as const,
-        line_items: lineItems,
-        success_url: successUrl,
-        cancel_url: cancelUrl,
-        metadata: { orderId: orderId },
-      }
-
-      const session = await getStripe().checkout.sessions.create(params)
-      logger.info('Subscription session created', { sessionId: session.id })
-
-      return {
-        checkoutSessionId: session.id,
-        url: session.url,
-      }
-    } catch (error: any) {
-      logger.error('Failed to create subscription session', { error })
-      throw error
-    }
-  }),
-)
-
-// v1互換: ラインアイテム一覧取得
-_exportFunction('onListOfLineItems', () =>
-  onCall(async (request) => {
     requireAuth(request)
-    const checkoutSessionId = request.data.checkoutSessionId
-    const accountId = request.data.accountId
+    const successUrl = (request.data as any).successUrl
+    const cancelUrl = (request.data as any).cancelUrl
 
-    logger.info('Listing line items (v1 compatible)', {
-      checkoutSessionId,
-      accountId,
+    const params: Stripe.Checkout.SessionCreateParams = {
+      payment_method_types: ['card'],
+      mode: 'setup',
+      customer_update: { name: 'auto' as const },
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+    }
+
+    const session = await getStripe().checkout.sessions.create(params)
+
+    const result = {
+      checkoutSessionId: session.id,
+      url: session.url,
+    }
+
+    V2Logger.success(methodName, result)
+    return result
+  } catch (error: unknown) {
+    V2Logger.error(methodName, error as any, {
+      hasAuth: !!request.auth,
+      authUid: request.auth?.uid,
     })
+    throw error
+  }
+})
 
+export const v2_payment_checkout_onSubscription = onCall(async (request) => {
+  const uid = requireAuth(request)
+  const orderId = (request.data as any).orderId
+  const lineItems = (request.data as any).lineItems
+  const successUrl = (request.data as any).successUrl
+  const cancelUrl = (request.data as any).cancelUrl
+
+  logger.info('Creating subscription session (v1 compatible)', {
+    uid,
+    orderId,
+  })
+
+  try {
+    const params: Stripe.Checkout.SessionCreateParams = {
+      mode: 'subscription' as const,
+      line_items: lineItems,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      metadata: { orderId: orderId },
+    }
+
+    const session = await getStripe().checkout.sessions.create(params)
+    logger.info('Subscription session created', { sessionId: session.id })
+
+    return {
+      checkoutSessionId: session.id,
+      url: session.url,
+    }
+  } catch (error: unknown) {
+    logger.error('Failed to create subscription session', { error })
+    throw error
+  }
+})
+
+export const v2_payment_checkout_onListOfLineItems = onCall(async (request) => {
+  requireAuth(request)
+  const checkoutSessionId = (request.data as any).checkoutSessionId
+  const accountId = (request.data as any).accountId
+
+  logger.info('Listing line items (v1 compatible)', {
+    checkoutSessionId,
+    accountId,
+  })
+
+  try {
+    const lineItems = await getStripe().checkout.sessions.listLineItems(
+      checkoutSessionId,
+      {
+        stripeAccount: accountId,
+      },
+    )
+    return lineItems.data
+  } catch (error: unknown) {
+    logger.error('Failed to list line items', { error })
+    throw error
+  }
+})
+
+export const v2_payment_checkout_createPaymentSession = onCall(
+  async (request) => {
     try {
-      const lineItems = await getStripe().checkout.sessions.listLineItems(
-        checkoutSessionId,
-        {
-          stripeAccount: accountId,
+      logger.info('Function called with request', {
+        hasAuth: !!request.auth,
+        authUid: request.auth?.uid,
+        hasData: !!request.data,
+        dataKeys: request.data ? Object.keys(request.data) : [],
+        requestData: request.data,
+      })
+
+      const uid = requireAuth(request)
+      const eventId = (request.data as any).eventId
+      const successUrl = (request.data as any).successUrl
+      const cancelUrl = (request.data as any).cancelUrl
+
+      logger.info('Creating payment session', {
+        uid,
+        eventId,
+        successUrl,
+        cancelUrl,
+        requestData: request.data,
+      })
+
+      // パラメータの検証
+      if (!eventId) {
+        throw new Error('eventId is required')
+      }
+      if (!successUrl) {
+        throw new Error('successUrl is required')
+      }
+      if (!cancelUrl) {
+        throw new Error('cancelUrl is required')
+      }
+
+      const paymentService = new PaymentService()
+      const result = await paymentService.createCheckoutSession({
+        auth: { uid },
+        data: {
+          eventId,
+          successUrl,
+          cancelUrl,
         },
-      )
-      return lineItems.data
-    } catch (error: any) {
-      logger.error('Failed to list line items', { error })
+      })
+
+      logger.info('Payment session created successfully', {
+        sessionId: result.checkoutSessionId,
+        orderId: result.orderId,
+      })
+
+      return result
+    } catch (error: unknown) {
+      logger.error('Failed to create payment session', {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        requestData: request.data,
+        errorType: typeof error,
+        errorConstructor: error?.constructor?.name,
+      })
       throw error
     }
-  }),
+  },
 )
 
-_exportFunction('createPaymentSession', () =>
-  onCall(async (request) => {
-    const uid = requireAuth(request)
-    const eventId = request.data.eventId
+// セッション取得
+export const v2_payment_checkout_retrieveSession = onCall(async (request) => {
+  requireAuth(request)
+  const checkoutSessionId = (request.data as any).checkoutSessionId
+  const accountId = (request.data as any).accountId
 
-    logger.info('Creating payment session', { uid, eventId })
-    return await paymentService.createCheckoutSession(request)
-  }),
-)
+  logger.info('Retrieving checkout session')
 
-_exportFunction('retrieveSession', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const checkoutSessionId = request.data.checkoutSessionId
-    const accountId = request.data.accountId
-
-    logger.info('Retrieving checkout session', {
+  if (
+    !checkoutSessionId ||
+    checkoutSessionId === 'null' ||
+    checkoutSessionId === 'undefined'
+  ) {
+    logger.error('Invalid checkout session ID', {
       checkoutSessionId,
-      accountId,
       requestData: request.data,
     })
+    // Log error (Firestore logging removed for now)
+    throw new Error(
+      `Invalid checkout session ID: ${checkoutSessionId} (request: ${JSON.stringify(request.data)})`,
+    )
+  }
 
-    if (
-      !checkoutSessionId ||
-      checkoutSessionId === 'null' ||
-      checkoutSessionId === 'undefined'
-    ) {
-      logger.error('Invalid checkout session ID', {
-        checkoutSessionId,
-        requestData: request.data,
-      })
-      await db.collection('logs').add({
-        type: 'checkoutSessionIdError',
-        checkoutSessionId,
-        requestData: request.data,
-        timestamp: new Date(),
-      })
+  try {
+    const session = await getStripe().checkout.sessions.retrieve(
+      checkoutSessionId,
+      {
+        stripeAccount: accountId,
+      },
+    )
+    logger.info('Checkout session retrieved')
+    return session
+  } catch (error: unknown) {
+    logger.error('Failed to retrieve checkout session', {
+      error: (error as Error).message,
+      checkoutSessionId,
+      errorCode: (error as any).code,
+      errorType: (error as any).type,
+      requestData: request.data,
+    })
+    // Log error (Firestore logging removed for now)
+    if ((error as any).code === 'resource_missing') {
       throw new Error(
-        `Invalid checkout session ID: ${checkoutSessionId} (request: ${JSON.stringify(request.data)})`,
+        `Checkout session not found: ${checkoutSessionId} (request: ${JSON.stringify(request.data)})`,
+      )
+    } else {
+      throw new Error(
+        `Failed to retrieve checkout session: ${(error as Error).message} (request: ${JSON.stringify(request.data)})`,
       )
     }
+  }
+})
 
-    try {
-      const session = await getStripe().checkout.sessions.retrieve(
-        checkoutSessionId,
-        {
-          stripeAccount: accountId,
-        },
-      )
-      logger.info('Checkout session retrieved', { sessionId: session.id })
-      return session
-    } catch (error: any) {
-      logger.error('Failed to retrieve checkout session', {
-        error: error.message,
-        checkoutSessionId,
-        errorCode: error.code,
-        errorType: error.type,
-        requestData: request.data,
-      })
-      await db.collection('logs').add({
-        type: 'checkoutSessionRetrieveError',
-        error: error.message,
-        errorCode: error.code,
-        errorType: error.type,
-        checkoutSessionId,
-        requestData: request.data,
-        timestamp: new Date(),
-      })
-      if (error.code === 'resource_missing') {
-        throw new Error(
-          `Checkout session not found: ${checkoutSessionId} (request: ${JSON.stringify(request.data)})`,
-        )
-      } else {
-        throw new Error(
-          `Failed to retrieve checkout session: ${error.message} (request: ${JSON.stringify(request.data)})`,
-        )
-      }
-    }
-  }),
-)
+export const v2_payment_checkout_listLineItems = onCall(async (request) => {
+  requireAuth(request)
+  const checkoutSessionId = (request.data as any).checkoutSessionId
+  const accountId = (request.data as any).accountId
 
-_exportFunction('listLineItems', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const checkoutSessionId = request.data.checkoutSessionId
-    const accountId = request.data.accountId
+  logger.info('Listing line items', { checkoutSessionId, accountId })
 
-    logger.info('Listing line items', { checkoutSessionId, accountId })
-
-    try {
-      const lineItems = await getStripe().checkout.sessions.listLineItems(
-        checkoutSessionId,
-        {
-          stripeAccount: accountId,
-        },
-      )
-      return lineItems
-    } catch (error: any) {
-      logger.error('Failed to list line items', { error })
-      throw error
-    }
-  }),
-)
-
-_exportFunction('expireSession', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const checkoutSessionId = request.data.checkoutSessionId
-    const accountId = request.data.accountId
-
-    logger.info('Expiring checkout session', { checkoutSessionId, accountId })
-
-    try {
-      const session = await getStripe().checkout.sessions.expire(
-        checkoutSessionId,
-        {
-          stripeAccount: accountId,
-        },
-      )
-      logger.info('Checkout session expired', { sessionId: session.id })
-      return { checkoutSessionId: session.id }
-    } catch (error: any) {
-      logger.error('Failed to expire checkout session', { error })
-      throw error
-    }
-  }),
-)
-
-// v1互換: セッション期限切れ
-_exportFunction('onExpire', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const checkoutSessionId = request.data.checkoutSessionId
-    const accountId = request.data.accountId
-
-    logger.info('Expiring checkout session (v1 compatible)', {
+  try {
+    const lineItems = await getStripe().checkout.sessions.listLineItems(
       checkoutSessionId,
-      accountId,
-    })
+      {
+        stripeAccount: accountId,
+      },
+    )
+    return lineItems
+  } catch (error: unknown) {
+    logger.error('Failed to list line items', { error })
+    throw error
+  }
+})
 
-    try {
-      const session = await getStripe().checkout.sessions.expire(
-        checkoutSessionId,
-        {
-          stripeAccount: accountId,
-        },
-      )
-      logger.info('Checkout session expired', { sessionId: session.id })
-      return { checkoutSessionId: session.id }
-    } catch (error: any) {
-      logger.error('Failed to expire checkout session', { error })
-      throw error
-    }
-  }),
-)
+export const v2_payment_checkout_expireSession = onCall(async (request) => {
+  requireAuth(request)
+  const checkoutSessionId = (request.data as any).checkoutSessionId
+  const accountId = (request.data as any).accountId
 
-// v1互換: セッション取得
-_exportFunction('onRetrieve', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const checkoutSessionId = request.data.checkoutSessionId
-    const accountId = request.data.accountId
+  logger.info('Expiring checkout session')
 
-    logger.info('Retrieving checkout session (v1 compatible)', {
+  try {
+    const session = await getStripe().checkout.sessions.expire(
       checkoutSessionId,
-      accountId,
-    })
+      {
+        stripeAccount: accountId,
+      },
+    )
+    logger.info('Checkout session expired')
+    return session
+  } catch (error: unknown) {
+    logger.error('Failed to expire checkout session', { error })
+    throw error
+  }
+})
+
+export const v2_payment_checkout_listSessions = onCall(async (request) => {
+  requireAuth(request)
+  const accountId = (request.data as any).accountId
+  const limit = (request.data as any).limit || 10
+
+  logger.info('Listing checkout sessions', { accountId, limit })
+
+  try {
+    const sessions = await getStripe().checkout.sessions.list(
+      {
+        limit: limit,
+      },
+      {
+        stripeAccount: accountId,
+      },
+    )
+    return sessions
+  } catch (error: unknown) {
+    logger.error('Failed to list checkout sessions', { error })
+    throw error
+  }
+})
+
+export const v2_payment_checkout_listSessionsByOrder = onCall(
+  async (request) => {
+    requireAuth(request)
+    const orderId = (request.data as any).orderId
+    const accountId = (request.data as any).accountId
+
+    logger.info('Listing checkout sessions by order', { orderId, accountId })
 
     try {
-      const session = await getStripe().checkout.sessions.retrieve(
-        checkoutSessionId,
+      const sessions = await getStripe().checkout.sessions.list(
+        {
+          limit: 100,
+        },
         {
           stripeAccount: accountId,
         },
       )
-      logger.info('Checkout session retrieved', { sessionId: session.id })
-      return { checkoutSessionId: session.id }
-    } catch (error: any) {
-      logger.error('Failed to retrieve checkout session', { error })
+      // Filter sessions by orderId in metadata
+      const filteredSessions = sessions.data.filter(
+        (session) => session.metadata?.orderId === orderId,
+      )
+      return { ...sessions, data: filteredSessions }
+    } catch (error: unknown) {
+      logger.error('Failed to list checkout sessions by order', { error })
       throw error
     }
-  }),
+  },
 )
 
-_exportFunction('cancelOrder', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const orderId = request.data.orderId
+// 注文キャンセル
+export const v2_payment_checkout_cancelOrder = onCall(async (request) => {
+  const uid = requireAuth(request)
+  const orderId = (request.data as any).orderId
 
-    logger.info('Cancelling order', { orderId })
+  logger.info('Canceling order', { uid, orderId })
 
-    try {
-      // 注文キャンセル処理を実装
-      // ここではプレースホルダーとして空の処理
-      logger.info('Order cancelled successfully', { orderId })
-      return
-    } catch (error: any) {
-      logger.error('Failed to cancel order', { error })
-      throw error
-    }
-  }),
-)
+  if (!orderId) {
+    throw new Error('orderId is required')
+  }
 
-// v1互換: 注文キャンセル
-_exportFunction('onCancel', () =>
-  onCall(async (request) => {
-    requireAuth(request)
-    const orderId = request.data.orderId
+  try {
+    await cancelOrder(orderId)
 
-    logger.info('Cancelling order (v1 compatible)', { orderId })
-
-    try {
-      // 注文キャンセル処理を実装
-      // ここではプレースホルダーとして空の処理
-      logger.info('Order cancelled successfully', { orderId })
-      return
-    } catch (error: any) {
-      logger.error('Failed to cancel order', { error })
-      throw error
-    }
-  }),
-)
+    logger.info('Order canceled successfully', { orderId })
+    return { success: true, orderId }
+  } catch (error: unknown) {
+    logger.error('Failed to cancel order', {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      orderId,
+      requestData: request.data,
+    })
+    throw error
+  }
+})

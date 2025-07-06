@@ -169,9 +169,12 @@ class UserRepository {
           _db.collection(_accountCollectionPath).doc(uid).snapshots();
       return snapshot.map((doc) {
         final data = doc.data();
-        if (data == null) return false;
-        final status = data['status'];
-        return status is String ? status == 'verified' : false;
+        if (data == null) {
+          return false;
+        }
+        // final status = data['status'];
+        // return status is String ? status == 'verified' : false;
+        return data['chargesEnabled'] == true;
       });
     } on Exception catch (e, st) {
       logger.e('streamCheckAccountStatus: error=$e, stackTrace=$st');

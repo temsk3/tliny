@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable require-jsdoc */
 import * as admin from 'firebase-admin'
 import { CallableRequest, HttpsError } from 'firebase-functions/v2/https'
 import { UserRecord } from 'firebase-functions/lib/common/providers/identity'
@@ -68,6 +66,24 @@ export async function getStripeCustomerIdForUser(
 export async function getStripeConnectAccountId(
   userId: string,
 ): Promise<string | null> {
+  // まずFirestoreから取得を試行
+  try {
+    const accountDoc = await db
+      .collection('v/1/stripe_connect_accounts')
+      .doc(userId)
+      .get()
+    if (accountDoc.exists) {
+      const accountData = accountDoc.data()
+      const accountId = accountData?.account_id || null
+      if (accountId) {
+        return accountId
+      }
+    }
+  } catch (error) {
+    console.error('Failed to get account from Firestore:', error)
+  }
+
+  // Firestoreにない場合はカスタムクレームから取得（後方互換性）
   const user = await admin.auth().getUser(userId)
   return getStripeConnectAccountIdForUser(user)
 }

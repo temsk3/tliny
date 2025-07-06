@@ -41,22 +41,23 @@ class CartViewModel extends _$CartViewModel {
   Future<List<Cart>> _readCartDirectly() async {
     logger.d('_readCartDirectly - 開始', time: DateTime.now());
     final uidAsyncValue = ref.watch(userIdProvider);
-    logger.d(
-      '_readCartDirectly - userIdProvider: $uidAsyncValue',
-      time: DateTime.now(),
-    );
-    logger.d(
-      '_readCartDirectly - userIdProvider.isLoading: ${uidAsyncValue.isLoading}',
-      time: DateTime.now(),
-    );
-    logger.d(
-      '_readCartDirectly - userIdProvider.hasValue: ${uidAsyncValue.hasValue}',
-      time: DateTime.now(),
-    );
-    logger.d(
-      '_readCartDirectly - userIdProvider.hasError: ${uidAsyncValue.hasError}',
-      time: DateTime.now(),
-    );
+    logger
+      ..d(
+        '_readCartDirectly - userIdProvider: $uidAsyncValue',
+        time: DateTime.now(),
+      )
+      ..d(
+        '_readCartDirectly - userIdProvider.isLoading: ${uidAsyncValue.isLoading}',
+        time: DateTime.now(),
+      )
+      ..d(
+        '_readCartDirectly - userIdProvider.hasValue: ${uidAsyncValue.hasValue}',
+        time: DateTime.now(),
+      )
+      ..d(
+        '_readCartDirectly - userIdProvider.hasError: ${uidAsyncValue.hasError}',
+        time: DateTime.now(),
+      );
     final uid = uidAsyncValue.value;
     logger.d('_readCartDirectly - uid: $uid', time: DateTime.now());
     if (uid == null) {
@@ -86,7 +87,7 @@ class CartViewModel extends _$CartViewModel {
         message: e.toString(),
         stackTrace: st,
       );
-      rethrow;
+      throw appException;
     }
   }
 
@@ -101,7 +102,7 @@ class CartViewModel extends _$CartViewModel {
       return [];
     }
     try {
-      final carts = await loading.guardFuture(() async {
+      final carts = await loading.guardFuture(() {
         return cartRepository.readCart(uid);
       });
       state = AsyncValue.data(carts);
@@ -164,7 +165,7 @@ class CartViewModel extends _$CartViewModel {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     state = const AsyncLoading();
     try {
-      final item = await loading.guardFuture(() async {
+      final item = await loading.guardFuture(() {
         return cartRepository.createCart(uid, data);
       });
       final updatedCarts = [...?state.value, item];
@@ -190,7 +191,7 @@ class CartViewModel extends _$CartViewModel {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     state = const AsyncLoading();
     try {
-      final id = await loading.guardFuture(() async {
+      final id = await loading.guardFuture(() {
         return cartRepository.updateCart(uid, data);
       });
       final updatedCarts = [
@@ -218,7 +219,7 @@ class CartViewModel extends _$CartViewModel {
     logger.d('updateCartOptimized: $data', time: DateTime.now());
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      final id = await loading.guardFuture(() async {
+      final id = await loading.guardFuture(() {
         return cartRepository.updateCart(uid, data);
       });
 
@@ -301,7 +302,7 @@ class CartViewModel extends _$CartViewModel {
             final product =
                 await productRepository.watchProduct(productId).first;
             sum += product.price * cart.quantity;
-          } catch (e, st) {
+          } on Exception catch (e, st) {
             logger.e('sumCart: product取得エラー - $e', stackTrace: st);
             // エラーの場合は何もしない（0を加算）
           }
@@ -340,7 +341,9 @@ class CartViewModel extends _$CartViewModel {
     logger.d('adjustCartForStock: 在庫不足のカートアイテムを調整します', time: DateTime.now());
     final uidAsyncValue = ref.watch(userIdProvider);
     final uid = uidAsyncValue.value;
-    if (uid == null) return;
+    if (uid == null) {
+      return;
+    }
 
     try {
       final currentCarts = state.value ?? [];
@@ -388,7 +391,7 @@ class CartViewModel extends _$CartViewModel {
       } else {
         logger.d('adjustCartForStock: 在庫調整不要', time: DateTime.now());
       }
-    } catch (e, st) {
+    } on Exception catch (e, st) {
       logger.e('adjustCartForStock: エラー - $e', stackTrace: st);
     }
   }

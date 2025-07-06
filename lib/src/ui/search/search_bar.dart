@@ -11,9 +11,10 @@ final List<Map<String, dynamic>> program = [
   {'name': 'jkl;:', 'disc': 'm,./_'},
 ];
 
-final onSearchProvider = StateProvider((ref) => false);
-final StateProvider<Set<int>> searchIndexListProvider =
-    StateProvider((ref) => <int>{});
+final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
+final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
+  (ref) => <int>{},
+);
 
 class SearchPage extends ConsumerWidget {
   const SearchPage({super.key});
@@ -25,29 +26,30 @@ class SearchPage extends ConsumerWidget {
     final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
 
     return AsyncValueWidget(
-      value: ref.watch(programListStateProvider),
+      value: ref.watch(programsStateProvider),
       data: (data) {
         return Scaffold(
           appBar: AppBar(
             title: onSearch ? _searchTextField(ref) : const Text('Search'),
-            actions: onSearch
-                ? [
-                    IconButton(
-                      onPressed: () {
-                        onSearchNotifier.state = false;
-                      },
-                      icon: const Icon(Icons.clear),
-                    ),
-                  ]
-                : [
-                    IconButton(
-                      onPressed: () {
-                        onSearchNotifier.state = true;
-                        searchIndexListNotifier.state = {};
-                      },
-                      icon: const Icon(Icons.search),
-                    ),
-                  ],
+            actions:
+                onSearch
+                    ? [
+                      IconButton(
+                        onPressed: () {
+                          onSearchNotifier.state = false;
+                        },
+                        icon: const Icon(Icons.clear),
+                      ),
+                    ]
+                    : [
+                      IconButton(
+                        onPressed: () {
+                          onSearchNotifier.state = true;
+                          searchIndexListNotifier.state = {};
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
+                    ],
           ),
           body: MainBodyWidget(
             body: SingleChildScrollView(

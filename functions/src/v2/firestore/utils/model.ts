@@ -82,7 +82,7 @@ export interface Product {
 
 export interface SnapshotProduct {
   // cart情報
-  productDocRef: string
+  productDocRef: FirebaseFirestore.DocumentReference
   quantity: number
   // 購入者
   userId: string

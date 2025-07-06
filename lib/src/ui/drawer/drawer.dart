@@ -71,7 +71,7 @@ class CustomMyEventListTile extends HookWidget {
           value: ref.watch(myProgramViewModelProvider),
           data: (myProgramList) {
             final widgetList = <Widget>[];
-            final program = ref.watch(programListStateProvider).value;
+            final program = ref.watch(programsStateProvider).value;
             if (program != null) {
               for (final myProgram in myProgramList) {
                 final programData = program.firstWhere(
@@ -79,9 +79,9 @@ class CustomMyEventListTile extends HookWidget {
                 );
                 final widget = ListTile(
                   onTap: () {
-                    ProgramDetailRoute($extra: programData).push(context);
+                    ProgramDetailRoute($extra: programData).push<void>(context);
                   },
-                  title: Text(programData.name.toString()),
+                  title: Text(programData.name ?? ''),
                 );
                 widgetList.add(widget);
               }
@@ -122,7 +122,9 @@ class CustomManagementListTile extends HookWidget {
                     onTap:
                         () =>
                         // appRoute.push(ManagementRoute(eventId: element.id!))
-                        ManagementRoute(eventId: element.id!).push(context),
+                        ManagementRoute(
+                          eventId: element.id!,
+                        ).push<void>(context),
                     title: Text(element.name.toString()),
                   );
                   widgetList.add(widget);
@@ -201,7 +203,7 @@ class CustomProfileListTile extends HookWidget {
                 title: Text(l10n.profile),
                 onTap: () {
                   // appRoute.push(const UserRoute());
-                  const UserRoute().push(context);
+                  const UserRoute().push<void>(context);
                 },
               );
             } else {
@@ -234,7 +236,7 @@ class CustomUsageHistoryListTile extends HookWidget {
                   // appRoute.push(
                   //   const UsageHistoryRoute(),
                   // );
-                  const UsageHistoryRoute().push(context);
+                  const UsageHistoryRoute().push<void>(context);
                 },
               );
             } else {
@@ -267,7 +269,7 @@ class CustomOrderListTile extends HookWidget {
                   // appRoute.push(
                   //   const OrderRoute(),
                   // );
-                  const OrderRoute().push(context);
+                  const OrderRoute().push<void>(context);
                 },
               );
             } else {
@@ -338,7 +340,7 @@ class CustomAboutListTile extends StatelessWidget {
               applicationName: data.appName,
               applicationVersion: data.version,
               applicationIcon: Assets.img.icon.image(scale: 16),
-              applicationLegalese: '2022 Spel1\nsupport@spel1.com',
+              // applicationLegalese: '2022 Spel1\nsupport@spel1.com',
             );
           },
         );
@@ -361,7 +363,7 @@ class CustomTermsListTile extends HookWidget {
         final txtContent = await rootBundle.loadString(
           'assets/files/TLINY_terms.txt',
         );
-        await showDialog(
+        await showDialog<void>(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -398,7 +400,7 @@ class CustomCommerceListTile extends HookWidget {
         final txtContent = await rootBundle.loadString(
           'assets/files/TLINY_commerce.txt',
         );
-        await showDialog(
+        await showDialog<void>(
           context: context,
           builder: (context) {
             return AlertDialog(

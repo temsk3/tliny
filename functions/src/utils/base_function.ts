@@ -4,7 +4,7 @@ import {
   HttpsOptions,
   CallableRequest,
 } from 'firebase-functions/v2/https'
-import { Request, Response } from 'express'
+import { Request } from 'firebase-functions/v2/https'
 
 const defaultOptions: HttpsOptions = {
   memory: '512MiB',
@@ -25,17 +25,24 @@ const functions = (options: Partial<HttpsOptions> = {}) => {
 
 export default functions
 
-export const onCall = (
-  handler: (request: CallableRequest<unknown>) => unknown | Promise<unknown>,
+/**
+ * Firebase Functions v2 onCall関数のラッパー
+ * @param handler ハンドラー関数
+ * @param options オプション設定
+ * @returns Firebase Functions v2 onCall関数
+ */
+export function onCall<T = unknown, R = unknown>(
+  handler: (request: CallableRequest<T>) => R | Promise<R>,
   options?: Partial<HttpsOptions>,
-) =>
-  v2OnCall(
+) {
+  return v2OnCall(
     options ? { ...defaultOptions, ...options } : defaultOptions,
     handler,
   )
+}
 
 export const onRequest = (
-  handler: (req: Request, res: Response) => unknown,
+  handler: (req: Request, res: any) => void | Promise<void>,
   options?: Partial<HttpsOptions>,
 ) =>
   v2OnRequest(

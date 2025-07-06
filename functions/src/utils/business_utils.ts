@@ -1,5 +1,5 @@
 import { db } from './firebase_utils'
-import { HttpsError, Request } from 'firebase-functions/v2/https'
+import { HttpsError, CallableRequest } from 'firebase-functions/v2/https'
 
 /**
  * タイムスタンプを追加する
@@ -42,13 +42,13 @@ export const validateEntityExists = async (
 }
 
 /**
- * 認証チェックを行う
+ * 認証チェック（onCall専用）
  * @param request リクエストオブジェクト
  * @return ユーザーID
  */
-export const checkAuthAndGetUserId = (request: Request): string => {
-  if (!request.auth) {
-    throw new HttpsError('unauthenticated', 'User must be authenticated')
+export const requireAuthOnCall = (request: CallableRequest<any>): string => {
+  if (!request.auth || !request.auth.uid) {
+    throw new HttpsError('unauthenticated', 'User is not authenticated.')
   }
   return request.auth.uid
 }

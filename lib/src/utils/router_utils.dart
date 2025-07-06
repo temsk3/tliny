@@ -10,7 +10,7 @@ class RouterUtils {
       if (context.mounted && GoRouter.of(context).canPop()) {
         context.pop();
       }
-    } catch (e) {
+    } on Exception catch (e) {
       // エラーが発生した場合は何もしない
       // ログは出力しない（頻繁に発生する可能性があるため）
     }
@@ -20,7 +20,7 @@ class RouterUtils {
   static bool canPop(BuildContext context) {
     try {
       return GoRouter.of(context).canPop();
-    } catch (e) {
+    } on Exception catch (e) {
       return false;
     }
   }

@@ -5,7 +5,7 @@ void hideProgressDialog(BuildContext context) {
 }
 
 void showProgressDialog(BuildContext context) {
-  showDialog(
+  showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (context) => const Center(child: CircularProgressIndicator()),

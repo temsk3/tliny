@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
@@ -151,7 +152,7 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
             time: DateTime.now(),
           );
           // await appRoute.replace(CheckoutSuccessRoute(sessionId: sessionId));
-          CheckoutSuccessRoute(sessionId: sessionId).go(context);
+          context.go('${AppRoutes.checkoutSuccessPage}?session_id=$sessionId');
           // リスナーを解除
           await subscription.cancel();
           // 3 秒間待機
@@ -210,7 +211,9 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
                       // ローディングを明示的に解除
                       loading.stopLoading();
                       // チェックアウトキャンセル画面へ遷移
-                      CheckoutCancelRoute(sessionId: sessionId).go(context);
+                      context.go(
+                        '${AppRoutes.checkoutCancelPage}?session_id=$sessionId',
+                      );
                       await subscription.cancel();
                       completer.complete(
                         await stripeRepository.retrieveCheckoutSession(

@@ -27,8 +27,7 @@ class TimestampConverter implements JsonConverter<DateTime?, Timestamp?> {
 // firestore から受け取った document型を保存するためのJsonKey
 DocumentReference<Map<String, dynamic>>? documentReference(
   DocumentReference<Map<String, dynamic>>? value,
-) =>
-    value ?? value;
+) => value;
 
 const documentReferenceKey = JsonKey(
   fromJson: documentReference,

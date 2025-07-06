@@ -28,7 +28,7 @@ export class ErrorHandler {
     }
 
     // エラー文字列の解析
-    const errorString = error.toString()
+    const errorString = typeof error === 'string' ? error : String(error)
 
     // 在庫不足エラー
     if (errorString.includes('less stock than the quantity')) {
@@ -76,7 +76,7 @@ export class ErrorHandler {
     context?: string,
   ): void {
     const errorMessage =
-      error instanceof AppException ? error.message : error.toString()
+      error instanceof AppException ? error.message : String(error)
     const contextInfo = context ? ` [${context}]` : ''
 
     logger.error(`Error${contextInfo}: ${errorMessage}`, {
@@ -98,7 +98,7 @@ export class ErrorHandler {
       return error
     }
 
-    const errorString = error.toString()
+    const errorString = typeof error === 'string' ? error : String(error)
 
     // Stripeエラー
     if (errorString.includes('stripe') || errorString.includes('Stripe')) {

@@ -20,10 +20,5 @@ firebaseAdmin.initializeApp()
 
 // export { stripe, user, purchase, order };
 
-//
-import { exportFunctionsModule } from './utils/deploy'
-import * as P from './utils/function_paths'
-
-const domains = [P.v2]
-
-domains.forEach((d) => exportFunctionsModule([d], exports))
+// V2 functions - direct exports
+export * from './v2'

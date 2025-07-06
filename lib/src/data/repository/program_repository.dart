@@ -11,7 +11,6 @@ part 'program_repository.g.dart';
 
 const _defaultPath = 'v/1';
 const _collectionPath = '$_defaultPath/events';
-const _subCollectionPath = 'staffs';
 
 // ProgramRepositoryProvider
 @Riverpod(keepAlive: true)

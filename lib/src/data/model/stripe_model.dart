@@ -5,8 +5,8 @@ part 'stripe_model.g.dart';
 
 //
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class LineItem with _$LineItem {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   const factory LineItem({
     required int quantity,
     required PriceData priceDate,
@@ -17,8 +17,8 @@ class LineItem with _$LineItem {
 }
 
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class PriceData with _$PriceData {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   factory PriceData({
     required int unitAmount,
     required String currency,
@@ -30,8 +30,8 @@ class PriceData with _$PriceData {
 }
 
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ProductData with _$ProductData {
-  @JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
   factory ProductData({
     required String name,
     required String description,
@@ -44,11 +44,9 @@ class ProductData with _$ProductData {
 }
 
 @freezed
+@JsonSerializable(fieldRename: FieldRename.snake)
 class MetaData with _$MetaData {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  factory MetaData({
-    required String productId,
-  }) = _MetaData;
+  factory MetaData({required String productId}) = _MetaData;
 
   factory MetaData.fromJson(Map<String, dynamic> json) =>
       _$MetaDataFromJson(json);

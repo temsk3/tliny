@@ -1,11 +1,10 @@
-/* eslint-disable max-len */
 import Stripe from 'stripe'
 import { onCall } from '../../utils/base_function'
-import { exportFunction } from '../../utils/deploy'
 import { logger } from 'firebase-functions'
 import { HttpsError } from 'firebase-functions/v2/https'
 import { requireAuth } from '../../utils/auth-guard'
 import { getRequestingUserId } from '../../utils/firebase_utils'
+import { CustomerRequestData } from '../../utils/types'
 
 import {
   getStripe,
@@ -14,12 +13,9 @@ import {
   getStripeCustomerId,
 } from './utils'
 
-const _exportFunction = (name: string, f: () => any) =>
-  exportFunction(['v2', 'payment', 'customer', name], exports, f)
-
 // MARK: - EphemeralKeyを返す
-_exportFunction('getEphemeralKey', () =>
-  onCall(async (request) => {
+export const v2_payment_customer_getEphemeralKey = onCall<CustomerRequestData>(
+  async (request) => {
     const uid = requireAuth(request)
 
     const customerId = await getStripeCustomerId(uid)
@@ -29,7 +25,7 @@ _exportFunction('getEphemeralKey', () =>
     const params: Stripe.EphemeralKeyCreateParams = { customer: customerId }
 
     if (request.data.apiVersion)
-      stripeOptions.apiVersion = request.data.apiVersion
+      stripeOptions.apiVersion = request.data.apiVersion as '2025-06-30.basil'
 
     stripeOptions.idempotencyKey = `create_ephemeral_key_${uid}_${customerId}`
 
@@ -39,36 +35,30 @@ _exportFunction('getEphemeralKey', () =>
         (result: Stripe.Response<Stripe.EphemeralKey>) => {
           return { key: result }
         },
-        (error: any) => {
+        (error: unknown) => {
           logger.error('Error creating ephemeral key:', { error })
           stripeErrors(error)
         },
       )
-  }),
+  },
 )
 
 // MARK: - stripeのcustomerを作ってcustomerIdを返す
-_exportFunction('onCreate', () =>
-  onCall(async (request) => {
+export const v2_payment_customer_onCreate = onCall<CustomerRequestData>(
+  async (request) => {
     const uid = getRequestingUserId(request)
-    const email = request.data.email
-    const name = request.data.name
-    const phone = request.data.phone
-    const address = request.data.address
-    const shipping = request.data.shipping
-    const tax = request.data.tax
-    const source = request.data.source
-    const taxExempt = request.data.tax_exempt
+    const { email, name, phone, address, shipping, tax, source, tax_exempt } =
+      request.data
 
     const params: Stripe.CustomerCreateParams = {
-      email: email,
-      name: name,
-      phone: phone,
-      address: address,
-      shipping: shipping,
-      tax: tax,
-      source: source,
-      tax_exempt: taxExempt,
+      email,
+      name,
+      phone,
+      address,
+      shipping,
+      tax,
+      source,
+      tax_exempt,
     }
 
     stripeOptions.idempotencyKey = `create_customer_${uid}`
@@ -79,19 +69,19 @@ _exportFunction('onCreate', () =>
         (result: Stripe.Response<Stripe.Customer>) => {
           return result
         },
-        (error: any) => {
+        (error: unknown) => {
           stripeErrors(error)
         },
       )
-  }),
+  },
 )
 
 // MARK: customerのretrieve
-_exportFunction('onRetrieve', () =>
-  onCall(async (request) => {
+export const v2_payment_customer_onRetrieve = onCall<CustomerRequestData>(
+  async (request) => {
     requireAuth(request)
     const uid = requireAuth(request)
-    const customerId: string = request.data.customerId
+    const customerId: string = request.data.customerId || ''
 
     stripeOptions.idempotencyKey = `retrieve_customer_${uid}_${customerId}`
 
@@ -101,36 +91,38 @@ _exportFunction('onRetrieve', () =>
         (result: Stripe.Response<Stripe.Customer | Stripe.DeletedCustomer>) => {
           return result
         },
-        (error: any) => {
+        (error: unknown) => {
           stripeErrors(error)
         },
       )
-  }),
+  },
 )
 
 // MARK: customerのupdate
-_exportFunction('onUpdate', () =>
-  onCall(async (request) => {
+export const v2_payment_customer_onUpdate = onCall<CustomerRequestData>(
+  async (request) => {
     const uid = requireAuth(request)
-    const customerId: string = request.data.customerId
-    const email = request.data.email
-    const name = request.data.name
-    const phone = request.data.phone
-    const address = request.data.address
-    const shipping = request.data.shipping
-    const tax = request.data.tax
-    const source = request.data.source
-    const taxExempt = request.data.tax_exempt
+    const {
+      customerId = '',
+      email,
+      name,
+      phone,
+      address,
+      shipping,
+      tax,
+      source,
+      tax_exempt,
+    } = request.data
 
     const params: Stripe.CustomerUpdateParams = {
-      email: email,
-      name: name,
-      phone: phone,
-      address: address,
-      shipping: shipping,
-      tax: tax,
-      source: source,
-      tax_exempt: taxExempt,
+      email,
+      name,
+      phone,
+      address,
+      shipping,
+      tax,
+      source,
+      tax_exempt,
     }
 
     stripeOptions.idempotencyKey = `update_customer_${uid}_${customerId}`
@@ -141,18 +133,18 @@ _exportFunction('onUpdate', () =>
         (result: Stripe.Response<Stripe.Customer>) => {
           return result
         },
-        (error: any) => {
+        (error: unknown) => {
           stripeErrors(error)
         },
       )
-  }),
+  },
 )
 
 // MARK: stripeのcustomerを削除
-_exportFunction('onDelete', () =>
-  onCall(async (request) => {
+export const v2_payment_customer_onDelete = onCall<CustomerRequestData>(
+  async (request) => {
     const uid = requireAuth(request)
-    const customerId: string = request.data.customerId
+    const customerId: string = request.data.customerId || ''
 
     stripeOptions.idempotencyKey = `delete_customer_${uid}_${customerId}`
 
@@ -162,25 +154,23 @@ _exportFunction('onDelete', () =>
         (result: Stripe.Response<Stripe.DeletedCustomer>) => {
           return result
         },
-        (error: any) => {
+        (error: unknown) => {
           stripeErrors(error)
         },
       )
-  }),
+  },
 )
 
 // MARK: stripeのcustomerを検索
-_exportFunction('onSearch', () =>
-  onCall(async (request) => {
+export const v2_payment_customer_onSearch = onCall<CustomerRequestData>(
+  async (request) => {
     const uid = requireAuth(request)
-    const query = request.data.query
-    const limit = request.data.limit
-    const page = request.data.page
+    const { query, limit, page } = request.data
 
     const params: Stripe.CustomerSearchParams = {
-      query: query,
-      limit: limit,
-      page: page,
+      query: query ?? '',
+      limit,
+      page,
     }
 
     stripeOptions.idempotencyKey = `search_customers_${uid}`
@@ -191,9 +181,9 @@ _exportFunction('onSearch', () =>
         (result: Stripe.ApiSearchResult<Stripe.Customer>) => {
           return result
         },
-        (error: any) => {
+        (error: unknown) => {
           stripeErrors(error)
         },
       )
-  }),
+  },
 )

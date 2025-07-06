@@ -20,7 +20,7 @@ class ProgramPage extends HookConsumerWidget {
     // final l10n = useL10n();
     // final appRoute = useRouter();
     // final appMQ = useMediaQuery();
-    final state = ref.watch(programListStateProvider);
+    final state = ref.watch(programsStateProvider);
     // final state = ref.watch(programViewModelProvider);
     final viewModel = ref.watch(programViewModelProvider.notifier);
 
@@ -30,7 +30,8 @@ class ProgramPage extends HookConsumerWidget {
     return AsyncValueWidget(
       value: state,
       data: (data) {
-        final list = data.where((program) => program.isActive == true).toList();
+        final list =
+            data.where((program) => program.isActive == true).toList() ?? [];
         // final list = data.programList;
         return Scaffold(
           body: MainBodyWidget(

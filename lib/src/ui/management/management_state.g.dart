@@ -8,7 +8,7 @@ part of 'management_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$managementStateHash() => r'97c90049408835ed1ab3c5fe6475b682d365d3fe';
+String _$managementStateHash() => r'a4931116516a3d1fd16a5ccb5a67ea9676b42981';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -151,7 +151,7 @@ class _ManagementStateProviderElement
 }
 
 String _$productsManagementStateHash() =>
-    r'd98907f7a3c0764683ba5ca26f0c51389e4c931d';
+    r'15ecf795cc2671ec8a6b5a9107f249f0b592084b';
 
 /// See also [productsManagementState].
 @ProviderFor(productsManagementState)
@@ -163,15 +163,15 @@ class ProductsManagementStateFamily extends Family<AsyncValue<List<Product>>> {
   const ProductsManagementStateFamily();
 
   /// See also [productsManagementState].
-  ProductsManagementStateProvider call(String programId) {
-    return ProductsManagementStateProvider(programId);
+  ProductsManagementStateProvider call(String eventId) {
+    return ProductsManagementStateProvider(eventId);
   }
 
   @override
   ProductsManagementStateProvider getProviderOverride(
     covariant ProductsManagementStateProvider provider,
   ) {
-    return call(provider.programId);
+    return call(provider.eventId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -193,12 +193,10 @@ class ProductsManagementStateFamily extends Family<AsyncValue<List<Product>>> {
 class ProductsManagementStateProvider
     extends AutoDisposeStreamProvider<List<Product>> {
   /// See also [productsManagementState].
-  ProductsManagementStateProvider(String programId)
+  ProductsManagementStateProvider(String eventId)
     : this._internal(
-        (ref) => productsManagementState(
-          ref as ProductsManagementStateRef,
-          programId,
-        ),
+        (ref) =>
+            productsManagementState(ref as ProductsManagementStateRef, eventId),
         from: productsManagementStateProvider,
         name: r'productsManagementStateProvider',
         debugGetCreateSourceHash:
@@ -208,7 +206,7 @@ class ProductsManagementStateProvider
         dependencies: ProductsManagementStateFamily._dependencies,
         allTransitiveDependencies:
             ProductsManagementStateFamily._allTransitiveDependencies,
-        programId: programId,
+        eventId: eventId,
       );
 
   ProductsManagementStateProvider._internal(
@@ -218,10 +216,10 @@ class ProductsManagementStateProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.programId,
+    required this.eventId,
   }) : super.internal();
 
-  final String programId;
+  final String eventId;
 
   @override
   Override overrideWith(
@@ -236,7 +234,7 @@ class ProductsManagementStateProvider
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        programId: programId,
+        eventId: eventId,
       ),
     );
   }
@@ -248,14 +246,13 @@ class ProductsManagementStateProvider
 
   @override
   bool operator ==(Object other) {
-    return other is ProductsManagementStateProvider &&
-        other.programId == programId;
+    return other is ProductsManagementStateProvider && other.eventId == eventId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, programId.hashCode);
+    hash = _SystemHash.combine(hash, eventId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -265,8 +262,8 @@ class ProductsManagementStateProvider
 // ignore: unused_element
 mixin ProductsManagementStateRef
     on AutoDisposeStreamProviderRef<List<Product>> {
-  /// The parameter `programId` of this provider.
-  String get programId;
+  /// The parameter `eventId` of this provider.
+  String get eventId;
 }
 
 class _ProductsManagementStateProviderElement
@@ -275,10 +272,10 @@ class _ProductsManagementStateProviderElement
   _ProductsManagementStateProviderElement(super.provider);
 
   @override
-  String get programId => (origin as ProductsManagementStateProvider).programId;
+  String get eventId => (origin as ProductsManagementStateProvider).eventId;
 }
 
-String _$allTicketStateHash() => r'4cd0552ef9ab55832850b6fd6f216f5a2ad9e274';
+String _$allTicketStateHash() => r'70d949bdae1d80c6a258002e058c8541c4395ff7';
 
 /// See also [allTicketState].
 @ProviderFor(allTicketState)

@@ -75,7 +75,9 @@ class QRCodeScannerPage extends HookConsumerWidget {
         lastScannedCode.value = code;
 
         final qrData = await decodeQrCode(code, snackBar);
-        if (qrData == null) return; // 復号またはフォーマットエラーの場合は早期リターン
+        if (qrData == null) {
+          return; // 復号またはフォーマットエラーの場合は早期リターン
+        }
 
         final prefix = qrData['prefix']!;
         final eventId = qrData['eventId']!;
@@ -258,7 +260,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
                       snackBar.showSuccessSnackBar(
                         'Tickets updated successfully.',
                       );
-                    } catch (e) {
+                    } on Exception catch (e) {
                       print('Failed to update tickets: $e');
                       snackBar.showAlertSnackBar('チケットの更新に失敗しました: $e');
                     }

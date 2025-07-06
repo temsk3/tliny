@@ -10,8 +10,8 @@ const triggerOnce =
     if (await hasAlreadyTriggered(context.eventId, suffix)) {
       return undefined
     }
-    const result = handler(data, context)
-    hasAlreadyCompleted(context.eventId, suffix)
+    const result = await handler(data, context)
+    await hasAlreadyCompleted(context.eventId, suffix)
     return result
   }
 

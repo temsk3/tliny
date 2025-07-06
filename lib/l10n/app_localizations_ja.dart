@@ -151,7 +151,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String dateTime(DateTime date) {
-    final intl.DateFormat dateDateFormat = intl.DateFormat('yMMMEd Hm', localeName);
+    final intl.DateFormat dateDateFormat = intl.DateFormat(
+      'yMMMEd Hm',
+      localeName,
+    );
     final String dateString = dateDateFormat.format(date);
 
     return '$dateString';
@@ -175,7 +178,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String decimalPattern(int value) {
-    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat = intl
+        .NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -183,10 +187,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String currency(int value) {
-    final intl.NumberFormat valueNumberFormat = intl.NumberFormat.simpleCurrency(
-      locale: localeName,
-      
-    );
+    final intl.NumberFormat valueNumberFormat = intl
+        .NumberFormat.simpleCurrency(locale: localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';

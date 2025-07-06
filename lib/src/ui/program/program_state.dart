@@ -1,3 +1,4 @@
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/program_model.dart';
@@ -9,22 +10,21 @@ import '../../data/repository/user_repository.dart';
 part 'program_state.g.dart';
 
 @riverpod
-Stream<List<Program>> programListState(ProgramListStateRef ref) {
+Stream<List<Program>> programsState(Ref ref) {
   return ref.watch(programRepositoryProvider).watchEventList();
 }
 
 @riverpod
-Stream<Program> programState(ProgramStateRef ref, String? programId) {
-  final list = ref.watch(programsStreamProvider).value;
-  if (programId != null && list != null) {
-    return Stream.value(list.firstWhere((element) => element.id == programId));
+Stream<Program> programState(Ref ref, String? programId) {
+  if (programId == null) {
+    return Stream.error('Program ID is required');
   }
-  return Stream.value(Program.empty());
+  return ref.watch(programRepositoryProvider).watchEvent(programId);
 }
 
 @riverpod
-Stream<List<Program>> myProgramListState(MyProgramListStateRef ref) {
-  final program = ref.watch(programListStateProvider).value;
+Stream<List<Program>> myProgramListState(Ref ref) {
+  final program = ref.watch(programsStateProvider).value;
   final uid = ref.watch(userIdProvider).value;
   if (uid != null && program != null) {
     final list =

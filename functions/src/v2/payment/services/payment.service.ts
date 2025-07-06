@@ -22,9 +22,9 @@ export class PaymentService {
    */
   async createCheckoutSession(request: any): Promise<any> {
     const uid = request.auth.uid
-    const eventId = request.data.eventId
-    const successUrl = request.data.successUrl
-    const cancelUrl = request.data.cancelUrl
+    const eventId = (request.data as any).eventId
+    const successUrl = (request.data as any).successUrl
+    const cancelUrl = (request.data as any).cancelUrl
 
     logger.info('Creating checkout session', { uid, eventId })
 
@@ -139,6 +139,7 @@ export class PaymentService {
           orderId: orderId,
           eventId: eventId,
           userId: uid,
+          accountId: accountId,
         },
         payment_intent_data: {
           application_fee_amount: applicationFeeAmount,

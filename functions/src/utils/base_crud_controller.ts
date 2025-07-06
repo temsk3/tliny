@@ -1,5 +1,5 @@
 import { db } from './firebase_utils'
-import { HttpsError, Request } from 'firebase-functions/v2/https'
+import { HttpsError, CallableRequest } from 'firebase-functions/v2/https'
 
 /**
  * 共通のCRUD操作を行うベースクラス
@@ -13,7 +13,9 @@ export abstract class BaseCrudController {
    * @param request リクエストデータ
    * @return 作成されたエンティティのID
    */
-  public async create(request: Request): Promise<{ [key: string]: string }> {
+  public async create(
+    request: CallableRequest<any>,
+  ): Promise<{ [key: string]: string }> {
     const data = request.data
     const ref = db.collection(this.collectionName).doc()
     const id = ref.id
@@ -32,8 +34,8 @@ export abstract class BaseCrudController {
    * @param request リクエストデータ
    * @return エンティティデータ
    */
-  public async retrieve(request: Request): Promise<Record<string, unknown>> {
-    const id = request.data.id
+  public async retrieve(request: CallableRequest<any>): Promise<any> {
+    const id = (request.data as any).id
     if (!id) {
       throw new HttpsError('invalid-argument', 'ID is required')
     }
@@ -43,7 +45,7 @@ export abstract class BaseCrudController {
       throw new HttpsError('not-found', `${this.entityName} not found`)
     }
 
-    return { id: doc.id, ...doc.data() }
+    return doc.data()
   }
 
   /**
@@ -51,8 +53,8 @@ export abstract class BaseCrudController {
    * @param request リクエストデータ
    * @return Promise<void>
    */
-  public async update(request: Request): Promise<void> {
-    const id = request.data.id
+  public async update(request: CallableRequest<any>): Promise<void> {
+    const id = (request.data as any).id
     const data = request.data
 
     if (!id) {
@@ -73,8 +75,8 @@ export abstract class BaseCrudController {
    * @param request リクエストデータ
    * @return Promise<void>
    */
-  public async delete(request: Request): Promise<void> {
-    const id = request.data.id
+  public async delete(request: CallableRequest<any>): Promise<void> {
+    const id = (request.data as any).id
     if (!id) {
       throw new HttpsError('invalid-argument', 'ID is required')
     }

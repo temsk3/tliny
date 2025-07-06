@@ -62,11 +62,7 @@ class ProductRepository {
       }
       return snapshot.map((snapshot) {
         logger.i('streamProducts: 商品一覧を取得しました count=${snapshot.docs.length}');
-        return snapshot.docs
-            .map((doc) => doc.data())
-            .where((product) => product != null)
-            .cast<Product>()
-            .toList();
+        return snapshot.docs.map((doc) => doc.data()).toList();
       });
     } on Exception catch (e, st) {
       logger.e('streamProducts: 商品一覧取得エラー', error: e, stackTrace: st);
@@ -100,11 +96,7 @@ class ProductRepository {
         logger.i(
           'streamProgramProducts: プログラム商品一覧を取得しました count=${snapshot.docs.length}',
         );
-        return snapshot.docs
-            .map((doc) => doc.data())
-            .where((product) => product != null)
-            .cast<Product>()
-            .toList();
+        return snapshot.docs.map((doc) => doc.data()).toList();
       });
     } on Exception catch (e, st) {
       logger.e(
@@ -128,11 +120,7 @@ class ProductRepository {
       logger.i(
         'programProducts: プログラム商品一覧を取得しました count=${querySnapshot.docs.length}',
       );
-      return querySnapshot.docs
-          .map((doc) => doc.data())
-          .where((product) => product != null)
-          .cast<Product>()
-          .toList();
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
       logger.e('programProducts: プログラム商品一覧取得エラー', error: e, stackTrace: st);
       throw GeneralException(message: 'プログラム商品一覧の取得に失敗しました', stackTrace: st);
@@ -145,11 +133,7 @@ class ProductRepository {
     try {
       return _collectionRef.orderBy('name').snapshots().map((snapshot) {
         logger.i('watchProducts: 商品一覧を取得しました count=${snapshot.docs.length}');
-        return snapshot.docs
-            .map((doc) => doc.data())
-            .where((product) => product != null)
-            .cast<Product>()
-            .toList();
+        return snapshot.docs.map((doc) => doc.data()).toList();
       });
     } on Exception catch (e, st) {
       logger.e('watchProducts: 商品一覧取得エラー', error: e, stackTrace: st);
@@ -193,11 +177,7 @@ class ProductRepository {
     try {
       final querySnapshot = await _collectionRef.get();
       logger.i('readProducts: 商品一覧を取得しました count=${querySnapshot.docs.length}');
-      return querySnapshot.docs
-          .map((doc) => doc.data())
-          .where((product) => product != null)
-          .cast<Product>()
-          .toList();
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
       logger.e('readProducts: 商品一覧取得エラー', error: e, stackTrace: st);
       throw GeneralException(message: '商品一覧の取得に失敗しました', stackTrace: st);
@@ -364,12 +344,7 @@ class ProductRepository {
       }
 
       final querySnapshot = await query.get();
-      final products =
-          querySnapshot.docs
-              .map((doc) => doc.data())
-              .where((product) => product != null)
-              .cast<Product>()
-              .toList();
+      final products = querySnapshot.docs.map((doc) => doc.data()).toList();
 
       // キーワード検索（クライアントサイド）
       if (keyword != null && keyword.isNotEmpty) {

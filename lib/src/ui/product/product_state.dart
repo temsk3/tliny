@@ -1,3 +1,4 @@
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/product_model.dart';
@@ -10,7 +11,7 @@ part 'product_state.g.dart';
 
 @riverpod
 Stream<List<Product>> productsState(
-  ProductsStateRef ref,
+  Ref ref,
   String programId,
   GenreType? genre,
 ) {
@@ -33,15 +34,12 @@ Stream<List<Product>> productsState(
 }
 
 @riverpod
-Stream<Product> productState(ProductStateRef ref, String? productId) {
+Stream<Product> productState(Ref ref, String? productId) {
   return ref.watch(productRepositoryProvider).watchProduct(productId);
 }
 
 @riverpod
-Stream<bool> addProductButtonState(
-  AddProductButtonStateRef ref,
-  Program program,
-) {
+Stream<bool> addProductButtonState(Ref ref, Program program) {
   final uidAsyncValue = ref.watch(userIdProvider);
   final uid = uidAsyncValue.value;
   final staffAsyncValue = ref.watch(staffCheckExistenceProvider(program.id!));
@@ -60,10 +58,7 @@ Stream<bool> addProductButtonState(
 }
 
 @riverpod
-Stream<bool> editProductButtonState(
-  EditProductButtonStateRef ref,
-  Product product,
-) {
+Stream<bool> editProductButtonState(Ref ref, Product product) {
   final uidAsyncValue = ref.watch(userIdProvider);
   final uid = uidAsyncValue.value;
   if (uid == product.organizerId || uid == product.register) {

@@ -113,7 +113,7 @@ Future<void> _connectToEmulators() async {
   const localhost = 'localhost';
   try {
     // エミュレーター起動の安定化のため少し待機
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     // Cloud Functionsエミュレータへの接続
     FirebaseFunctions.instanceFor(
@@ -142,8 +142,8 @@ Future<void> _connectToEmulators() async {
       logger.i('Firestore Persistence enabled');
     }
   } on Exception catch (e, st) {
-    logger.e('エミュレーター接続エラー', error: e, stackTrace: st);
-    // エミュレーター接続に失敗してもアプリは起動を続行
-    logger.w('エミュレーター接続に失敗しましたが、アプリは起動を続行します');
+    logger
+      ..e('エミュレーター接続エラー', error: e, stackTrace: st)
+      ..w('エミュレーター接続に失敗しましたが、アプリは起動を続行します');
   }
 }

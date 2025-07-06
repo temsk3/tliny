@@ -54,7 +54,7 @@ class MyProgramCard extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    final state = ref.watch(programListStateProvider);
+    final state = ref.watch(programsStateProvider);
     return AsyncValueWidget(
       value: state,
       data: (data) {

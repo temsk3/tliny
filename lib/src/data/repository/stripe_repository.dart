@@ -63,7 +63,7 @@ class StripeRepository {
       logger.i('paymentCheckoutSession params: $params');
 
       final response = await _call<Map<String, dynamic>>(
-        'v2-payment-checkout-createPaymentSession',
+        'v2_payment_checkout_createPaymentSession',
         params,
       );
 
@@ -95,7 +95,7 @@ class StripeRepository {
       logger.i('retrieveCheckoutSession params: $params');
 
       final checkoutSession = await _call<Map<String, dynamic>>(
-        'v2-payment-checkout-retrieveSession',
+        'v2_payment_checkout_retrieveSession',
         params,
       );
 
@@ -118,7 +118,7 @@ class StripeRepository {
   Future<void> cancelOrder(String orderId) async {
     logger.d('cancelOrder: orderId=$orderId');
     try {
-      await _call<void>('v2-payment-checkout-cancelOrder', {
+      await _call<void>('v2_payment_checkout_cancelOrder', {
         'orderId': orderId,
       });
     } on Exception catch (e, st) {
@@ -145,7 +145,7 @@ class StripeRepository {
         'returnUrl': dotenv.get('ACCOUNT_RETURN_URL'),
       };
       final response = await _call<Map<String, dynamic>>(
-        'v2-payment-account-onCreateAccountLink',
+        'v2_payment_account_onCreateAccountLink',
         params,
       );
       final accountLink = response!['accountUrl'].toString();
@@ -208,7 +208,7 @@ class StripeRepository {
       logger.i('createLoginLink');
 
       final response = await _call<Map<String, dynamic>>(
-        'v2-payment-account-onCreateLoginLink',
+        'v2_payment_account_onCreateLoginLink',
         {},
       );
       final loginUrl = response!['loginUrl'].toString();

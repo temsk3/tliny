@@ -35,9 +35,7 @@ class TermsPage extends HookConsumerWidget {
 
         // 特定商取引法に基づく表記の画面を構築
         return Scaffold(
-          appBar: AppBar(
-            title: const Text('特定商取引法に基づく表記'),
-          ),
+          appBar: AppBar(title: const Text('特定商取引法に基づく表記')),
           body: MainBodyWidget(
             body: SingleChildScrollView(
               child: Center(
@@ -111,10 +109,7 @@ class TermsPage extends HookConsumerWidget {
       padding: const EdgeInsets.only(top: 40),
       child: Text(
         title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
     );
   }
@@ -123,10 +118,7 @@ class TermsPage extends HookConsumerWidget {
   Widget _buildSectionText(String text) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: Text(
-        text,
-        style: const TextStyle(fontSize: 14),
-      ),
+      child: Text(text, style: const TextStyle(fontSize: 14)),
     );
   }
 }

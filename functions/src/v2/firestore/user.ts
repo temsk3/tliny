@@ -1,191 +1,155 @@
-import * as admin from 'firebase-admin'
-import { db } from '../../utils/firebase_utils'
-import * as functions from 'firebase-functions/v1'
-import { exportFunction } from '../../utils/deploy'
-import triggerOnce from '../../utils/trigger_once'
-import Stripe from 'stripe'
-import { getStripe, stripeOptions } from '../payment/utils/stripe_config'
-import stripeErrors from '../payment/utils/stripe_error'
-import paths from './utils/db_paths'
-import { ErrorHandler } from '../../utils/error_handler'
-import { logger } from '../../utils/logger'
+// import * as firebaseAdmin from 'firebase-admin'
+// import { db } from '../../utils/firebase_utils'
+// import functions from '../../utils/base_function'
+// import { exportFunction } from '../../utils/deploy'
+// import * as P from '../../utils/function_paths'
+// import triggerOnce from '../../utils/trigger_once'
+// import paths from './utils/db_paths'
+// import { Stripe } from 'stripe'
+// import { stripe, stripeOptions } from '../stripe/utils/stripe_config'
+// // import { error } from 'firebase-functions/logger'
+// import stripeErrors from '../stripe/utils/stripe_error'
 
-const _exportFunction = (name: string, f: () => any): void =>
-  exportFunction(['v2', 'firestore', 'user', name], exports, f)
+// const _exportFunction = (name: string, f: () => any): void =>
+//   exportFunction([P.v1, P.firestore, 'user', name], exports, f)
 
-_exportFunction('onCreateStripeCustomer', () =>
-  functions
-    .runWith({
-      memory: '512MB',
-      secrets: ['STRIPE_DEV_SK', 'STRIPE_DEV_PK', 'STRIPE_DEV_EP'],
-    })
-    .region('asia-northeast1')
-    .auth.user()
-    .onCreate(
-      triggerOnce(
-        'createStripeCustomerNotification',
-        async (user: any, context: any) => {
-          logger.info('=== onCreateStripeCustomer START ===')
-          logger.info('User customClaims:', { customClaims: user.customClaims })
+// _exportFunction('onCreateStripeCustomer', () =>
+//   functions()
+//     .auth.user()
+//     .onCreate(
+//       // 冪等性の担保(eventIdの重複対策用function)
+//       triggerOnce('createStripeCustomerNotification', async (user, context) => {
+//         if (
+//           user.customClaims &&
+//           Object.hasOwnProperty.call(user.customClaims, 'customerId')
+//         ) {
+//           console.log(
+//             'User is already connected to a stripe customer. Exiting.',
+//           )
+//           return
+//         }
+//         // stripe customer登録
+//         const customer = await stripe.customers
+//           .create(
+//             {
+//               name: user.displayName,
+//               email: user.email,
+//               phone: user.phoneNumber,
+//               metadata: { uid: user.uid },
+//             },
+//             stripeOptions,
+//           )
+//           .then(
+//             (result: Stripe.Response<Stripe.Customer>) => {
+//               return result
+//             },
+//             (error: any) => {
+//               stripeErrors(error)
+//               throw new Error(error)
+//             },
+//           )
+//         const intent = await stripe.setupIntents
+//           .create(
+//             {
+//               customer: customer.id,
+//             },
+//             stripeOptions,
+//           )
+//           .then(
+//             (result: Stripe.Response<Stripe.SetupIntent>) => {
+//               return result
+//             },
+//             (error: any) => {
+//               stripeErrors(error)
+//               throw new Error(error)
+//             },
+//           )
 
-          if (
-            user.customClaims &&
-            Object.hasOwnProperty.call(user.customClaims, 'customerId')
-          ) {
-            logger.info(
-              'User is already connected to a stripe customer. Exiting.',
-            )
-            return
-          }
+//         // Authenticationの認証で利用するユーザー属性に独自の情報(stripe)を追加
+//         await firebaseAdmin
+//           .auth()
+//           .setCustomUserClaims(user.uid, { customerId: customer.id })
 
-          try {
-            logger.info('Creating Stripe customer...')
-            // 冪等性保証のためのidempotencyKeyを設定
-            const customerIdempotencyKey = `create_customer_${user.uid}`
-            const customerStripeOptions = {
-              ...stripeOptions,
-              idempotencyKey: customerIdempotencyKey,
-            }
+//         // stripe_customers collection への登録
+//         await db.collection(paths.customersCollectionPath).doc(user.uid).set({
+//           customer_id: customer.id,
+//           setup_secret: intent.client_secret,
+//         })
 
-            // stripe customer登録
-            const customer = await getStripe()
-              .customers.create(
-                {
-                  name: user.displayName,
-                  email: user.email,
-                  phone: user.phoneNumber,
-                  metadata: { uid: user.uid },
-                },
-                customerStripeOptions,
-              )
-              .then(
-                (result: Stripe.Response<Stripe.Customer>) => {
-                  logger.info('Stripe customer created:', {
-                    customerId: result.id,
-                    idempotencyKey: customerIdempotencyKey,
-                  })
-                  return result
-                },
-                (error: any) => {
-                  logger.error('Stripe customer creation failed:', { error })
-                  stripeErrors(error)
-                  throw new Error(error)
-                },
-              )
+//         //
+//         let displayName: string | undefined = user.displayName
+//         if (!displayName || !displayName.trim()) {
+//           displayName = user.email?.substring(0, user.email.lastIndexOf('@'))
+//         } else {
+//           displayName = displayName.trim()
+//         }
+//         // users collection への登録
+//         await db
+//           .collection(paths.usersCollectionPath)
+//           .doc(user.uid)
+//           .set({
+//             displayName: displayName,
+//             name: displayName,
+//             email: user.email,
+//             phoneNumber: user.phoneNumber,
+//             photoUrl: user.photoURL,
+//             isActive: true,
+//             createdAt: new Date(new Date().getTime()),
+//           })
 
-            logger.info('Creating setup intent...')
-            // 冪等性保証のためのidempotencyKeyを設定
-            const setupIntentIdempotencyKey = `create_setup_intent_${user.uid}_${customer.id}`
-            const setupIntentStripeOptions = {
-              ...stripeOptions,
-              idempotencyKey: setupIntentIdempotencyKey,
-            }
+//         console.log(user, context)
 
-            const intent = await getStripe()
-              .setupIntents.create(
-                {
-                  customer: customer.id,
-                },
-                setupIntentStripeOptions,
-              )
-              .then(
-                (result: Stripe.Response<Stripe.SetupIntent>) => {
-                  logger.info('Setup intent created:', {
-                    intentId: result.id,
-                    idempotencyKey: setupIntentIdempotencyKey,
-                  })
-                  return result
-                },
-                (error: any) => {
-                  logger.error('Setup intent creation failed:', { error })
-                  stripeErrors(error)
-                  throw new Error(error)
-                },
-              )
+//         // public_users への登録
+//         await db
+//           .collection(paths.publicUsersCollectionPath)
+//           .doc(user.uid)
+//           .set({
+//             displayName: displayName,
+//             createdAt: new Date(new Date().getTime()),
+//           })
+//         return
+//       }),
+//     ),
+// )
 
-            logger.info('Setting custom claims...')
-            // Authenticationの認証で利用するユーザー属性に独自の情報(stripe)を追加
-            await admin
-              .auth()
-              .setCustomUserClaims(user.uid, { customerId: customer.id })
+// _exportFunction('onDeleteStripeCustomer', () =>
+//   functions()
+//     .auth.user()
+//     .onDelete(
+//       // async (user) => {
+//       // 冪等性の担保(eventIdの重複対策用function)
+//       triggerOnce('deleteStripeCustomerNotification', async (user, context) => {
+//         // const dbRef = db
+//         //   .collection(config.customersCollectionPath)
+//         // const customer = (await dbRef.doc(user.uid).get()).data()
+//         // if (customer) {
+//         //   await stripe.customers.del(customer.customer_id)
+//         //   // Delete the customers payments & payment methods in firestore.
+//         //   const batch = db.batch()
+//         //   const paymentsMethodsSnapshot = await dbRef
+//         //     .doc(user.uid)
+//         //     .collection('payment_methods')
+//         //     .get()
+//         //   paymentsMethodsSnapshot.forEach((snap) => batch.delete(snap.ref))
+//         //   const paymentsSnapshot = await dbRef
+//         //     .doc(user.uid)
+//         //     .collection('payments')
+//         //     .get()
+//         //   paymentsSnapshot.forEach((snap) => batch.delete(snap.ref))
 
-            logger.info('Saving to stripe_customers collection...')
-            // stripe_customers collection への登録
-            await db
-              .collection(paths.customersCollectionPath)
-              .doc(user.uid)
-              .set({
-                customer_id: customer.id,
-                setup_secret: intent.client_secret,
-              })
+//         //   await batch.commit()
 
-            let displayName: string | undefined = user.displayName
-            if (!displayName || !displayName.trim()) {
-              displayName = user.email?.substring(
-                0,
-                user.email.lastIndexOf('@'),
-              )
-            } else {
-              displayName = displayName.trim()
-            }
+//         //   await dbRef.doc(user.uid).delete()
+//         // }
+//         await db
+//           .collection(paths.usersCollectionPath)
+//           .doc(user.uid)
+//           // .set({ isActive: false }, { merge: true })
+//           .delete()
 
-            logger.info('Saving to users collection...')
-            // users collection への登録
-            await db
-              .collection(paths.usersCollectionPath)
-              .doc(user.uid)
-              .set({
-                displayName: displayName,
-                name: displayName,
-                email: user.email,
-                phoneNumber: user.phoneNumber,
-                photoUrl: user.photoURL,
-                isActive: true,
-                createdAt: new Date(new Date().getTime()),
-              })
+//         console.log(user, context)
 
-            logger.info('Saving to public_users collection...')
-            // public_users への登録
-            await db
-              .collection(paths.publicUsersCollectionPath)
-              .doc(user.uid)
-              .set({
-                displayName: displayName,
-                photoUrl: user.photoURL,
-                createdAt: new Date(new Date().getTime()),
-              })
-
-            logger.info('=== onCreateStripeCustomer SUCCESS ===')
-            return
-          } catch (error: any) {
-            logger.error('=== onCreateStripeCustomer ERROR ===')
-            logger.error('Error details:', { error })
-            ErrorHandler.logError(error, error.stack, 'user.ts')
-            const appEx = ErrorHandler.convertToAppException(error, 'user.ts')
-            throw ErrorHandler.convertToHttpsError(appEx)
-          }
-        },
-      ),
-    ),
-)
-
-_exportFunction('onDeleteStripeCustomer', () =>
-  functions
-    .runWith({
-      memory: '512MB',
-      secrets: ['STRIPE_DEV_SK', 'STRIPE_DEV_PK', 'STRIPE_DEV_EP'],
-    })
-    .region('asia-northeast1')
-    .auth.user()
-    .onDelete(
-      triggerOnce(
-        'deleteStripeCustomerNotification',
-        async (user: any, context: any) => {
-          await db.collection(paths.usersCollectionPath).doc(user.uid).delete()
-
-          logger.info('User deleted:', { user, context })
-          return
-        },
-      ),
-    ),
-)
+//         return
+//       }),
+//     ),
+// )

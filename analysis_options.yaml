@@ -31,6 +31,9 @@ linter:
 # https://dart.dev/guides/language/analysis-options
 
 analyzer:
+  errors:
+    invalid_annotation_target: ignore
+    lines_longer_than_80_chars: ignore
   exclude:
     - '**/*.g.dart'
     - '**/*.freezed.dart'

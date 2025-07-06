@@ -8,7 +8,7 @@ part of 'product_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productsStateHash() => r'db49befb7a5e0b9f8ac325d0d8750735b254ccc5';
+String _$productsStateHash() => r'a935c98657f64a61bc97b390e94a44270ee6f6d2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -162,7 +162,7 @@ class _ProductsStateProviderElement
   GenreType? get genre => (origin as ProductsStateProvider).genre;
 }
 
-String _$productStateHash() => r'fd8334576a934a36d218035a21d6c098368fb9c8';
+String _$productStateHash() => r'3f9fb71cbce7e641106620aaa016f2e26cc238c4';
 
 /// See also [productState].
 @ProviderFor(productState)
@@ -284,7 +284,7 @@ class _ProductStateProviderElement
 }
 
 String _$addProductButtonStateHash() =>
-    r'8edf621cea0b636cab64308f0450a99a623d16fc';
+    r'6383a4e4b5713326ac7bc7bbf2265bda37645827';
 
 /// See also [addProductButtonState].
 @ProviderFor(addProductButtonState)
@@ -407,7 +407,7 @@ class _AddProductButtonStateProviderElement
 }
 
 String _$editProductButtonStateHash() =>
-    r'a9ae69b578f36ba831334f0067dc14d53ea4b8e5';
+    r'b32fca7ed8ac1de1e254bcc9ecdd27b37df1a97c';
 
 /// See also [editProductButtonState].
 @ProviderFor(editProductButtonState)
