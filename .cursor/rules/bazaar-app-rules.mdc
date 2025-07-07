@@ -1,0 +1,104 @@
+---
+description: バザーWebアプリ開発の包括的なルールセット。MVVM+Repository、Riverpod、Firebase、Stripeの規約を定義した決定版。
+glob: 'lib/**/*.dart'
+---
+
+# バザー Web アプリ包括開発ルール
+
+あなたは、Flutter、Firebase、Stripe を用いた Web アプリ開発のエキスパートです。これから生成・編集するすべてのコードは、以下のルールに厳密に従ってください。
+
+## 1. 基本理念と全体方針
+
+- **Core Philosophy**: 「関心の分離」と「依存性逆転の原則」を徹底し、保守性、テスト容易性、拡張性の高いアプリケーションを構築します。
+- **DRY (Don't Repeat Yourself)**: コードの重複を避け、ロジックや Widget を積極的に共通化します。
+- **KISS (Keep It Simple, Stupid)**: 不必要に複雑な実装を避け、シンプルで理解しやすいコードを維持します。
+- **可読性の追求**: 適切な命名、コメント、フォーマットを遵守します。
+
+## 2. アーキテクチャ: MVVM + Repository
+
+### 2.1. レイヤー構造と依存関係
+
+- **最重要原則**: 依存の方向は必ず `Presentation` -> `Domain` -> `Data` の一方向とします。
+- **依存性逆転**: 上位レイヤー（例: Presentation）は、下位レイヤーの実装クラスではなく、**Domain 層で定義されたインターフェース（抽象）にのみ依存します。**
+
+### 2.2. 各レイヤーの責務
+
+- **Presentation 層 (View/ViewModel)**: UI の表示と状態管理。ユーザー操作を ViewModel に通知します。
+- **Domain 層 (Entity/Repository Interface/UseCase)**: アプリケーションの核。ビジネスルール、データモデル（Entity）、そしてデータ操作の**インターフェース**を定義します。
+- **Data 層 (Repository Impl/DataSource)**: Domain 層のインターフェースを実装します。Firebase や Stripe API との通信など、具体的なデータ処理はすべてここが担当します。
+
+### 2.3. ディレクトリ構成
+
+以下の構成を基本とします。
+
+```plaintext
+lib/
+├── src/
+│   ├── core/              # 共通処理 (エラー定義、定数、拡張機能など)
+│   ├── data/              # DataSource, Repositoryの実装
+│   ├── domain/            # Entity, Repositoryのインターフェース, UseCase
+│   ├── presentation/      # 機能ごとのViewとViewModel
+│   │   ├── home/
+│   │   └── product_detail/
+│   └── routing/           # GoRouterの設定
+└── main.dart
+```
+
+## 3\. Flutter 開発: 実装規約
+
+### 3.1. 状態管理 (Riverpod)
+
+- **Generator の活用**: `@riverpod`アノテーションを全面的に採用し、Provider を自動生成します。`flutter pub run build_runner watch`を常に実行してください。
+- **ViewModel の実装**: UI の状態管理は`@riverpod`を付与した`Notifier`または`AsyncNotifier`で行います。
+- **Provider の定義 (最重要)**: Repository の Provider を定義する際、**Provider の型は必ずインターフェース**にし、`return`で**実装クラス**を返します。
+
+<!-- end list -->
+
+```dart
+// 正しい例: Providerの型はインターフェース
+final productRepositoryProvider = Provider<ProductRepository>((ref) {
+  return ProductRepositoryImpl();
+});
+```
+
+### 3.2. データモデル (Freezed)
+
+- Entity や DTO など、すべてのデータモデルは`Freezed`を用いて定義し、イミュータブル（不変）な状態を保証します。
+
+### 3.3. ルーティング (GoRouter)
+
+- 名前付きルートを使用し、ルーティング設定は`src/routing/`配下のファイルに集約します。
+- 認証ガードは`redirect`を用いて実装します。
+
+### 3.4. Widget 開発
+
+- **状態の分離**: UI の状態は Riverpod に集約し、Widget 自体に状態を持たせないことを原則とします。
+- **Widget の種類**:
+  - 状態が不要な UI パーツには`StatelessWidget`を使用します。
+  - Riverpod の状態を購読する Widget には`ConsumerWidget`または`HookConsumerWidget`を使用します。
+- **共通化**: アプリ全体で利用するボタンやテキストフィールドなどは、再利用可能な共通 Widget として積極的に作成し、デザインの一貫性を保ちます。
+
+## 4\. バックエンド連携 (Firebase / Stripe)
+
+- **API キー管理**: Stripe の秘密キーなど、機密情報は**絶対にクライアントサイドに含めず**、Cloud Functions の環境変数や Secret Manager で安全に管理します。
+- **サーバーサイド処理**: 決済処理、DB トリガーなど、信頼性やセキュリティが求められる処理はすべて Cloud Functions (TypeScript)で実装します。
+- **Firestore**: パフォーマンスとコストを意識し、適切なデータ設計、インデックス作成、クエリ最適化（`select`, `limit`等）を行います。セキュリティルールは初期段階から厳格に設定してください。
+- **Stripe Webhook**: 決済イベントを処理するため、Webhook エンドポイントを Cloud Functions に作成し、署名検証を必須とします。
+
+## 5\. 品質保証
+
+### 5.1. コーディング規約
+
+- **命名規則**: クラス名`PascalCase`、変数/関数名`camelCase`、ファイル名`snake_case`を遵守します。
+- **エラーハンドリング**:
+  - `core`層にアプリケーション共通の`AppException`クラスを定義します。
+  - `Data`層で外部 API のエラー（`FirebaseException`等）を捕捉し、`AppException`に変換して上位レイヤーに投げ直します。
+  - `ViewModel`層で`AppException`を処理し、ユーザーに表示するエラーメッセージを生成します。
+
+### 5.2. テスト
+
+- **テストの責務**: このアーキテクチャの目的はテスト容易性の確保です。単体・ウィジェット・統合テストを適切に実施します。
+- **ViewModel の単体テスト**:
+  - `mocktail`や`mockito`を使い、テスト対象が依存する**Repository インターフェースのモック**を作成します。
+  - テスト実行時、`ProviderScope`の`overrides`機能を使って、本物の Repository Provider をモックに差し替えます。
+- **.gitignore**: `*.freezed.dart`や`*.g.dart`のような自動生成ファイルは、Git の管理対象から除外します。
