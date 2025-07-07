@@ -43,6 +43,15 @@ class HomePage extends HookConsumerWidget {
     return AppBar(
       leading: _showLeading(context) ? _leadButton(context) : null,
       title: const Text('TLINY Sample'),
+      actions: [
+        // テストページへのアクセスボタン（開発時のみ表示）
+        // if (kDebugMode)
+        //   IconButton(
+        //     onPressed: () => context.go(AppRoutes.testTicketCreatorPage),
+        //     icon: const Icon(Icons.bug_report),
+        //     tooltip: 'テストチケット作成',
+        //   ),
+      ],
     );
   }
 

@@ -95,7 +95,7 @@ class CartPage extends HookConsumerWidget {
                             );
                             // エラーをユーザーに表示
                             if (context.mounted) {
-                              ErrorHandler.showErrorSnackBar(context, e);
+                              ErrorHandler.showErrorSnackBar(context, e, l10n);
                             }
                           }
                         },

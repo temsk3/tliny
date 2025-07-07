@@ -30,6 +30,7 @@ import '../../ui/program/program_details_page.dart';
 import '../../ui/program/program_edit_page.dart';
 import '../../ui/program/program_page.dart';
 import '../../ui/terms/terms_page.dart';
+// import '../../ui/test/test_ticket_creator_page.dart';
 import '../../ui/ticket/qr_code_display_page.dart';
 import '../../ui/ticket/qr_code_scanner_page.dart';
 import '../../ui/ticket/ticket_list_page.dart';
@@ -79,6 +80,7 @@ class AppRoutes {
   static const salesTab = 'sales';
   static const stockTab = 'stock';
   static const termsPage = '/terms';
+  static const testTicketCreatorPage = '/test-ticket-creator';
 }
 
 // ********************************************************
@@ -567,3 +569,14 @@ class OwnerDetailRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) =>
       OwnerDetailPage(ownerId: ownerId);
 }
+
+// @TypedGoRoute<TestTicketCreatorRoute>(path: AppRoutes.testTicketCreatorPage)
+// class TestTicketCreatorRoute extends GoRouteData {
+//   const TestTicketCreatorRoute();
+
+//   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+
+//   @override
+//   Widget build(BuildContext context, GoRouterState state) =>
+//       const TestTicketCreatorPage();
+// }

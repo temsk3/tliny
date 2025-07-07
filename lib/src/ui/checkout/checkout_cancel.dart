@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/routes/routes.dart';
 import '../../utils/logger.dart';
+import '../cart/cart_view_model.dart';
 import 'checkout_view_model.dart';
 
 /// チェックアウトキャンセル画面
@@ -40,6 +41,20 @@ class CheckoutCancelPage extends HookConsumerWidget {
             'CheckoutCancelPage: cancelCheckout completed successfully',
             time: DateTime.now(),
           );
+
+          // カートの状態を強制的に再読み込み
+          logger.d('CheckoutCancelPage: カートの状態を再読み込みします', time: DateTime.now());
+
+          // CartViewModelの状態を無効化して再読み込み
+          ref.invalidate(cartViewModelProvider);
+
+          // 少し待ってからカートを再読み込み
+          await Future.delayed(const Duration(milliseconds: 500));
+
+          // カートを明示的に再読み込み
+          await ref.read(cartViewModelProvider.notifier).readCart();
+
+          logger.d('CheckoutCancelPage: カートの状態再読み込み完了', time: DateTime.now());
         } on Exception catch (e, st) {
           // エラーが発生した場合、エラーログを出力
           logger.e(
@@ -53,9 +68,9 @@ class CheckoutCancelPage extends HookConsumerWidget {
             ).showSnackBar(SnackBar(content: Text(l10n.processingInterrupted)));
           }
         } finally {
-          // 成功・失敗に関わらず3秒後にカート画面へ遷移
+          // 成功・失敗に関わらず2秒後にカート画面へ遷移
           if (context.mounted) {
-            Future.delayed(const Duration(seconds: 3), () {
+            Future.delayed(const Duration(seconds: 2), () {
               if (context.mounted) {
                 context.go(AppRoutes.cartPage);
               }
@@ -70,21 +85,64 @@ class CheckoutCancelPage extends HookConsumerWidget {
       }
     });
 
-    // キャンセル処理中の画面表示（ローディングインジケータは削除）
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              l10n.processingInterrupted,
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-            const SizedBox(height: 16),
-            Text('カート画面に戻ります...', style: Theme.of(context).textTheme.bodyLarge),
-          ],
-        ),
-      ),
-    );
+    // フルスクリーンダイアログを表示
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.mounted) {
+        showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              backgroundColor: Colors.transparent,
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.cancel_outlined,
+                        size: 64,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      const SizedBox(height: 24),
+                      Text(
+                        l10n.processingInterrupted,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.displayLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'カート画面に戻ります...',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 32),
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      }
+    });
+
+    // 空のScaffoldを返す（ダイアログが表示されるため）
+    return const Scaffold(body: SizedBox.shrink());
   }
 }

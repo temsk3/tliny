@@ -128,6 +128,28 @@ export class PaymentService {
         subtotal * (APPLICATION_FEE_PERCENT / 100),
       )
 
+      // ユーザー情報を取得
+      const userDoc = await db.collection('v/1/users').doc(uid).get()
+
+      if (!userDoc.exists) {
+        throw new Error(`User ${uid} not found`)
+      }
+
+      const user = userDoc.data() as any
+
+      // デバッグログ: lineItemsの詳細を出力
+      logger.info('Creating checkout session with line items', {
+        uid,
+        eventId,
+        userEmail: user.email,
+        lineItemsCount: lineItems.length,
+        lineItems: JSON.stringify(lineItems),
+        lineItemsImages: lineItems.map((item: any) => ({
+          name: item.price_data?.product_data?.name,
+          images: item.price_data?.product_data?.images,
+        })),
+      })
+
       // チェックアウトセッション作成
       const sessionParams: Stripe.Checkout.SessionCreateParams = {
         payment_method_types: ['card'],
@@ -135,6 +157,7 @@ export class PaymentService {
         mode: 'payment',
         success_url: successUrl,
         cancel_url: cancelUrl,
+        customer_email: user.email, // ユーザーのメールアドレスを追加
         metadata: {
           orderId: orderId,
           eventId: eventId,

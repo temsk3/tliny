@@ -72,7 +72,7 @@ class TermsPage extends HookConsumerWidget {
                       _buildSectionText('メールにてご連絡ください。'),
                       // 引渡時期
                       _buildSectionTitle('引渡時期'),
-                      _buildSectionText('イベント開催期間'),
+                      _buildSectionText(l10n.eventPeriod),
                       // 受け付け可能な決済手段
                       _buildSectionTitle('受け付け可能な決済手段'),
                       _buildSectionText('クレジットカード'),

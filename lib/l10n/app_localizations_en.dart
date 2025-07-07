@@ -87,13 +87,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventList => 'Event List';
 
   @override
-  String get salesPeriod => '販売期間';
+  String get salesPeriod => 'Sales Period';
 
   @override
-  String get periods => '開催期間';
+  String get periods => 'Event Period';
 
   @override
-  String get place => '開催場所';
+  String get place => 'Venue';
 
   @override
   String get staffCode => 'Staff register Code';
@@ -308,4 +308,192 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lastUpdated => 'Last Updated';
+
+  @override
+  String get productListTitle => 'Product List';
+
+  @override
+  String get noProductName => 'No product name';
+
+  @override
+  String stockInfo(int stock) {
+    return 'Stock: $stock';
+  }
+
+  @override
+  String addedToCartMessage(String productName) {
+    return '$productName has been added to cart';
+  }
+
+  @override
+  String addToCartFailed(String error) {
+    return 'Failed to add to cart: $error';
+  }
+
+  @override
+  String get addToCartButton => 'Add to Cart';
+
+  @override
+  String get outOfStock => 'Out of Stock';
+
+  @override
+  String get noAvailableProducts => 'No available products';
+
+  @override
+  String get noProductsOnSale => 'No products currently on sale';
+
+  @override
+  String get cartIsEmpty => 'Cart is empty';
+
+  @override
+  String get pleaseAddProductsToCart => 'Please add products to cart';
+
+  @override
+  String get stockReductionNotice => 'Stock Reduction Notice';
+
+  @override
+  String stockReducedMessage(String productName) {
+    return 'Stock for \"$productName\" has been reduced.';
+  }
+
+  @override
+  String currentQuantity(int quantity) {
+    return 'Current quantity: $quantity';
+  }
+
+  @override
+  String availableStock(int stock) {
+    return 'Available stock: $stock';
+  }
+
+  @override
+  String get adjustQuantityToStock =>
+      'Quantity will be adjusted to stock level.';
+
+  @override
+  String get returnToHome => 'Return to Home';
+
+  @override
+  String get processing => 'Processing...';
+
+  @override
+  String get insufficientStock =>
+      'Insufficient stock. Please adjust the quantity and try again.';
+
+  @override
+  String get networkError =>
+      'Network error occurred. Please check your internet connection and try again.';
+
+  @override
+  String get authenticationError =>
+      'Authentication error occurred. Please log in again.';
+
+  @override
+  String get paymentError =>
+      'Payment processing error occurred. Please try again later.';
+
+  @override
+  String get serverError => 'Server error occurred. Please try again later.';
+
+  @override
+  String get timeoutError => 'Request timed out. Please try again later.';
+
+  @override
+  String get imageLoadError =>
+      'Failed to load image. Please try another image.';
+
+  @override
+  String get heicNotSupported =>
+      'HEIC format images are not currently supported. Please use JPEG or PNG format.';
+
+  @override
+  String get generalError => 'An error occurred. Please try again later.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get productNotFound => 'Product not found';
+
+  @override
+  String stockInsufficientMessage(int stock) {
+    return 'Insufficient stock. Quantity adjusted to $stock.';
+  }
+
+  @override
+  String unitPrice(String price) {
+    return 'Unit price: $price';
+  }
+
+  @override
+  String subtotal(String price) {
+    return 'Subtotal: $price';
+  }
+
+  @override
+  String stockInfoShort(int stock) {
+    return 'Stock: $stock';
+  }
+
+  @override
+  String get paymentErrorTitle => 'Payment Error';
+
+  @override
+  String get insufficientStockTitle => 'Insufficient Stock';
+
+  @override
+  String get insufficientStockDetails =>
+      'The following products have insufficient stock:';
+
+  @override
+  String quantityAdjustment(int current, int available) {
+    return 'Quantity: $current → $available';
+  }
+
+  @override
+  String get adjustCartAndRetry =>
+      'Please adjust the cart quantity and try again.';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter email address';
+
+  @override
+  String get pleaseEnterValidEmail => 'Please enter a valid email address';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter password';
+
+  @override
+  String get passwordRequirements =>
+      'Password must be at least 6 characters of alphanumeric characters';
+
+  @override
+  String get passwordMinLength => 'Password must be at least 4 characters';
+
+  @override
+  String get passwordMaxLength => 'Password must be 72 characters or less';
+
+  @override
+  String get invalidKatakanaFormat => 'Invalid katakana format';
+
+  @override
+  String get katakanaAndNumbersOnly => 'Please enter katakana and numbers only';
+
+  @override
+  String get invalidRomanFormat => 'Invalid roman format';
+
+  @override
+  String get invalidEmailFormat => 'Invalid email address format';
+
+  @override
+  String get invalidBirthDate => 'Invalid birth date format';
+
+  @override
+  String get invalidPhoneNumber => 'Phone number must be 10 or 11 digits';
+
+  @override
+  String get invalidPostalCode => 'Postal code must be 7 digits with hyphen';
+
+  @override
+  String get eventPeriod => 'Event Period';
 }

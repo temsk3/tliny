@@ -28,9 +28,10 @@ class SignUpPage extends HookConsumerWidget {
     final formKey = useMemoized(GlobalKey<FormState>.new);
 
     // バリデーション関数を変数として定義
-    String? validateEmail(String? value) => FormValidator.validateEmail(value);
+    String? validateEmail(String? value) =>
+        FormValidator.validateEmail(value, l10n);
     String? validatePassword(String? value) =>
-        FormValidator.validatePassword(value);
+        FormValidator.validatePassword(value, l10n);
 
     final viewModel = ref.read(authViewModelProvider.notifier);
 

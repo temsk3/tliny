@@ -1,5 +1,6 @@
 import Stripe from 'stripe'
 import { onCall } from '../../utils/base_function'
+import { HttpsError } from 'firebase-functions/v2/https'
 import { logger, V2Logger } from '../../utils/logger'
 import { requireAuth } from '../../utils/auth-guard'
 import { getStripe } from './utils'
@@ -333,12 +334,24 @@ export const v2_payment_checkout_cancelOrder = onCall(async (request) => {
     logger.info('Order canceled successfully', { orderId })
     return { success: true, orderId }
   } catch (error: unknown) {
-    logger.error('Failed to cancel order', {
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      orderId,
-      requestData: request.data,
-    })
-    throw error
+    const errorMessage = error instanceof Error ? error.message : String(error)
+
+    // 特定のエラーメッセージに基づいて適切なエラーを投げる
+    if (errorMessage.includes('Order is already confirmed')) {
+      throw new HttpsError(
+        'failed-precondition',
+        '注文は既に確定済みのため、キャンセルできません',
+      )
+    } else if (errorMessage.includes('Order not found')) {
+      throw new HttpsError('not-found', '注文が見つかりません')
+    } else {
+      logger.error('Failed to cancel order', {
+        error: errorMessage,
+        stack: error instanceof Error ? error.stack : undefined,
+        orderId,
+        requestData: request.data,
+      })
+      throw new HttpsError('internal', '注文のキャンセルに失敗しました')
+    }
   }
 })

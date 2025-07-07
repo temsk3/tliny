@@ -44,16 +44,23 @@ Stream<bool> addProductButtonState(Ref ref, Program program) {
   final uid = uidAsyncValue.value;
   final staffAsyncValue = ref.watch(staffCheckExistenceProvider(program.id!));
   final staff = staffAsyncValue.value;
-  if (uid != null) {
-    if (uid == program.organizerId) {
-      return Stream<bool>.value(true);
-    }
-    if (staff != null) {
-      if (staff) {
-        return Stream<bool>.value(true);
-      }
-    }
+
+  if (uid == null) {
+    return Stream<bool>.value(false);
   }
+
+  if (uid == program.organizerId) {
+    return Stream<bool>.value(true);
+  }
+
+  if (staff == null) {
+    return Stream<bool>.value(false);
+  }
+
+  if (staff) {
+    return Stream<bool>.value(true);
+  }
+
   return Stream<bool>.value(false);
 }
 
@@ -61,6 +68,11 @@ Stream<bool> addProductButtonState(Ref ref, Program program) {
 Stream<bool> editProductButtonState(Ref ref, Product product) {
   final uidAsyncValue = ref.watch(userIdProvider);
   final uid = uidAsyncValue.value;
+
+  if (uid == null) {
+    return Stream<bool>.value(false);
+  }
+
   if (uid == product.organizerId || uid == product.register) {
     return Stream<bool>.value(true);
   }

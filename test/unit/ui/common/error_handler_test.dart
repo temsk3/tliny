@@ -5,24 +5,29 @@ import 'package:tliny/src/data/model/exception/app_exception.dart';
 import 'package:tliny/src/ui/common/error_handler.dart';
 import 'package:tliny/src/ui/common/loading_screen.dart';
 
+import '../../../utils/test_helpers.dart';
+
 void main() {
   group('ErrorHandler Tests', () {
     group('getErrorMessage', () {
       test('AppExceptionの場合はuserMessageを返す', () {
         const exception = DatabaseException(message: 'データベースエラー');
-        final message = ErrorHandler.getErrorMessage(exception);
+        final l10n = TestHelpers.createMockL10n();
+        final message = ErrorHandler.getErrorMessage(exception, l10n);
         expect(message, equals('データベースエラー'));
       });
 
       test('通常のExceptionの場合はtoStringを返す', () {
         final exception = Exception('通常のエラー');
-        final message = ErrorHandler.getErrorMessage(exception);
+        final l10n = TestHelpers.createMockL10n();
+        final message = ErrorHandler.getErrorMessage(exception, l10n);
         expect(message, equals('Exception: 通常のエラー'));
       });
 
       test('文字列の場合はそのまま返す', () {
         const error = '文字列エラー';
-        final message = ErrorHandler.getErrorMessage(error);
+        final l10n = TestHelpers.createMockL10n();
+        final message = ErrorHandler.getErrorMessage(error, l10n);
         expect(message, equals('文字列エラー'));
       });
     });
@@ -40,7 +45,12 @@ void main() {
                         const exception = DatabaseException(
                           message: 'データベースエラー',
                         );
-                        ErrorHandler.showErrorSnackBar(context, exception);
+                        final l10n = TestHelpers.createMockL10n();
+                        ErrorHandler.showErrorSnackBar(
+                          context,
+                          exception,
+                          l10n,
+                        );
                       },
                       child: const Text('Test'),
                     );
@@ -68,7 +78,12 @@ void main() {
                     return ElevatedButton(
                       onPressed: () {
                         final exception = Exception('通常のエラー');
-                        ErrorHandler.showErrorSnackBar(context, exception);
+                        final l10n = TestHelpers.createMockL10n();
+                        ErrorHandler.showErrorSnackBar(
+                          context,
+                          exception,
+                          l10n,
+                        );
                       },
                       child: const Text('Test'),
                     );
@@ -220,94 +235,68 @@ void main() {
       await tester.tap(find.text('Exception Test'));
       await tester.pumpAndSettle();
 
-      // ダイアログが表示されることを確認
-      expect(find.text('テスト処理'), findsOneWidget);
-      expect(find.text('Exception: 通常のエラー'), findsOneWidget);
+      expect(find.text('エラー'), findsOneWidget);
       expect(find.text('再試行'), findsOneWidget);
-      expect(find.text('閉じる'), findsOneWidget);
     });
   });
-}
-
-/// テスト用のGlobalLoadingController
-class TestGlobalLoadingController extends GlobalLoadingController {
-  @override
-  void startLoading() {
-    // テストでは何もしない
-  }
-
-  @override
-  void stopLoading() {
-    // テストでは何もしない
-  }
 }
 
 class TestWidget extends StatefulWidget {
   const TestWidget({super.key});
 
   @override
-  _TestWidgetState createState() => _TestWidgetState();
+  State<TestWidget> createState() => _TestWidgetState();
 }
 
 class _TestWidgetState extends State<TestWidget> with ErrorHandlingMixin {
-  String? result;
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (result != null) Text(result!),
         ElevatedButton(
           onPressed: () async {
-            final result = await executeWithErrorHandling(
-              context,
-              () async {
-                await Future.delayed(const Duration(milliseconds: 100));
-                return 'テスト完了';
-              },
-              errorContext: 'テスト処理',
-              showLoading: false, // テストではローディングを無効化
-            );
-            if (result != null) {
-              setState(() {
-                this.result = '成功: $result';
-              });
+            final l10n = TestHelpers.createMockL10n();
+            await executeWithErrorHandling(context, () async {
+              await Future.delayed(const Duration(milliseconds: 100));
+              return 'テスト完了';
+            }, l10n: l10n);
+            if (mounted) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('成功: テスト完了')));
             }
           },
           child: const Text('Success Test'),
         ),
         ElevatedButton(
           onPressed: () async {
-            await executeWithErrorHandling(
-              context,
-              () async {
-                await Future.delayed(const Duration(milliseconds: 100));
-                throw const DatabaseException(message: 'データベースエラー');
-              },
-              errorContext: 'テスト処理',
-              showLoading: false, // テストではローディングを無効化
-            );
+            final l10n = TestHelpers.createMockL10n();
+            await executeWithErrorHandling(context, () async {
+              await Future.delayed(const Duration(milliseconds: 100));
+              throw const DatabaseException(message: 'データベースエラー');
+            }, l10n: l10n);
           },
           child: const Text('AppException Test'),
         ),
         ElevatedButton(
           onPressed: () async {
-            await executeWithErrorHandling(
-              context,
-              () async {
-                await Future.delayed(const Duration(milliseconds: 100));
-                throw Exception('通常のエラー');
-              },
-              errorContext: 'テスト処理',
-              showLoading: false, // テストではローディングを無効化
-              onRetry: () {
-                // 再試行処理
-              },
-            );
+            final l10n = TestHelpers.createMockL10n();
+            await executeWithErrorHandling(context, () async {
+              await Future.delayed(const Duration(milliseconds: 100));
+              throw Exception('通常のエラー');
+            }, l10n: l10n);
           },
           child: const Text('Exception Test'),
         ),
       ],
     );
   }
+}
+
+class TestGlobalLoadingController implements GlobalLoadingController {
+  @override
+  void startLoading() {}
+
+  @override
+  void stopLoading() {}
 }

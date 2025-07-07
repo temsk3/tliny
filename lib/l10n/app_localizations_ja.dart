@@ -304,4 +304,183 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get lastUpdated => '最終更新';
+
+  @override
+  String get productListTitle => '商品一覧';
+
+  @override
+  String get noProductName => '商品名なし';
+
+  @override
+  String stockInfo(int stock) {
+    return '在庫: $stock';
+  }
+
+  @override
+  String addedToCartMessage(String productName) {
+    return '$productNameをカートに追加しました';
+  }
+
+  @override
+  String addToCartFailed(String error) {
+    return 'カートへの追加に失敗しました: $error';
+  }
+
+  @override
+  String get addToCartButton => 'カートに追加';
+
+  @override
+  String get outOfStock => '在庫切れ';
+
+  @override
+  String get noAvailableProducts => '購入可能な商品がありません';
+
+  @override
+  String get noProductsOnSale => '現在販売中の商品がありません';
+
+  @override
+  String get cartIsEmpty => 'カートが空です';
+
+  @override
+  String get pleaseAddProductsToCart => '商品をカートに追加してください';
+
+  @override
+  String get stockReductionNotice => '在庫減少のお知らせ';
+
+  @override
+  String stockReducedMessage(String productName) {
+    return '「$productName」の在庫が減少しました。';
+  }
+
+  @override
+  String currentQuantity(int quantity) {
+    return '現在の数量: $quantity個';
+  }
+
+  @override
+  String availableStock(int stock) {
+    return '利用可能な在庫: $stock個';
+  }
+
+  @override
+  String get adjustQuantityToStock => '数量を在庫数に調整します。';
+
+  @override
+  String get returnToHome => 'ホームへ戻る';
+
+  @override
+  String get processing => '処理中...';
+
+  @override
+  String get insufficientStock => '商品の在庫が不足しています。数量を調整してから再度お試しください。';
+
+  @override
+  String get networkError => 'ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。';
+
+  @override
+  String get authenticationError => '認証エラーが発生しました。再度ログインしてください。';
+
+  @override
+  String get paymentError => '決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+
+  @override
+  String get serverError => 'サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+
+  @override
+  String get timeoutError => '処理がタイムアウトしました。しばらく時間をおいてから再度お試しください。';
+
+  @override
+  String get imageLoadError => '画像の読み込みに失敗しました。別の画像をお試しください。';
+
+  @override
+  String get heicNotSupported =>
+      'HEIC形式の画像は現在サポートされていません。JPEGまたはPNG形式の画像をお試しください。';
+
+  @override
+  String get generalError => 'エラーが発生しました。しばらく時間をおいてから再度お試しください。';
+
+  @override
+  String get retry => '再試行';
+
+  @override
+  String get productNotFound => '商品が見つかりません';
+
+  @override
+  String stockInsufficientMessage(int stock) {
+    return '在庫が不足しています。数量を$stock個に調整しました。';
+  }
+
+  @override
+  String unitPrice(String price) {
+    return '単価: $price';
+  }
+
+  @override
+  String subtotal(String price) {
+    return '小計: $price';
+  }
+
+  @override
+  String stockInfoShort(int stock) {
+    return '在庫: $stock';
+  }
+
+  @override
+  String get paymentErrorTitle => '決済エラー';
+
+  @override
+  String get insufficientStockTitle => '在庫不足';
+
+  @override
+  String get insufficientStockDetails => '以下の商品の在庫が不足しています：';
+
+  @override
+  String quantityAdjustment(int current, int available) {
+    return '数量: $current → $available個';
+  }
+
+  @override
+  String get adjustCartAndRetry => 'カートの数量を調整してから再度お試しください。';
+
+  @override
+  String get pleaseEnterEmail => 'メールアドレスを入力してください';
+
+  @override
+  String get pleaseEnterValidEmail => '有効なメールアドレスを入力してください';
+
+  @override
+  String get pleaseEnterPassword => 'パスワードを入力してください';
+
+  @override
+  String get passwordRequirements => 'パスワードは6文字以上の英数字である必要があります';
+
+  @override
+  String get passwordMinLength => 'パスワードは4文字以上でお願いします';
+
+  @override
+  String get passwordMaxLength => 'パスワードは72文字以下でお願いします';
+
+  @override
+  String get invalidKatakanaFormat => 'カタカナの形式が間違っています';
+
+  @override
+  String get katakanaAndNumbersOnly => 'カタカナと数字で入力してください';
+
+  @override
+  String get invalidRomanFormat => 'ローマ字の形式が間違っています';
+
+  @override
+  String get invalidEmailFormat => 'メールアドレスの形式が違います';
+
+  @override
+  String get invalidBirthDate => '生年月日の形式が違います';
+
+  @override
+  String get invalidPhoneNumber => '電話番号は10桁か11桁の数字でお願い致します';
+
+  @override
+  String get invalidPostalCode => '郵便番号はハイフン区切りの7桁の数字でお願い致します';
+
+  @override
+  String get eventPeriod => 'イベント開催期間';
 }

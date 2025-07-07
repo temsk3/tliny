@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../data/model/program_model.dart';
+import '../../settings/hooks/use_l10n.dart';
 import '../../utils/logger.dart';
 import '../common/error_handler.dart';
 
@@ -22,6 +24,7 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = useL10n();
     // 検索状態のNotifierを取得
     final onSearchNotifier = ref.watch(onSearchProvider.notifier);
     // 検索状態を取得
@@ -35,7 +38,12 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
         // タイトルを設定
         title:
             onSearch
-                ? _searchTextField(context, ref, data) // 検索状態の場合、検索テキストフィールドを表示
+                ? _searchTextField(
+                  context,
+                  ref,
+                  data,
+                  l10n,
+                ) // 検索状態の場合、検索テキストフィールドを表示
                 : const Text('Search'), // 検索状態でない場合、"Search" テキストを表示
         // アクションボタンを設定
         actions:
@@ -82,6 +90,7 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
     BuildContext context,
     WidgetRef ref,
     List<Program> data,
+    AppLocalizations l10n,
   ) {
     // 検索結果のインデックスリストのNotifierを取得
     final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
@@ -154,7 +163,7 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
         '_searchTextField: error=$e, stackTrace=$st',
         time: DateTime.now(),
       );
-      ErrorHandler.showErrorSnackBar(context, e);
+      ErrorHandler.showErrorSnackBar(context, e, l10n);
       return const Scaffold(body: Center(child: Text('エラーが発生しました')));
     }
   }

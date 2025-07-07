@@ -9,6 +9,13 @@
       "args": ["--dart-define=FLAVOR=dev"]
     },
     {
+      "name": "run canvaskit dev",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--web-renderer canvaskit", "--dart-define=FLAVOR=dev"]
+    },
+    {
       "name": "run html dev",
       "request": "launch",
       "type": "dart",

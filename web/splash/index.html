@@ -18,81 +18,19 @@
 
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="TLINY SAMPLE." />
+    <meta name="description" content="TLINY - SAMPLE" />
 
     <!-- iOS meta tags & icons -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="tliny" />
+    <meta name="apple-mobile-web-app-title" content="TLINY" />
     <link rel="apple-touch-icon" href="icons/Icon-192.png" />
-
-    <!-- Safari popup blocker prevention -->
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="format-detection" content="telephone=no" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
 
-    <title>TLINY-sample</title>
+    <title>TLINY - SAMPLE</title>
     <link rel="manifest" href="manifest.json" />
-
-    <!-- Flutter Web設定（Flutter 3.32.5対応） -->
-    <script>
-      // WebGL警告を抑制（開発環境のみ）
-      if (
-        window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1'
-      ) {
-        const originalWarn = console.warn
-        console.warn = function (...args) {
-          if (
-            args[0] &&
-            typeof args[0] === 'string' &&
-            (args[0].includes('WEBGL_polygon_mode') ||
-              args[0].includes('non-portable extension'))
-          ) {
-            return // WebGL警告を無視
-          }
-          originalWarn.apply(console, args)
-        }
-      }
-
-      // エラーハンドリング
-      window.addEventListener('error', function (e) {
-        if (e.filename && e.filename.includes('flutter.js.map')) {
-          e.preventDefault()
-          return false
-        }
-      })
-    </script>
-
-    <!-- Safari popup blocker prevention script -->
-    <script>
-      // Safariでのポップアップブロッカー対策
-      function openUrlInSafari(url) {
-        if (
-          navigator.userAgent.toLowerCase().includes('safari') &&
-          !navigator.userAgent.toLowerCase().includes('chrome')
-        ) {
-          // Safariの場合はwindow.openを使用
-          const newWindow = window.open(url, '_blank')
-          if (newWindow) {
-            console.log('Safari: URL opened successfully')
-          } else {
-            console.log('Safari: Popup blocked, trying alternative method')
-            // ポップアップがブロックされた場合の代替手段
-            window.location.href = url
-          }
-        } else {
-          // その他のブラウザは通常の処理
-          window.open(url, '_blank')
-        }
-      }
-    </script>
-    <meta
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-      name="viewport"
-    />
     <style id="splash-screen-style">
       html {
         height: 100%;
@@ -167,6 +105,10 @@
         document.body.style.background = 'transparent'
       }
     </script>
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      name="viewport"
+    />
   </head>
   <body>
     <picture id="splash">

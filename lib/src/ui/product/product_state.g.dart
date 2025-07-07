@@ -284,7 +284,7 @@ class _ProductStateProviderElement
 }
 
 String _$addProductButtonStateHash() =>
-    r'6383a4e4b5713326ac7bc7bbf2265bda37645827';
+    r'49a6a5c27dd46d61c62dd59b89b711bf21e76e80';
 
 /// See also [addProductButtonState].
 @ProviderFor(addProductButtonState)
@@ -407,7 +407,7 @@ class _AddProductButtonStateProviderElement
 }
 
 String _$editProductButtonStateHash() =>
-    r'b32fca7ed8ac1de1e254bcc9ecdd27b37df1a97c';
+    r'7a76770cbaee4860243d1746e08fe6ec65930e04';
 
 /// See also [editProductButtonState].
 @ProviderFor(editProductButtonState)

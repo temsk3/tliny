@@ -519,7 +519,7 @@ class FullScreenEventCard extends HookConsumerWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          '開催場所',
+                          l10n.place,
                           style: TextStyle(
                             color: Colors.white.withValues(alpha: 0.8),
                             fontSize: 12,

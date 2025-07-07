@@ -26,6 +26,7 @@ dependencies:
   hooks_riverpod:
   flutter_hooks:
   riverpod_annotation:
+  riverpod:
 
   json_annotation: ^4.9.0
   freezed_annotation:
@@ -89,7 +90,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints:
-  pedantic_mono:
   custom_lint:
   riverpod_lint:
   build_runner:

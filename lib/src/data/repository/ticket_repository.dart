@@ -33,7 +33,6 @@ class TicketRepository {
                     'createdAt': FieldValue.serverTimestamp(),
                   if (!model.isActive)
                     'deletedAt': FieldValue.serverTimestamp(),
-                  if (model.isUsed) 'deletedAt': FieldValue.serverTimestamp(),
                 },
           );
   final FirebaseFirestore _db;

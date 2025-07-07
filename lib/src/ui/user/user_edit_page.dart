@@ -81,7 +81,7 @@ class UserEditPage extends HookConsumerWidget {
                             if (value == null || value.isEmpty) {
                               return l10n.pleaseEnterSomeText;
                             }
-                            ValidationUtils.validateEmail(value);
+                            ValidationUtils.validateEmail(value, l10n);
                             return null;
                           },
                           onSaved: (value) {

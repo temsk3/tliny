@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../utils/logger.dart';
 import 'error_handler.dart';
 
@@ -11,6 +12,7 @@ class BaseFloatingActionButton extends HookWidget {
     required this.onPressed,
     required this.child,
     this.heroTag,
+    required this.l10n,
   });
 
   /// 押下時に実行されるコールバック関数
@@ -21,6 +23,9 @@ class BaseFloatingActionButton extends HookWidget {
 
   /// Heroアニメーション用のタグ
   final Object? heroTag;
+
+  /// 多言語対応オブジェクト
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +53,7 @@ class BaseFloatingActionButton extends HookWidget {
                     'BaseFloatingActionButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  ErrorHandler.showErrorSnackBar(context, e);
+                  ErrorHandler.showErrorSnackBar(context, e, l10n);
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;
@@ -66,6 +71,7 @@ class BaseIconButton extends HookWidget {
     required this.onPressed,
     required this.icon,
     this.tooltip,
+    required this.l10n,
   });
 
   /// 押下時に実行されるコールバック関数
@@ -76,6 +82,9 @@ class BaseIconButton extends HookWidget {
 
   /// ツールチップのテキスト
   final String? tooltip;
+
+  /// 多言語対応オブジェクト
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +110,7 @@ class BaseIconButton extends HookWidget {
                     'BaseIconButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  ErrorHandler.showErrorSnackBar(context, e);
+                  ErrorHandler.showErrorSnackBar(context, e, l10n);
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;
@@ -117,6 +126,7 @@ class BaseElevatedButton extends HookWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    required this.l10n,
   });
 
   /// 押下時に実行されるコールバック関数
@@ -124,6 +134,9 @@ class BaseElevatedButton extends HookWidget {
 
   /// ボタンに表示する子Widget
   final Widget child;
+
+  /// 多言語対応オブジェクト
+  final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +160,7 @@ class BaseElevatedButton extends HookWidget {
                     'BaseElevatedButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  ErrorHandler.showErrorSnackBar(context, e);
+                  ErrorHandler.showErrorSnackBar(context, e, l10n);
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;

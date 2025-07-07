@@ -9,7 +9,7 @@ part of 'qrcode_scanner_view_model.dart';
 // **************************************************************************
 
 String _$qRCodeScannerViewModelHash() =>
-    r'2ed3b7325276bd064b55d54667cb15645f991a32';
+    r'56f68838a6181ee34fdd52065b0b4911726c2f05';
 
 /// QRコードスキャナーのViewModel
 ///

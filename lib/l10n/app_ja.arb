@@ -134,5 +134,148 @@
   "signIn": "サインイン",
   "signOut": "サインアウト",
   "memberSince": "登録日",
-  "lastUpdated": "最終更新"
+  "lastUpdated": "最終更新",
+  "productListTitle": "商品一覧",
+  "noProductName": "商品名なし",
+  "stockInfo": "在庫: {stock}",
+  "@stockInfo": {
+    "description": "在庫情報",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "addedToCartMessage": "{productName}をカートに追加しました",
+  "@addedToCartMessage": {
+    "description": "カートに追加されたメッセージ",
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "addToCartFailed": "カートへの追加に失敗しました: {error}",
+  "@addToCartFailed": {
+    "description": "カート追加失敗メッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "addToCartButton": "カートに追加",
+  "outOfStock": "在庫切れ",
+  "noAvailableProducts": "購入可能な商品がありません",
+  "noProductsOnSale": "現在販売中の商品がありません",
+  "cartIsEmpty": "カートが空です",
+  "pleaseAddProductsToCart": "商品をカートに追加してください",
+  "stockReductionNotice": "在庫減少のお知らせ",
+  "stockReducedMessage": "「{productName}」の在庫が減少しました。",
+  "@stockReducedMessage": {
+    "description": "在庫減少メッセージ",
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "currentQuantity": "現在の数量: {quantity}個",
+  "@currentQuantity": {
+    "description": "現在の数量メッセージ",
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      }
+    }
+  },
+  "availableStock": "利用可能な在庫: {stock}個",
+  "@availableStock": {
+    "description": "利用可能な在庫メッセージ",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "adjustQuantityToStock": "数量を在庫数に調整します。",
+  "returnToHome": "ホームへ戻る",
+  "processing": "処理中...",
+  "insufficientStock": "商品の在庫が不足しています。数量を調整してから再度お試しください。",
+  "networkError": "ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。",
+  "authenticationError": "認証エラーが発生しました。再度ログインしてください。",
+  "paymentError": "決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。",
+  "serverError": "サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。",
+  "timeoutError": "処理がタイムアウトしました。しばらく時間をおいてから再度お試しください。",
+  "imageLoadError": "画像の読み込みに失敗しました。別の画像をお試しください。",
+  "heicNotSupported": "HEIC形式の画像は現在サポートされていません。JPEGまたはPNG形式の画像をお試しください。",
+  "generalError": "エラーが発生しました。しばらく時間をおいてから再度お試しください。",
+  "retry": "再試行",
+  "productNotFound": "商品が見つかりません",
+  "stockInsufficientMessage": "在庫が不足しています。数量を{stock}個に調整しました。",
+  "@stockInsufficientMessage": {
+    "description": "在庫不足メッセージ",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "unitPrice": "単価: {price}",
+  "@unitPrice": {
+    "description": "単価メッセージ",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subtotal": "小計: {price}",
+  "@subtotal": {
+    "description": "小計メッセージ",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "stockInfoShort": "在庫: {stock}",
+  "@stockInfoShort": {
+    "description": "短い在庫情報",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentErrorTitle": "決済エラー",
+  "insufficientStockTitle": "在庫不足",
+  "insufficientStockDetails": "以下の商品の在庫が不足しています：",
+  "quantityAdjustment": "数量: {current} → {available}個",
+  "@quantityAdjustment": {
+    "description": "数量調整メッセージ",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "adjustCartAndRetry": "カートの数量を調整してから再度お試しください。",
+  "pleaseEnterEmail": "メールアドレスを入力してください",
+  "pleaseEnterValidEmail": "有効なメールアドレスを入力してください",
+  "pleaseEnterPassword": "パスワードを入力してください",
+  "passwordRequirements": "パスワードは6文字以上の英数字である必要があります",
+  "passwordMinLength": "パスワードは4文字以上でお願いします",
+  "passwordMaxLength": "パスワードは72文字以下でお願いします",
+  "invalidKatakanaFormat": "カタカナの形式が間違っています",
+  "katakanaAndNumbersOnly": "カタカナと数字で入力してください",
+  "invalidRomanFormat": "ローマ字の形式が間違っています",
+  "invalidEmailFormat": "メールアドレスの形式が違います",
+  "invalidBirthDate": "生年月日の形式が違います",
+  "invalidPhoneNumber": "電話番号は10桁か11桁の数字でお願い致します",
+  "invalidPostalCode": "郵便番号はハイフン区切りの7桁の数字でお願い致します",
+  "eventPeriod": "イベント開催期間"
 }

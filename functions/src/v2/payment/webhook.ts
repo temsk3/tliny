@@ -243,6 +243,18 @@ const handleCheckoutSessionCompleted = async (
       throw new Error('orderId not found in checkout session metadata')
     }
 
+    // デバッグログ: line_itemsの詳細を出力
+    logger.info('!!! FORCE DEBUG: checkout session line items', {
+      checkoutSessionId: latestCheckoutSession.id,
+      lineItems: latestCheckoutSession.line_items?.data,
+      lineItemsImages: latestCheckoutSession.line_items?.data?.map(
+        (item: any) => ({
+          name: item.description,
+          images: item.price?.product?.images,
+        }),
+      ),
+    })
+
     logger.info('Processing checkout session completion', {
       checkoutSessionId: latestCheckoutSession.id,
       orderId,

@@ -69,42 +69,69 @@ class QRCodeScannerViewModel extends _$QRCodeScannerViewModel {
   /// スキャンされたチケット情報をデータベースに更新する
   Future<void> updateDatabaseTickets(List<Ticket> scannedTickets) async {
     try {
+      logger.d('updateDatabaseTickets: 開始 - チケット数: ${scannedTickets.length}');
+
       final user = ref.read(authRepositoryProvider).getCurrentUser();
       if (user == null) {
+        logger.e('updateDatabaseTickets: ユーザーが認証されていません');
         throw const AuthenticationException(message: 'ユーザーが認証されていません');
       }
 
       final uid = user.uid;
       final name = user.displayName;
+      logger.d('updateDatabaseTickets: ユーザー情報 - uid: $uid, name: $name');
+
       final eventId = scannedTickets.first.eventId;
       if (eventId == null) {
+        logger.e('updateDatabaseTickets: イベントIDが取得できません');
         throw const GeneralException(message: 'イベントIDが取得できません');
       }
+      logger.d('updateDatabaseTickets: イベントID - $eventId');
 
       final usageTicket = <String>[];
       for (final ticket in scannedTickets) {
+        logger.d(
+          'updateDatabaseTickets: チケット処理開始 - id: ${ticket.id}, name: ${ticket.name}',
+        );
+
+        if (ticket.id == null) {
+          logger.e('updateDatabaseTickets: チケットIDがnullです - ticket: $ticket');
+          throw const GeneralException(message: 'チケットIDが取得できません');
+        }
+
         final data = ticket.copyWith(
           isUsed: true,
           register: uid,
           registerName: name,
-          deletedAt: DateTime.now(),
         );
         usageTicket.add(ticket.id!);
+
         // チケットの使用済みフラグをtrueに更新
-        logger.d('data.uuid: ${data.uuid}');
+        logger.d(
+          'updateDatabaseTickets: チケット更新開始 - id: ${ticket.id}, uuid: ${data.uuid}',
+        );
         final updatedTicket = await ref
             .read(ticketRepositoryProvider)
             .updateTicket(data);
-        logger.d('Updated ticket: $updatedTicket');
+        logger.d('updateDatabaseTickets: チケット更新完了 - $updatedTicket');
       }
+
       // チケットの使用履歴を更新
+      logger.d(
+        'updateDatabaseTickets: 使用履歴作成開始 - uid: $uid, eventId: $eventId, usageTicket: $usageTicket',
+      );
       await addUsageHistory(uid, eventId, usageTicket);
-      logger.d('All tickets updated successfully.');
+      logger.d('updateDatabaseTickets: 使用履歴作成完了');
+
+      logger.d('updateDatabaseTickets: 全ての処理が完了しました');
     } on AppException catch (e, st) {
-      logger.e('Failed to update tickets: ${e.message}', stackTrace: st);
+      logger.e(
+        'updateDatabaseTickets: AppException - ${e.message}',
+        stackTrace: st,
+      );
       rethrow;
     } catch (e, st) {
-      logger.e('Failed to update tickets: $e', stackTrace: st);
+      logger.e('updateDatabaseTickets: Exception - $e', stackTrace: st);
       throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }

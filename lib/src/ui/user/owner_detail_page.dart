@@ -509,7 +509,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                                                               ),
                                                               Expanded(
                                                                 child: Text(
-                                                                  '販売期間: ${l10n.date(program.salesStart!)}〜${l10n.date(program.salesEnd!)}',
+                                                                  '${l10n.salesPeriod}: ${l10n.date(program.salesStart!)}〜${l10n.date(program.salesEnd!)}',
                                                                   style: TextStyle(
                                                                     color:
                                                                         Colors
@@ -545,7 +545,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                                                               ),
                                                               Expanded(
                                                                 child: Text(
-                                                                  '開催期間: ${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
+                                                                  '${l10n.periods}: ${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
                                                                   style: TextStyle(
                                                                     color:
                                                                         Colors

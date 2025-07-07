@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../data/model/exception/app_exception.dart';
 import '../../utils/logger.dart';
 import 'loading_screen.dart';
@@ -8,7 +9,7 @@ import 'loading_screen.dart';
 /// 統一されたエラーハンドリング機能を提供するユーティリティクラス
 class ErrorHandler {
   /// エラーメッセージを取得（AppExceptionの場合はuserMessageを優先）
-  static String getErrorMessage(Object error) {
+  static String getErrorMessage(Object error, AppLocalizations l10n) {
     if (error is AppException) {
       return error.userMessage;
     }
@@ -18,32 +19,32 @@ class ErrorHandler {
 
     // 在庫不足エラー
     if (errorString.contains('less stock than the quantity')) {
-      return '商品の在庫が不足しています。数量を調整してから再度お試しください。';
+      return l10n.insufficientStock;
     }
 
     // ネットワークエラー
     if (errorString.contains('network') || errorString.contains('connection')) {
-      return 'ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。';
+      return l10n.networkError;
     }
 
     // 認証エラー
     if (errorString.contains('auth') || errorString.contains('unauthorized')) {
-      return '認証エラーが発生しました。再度ログインしてください。';
+      return l10n.authenticationError;
     }
 
     // 決済エラー
     if (errorString.contains('payment') || errorString.contains('stripe')) {
-      return '決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+      return l10n.paymentError;
     }
 
     // サーバーエラー
     if (errorString.contains('server') || errorString.contains('500')) {
-      return 'サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+      return l10n.serverError;
     }
 
     // タイムアウトエラー
     if (errorString.contains('timeout')) {
-      return '処理がタイムアウトしました。しばらく時間をおいてから再度お試しください。';
+      return l10n.timeoutError;
     }
 
     // 画像関連エラー
@@ -51,16 +52,16 @@ class ErrorHandler {
         errorString.contains('Failed to decode image') ||
         errorString.contains('InvalidStateError') ||
         errorString.contains('track metadata')) {
-      return '画像の読み込みに失敗しました。別の画像をお試しください。';
+      return l10n.imageLoadError;
     }
 
     // ファイル形式エラー
     if (errorString.contains('heic') || errorString.contains('HEIC')) {
-      return 'HEIC形式の画像は現在サポートされていません。JPEGまたはPNG形式の画像をお試しください。';
+      return l10n.heicNotSupported;
     }
 
     // その他のエラー
-    return 'エラーが発生しました。しばらく時間をおいてから再度お試しください。';
+    return l10n.generalError;
   }
 
   /// エラーをログに記録
@@ -78,15 +79,19 @@ class ErrorHandler {
   }
 
   /// エラーをスナックバーで表示
-  static void showErrorSnackBar(BuildContext context, Object error) {
-    final message = getErrorMessage(error);
+  static void showErrorSnackBar(
+    BuildContext context,
+    Object error,
+    AppLocalizations l10n,
+  ) {
+    final message = getErrorMessage(error, l10n);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         backgroundColor: Theme.of(context).colorScheme.error,
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
-          label: '閉じる',
+          label: l10n.close,
           textColor: Theme.of(context).colorScheme.onError,
           onPressed: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -99,17 +104,18 @@ class ErrorHandler {
   /// エラーをダイアログで表示
   static Future<void> showErrorDialog(
     BuildContext context,
-    Object error, {
+    Object error,
+    AppLocalizations l10n, {
     String? title,
     VoidCallback? onRetry,
   }) async {
-    final message = getErrorMessage(error);
+    final message = getErrorMessage(error, l10n);
 
     return showDialog<void>(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: Text(title ?? 'エラー'),
+            title: Text(title ?? l10n.generalError),
             content: Text(message),
             actions: [
               if (onRetry != null)
@@ -118,11 +124,11 @@ class ErrorHandler {
                     Navigator.of(context).pop();
                     onRetry();
                   },
-                  child: const Text('再試行'),
+                  child: Text(l10n.retry),
                 ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('閉じる'),
+                child: Text(l10n.close),
               ),
             ],
           ),
@@ -163,6 +169,7 @@ mixin ErrorHandlingMixin {
     String? errorContext,
     VoidCallback? onRetry,
     bool showLoading = true,
+    required AppLocalizations l10n,
   }) async {
     final loadingController = GlobalLoadingController();
 
@@ -184,7 +191,7 @@ mixin ErrorHandlingMixin {
       }
 
       ErrorHandler.logError(e, st, context: errorContext);
-      ErrorHandler.showErrorSnackBar(context, e);
+      ErrorHandler.showErrorSnackBar(context, e, l10n);
       return null;
     } on Exception catch (e, st) {
       if (showLoading) {
@@ -195,6 +202,7 @@ mixin ErrorHandlingMixin {
       ErrorHandler.showErrorDialog(
         context,
         e,
+        l10n,
         title: errorContext ?? 'エラー',
         onRetry: onRetry,
       );
@@ -206,11 +214,15 @@ mixin ErrorHandlingMixin {
 /// エラーハンドリング付きのプロバイダー拡張
 extension ErrorHandlingProviderExtension<T> on AsyncValue<T> {
   /// エラーが発生した場合の処理
-  void handleError(BuildContext context, {String? errorContext}) {
+  void handleError(
+    BuildContext context, {
+    String? errorContext,
+    required AppLocalizations l10n,
+  }) {
     whenOrNull(
       error: (error, stackTrace) {
         ErrorHandler.logError(error, stackTrace, context: errorContext);
-        ErrorHandler.showErrorSnackBar(context, error);
+        ErrorHandler.showErrorSnackBar(context, error, l10n);
       },
     );
   }
@@ -221,6 +233,7 @@ extension ErrorHandlingProviderExtension<T> on AsyncValue<T> {
     String? errorContext,
     String? title,
     VoidCallback? onRetry,
+    required AppLocalizations l10n,
   }) {
     whenOrNull(
       error: (error, stackTrace) {
@@ -228,6 +241,7 @@ extension ErrorHandlingProviderExtension<T> on AsyncValue<T> {
         ErrorHandler.showErrorDialog(
           context,
           error,
+          l10n,
           title: title ?? errorContext ?? 'エラー',
           onRetry: onRetry,
         );

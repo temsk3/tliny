@@ -44,12 +44,12 @@ class ImageScreen extends HookConsumerWidget {
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e);
+          ErrorHandler.showErrorSnackBar(context, e, l10n);
         }
       } on Exception catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e);
+          ErrorHandler.showErrorSnackBar(context, e, l10n);
         }
       }
     }
@@ -69,12 +69,12 @@ class ImageScreen extends HookConsumerWidget {
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e);
+          ErrorHandler.showErrorSnackBar(context, e, l10n);
         }
       } on Exception catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e);
+          ErrorHandler.showErrorSnackBar(context, e, l10n);
         }
       }
     }
@@ -98,6 +98,7 @@ class EditCircleAvatar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = useL10n();
     final state = ref.watch(tempImageViewModelProvider);
     final viewModel = ref.watch(tempImageViewModelProvider.notifier);
 
@@ -148,6 +149,7 @@ class EditPictureView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = useL10n();
     final picker = ImagePicker();
 
     Future<void> pickImage() async {
@@ -167,23 +169,23 @@ class EditPictureView extends HookConsumerWidget {
         } on AppException catch (e) {
           logger.e('setTempImage AppException: ${e.message}');
           if (context.mounted) {
-            ErrorHandler.showErrorSnackBar(context, e);
+            ErrorHandler.showErrorSnackBar(context, e, l10n);
           }
         } on Exception catch (e) {
           logger.e('setTempImage Exception: $e');
           if (context.mounted) {
-            ErrorHandler.showErrorSnackBar(context, e);
+            ErrorHandler.showErrorSnackBar(context, e, l10n);
           }
         }
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e);
+          ErrorHandler.showErrorSnackBar(context, e, l10n);
         }
       } on Exception catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e);
+          ErrorHandler.showErrorSnackBar(context, e, l10n);
         }
       }
     }
@@ -195,7 +197,7 @@ class EditPictureView extends HookConsumerWidget {
         } on Exception catch (e) {
           logger.e('Failed to pick image: $e');
           if (context.mounted) {
-            ErrorHandler.showErrorSnackBar(context, e);
+            ErrorHandler.showErrorSnackBar(context, e, l10n);
           }
         }
       },

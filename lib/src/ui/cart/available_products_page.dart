@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../data/model/product_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/asyncvalue_widget.dart';
@@ -24,7 +25,7 @@ class AvailableProductsPage extends HookConsumerWidget {
     final cartViewModel = ref.watch(cartViewModelProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(title: Text('${l10n.product}一覧')),
+      appBar: AppBar(title: Text(l10n.productListTitle)),
       body: MainBodyWidget(
         width: 400,
         body: WidgetWithLoading(
@@ -92,7 +93,7 @@ class AvailableProductsPage extends HookConsumerWidget {
     Product product,
     CartViewModel cartViewModel,
     WidgetRef ref,
-    dynamic l10n,
+    AppLocalizations l10n,
   ) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -115,7 +116,7 @@ class AvailableProductsPage extends HookConsumerWidget {
 
             // 商品名
             Text(
-              product.name ?? '商品名なし',
+              product.name ?? l10n.noProductName,
               style: Theme.of(
                 context,
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -150,7 +151,7 @@ class AvailableProductsPage extends HookConsumerWidget {
                   ),
                 ),
                 Text(
-                  '在庫: ${product.stock}',
+                  l10n.stockInfo(product.stock),
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
@@ -177,7 +178,9 @@ class AvailableProductsPage extends HookConsumerWidget {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('${product.name}をカートに追加しました'),
+                                  content: Text(
+                                    l10n.addedToCartMessage(product.name ?? ''),
+                                  ),
                                   backgroundColor: Colors.green,
                                 ),
                               );
@@ -186,7 +189,9 @@ class AvailableProductsPage extends HookConsumerWidget {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('カートへの追加に失敗しました: $e'),
+                                  content: Text(
+                                    l10n.addToCartFailed(e.toString()),
+                                  ),
                                   backgroundColor: Colors.red,
                                 ),
                               );
@@ -195,7 +200,9 @@ class AvailableProductsPage extends HookConsumerWidget {
                         }
                         : null,
                 icon: const Icon(Icons.add_shopping_cart),
-                label: Text(product.stock > 0 ? 'カートに追加' : '在庫切れ'),
+                label: Text(
+                  product.stock > 0 ? l10n.addToCartButton : l10n.outOfStock,
+                ),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
@@ -207,7 +214,10 @@ class AvailableProductsPage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildEmptyProductsWidget(BuildContext context, dynamic l10n) {
+  Widget _buildEmptyProductsWidget(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -215,7 +225,7 @@ class AvailableProductsPage extends HookConsumerWidget {
           Icon(Icons.inventory_2_outlined, size: 80, color: Colors.grey[400]),
           const SizedBox(height: 20),
           Text(
-            '購入可能な商品がありません',
+            l10n.noAvailableProducts,
             style: Theme.of(
               context,
             ).textTheme.headlineSmall?.copyWith(color: Colors.grey[600]),
@@ -223,7 +233,7 @@ class AvailableProductsPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            '現在販売中の商品がありません',
+            l10n.noProductsOnSale,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),

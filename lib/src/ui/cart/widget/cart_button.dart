@@ -6,7 +6,6 @@ import 'package:tliny/src/ui/checkout/checkout_view_model.dart';
 import '../../../data/model/cart_model.dart';
 import '../../../data/model/product_model.dart';
 import '../../../data/model/program_model.dart';
-import '../../../data/repository/auth_repository.dart';
 import '../../../data/repository/product_repository.dart';
 import '../../../settings/hooks/use_l10n.dart';
 import '../../../settings/routes/routes.dart';
@@ -207,6 +206,7 @@ class PaymentButton extends HookWidget {
                       !snapshot.connectionState.toString().contains('waiting');
 
                   return BaseElevatedButton(
+                    l10n: l10n,
                     onPressed:
                         isButtonEnabled
                             ? () async {
@@ -267,7 +267,8 @@ class PaymentButton extends HookWidget {
                                     ErrorHandler.showErrorDialog(
                                       ctx,
                                       e,
-                                      title: '決済エラー',
+                                      l10n,
+                                      title: l10n.paymentErrorTitle,
                                       onRetry: () {
                                         // 再試行時は同じ処理を実行
                                         Navigator.of(ctx).pop();
@@ -346,8 +347,8 @@ class PaymentButton extends HookWidget {
     }
   }
 
-  /// 在庫調整を実行し、調整後の決済継続可否を返す
-  Future<bool> _handleStockAdjustment(
+  /// 在庫不足エラー時のダイアログを表示する
+  Future<void> _showStockInsufficientDialog(
     BuildContext context,
     WidgetRef ref,
     List<Cart> cartList,
@@ -376,57 +377,16 @@ class PaymentButton extends HookWidget {
         }
       }
 
-      if (stockIssues.isEmpty) {
-        return true; // 在庫不足なし
-      }
-
-      // 在庫調整の確認ダイアログを表示
-      final shouldAdjust = await _showStockAdjustmentDialog(
-        context,
-        stockIssues,
-      );
-
-      if (shouldAdjust) {
-        // 在庫調整を実行
-        final cartViewModel = ref.read(cartViewModelProvider.notifier);
-        final uidAsyncValue = ref.read(userIdProvider);
-        final uid = uidAsyncValue.value;
-
-        if (uid != null) {
-          for (final issue in stockIssues) {
-            final cart = issue['cart'] as Cart;
-            final availableStock = issue['availableStock'] as int;
-
-            await cartViewModel.updateCartOptimized(
-              uid,
-              cart.copyWith(quantity: availableStock),
-            );
-          }
-        }
-      }
-
-      return shouldAdjust;
-    } on Exception catch (e) {
-      logger.e('_handleStockAdjustment: エラー - $e');
-      return false; // エラー時は処理を中断
-    }
-  }
-
-  /// 在庫調整の確認ダイアログを表示する
-  Future<bool> _showStockAdjustmentDialog(
-    BuildContext context,
-    List<Map<String, dynamic>> stockIssues,
-  ) async {
-    return await showDialog<bool>(
+      if (stockIssues.isNotEmpty) {
+        await showDialog<void>(
           context: context,
-          barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Row(
                 children: [
-                  Icon(Icons.info, color: Colors.blue),
+                  Icon(Icons.error, color: Colors.red),
                   SizedBox(width: 8),
-                  Text('在庫調整が必要です'),
+                  Text('在庫不足エラー'),
                 ],
               ),
               content: Column(
@@ -459,123 +419,38 @@ class PaymentButton extends HookWidget {
                   }),
                   const SizedBox(height: 8),
                   const Text(
-                    '数量を調整して決済を続行しますか？',
+                    'カートの数量を調整してから再度お試しください。',
                     style: TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
               actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(false); // キャンセル
-                  },
-                  child: const Text('キャンセル'),
-                ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(true); // 調整して続行
+                    Navigator.of(context).pop();
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('調整して続行'),
+                  child: const Text('OK'),
                 ),
               ],
             );
           },
-        ) ??
-        false;
-  }
-
-  /// 在庫不足エラー時のダイアログを表示する
-  Future<void> _showStockInsufficientDialog(
-    BuildContext context,
-    WidgetRef ref,
-    List<Cart> cartList,
-  ) async {
-    // 在庫不足の商品を特定
-    final stockIssues = <Map<String, dynamic>>[];
-
-    for (final cart in cartList) {
-      if (cart.productDocRef != null && cart.productDocRef!.isNotEmpty) {
-        final productId = cart.productDocRef!.split('/').last;
-        final product =
-            await ref
-                .read(productRepositoryProvider)
-                .watchProduct(productId)
-                .first;
-
-        if (cart.quantity > product.stock) {
-          stockIssues.add({
-            'cart': cart,
-            'product': product,
-            'currentQuantity': cart.quantity,
-            'availableStock': product.stock,
-          });
-        }
+        );
       }
-    }
-
-    if (stockIssues.isNotEmpty) {
-      await showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Row(
-              children: [
-                Icon(Icons.error, color: Colors.red),
-                SizedBox(width: 8),
-                Text('在庫不足エラー'),
-              ],
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  '以下の商品の在庫が不足しています：',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                ...stockIssues.map((issue) {
-                  final product = issue['product'] as Product;
-                  final currentQuantity = issue['currentQuantity'] as int;
-                  final availableStock = issue['availableStock'] as int;
-
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '・${product.name}',
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        Text('  数量: $currentQuantity → $availableStock個'),
-                      ],
-                    ),
-                  );
-                }),
-                const SizedBox(height: 8),
-                const Text(
-                  'カートの数量を調整してから再度お試しください。',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
+    } on Exception catch (e, st) {
+      logger.e(
+        'PaymentButton: 在庫不足ダイアログエラー - $e',
+        stackTrace: st,
+        time: DateTime.now(),
       );
+      // エラーが発生した場合はシンプルなエラーメッセージを表示
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('在庫不足エラーが発生しました。カートの数量を確認してください。'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }

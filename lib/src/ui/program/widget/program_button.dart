@@ -21,19 +21,15 @@ import '../program_view_model.dart';
 // final logger = Logger();
 
 class AddProgramFloatingActionButton extends HookWidget {
-  const AddProgramFloatingActionButton({
-    super.key,
-    this.heroTag,
-    // required this.onPressed,
-  });
-  // final VoidCallback onPressed;
-  final Object? heroTag;
+  const AddProgramFloatingActionButton({super.key, this.heroTag, this.child});
+  final String? heroTag;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
-    // final appRoute = useRouter();
+    final l10n = useL10n();
     return Consumer(
-      child: const Icon(Icons.add_sharp),
+      child: child ?? const Icon(Icons.add_sharp),
       builder: (context, ref, child) {
         return AsyncValueWidget(
           value: ref.watch(addProgramButtonStateProvider),
@@ -46,6 +42,7 @@ class AddProgramFloatingActionButton extends HookWidget {
                   //     .push(ProgramEditRoute(program: Program.empty()));
                   ProgramEditRoute($extra: Program.empty()).push(context);
                 },
+                l10n: l10n,
                 child: child!,
               );
             } else {
@@ -99,6 +96,7 @@ class DeleteProgramIconButton extends HookWidget {
                     RouterUtils.safePop(context);
                   }
                 },
+                l10n: l10n,
               ),
             );
           },
@@ -129,6 +127,7 @@ class EditProgramIconButton extends HookWidget {
           // await appRoute.push(ProgramEditRoute(program: program));
           ProgramEditRoute($extra: program).push(context);
         },
+        l10n: l10n,
       ),
       builder: (context, ref, child) {
         return AsyncValueWidget(
@@ -202,6 +201,7 @@ class AddStaffIconButton extends HookWidget {
                     }
                   }
                 },
+                l10n: l10n,
               ),
             );
           },
@@ -252,7 +252,11 @@ class RegisterProgramElevatedButton extends HookWidget {
     return Consumer(
       child: Text(l10n.register),
       builder: (context, ref, child) {
-        return BaseElevatedButton(onPressed: onPressed, child: child!);
+        return BaseElevatedButton(
+          l10n: l10n,
+          onPressed: onPressed,
+          child: child!,
+        );
       },
     );
   }
@@ -268,6 +272,7 @@ class CancelElevatedButton extends HookWidget {
       child: Text(l10n.cancel),
       builder: (context, ref, child) {
         return BaseElevatedButton(
+          l10n: l10n,
           onPressed: () => RouterUtils.safePop(context),
           child: child!,
         );
@@ -311,6 +316,7 @@ class FavoriteProgramIconButton extends HookConsumerWidget {
               icon: Icon(icon),
               tooltip: l10n.favorite,
               onPressed: onPressed,
+              l10n: l10n,
             );
           },
         );
@@ -342,6 +348,7 @@ class QRCodeScanIconButton extends HookWidget {
                   //     .push(QRCodeScannerRoute(currentEventID: program.id!));
                   QRCodeScannerRoute(currentEventID: program.id!).push(context);
                 },
+                l10n: l10n,
               );
             } else {
               return Container();
@@ -374,6 +381,7 @@ class TermIconButton extends HookWidget {
                 // appRoute.push(TermsRoute(uid: program.organizerId!));
                 TermsRoute(uid: program.organizerId!).push(context);
               },
+              l10n: l10n,
             );
             // } else {
             //   return Container();

@@ -135,11 +135,21 @@ export const createPreOrder = async (
                   product_data: {
                     name: product.name,
                     description: product.desc,
+                    images: product.pictureURL, // 商品写真を追加
                   },
                   unit_amount: product.price,
                 },
                 quantity: cartItem.quantity,
               }
+
+              // デバッグログ: lineItemの詳細を出力
+              logger.info('Creating line item with images', {
+                productName: product.name,
+                productImages: product.pictureURL,
+                lineItemImages: lineItem.price_data.product_data.images,
+                lineItem: JSON.stringify(lineItem),
+              })
+
               lineItems.push(lineItem as any)
               subtotal += product.price * cartItem.quantity
             } else {
@@ -286,7 +296,9 @@ export const cancelOrder = async (orderId: string): Promise<void> => {
     if (orderData?.status === Model.OrderStatus.order) {
       throw new Error('Order is already confirmed and cannot be canceled')
     } else if (orderData?.status === Model.OrderStatus.cancel) {
-      throw new Error('Order is already canceled')
+      // 既にキャンセル済みの場合は成功として扱う
+      logger.info('Order is already canceled', { orderId })
+      return
     }
 
     // orderの確定

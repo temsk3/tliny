@@ -5,6 +5,26 @@ import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
 
+/// テスト用のAppLocalizationsモック
+class MockAppLocalizations {
+  const MockAppLocalizations();
+
+  String get close => '閉じる';
+  String get retry => '再試行';
+  String get generalError => 'エラー';
+  String get timeoutError => 'タイムアウトエラー';
+  String get imageLoadError => '画像読み込みエラー';
+  String get heicNotSupported => 'HEIC形式はサポートされていません';
+  String get networkError => 'ネットワークエラー';
+  String get serverError => 'サーバーエラー';
+  String get databaseError => 'データベースエラー';
+  String get authenticationError => '認証エラー';
+  String get validationError => 'バリデーションエラー';
+  String get fileNotFoundError => 'ファイルが見つかりません';
+  String get permissionError => '権限エラー';
+  String get unknownError => '不明なエラー';
+}
+
 /// テスト用のヘルパー関数群
 class TestHelpers {
   /// テスト用のProviderContainerを作成
@@ -20,6 +40,11 @@ class TestHelpers {
     List<Override> overrides = const [],
   }) {
     return ProviderScope(overrides: overrides, child: MaterialApp(home: child));
+  }
+
+  /// テスト用のAppLocalizationsを作成
+  static MockAppLocalizations createMockL10n() {
+    return const MockAppLocalizations();
   }
 
   /// テスト用のProductを作成

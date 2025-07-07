@@ -65,7 +65,7 @@ Future<void> showTextDialog(
       platform = Platform.isIOS;
     }
     if (platform) {
-      await showCupertinoDialog(
+      await showCupertinoDialog<void>(
         context: context,
         builder: (context) => builder,
       );

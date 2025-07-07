@@ -17,20 +17,22 @@ import '../../common/custom_alert_dialog.dart';
 import '../product_state.dart';
 import '../product_view_model.dart';
 
-class AddProductFloatingActionButton extends StatelessWidget {
+class AddProductFloatingActionButton extends HookWidget {
   const AddProductFloatingActionButton({
     super.key,
     required this.program,
     required this.onPressed,
+    this.child,
   });
   final Program program;
   final VoidCallback onPressed;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n();
     return Consumer(
-      child: const Icon(Icons.add_sharp),
-      builder: (context, ref, child) {
+      builder: (context, ref, _) {
         return AsyncValueButtonWidget(
           value: ref.watch(addProductButtonStateProvider(program)),
           data:
@@ -39,7 +41,8 @@ class AddProductFloatingActionButton extends StatelessWidget {
                       ? BaseFloatingActionButton(
                         heroTag: 'add_product_fab_${program.id}',
                         onPressed: onPressed,
-                        child: child!,
+                        l10n: l10n,
+                        child: child ?? const Icon(Icons.add),
                       )
                       : Container(),
         );
@@ -48,7 +51,7 @@ class AddProductFloatingActionButton extends StatelessWidget {
   }
 }
 
-class DeleteProductIconButton extends StatelessWidget {
+class DeleteProductIconButton extends HookWidget {
   const DeleteProductIconButton({
     super.key,
     required this.product,
@@ -63,8 +66,9 @@ class DeleteProductIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n();
     return Consumer(
-      builder: (context, ref, child) {
+      builder: (context, ref, _) {
         return AsyncValueButtonWidget(
           value: ref.watch(editProductButtonStateProvider(product)),
           data: (visible) {
@@ -74,6 +78,7 @@ class DeleteProductIconButton extends StatelessWidget {
                 icon: icon,
                 tooltip: tooltip,
                 onPressed: onPressed,
+                l10n: l10n,
               ),
             );
           },
@@ -83,7 +88,7 @@ class DeleteProductIconButton extends StatelessWidget {
   }
 }
 
-class EditProductIconButton extends StatelessWidget {
+class EditProductIconButton extends HookWidget {
   const EditProductIconButton({
     super.key,
     required this.product,
@@ -98,8 +103,9 @@ class EditProductIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n();
     return Consumer(
-      builder: (context, ref, child) {
+      builder: (context, ref, _) {
         return AsyncValueButtonWidget(
           value: ref.watch(editProductButtonStateProvider(product)),
           data: (visible) {
@@ -109,6 +115,7 @@ class EditProductIconButton extends StatelessWidget {
                 icon: icon,
                 tooltip: tooltip,
                 onPressed: onPressed,
+                l10n: l10n,
               ),
             );
           },
@@ -220,6 +227,7 @@ class InCartElevatedButton extends HookWidget {
       builder: (innerContext, ref, child) {
         final auth = ref.watch(authStateChangesProvider).value;
         return BaseElevatedButton(
+          l10n: l10n,
           onPressed:
               stateIndicate && auth != null && product.id != null
                   ? () async {
@@ -282,6 +290,7 @@ class EditProductElevatedButton extends HookWidget {
             return Visibility(
               visible: visible,
               child: BaseElevatedButton(
+                l10n: l10n,
                 onPressed: () async {
                   // appRoute.push(
                   if (program.id != null && product.id != null) {
@@ -316,6 +325,7 @@ class DeleteProductElevatedButton extends HookWidget {
             return Visibility(
               visible: visible,
               child: BaseElevatedButton(
+                l10n: l10n,
                 onPressed: () async {
                   final result = await showConfirmDialog(
                     context,
@@ -353,6 +363,7 @@ class RegisterProductElevatedButton extends HookWidget {
       child: Text(l10n.register),
       builder: (context, ref, child) {
         return BaseElevatedButton(
+          l10n: l10n,
           onPressed: () async => onPressed(),
           child: child!,
         );
@@ -371,6 +382,7 @@ class CancelElevatedButton extends HookWidget {
       child: Text(l10n.cancel),
       builder: (context, ref, child) {
         return BaseElevatedButton(
+          l10n: l10n,
           onPressed: () async => RouterUtils.safePop(context),
           child: child!,
         );

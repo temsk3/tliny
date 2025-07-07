@@ -631,6 +631,318 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'最終更新'**
   String get lastUpdated;
+
+  /// No description provided for @productListTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'商品一覧'**
+  String get productListTitle;
+
+  /// No description provided for @noProductName.
+  ///
+  /// In ja, this message translates to:
+  /// **'商品名なし'**
+  String get noProductName;
+
+  /// 在庫情報
+  ///
+  /// In ja, this message translates to:
+  /// **'在庫: {stock}'**
+  String stockInfo(int stock);
+
+  /// カートに追加されたメッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'{productName}をカートに追加しました'**
+  String addedToCartMessage(String productName);
+
+  /// カート追加失敗メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'カートへの追加に失敗しました: {error}'**
+  String addToCartFailed(String error);
+
+  /// No description provided for @addToCartButton.
+  ///
+  /// In ja, this message translates to:
+  /// **'カートに追加'**
+  String get addToCartButton;
+
+  /// No description provided for @outOfStock.
+  ///
+  /// In ja, this message translates to:
+  /// **'在庫切れ'**
+  String get outOfStock;
+
+  /// No description provided for @noAvailableProducts.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入可能な商品がありません'**
+  String get noAvailableProducts;
+
+  /// No description provided for @noProductsOnSale.
+  ///
+  /// In ja, this message translates to:
+  /// **'現在販売中の商品がありません'**
+  String get noProductsOnSale;
+
+  /// No description provided for @cartIsEmpty.
+  ///
+  /// In ja, this message translates to:
+  /// **'カートが空です'**
+  String get cartIsEmpty;
+
+  /// No description provided for @pleaseAddProductsToCart.
+  ///
+  /// In ja, this message translates to:
+  /// **'商品をカートに追加してください'**
+  String get pleaseAddProductsToCart;
+
+  /// No description provided for @stockReductionNotice.
+  ///
+  /// In ja, this message translates to:
+  /// **'在庫減少のお知らせ'**
+  String get stockReductionNotice;
+
+  /// 在庫減少メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'「{productName}」の在庫が減少しました。'**
+  String stockReducedMessage(String productName);
+
+  /// 現在の数量メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'現在の数量: {quantity}個'**
+  String currentQuantity(int quantity);
+
+  /// 利用可能な在庫メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'利用可能な在庫: {stock}個'**
+  String availableStock(int stock);
+
+  /// No description provided for @adjustQuantityToStock.
+  ///
+  /// In ja, this message translates to:
+  /// **'数量を在庫数に調整します。'**
+  String get adjustQuantityToStock;
+
+  /// No description provided for @returnToHome.
+  ///
+  /// In ja, this message translates to:
+  /// **'ホームへ戻る'**
+  String get returnToHome;
+
+  /// No description provided for @processing.
+  ///
+  /// In ja, this message translates to:
+  /// **'処理中...'**
+  String get processing;
+
+  /// No description provided for @insufficientStock.
+  ///
+  /// In ja, this message translates to:
+  /// **'商品の在庫が不足しています。数量を調整してから再度お試しください。'**
+  String get insufficientStock;
+
+  /// No description provided for @networkError.
+  ///
+  /// In ja, this message translates to:
+  /// **'ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。'**
+  String get networkError;
+
+  /// No description provided for @authenticationError.
+  ///
+  /// In ja, this message translates to:
+  /// **'認証エラーが発生しました。再度ログインしてください。'**
+  String get authenticationError;
+
+  /// No description provided for @paymentError.
+  ///
+  /// In ja, this message translates to:
+  /// **'決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。'**
+  String get paymentError;
+
+  /// No description provided for @serverError.
+  ///
+  /// In ja, this message translates to:
+  /// **'サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。'**
+  String get serverError;
+
+  /// No description provided for @timeoutError.
+  ///
+  /// In ja, this message translates to:
+  /// **'処理がタイムアウトしました。しばらく時間をおいてから再度お試しください。'**
+  String get timeoutError;
+
+  /// No description provided for @imageLoadError.
+  ///
+  /// In ja, this message translates to:
+  /// **'画像の読み込みに失敗しました。別の画像をお試しください。'**
+  String get imageLoadError;
+
+  /// No description provided for @heicNotSupported.
+  ///
+  /// In ja, this message translates to:
+  /// **'HEIC形式の画像は現在サポートされていません。JPEGまたはPNG形式の画像をお試しください。'**
+  String get heicNotSupported;
+
+  /// No description provided for @generalError.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラーが発生しました。しばらく時間をおいてから再度お試しください。'**
+  String get generalError;
+
+  /// No description provided for @retry.
+  ///
+  /// In ja, this message translates to:
+  /// **'再試行'**
+  String get retry;
+
+  /// No description provided for @productNotFound.
+  ///
+  /// In ja, this message translates to:
+  /// **'商品が見つかりません'**
+  String get productNotFound;
+
+  /// 在庫不足メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'在庫が不足しています。数量を{stock}個に調整しました。'**
+  String stockInsufficientMessage(int stock);
+
+  /// 単価メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'単価: {price}'**
+  String unitPrice(String price);
+
+  /// 小計メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'小計: {price}'**
+  String subtotal(String price);
+
+  /// 短い在庫情報
+  ///
+  /// In ja, this message translates to:
+  /// **'在庫: {stock}'**
+  String stockInfoShort(int stock);
+
+  /// No description provided for @paymentErrorTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'決済エラー'**
+  String get paymentErrorTitle;
+
+  /// No description provided for @insufficientStockTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'在庫不足'**
+  String get insufficientStockTitle;
+
+  /// No description provided for @insufficientStockDetails.
+  ///
+  /// In ja, this message translates to:
+  /// **'以下の商品の在庫が不足しています：'**
+  String get insufficientStockDetails;
+
+  /// 数量調整メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'数量: {current} → {available}個'**
+  String quantityAdjustment(int current, int available);
+
+  /// No description provided for @adjustCartAndRetry.
+  ///
+  /// In ja, this message translates to:
+  /// **'カートの数量を調整してから再度お試しください。'**
+  String get adjustCartAndRetry;
+
+  /// No description provided for @pleaseEnterEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスを入力してください'**
+  String get pleaseEnterEmail;
+
+  /// No description provided for @pleaseEnterValidEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'有効なメールアドレスを入力してください'**
+  String get pleaseEnterValidEmail;
+
+  /// No description provided for @pleaseEnterPassword.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードを入力してください'**
+  String get pleaseEnterPassword;
+
+  /// No description provided for @passwordRequirements.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードは6文字以上の英数字である必要があります'**
+  String get passwordRequirements;
+
+  /// No description provided for @passwordMinLength.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードは4文字以上でお願いします'**
+  String get passwordMinLength;
+
+  /// No description provided for @passwordMaxLength.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードは72文字以下でお願いします'**
+  String get passwordMaxLength;
+
+  /// No description provided for @invalidKatakanaFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'カタカナの形式が間違っています'**
+  String get invalidKatakanaFormat;
+
+  /// No description provided for @katakanaAndNumbersOnly.
+  ///
+  /// In ja, this message translates to:
+  /// **'カタカナと数字で入力してください'**
+  String get katakanaAndNumbersOnly;
+
+  /// No description provided for @invalidRomanFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'ローマ字の形式が間違っています'**
+  String get invalidRomanFormat;
+
+  /// No description provided for @invalidEmailFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスの形式が違います'**
+  String get invalidEmailFormat;
+
+  /// No description provided for @invalidBirthDate.
+  ///
+  /// In ja, this message translates to:
+  /// **'生年月日の形式が違います'**
+  String get invalidBirthDate;
+
+  /// No description provided for @invalidPhoneNumber.
+  ///
+  /// In ja, this message translates to:
+  /// **'電話番号は10桁か11桁の数字でお願い致します'**
+  String get invalidPhoneNumber;
+
+  /// No description provided for @invalidPostalCode.
+  ///
+  /// In ja, this message translates to:
+  /// **'郵便番号はハイフン区切りの7桁の数字でお願い致します'**
+  String get invalidPostalCode;
+
+  /// No description provided for @eventPeriod.
+  ///
+  /// In ja, this message translates to:
+  /// **'イベント開催期間'**
+  String get eventPeriod;
 }
 
 class _AppLocalizationsDelegate

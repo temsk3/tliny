@@ -26,9 +26,9 @@
   "productDetails": "Product Details",
   "event": "Event",
   "eventList": "Event List",
-  "salesPeriod": "販売期間",
-  "periods": "開催期間",
-  "place": "開催場所",
+  "salesPeriod": "Sales Period",
+  "periods": "Event Period",
+  "place": "Venue",
   "staffCode": "Staff register Code",
   "favorite": "Favorite",
   "cart": "Cart",
@@ -134,5 +134,148 @@
   "signIn": "Sign In",
   "signOut": "Sign Out",
   "memberSince": "Member Since",
-  "lastUpdated": "Last Updated"
+  "lastUpdated": "Last Updated",
+  "productListTitle": "Product List",
+  "noProductName": "No product name",
+  "stockInfo": "Stock: {stock}",
+  "@stockInfo": {
+    "description": "Stock information",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "addedToCartMessage": "{productName} has been added to cart",
+  "@addedToCartMessage": {
+    "description": "Product added to cart message",
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "addToCartFailed": "Failed to add to cart: {error}",
+  "@addToCartFailed": {
+    "description": "Add to cart failed message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "addToCartButton": "Add to Cart",
+  "outOfStock": "Out of Stock",
+  "noAvailableProducts": "No available products",
+  "noProductsOnSale": "No products currently on sale",
+  "cartIsEmpty": "Cart is empty",
+  "pleaseAddProductsToCart": "Please add products to cart",
+  "stockReductionNotice": "Stock Reduction Notice",
+  "stockReducedMessage": "Stock for \"{productName}\" has been reduced.",
+  "@stockReducedMessage": {
+    "description": "Stock reduced message",
+    "placeholders": {
+      "productName": {
+        "type": "String"
+      }
+    }
+  },
+  "currentQuantity": "Current quantity: {quantity}",
+  "@currentQuantity": {
+    "description": "Current quantity message",
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      }
+    }
+  },
+  "availableStock": "Available stock: {stock}",
+  "@availableStock": {
+    "description": "Available stock message",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "adjustQuantityToStock": "Quantity will be adjusted to stock level.",
+  "returnToHome": "Return to Home",
+  "processing": "Processing...",
+  "insufficientStock": "Insufficient stock. Please adjust the quantity and try again.",
+  "networkError": "Network error occurred. Please check your internet connection and try again.",
+  "authenticationError": "Authentication error occurred. Please log in again.",
+  "paymentError": "Payment processing error occurred. Please try again later.",
+  "serverError": "Server error occurred. Please try again later.",
+  "timeoutError": "Request timed out. Please try again later.",
+  "imageLoadError": "Failed to load image. Please try another image.",
+  "heicNotSupported": "HEIC format images are not currently supported. Please use JPEG or PNG format.",
+  "generalError": "An error occurred. Please try again later.",
+  "retry": "Retry",
+  "productNotFound": "Product not found",
+  "stockInsufficientMessage": "Insufficient stock. Quantity adjusted to {stock}.",
+  "@stockInsufficientMessage": {
+    "description": "Stock insufficient message",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "unitPrice": "Unit price: {price}",
+  "@unitPrice": {
+    "description": "Unit price message",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "subtotal": "Subtotal: {price}",
+  "@subtotal": {
+    "description": "Subtotal message",
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "stockInfoShort": "Stock: {stock}",
+  "@stockInfoShort": {
+    "description": "Short stock information",
+    "placeholders": {
+      "stock": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentErrorTitle": "Payment Error",
+  "insufficientStockTitle": "Insufficient Stock",
+  "insufficientStockDetails": "The following products have insufficient stock:",
+  "quantityAdjustment": "Quantity: {current} → {available}",
+  "@quantityAdjustment": {
+    "description": "Quantity adjustment message",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "adjustCartAndRetry": "Please adjust the cart quantity and try again.",
+  "pleaseEnterEmail": "Please enter email address",
+  "pleaseEnterValidEmail": "Please enter a valid email address",
+  "pleaseEnterPassword": "Please enter password",
+  "passwordRequirements": "Password must be at least 6 characters of alphanumeric characters",
+  "passwordMinLength": "Password must be at least 4 characters",
+  "passwordMaxLength": "Password must be 72 characters or less",
+  "invalidKatakanaFormat": "Invalid katakana format",
+  "katakanaAndNumbersOnly": "Please enter katakana and numbers only",
+  "invalidRomanFormat": "Invalid roman format",
+  "invalidEmailFormat": "Invalid email address format",
+  "invalidBirthDate": "Invalid birth date format",
+  "invalidPhoneNumber": "Phone number must be 10 or 11 digits",
+  "invalidPostalCode": "Postal code must be 7 digits with hyphen",
+  "eventPeriod": "Event Period"
 }

@@ -333,52 +333,61 @@ class CartCard extends HookConsumerWidget {
     int currentQuantity,
     int availableStock,
   ) async {
-    return await showDialog<bool>(
-          context: context,
-          barrierDismissible: false, // ダイアログ外タップで閉じない
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Row(
-                children: [
-                  Icon(Icons.info, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Text('在庫減少のお知らせ'),
-                ],
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '「${product.name}」の在庫が減少しました。',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text('現在の数量: $currentQuantity個'),
-                  Text('利用可能な在庫: $availableStock個'),
-                  const SizedBox(height: 8),
-                  const Text(
-                    '数量を在庫数に調整します。',
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true); // 調整する
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('OK'),
+    try {
+      return await showDialog<bool>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Row(
+                  children: [
+                    Icon(Icons.info, color: Colors.blue),
+                    SizedBox(width: 8),
+                    Text('在庫減少のお知らせ'),
+                  ],
                 ),
-              ],
-            );
-          },
-        ) ??
-        true; // ダイアログがキャンセルされた場合もtrueを返す（調整する）
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '「${product.name}」の在庫が減少しました。',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text('現在の数量: $currentQuantity個'),
+                    Text('利用可能な在庫: $availableStock個'),
+                    const SizedBox(height: 8),
+                    const Text(
+                      '数量を在庫数に調整します。',
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(true); // 調整する
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          ) ??
+          true; // ダイアログがキャンセルされた場合もtrueを返す（調整する）
+    } on Exception catch (e, st) {
+      logger.e(
+        'CartCard: 在庫調整ダイアログエラー - $e',
+        stackTrace: st,
+        time: DateTime.now(),
+      );
+      // エラーが発生した場合は調整する（trueを返す）
+      return true;
+    }
   }
 }
 
