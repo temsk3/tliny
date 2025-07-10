@@ -13,6 +13,10 @@ const _defaultPath = 'v/1';
 const _collectionPath = '$_defaultPath/users';
 const _ticketCollectionPath = '$_defaultPath/tickets';
 
+// 利用履歴用のパス
+const _usageHistoryCollectionPath = 'use_of_tickets';
+const _usageHistoryCollectionPathForCustomers = '$_defaultPath/customers';
+
 @Riverpod(keepAlive: true)
 TicketRepository ticketRepository(Ref ref) {
   final firestore = ref.watch(firebaseFirestoreProvider);
@@ -72,7 +76,16 @@ class TicketRepository {
   Stream<Ticket> watchTicket(String uid, String ticketId) {
     logger.d('watchTicket: uid=$uid, ticketId=$ticketId');
     try {
-      return _ticketRef.doc(ticketId).snapshots().map((doc) => doc.data()!);
+      // uidパラメータは使用せず、チケットIDだけでチケットを取得
+      return _ticketRef.doc(ticketId).snapshots().map((doc) {
+        if (!doc.exists) {
+          throw GeneralException(
+            message: 'チケットが見つかりません: $ticketId',
+            stackTrace: StackTrace.current,
+          );
+        }
+        return doc.data()!;
+      });
     } on Exception catch (e, st) {
       logger.e('watchTicket: error=$e, stackTrace=$st');
       rethrow;
@@ -233,7 +246,6 @@ Stream<Ticket> ticketStream(Ref ref, String uid, String ticketId) {
 
 //
 //
-const _usageHistoryCollectionPath = 'use_of_tickets';
 
 // CartRepositoryProvider
 @Riverpod(keepAlive: true)
@@ -247,7 +259,7 @@ class UsageHistoryRepository {
 
   CollectionReference<UsageHistory> _collectionRef(String uid) {
     return _db
-        .collection(_collectionPath)
+        .collection(_usageHistoryCollectionPathForCustomers)
         .doc(uid)
         .collection(_usageHistoryCollectionPath)
         .withConverter<UsageHistory>(
@@ -294,9 +306,32 @@ class UsageHistoryRepository {
   Future<List<UsageHistory>> readUsageHistory(String uid) async {
     logger.d('readUsageHistory: uid=$uid');
     try {
+      final collectionPath =
+          '$_collectionPath/$uid/$_usageHistoryCollectionPath';
+      logger.d('readUsageHistory: collectionPath=$collectionPath');
+
       final querySnapshot = await _collectionRef(uid).get();
-      logger.d('readUsageHistory: querySnapshot=$querySnapshot');
-      return querySnapshot.docs.map((doc) => doc.data()).toList();
+      logger.d('readUsageHistory: querySnapshot.size=${querySnapshot.size}');
+      logger.d(
+        'readUsageHistory: querySnapshot.docs.length=${querySnapshot.docs.length}',
+      );
+
+      final result =
+          querySnapshot.docs.map((doc) {
+            logger.d(
+              'readUsageHistory: doc.id=${doc.id}, doc.data=${doc.data()}',
+            );
+            return doc.data();
+          }).toList();
+
+      logger.d('readUsageHistory: result.length=${result.length}');
+      for (final history in result) {
+        logger.d(
+          'readUsageHistory: history.eventId=${history.eventId}, history.useTicket=${history.useTicket}',
+        );
+      }
+
+      return result;
     } on Exception catch (e, st) {
       logger.e('readUsageHistory: error=$e, stackTrace=$st');
       rethrow;

@@ -151,7 +151,7 @@ class _UsageHistoryStateProviderElement
   String get id => (origin as UsageHistoryStateProvider).id;
 }
 
-String _$ticketStreamStateHash() => r'697add3ecc9b59beb7dfde9aadabd6bc43c8ec1c';
+String _$ticketStreamStateHash() => r'd59317c10143bcb3d5c52a9c7c10e3adea87b465';
 
 /// See also [ticketStreamState].
 @ProviderFor(ticketStreamState)

@@ -9,7 +9,7 @@ part of 'history_view_model.dart';
 // **************************************************************************
 
 String _$usageHistoryViewModelHash() =>
-    r'2084d69181718a97f4c5911f005fa5df23dad2c8';
+    r'8924b8b2055edfd7a3b0b1f7f40819a65f60d865';
 
 /// See also [UsageHistoryViewModel].
 @ProviderFor(UsageHistoryViewModel)

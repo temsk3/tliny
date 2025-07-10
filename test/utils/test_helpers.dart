@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
@@ -34,12 +35,19 @@ class TestHelpers {
     return ProviderContainer(overrides: overrides);
   }
 
-  /// テスト用のWidgetを作成
+  /// テスト用のWidgetを作成（L10nプロバイダー付き）
   static Widget createTestWidget({
     required Widget child,
     List<Override> overrides = const [],
   }) {
-    return ProviderScope(overrides: overrides, child: MaterialApp(home: child));
+    return ProviderScope(
+      overrides: overrides,
+      child: MaterialApp(
+        home: child,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+      ),
+    );
   }
 
   /// テスト用のAppLocalizationsを作成

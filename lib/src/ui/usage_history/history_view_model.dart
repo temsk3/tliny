@@ -29,10 +29,19 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
     final uidAsyncValue = ref.watch(userIdProvider);
     final uid = uidAsyncValue.value;
     if (uid == null) {
+      logger.w('_readUsageHistoryDirectly: uid is null');
       return [];
     }
+    logger.d('_readUsageHistoryDirectly: uid=$uid');
     try {
-      return await usageHistoryRepository.readUsageHistory(uid);
+      final result = await usageHistoryRepository.readUsageHistory(uid);
+      logger.d('_readUsageHistoryDirectly: result count=${result.length}');
+      for (final history in result) {
+        logger.d(
+          '_readUsageHistoryDirectly: history=${history.eventId}, useTicket=${history.useTicket}',
+        );
+      }
+      return result;
     } on AppException catch (e, st) {
       logger.e(
         '_readUsageHistoryDirectly: AppException - ${e.message}',

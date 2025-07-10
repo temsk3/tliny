@@ -21,12 +21,8 @@ Stream<UsageHistory> usageHistoryState(Ref ref, String id) {
 
 @riverpod
 Stream<Ticket> ticketStreamState(Ref ref, String id) {
-  final uidAsyncValue = ref.watch(userIdProvider);
-  final uid = uidAsyncValue.value;
-  if (uid == null) {
-    throw Error();
-  }
-  return ref.watch(ticketRepositoryProvider).watchTicket(uid, id);
+  // uidパラメータは不要なので、チケットIDだけでチケットを取得
+  return ref.watch(ticketRepositoryProvider).watchTicket('', id);
 }
 
 // @riverpod
