@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../data/model/product_model.dart';
+import '../../data/repository/auth_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import '../../ui/common/main_body.dart';
@@ -164,48 +165,62 @@ class AvailableProductsPage extends HookConsumerWidget {
             // カートに追加ボタン
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed:
-                    product.stock > 0
-                        ? () async {
-                          try {
-                            // カートに追加（既存のメソッドを使用）
-                            await cartViewModel.cart(
-                              1, // quantity
-                              product.id!, // productId
-                              product.eventId ?? '', // programId
-                            );
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    l10n.addedToCartMessage(product.name ?? ''),
-                                  ),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
+              child: Consumer(
+                builder: (context, ref, child) {
+                  // 認証状態を取得
+                  final authState = ref.watch(authStateChangesProvider);
+                  final isAuthenticated = authState.value ?? false;
+
+                  return ElevatedButton.icon(
+                    onPressed:
+                        (product.stock > 0 && isAuthenticated)
+                            ? () async {
+                              try {
+                                // カートに追加（既存のメソッドを使用）
+                                await cartViewModel.cart(
+                                  1, // quantity
+                                  product.id!, // productId
+                                  product.eventId ?? '', // programId
+                                );
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        l10n.addedToCartMessage(
+                                          product.name ?? '',
+                                        ),
+                                      ),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                }
+                              } on Exception catch (e) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        l10n.addToCartFailed(e.toString()),
+                                      ),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
                             }
-                          } on Exception catch (e) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    l10n.addToCartFailed(e.toString()),
-                                  ),
-                                  backgroundColor: Colors.red,
-                                ),
-                              );
-                            }
-                          }
-                        }
-                        : null,
-                icon: const Icon(Icons.add_shopping_cart),
-                label: Text(
-                  product.stock > 0 ? l10n.addToCartButton : l10n.outOfStock,
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
+                            : null,
+                    icon: const Icon(Icons.add_shopping_cart),
+                    label: Text(
+                      product.stock > 0
+                          ? (isAuthenticated
+                              ? l10n.addToCartButton
+                              : 'ログインしてください')
+                          : l10n.outOfStock,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                  );
+                },
               ),
             ),
           ],

@@ -6,6 +6,7 @@ import 'package:tliny/src/ui/checkout/checkout_view_model.dart';
 import '../../../data/model/cart_model.dart';
 import '../../../data/model/product_model.dart';
 import '../../../data/model/program_model.dart';
+import '../../../data/repository/auth_repository.dart';
 import '../../../data/repository/product_repository.dart';
 import '../../../settings/hooks/use_l10n.dart';
 import '../../../settings/routes/routes.dart';
@@ -140,12 +141,18 @@ class AllPaymentButton extends HookWidget {
     final l10n = useL10n();
     return Consumer(
       builder: (context, ref, child) {
+        // 認証状態を取得
+        final authState = ref.watch(authStateChangesProvider);
+        final isAuthenticated = authState.value ?? false;
+
         return AsyncValueButtonWidget(
           value: ref.watch(totalAmountStateProvider(list)),
           data: (value) {
             return ElevatedButton(
-              onPressed: () {},
-              child: Text(l10n.currency(value)),
+              onPressed: isAuthenticated ? () {} : null,
+              child: Text(
+                isAuthenticated ? l10n.currency(value) : 'ログインしてください',
+              ),
             );
           },
         );
@@ -199,11 +206,18 @@ class PaymentButton extends HookWidget {
                     'PaymentButton: hasStockIssues=$hasStockIssues, sales=$sales, value=$value',
                   );
 
-                  // 在庫不足またはローディング中はボタンを無効化
+                  // 認証状態を取得
+                  final authState = ref.watch(authStateChangesProvider);
+                  final isAuthenticated = authState.value ?? false;
+
+                  // 在庫不足、ローディング中、または未認証の場合はボタンを無効化
                   final isButtonEnabled =
                       sales &&
                       !hasStockIssues &&
-                      !snapshot.connectionState.toString().contains('waiting');
+                      !snapshot.connectionState.toString().contains(
+                        'waiting',
+                      ) &&
+                      isAuthenticated;
 
                   return BaseElevatedButton(
                     l10n: l10n,
@@ -284,8 +298,8 @@ class PaymentButton extends HookWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(l10n.buy),
-                        Text(l10n.currency(value)),
+                        Text(isAuthenticated ? l10n.buy : 'ログインしてください'),
+                        if (isAuthenticated) Text(l10n.currency(value)),
                         if (hasStockIssues)
                           Text(
                             '在庫不足',
