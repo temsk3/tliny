@@ -35,7 +35,7 @@ void main() {
       expect(product.genre, equals(GenreType.foods));
       expect(product.desc, equals('Test Description'));
       expect(product.stock, equals(0)); // default value
-      expect(product.price, equals(50)); // default value
+      expect(product.price, equals(0)); // default value
     });
 
     test('Product.copyWith should create new instance with updated fields', () {

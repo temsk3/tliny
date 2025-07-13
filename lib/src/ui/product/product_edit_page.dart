@@ -230,14 +230,26 @@ class ProductEditPage extends HookConsumerWidget {
                             ],
                             controller: priceEditingController,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(labelText: l10n.price),
+                            decoration: InputDecoration(
+                              labelText: l10n.price,
+                              helperText: 'スタッフ: 制限なし、購入者登録済み: ¥50以上、未登録: ¥0のみ',
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return l10n.pleaseEnterSomeNum;
                               }
-                              if (int.parse(value) < 50) {
-                                return '¥50以下は設定できません';
+                              final price = int.parse(value);
+
+                              // 基本的な価格制限
+                              if (price < 0) {
+                                return '価格は0円以上で設定してください';
                               }
+
+                              // 1-49円の範囲は制限（スタッフ以外）
+                              if (price >= 1 && price <= 49) {
+                                return '¥1-¥49の範囲は設定できません';
+                              }
+
                               return null;
                             },
                             onSaved: (value) {

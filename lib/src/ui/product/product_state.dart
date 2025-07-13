@@ -49,6 +49,7 @@ Stream<bool> addProductButtonState(Ref ref, Program program) {
     return Stream<bool>.value(false);
   }
 
+  // イベント主催者またはスタッフは商品登録可能
   if (uid == program.organizerId) {
     return Stream<bool>.value(true);
   }

@@ -5,7 +5,6 @@ import '../../data/model/program_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/program_repository.dart';
 import '../../data/repository/staff_repository.dart';
-import '../../data/repository/user_repository.dart';
 
 part 'program_state.g.dart';
 
@@ -38,17 +37,16 @@ Stream<List<Program>> myProgramListState(Ref ref) {
 //       ref.watch(programRepositoryProvider).streamEvent(programId),
 // );
 
-final AutoDisposeStreamProvider<bool>
-addProgramButtonStateProvider = StreamProvider.autoDispose((ref) {
-  final uidAsyncValue = ref.watch(userIdProvider);
-  final uid = uidAsyncValue.value;
-  if (uid != null) {
-    //
-    // return ref.watch(userRepositoryProvider).streamCheckExistenceAccount(uid);
-    return ref.watch(userRepositoryProvider).streamCheckAccountStatus(uid);
-  }
-  return Stream<bool>.value(false);
-});
+final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
+    StreamProvider.autoDispose((ref) {
+      final uidAsyncValue = ref.watch(userIdProvider);
+      final uid = uidAsyncValue.value;
+      // 認証されているユーザーは誰でもイベントを作成可能
+      if (uid != null) {
+        return Stream<bool>.value(true);
+      }
+      return Stream<bool>.value(false);
+    });
 
 final AutoDisposeStreamProviderFamily<bool, Program>
 editProgramButtonStateProvider = StreamProvider.family
