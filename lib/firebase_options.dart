@@ -41,54 +41,52 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDGh2hgPptvftSpCbooC6B0JlvF2buRTpc',
-    appId: '1:312506082989:web:c9afeda5018001cd450824',
-    messagingSenderId: '312506082989',
-    projectId: 'tliny-sample',
-    authDomain: 'tliny-sample.firebaseapp.com',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'tliny-sample.appspot.com',
-    measurementId: 'G-65ZMZD8S4V',
+    apiKey: 'AIzaSyDxmJJFB5Sp2lk2F-cJ7yKLs7Csp3ngBic',
+    appId: '1:736590453040:web:a4125c7a199f8e22cd10f5',
+    messagingSenderId: '736590453040',
+    projectId: 'tliny-c9630',
+    authDomain: 'tliny-c9630.firebaseapp.com',
+    storageBucket: 'tliny-c9630.appspot.com',
+    measurementId: 'G-DPTLBYP1H5',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBMDuKR6Dick0HCGZSiN55vXl5bzFwB5yw',
-    appId: '1:312506082989:ios:d71d0879776e2e27450824',
-    messagingSenderId: '312506082989',
-    projectId: 'tliny-sample',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'tliny-sample.appspot.com',
+    apiKey: 'AIzaSyCPVidOcCiBtpj9Mwm9e2_STlUbA6OhuPQ',
+    appId: '1:736590453040:ios:1d94bc3ef08c18eecd10f5',
+    messagingSenderId: '736590453040',
+    projectId: 'tliny-c9630',
+    storageBucket: 'tliny-c9630.appspot.com',
+    iosClientId:
+        '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
     iosBundleId: 'com.example.tliny',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBMDuKR6Dick0HCGZSiN55vXl5bzFwB5yw',
-    appId: '1:312506082989:ios:d71d0879776e2e27450824',
-    messagingSenderId: '312506082989',
-    projectId: 'tliny-sample',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'tliny-sample.appspot.com',
+    apiKey: 'AIzaSyCPVidOcCiBtpj9Mwm9e2_STlUbA6OhuPQ',
+    appId: '1:736590453040:ios:1d94bc3ef08c18eecd10f5',
+    messagingSenderId: '736590453040',
+    projectId: 'tliny-c9630',
+    storageBucket: 'tliny-c9630.appspot.com',
+    iosClientId:
+        '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
     iosBundleId: 'com.example.tliny',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCf93IBNSI6tfN76hilPJ6Jw2OPbY1IwGA',
-    appId: '1:312506082989:android:84101f58a7eddd02450824',
-    messagingSenderId: '312506082989',
-    projectId: 'tliny-sample',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'tliny-sample.appspot.com',
+    apiKey: 'AIzaSyDHy5eRQ7fqhrcktk4-Ck0UXwek5tDy_hg',
+    appId: '1:736590453040:android:94b02e3c23b2e383cd10f5',
+    messagingSenderId: '736590453040',
+    projectId: 'tliny-c9630',
+    storageBucket: 'tliny-c9630.appspot.com',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCoQSxALGity4uWeKYIvSQ2GgOto6qS3tY',
-    appId: '1:312506082989:web:405d7646fcb1f0f6450824',
-    messagingSenderId: '312506082989',
-    projectId: 'tliny-sample',
-    authDomain: 'tliny-sample.firebaseapp.com',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'tliny-sample.appspot.com',
-    measurementId: 'G-PQBNM3YP5T',
+    apiKey: 'AIzaSyDPjCNW0jtMzmIsxdUZxJJJt9ZR1t0pECo',
+    appId: '1:736590453040:web:3c66100e985694fccd10f5',
+    messagingSenderId: '736590453040',
+    projectId: 'tliny-c9630',
+    authDomain: 'tliny-c9630.firebaseapp.com',
+    storageBucket: 'tliny-c9630.appspot.com',
+    measurementId: 'G-PXP1C91BE5',
   );
-
 }

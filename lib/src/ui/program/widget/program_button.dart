@@ -46,7 +46,8 @@ class AddProgramFloatingActionButton extends HookWidget {
                 child: child!,
               );
             } else {
-              return Container();
+              // 販売者登録が完了していない場合はボタンを非表示
+              return const SizedBox.shrink();
             }
           },
         );

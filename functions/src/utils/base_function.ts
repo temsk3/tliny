@@ -9,9 +9,9 @@ import { Request } from 'firebase-functions/v2/https'
 const defaultOptions: HttpsOptions = {
   memory: '512MiB',
   secrets: [
-    //   'STRIPE_SECRET',
-    //   'STRIPE_PUBLIC',
-    //   'STRIPE_EP',
+    'STRIPE_SECRET',
+    'STRIPE_PUBLIC',
+    'STRIPE_EP',
     'STRIPE_DEV_SK',
     'STRIPE_DEV_PK',
     'STRIPE_DEV_EP',

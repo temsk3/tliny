@@ -1,46 +1,43 @@
 {
   "project_info": {
-    "project_number": "312506082989",
-    "firebase_url": "https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "tliny-sample",
-    "storage_bucket": "tliny-sample.appspot.com"
+    "project_number": "736590453040",
+    "project_id": "tliny-c9630",
+    "storage_bucket": "tliny-c9630.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:312506082989:android:84101f58a7eddd02450824",
+        "mobilesdk_app_id": "1:736590453040:android:94b02e3c23b2e383cd10f5",
         "android_client_info": {
           "package_name": "com.example.tliny"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "736590453040-mm7n28ti464rckk39rhnl6mk7rd9acob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCf93IBNSI6tfN76hilPJ6Jw2OPbY1IwGA"
+          "current_key": "AIzaSyDHy5eRQ7fqhrcktk4-Ck0UXwek5tDy_hg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:312506082989:android:8b0f2271abde4e5f450824",
-        "android_client_info": {
-          "package_name": "com.spel1.tliny"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCf93IBNSI6tfN76hilPJ6Jw2OPbY1IwGA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736590453040-mm7n28ti464rckk39rhnl6mk7rd9acob.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tliny"
+              }
+            }
+          ]
         }
       }
     }

@@ -361,9 +361,9 @@ export const v2_payment_account_onUpdateAccountLink = onCall(
   async (request) => {
     const uid = requireAuth(request)
     const returnUrl =
-      (request.data as any).returnUrl || 'https://sample.tliny.jp/user'
+      (request.data as any).returnUrl || 'https://web.tliny.jp/user'
     const refreshUrl =
-      (request.data as any).refreshUrl || 'https://sample.tliny.jp/user'
+      (request.data as any).refreshUrl || 'https://web.tliny.jp/user'
 
     logger.info('=== onUpdateAccountLink START ===')
     logger.info('Request data:', { data: request.data })

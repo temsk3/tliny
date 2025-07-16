@@ -349,7 +349,7 @@ class UsageHistoryPage extends HookConsumerWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'QRコードをスキャンしてチケットを使用してください',
+                    'チケットを使用してください',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
                     ),

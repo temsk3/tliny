@@ -5,6 +5,7 @@ import '../../data/model/program_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/program_repository.dart';
 import '../../data/repository/staff_repository.dart';
+import '../../data/repository/user_repository.dart';
 
 part 'program_state.g.dart';
 
@@ -41,11 +42,14 @@ final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
     StreamProvider.autoDispose((ref) {
       final uidAsyncValue = ref.watch(userIdProvider);
       final uid = uidAsyncValue.value;
-      // 認証されているユーザーは誰でもイベントを作成可能
-      if (uid != null) {
-        return Stream<bool>.value(true);
+
+      // 認証されていない場合は作成不可
+      if (uid == null) {
+        return Stream<bool>.value(false);
       }
-      return Stream<bool>.value(false);
+
+      // 販売者登録のステータスをチェック（chargesEnabledがtrueかどうか）
+      return ref.read(userRepositoryProvider).streamCheckAccountStatus(uid);
     });
 
 final AutoDisposeStreamProviderFamily<bool, Program>

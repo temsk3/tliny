@@ -456,7 +456,7 @@ class ProgramEditPage extends HookConsumerWidget {
                         decoration: InputDecoration(
                           labelText: l10n.staffCode,
                           border: const OutlineInputBorder(),
-                          helperText: '英数字、@、_、- のみ使用可能（最大10文字）',
+                          helperText: '英数字、@、_、- のみ使用可能(最大10文字)',
                         ),
                         validator: (value) {
                           return null;

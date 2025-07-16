@@ -11,7 +11,6 @@ import '../../settings/routes/routes.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
 import '../image/image_screen.dart';
-import 'available_events_page.dart';
 import 'ticket_list_view_model.dart';
 
 class TicketListPage extends HookConsumerWidget {
@@ -273,22 +272,22 @@ class TicketListPage extends HookConsumerWidget {
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 30),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AvailableEventsPage(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.event),
-            label: const Text('イベントを見る'),
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            ),
-          ),
+          // const SizedBox(height: 30),
+          // ElevatedButton.icon(
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const AvailableEventsPage(),
+          //       ),
+          //     );
+          //   },
+          //   icon: const Icon(Icons.event),
+          //   label: const Text('イベントを見る'),
+          //   style: ElevatedButton.styleFrom(
+          //     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          //   ),
+          // ),
         ],
       ),
     );

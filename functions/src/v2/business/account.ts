@@ -40,7 +40,7 @@ const businessAccountOnCreate = onCall(async (request) => {
     metadata: { uid },
     business_type: 'individual',
     business_profile: {
-      url: 'https://sample.tliny.jp',
+      url: 'https://web.tliny.jp',
       mcc: '5399',
       product_description: 'オンライン販売',
       support_email: (request.data as any).email,

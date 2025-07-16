@@ -89,30 +89,9 @@ class ProductViewModel extends _$ProductViewModel {
     // スタッフかどうかをチェック
     final isStaff = await staffRepository.checkExistenceStaff(program.id!, uid);
 
-    // スタッフでない場合のみ購入者登録の有無をチェック
-    if (!isStaff) {
-      // 購入者登録の有無をチェック
-      final hasAccount = await userRepository.checkExistenceAccount(uid);
-
-      // 価格制限のチェック
-      if (hasAccount) {
-        // 購入者登録している人: 50円以上のみ（1-49円は不可）
-        if (product.price < 50) {
-          throw const GeneralException(
-            message: '購入者登録済みの場合は¥50以上で設定してください（¥1-¥49は設定できません）',
-          );
-        }
-      } else {
-        // 購入者登録していない人: 0円のみ
-        if (product.price != 0) {
-          throw const GeneralException(message: '購入者登録していないため、¥0のみ設定可能です');
-        }
-      }
-    } else {
-      // スタッフの場合: 1-49円の範囲のみ制限
-      if (product.price >= 1 && product.price <= 49) {
-        throw const GeneralException(message: '¥1-¥49の範囲は設定できません');
-      }
+    // 商品の金額は50円以上で設定する
+    if (product.price < 50) {
+      throw const GeneralException(message: '商品の金額は¥50以上で設定してください');
     }
 
     final data = product.copyWith(
@@ -161,30 +140,9 @@ class ProductViewModel extends _$ProductViewModel {
       uid,
     );
 
-    // スタッフでない場合のみ購入者登録の有無をチェック
-    if (!isStaff) {
-      // 購入者登録の有無をチェック
-      final hasAccount = await userRepository.checkExistenceAccount(uid);
-
-      // 価格制限のチェック
-      if (hasAccount) {
-        // 購入者登録している人: 50円以上のみ（1-49円は不可）
-        if (data.price < 50) {
-          throw const GeneralException(
-            message: '購入者登録済みの場合は¥50以上で設定してください（¥1-¥49は設定できません）',
-          );
-        }
-      } else {
-        // 購入者登録していない人: 0円のみ
-        if (data.price != 0) {
-          throw const GeneralException(message: '購入者登録していないため、¥0のみ設定可能です');
-        }
-      }
-    } else {
-      // スタッフの場合: 1-49円の範囲のみ制限
-      if (data.price >= 1 && data.price <= 49) {
-        throw const GeneralException(message: '¥1-¥49の範囲は設定できません');
-      }
+    // 商品の金額は50円以上で設定する
+    if (data.price < 50) {
+      throw const GeneralException(message: '商品の金額は¥50以上で設定してください');
     }
 
     state = const AsyncLoading();
