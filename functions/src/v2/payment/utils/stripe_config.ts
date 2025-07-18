@@ -89,3 +89,16 @@ export const capabilities = {
   card_payments: { requested: true },
   transfers: { requested: true },
 }
+
+// アカウントリンクの設定
+export const ACCOUNT_LINK_CONFIG = {
+  // デフォルトで account_onboarding を使用するかどうか
+  // true: より保守的、false: より積極的に account_update を試行
+  DEFAULT_TO_ONBOARDING: true,
+
+  // account_update を試行するための厳密な条件
+  REQUIRE_FULL_ONBOARDING: true,
+
+  // エラー時のフォールバック設定
+  FALLBACK_TO_ONBOARDING_ON_ERROR: true,
+}

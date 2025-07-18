@@ -170,11 +170,29 @@ class CustomUserAccountsDrawerHeader extends HookWidget {
                         : Text(data.displayName!),
                 accountEmail: Text(data.email!),
                 currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.grey,
+                  backgroundColor: Colors.grey[300],
                   backgroundImage:
                       data.photoUrl == null
                           ? null
                           : NetworkImage(data.photoUrl!),
+                  child:
+                      data.photoUrl == null
+                          ? (data.displayName != null &&
+                                  data.displayName!.isNotEmpty
+                              ? Text(
+                                data.displayName![0].toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              )
+                              : const Icon(
+                                Icons.person,
+                                color: Colors.grey,
+                                size: 30,
+                              ))
+                          : null,
                 ),
               );
             }

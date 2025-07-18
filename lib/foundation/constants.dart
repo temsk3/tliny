@@ -53,7 +53,7 @@ class Constants {
       case Flavor.dev:
         return 'http://localhost:3000/#/terms?uid=$uid';
       case Flavor.prod:
-        return 'https://tliny.spel1.com/#/terms?uid=$uid';
+        return 'https://web.tliny.jp/#/terms?uid=$uid';
     }
   }
 }

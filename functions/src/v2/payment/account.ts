@@ -7,7 +7,11 @@ import Stripe from 'stripe'
 import * as firebaseAdmin from 'firebase-admin'
 
 import { getStripe, stripeOptions, stripeErrors } from './utils'
-import { accountType, country } from './utils/stripe_config'
+import {
+  accountType,
+  country,
+  ACCOUNT_LINK_CONFIG,
+} from './utils/stripe_config'
 import { db, getStripeConnectAccountId } from '../../utils/firebase_utils'
 import paths from '../firestore/utils/db_paths'
 
@@ -197,41 +201,139 @@ export const v2_payment_account_onCreateAccountLink = onCall(
             payoutsEnabled: account.payouts_enabled,
           })
 
-          // アカウントが完全にオンボーディングされている場合は更新リンクを作成
-          if (account.details_submitted && account.charges_enabled) {
-            logger.info('Account is fully onboarded, creating update link...')
-            stripeOptions.idempotencyKey = `update_account_link_${uid}_${accountId}_${Date.now()}`
-            const updateLink = await getStripe().accountLinks.create(
-              {
-                account: accountId,
-                refresh_url: refreshUrl,
-                return_url: returnUrl,
-                type: 'account_update',
-              },
-              stripeOptions,
-            )
-            logger.info('Account update link created:', { url: updateLink.url })
-            return { accountUrl: updateLink.url }
-          } else {
-            // アカウントがまだオンボーディング中の場合、新しいオンボーディングリンクを作成
+          // アカウントの状態を詳細にログ出力
+          logger.info('Account status check:', {
+            accountId: account.id,
+            detailsSubmitted: account.details_submitted,
+            chargesEnabled: account.charges_enabled,
+            payoutsEnabled: account.payouts_enabled,
+            requirements: account.requirements,
+            capabilities: account.capabilities,
+          })
+
+          // 設定に基づいて account_update の使用可否を判定
+          const canUseUpdateLink =
+            !ACCOUNT_LINK_CONFIG.DEFAULT_TO_ONBOARDING &&
+            account.details_submitted &&
+            account.charges_enabled &&
+            account.payouts_enabled &&
+            (!ACCOUNT_LINK_CONFIG.REQUIRE_FULL_ONBOARDING ||
+              (account.requirements?.currently_due?.length === 0 &&
+                account.requirements?.eventually_due?.length === 0))
+
+          if (canUseUpdateLink) {
+            // 完全に有効化されたアカウントの場合のみ account_update を試行
             logger.info(
-              'Account is still onboarding, creating new onboarding link...',
-            )
-            stripeOptions.idempotencyKey = `create_account_link_${uid}_${accountId}_${Date.now()}`
-            const onboardingLink = await getStripe().accountLinks.create(
+              'Account appears fully onboarded, attempting to create update link...',
               {
-                account: accountId,
-                refresh_url: refreshUrl,
-                return_url: returnUrl,
-                type: 'account_onboarding',
+                canUseUpdateLink,
+                requirements: account.requirements,
               },
-              stripeOptions,
             )
-            logger.info('Account onboarding link created:', {
-              url: onboardingLink.url,
-            })
-            return { accountUrl: onboardingLink.url }
+            try {
+              stripeOptions.idempotencyKey = `update_account_link_${uid}_${accountId}_${Date.now()}`
+              const updateLink = await getStripe().accountLinks.create(
+                {
+                  account: accountId,
+                  refresh_url: refreshUrl,
+                  return_url: returnUrl,
+                  type: 'account_update',
+                },
+                stripeOptions,
+              )
+              logger.info('Account update link created successfully:', {
+                url: updateLink.url,
+              })
+              return { accountUrl: updateLink.url }
+            } catch (linkError) {
+              // 設定に基づいてエラーハンドリング
+              if (ACCOUNT_LINK_CONFIG.FALLBACK_TO_ONBOARDING_ON_ERROR) {
+                // account_update が失敗した場合、account_onboarding にフォールバック
+                if (
+                  linkError instanceof Stripe.errors.StripeError &&
+                  linkError.code === 'invalid_request_error' &&
+                  (linkError.message.includes('account_update') ||
+                    linkError.message.includes('Valid types') ||
+                    linkError.message.includes('cannot create'))
+                ) {
+                  logger.warn(
+                    'Account update link failed, falling back to onboarding link:',
+                    {
+                      error: linkError.message,
+                      accountId,
+                      errorCode: linkError.code,
+                      errorType: linkError.type,
+                      config: ACCOUNT_LINK_CONFIG,
+                    },
+                  )
+                  // フォールバック処理は下記の共通処理で実行
+                } else {
+                  // その他のエラーの場合も設定によりフォールバック
+                  logger.warn(
+                    'Unexpected error creating update link, falling back to onboarding:',
+                    {
+                      error:
+                        linkError instanceof Error
+                          ? linkError.message
+                          : linkError,
+                      accountId,
+                      errorCode:
+                        linkError instanceof Stripe.errors.StripeError
+                          ? linkError.code
+                          : 'unknown',
+                      config: ACCOUNT_LINK_CONFIG,
+                    },
+                  )
+                  // フォールバック処理は下記の共通処理で実行
+                }
+              } else {
+                // フォールバックが無効な場合はエラーを再スロー
+                logger.error(
+                  'Error creating update link and fallback is disabled:',
+                  {
+                    error:
+                      linkError instanceof Error
+                        ? linkError.message
+                        : linkError,
+                    accountId,
+                    errorCode:
+                      linkError instanceof Stripe.errors.StripeError
+                        ? linkError.code
+                        : 'unknown',
+                    config: ACCOUNT_LINK_CONFIG,
+                  },
+                )
+                throw linkError
+              }
+            }
           }
+
+          // アカウントがまだオンボーディング中、または account_update が失敗した場合
+          logger.info(
+            'Creating onboarding link (account not fully ready or update link failed):',
+            {
+              detailsSubmitted: account.details_submitted,
+              chargesEnabled: account.charges_enabled,
+              payoutsEnabled: account.payouts_enabled,
+              canUseUpdateLink,
+              requirements: account.requirements,
+              config: ACCOUNT_LINK_CONFIG,
+            },
+          )
+          stripeOptions.idempotencyKey = `create_account_link_${uid}_${accountId}_${Date.now()}`
+          const onboardingLink = await getStripe().accountLinks.create(
+            {
+              account: accountId,
+              refresh_url: refreshUrl,
+              return_url: returnUrl,
+              type: 'account_onboarding',
+            },
+            stripeOptions,
+          )
+          logger.info('Account onboarding link created:', {
+            url: onboardingLink.url,
+          })
+          return { accountUrl: onboardingLink.url }
         } catch (error) {
           logger.error('Failed to retrieve account:', { error })
 

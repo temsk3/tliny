@@ -62,6 +62,7 @@ class ProductEditPage extends HookConsumerWidget {
     final priceEditingController = useTextEditingController(
       text: product.price.toString(),
     );
+    // 使用期間設定のコントローラー（一時的に無効化中）
     final expirationFromEditingController = useTextEditingController(
       text: dateFormatter.format(program.eventFrom ?? now),
     );
@@ -258,42 +259,10 @@ class ProductEditPage extends HookConsumerWidget {
                       ],
                     ),
                     const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-                    //
+                    // 使用期間設定（設定機能は無効化、表示のみ）
                     Row(
                       children: [
-                        ElevatedButton(
-                          child: Text(l10n.validPeriod),
-                          onPressed: () async {
-                            final dateRange = await showDateRangePicker(
-                              context: context,
-                              initialDateRange: DateTimeRange(
-                                start: now,
-                                end: now,
-                              ),
-                              firstDate: now,
-                              lastDate: DateTime(now.year + 3),
-                              // builder:(context, child) {
-                              //         return Theme(
-                              //           data: theme.data.copyWith(
-                              //             colorScheme: theme
-                              //                 .data.colorScheme
-                              //                 .copyWith(
-                              //               surface:
-                              //                   theme.appColors.primary,
-                              //             ),
-                              //           ),
-                              //           child: child as Widget,
-                              //         );
-                              // },
-                            );
-                            if (dateRange != null) {
-                              expirationFromEditingController
-                                  .text = dateFormatter.format(dateRange.start);
-                              expirationToEditingController.text = dateFormatter
-                                  .format(dateRange.end);
-                            }
-                          },
-                        ),
+                        Text(l10n.validPeriod),
                         const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8),
                         ),
@@ -305,23 +274,6 @@ class ProductEditPage extends HookConsumerWidget {
                               border: UnderlineInputBorder(),
                               labelText: 'From',
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some date';
-                              }
-                              if (startDayFormatter(value).isAfter(
-                                endDayFormatter(
-                                  expirationToEditingController.text,
-                                ),
-                              )) {
-                                return 'Please enter a date after the specified date';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              expirationFromEditingController.text =
-                                  value.toString();
-                            },
                           ),
                         ),
                         const Padding(
@@ -335,16 +287,6 @@ class ProductEditPage extends HookConsumerWidget {
                               border: UnderlineInputBorder(),
                               labelText: 'To',
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter some date';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              expirationToEditingController.text =
-                                  value.toString();
-                            },
                           ),
                         ),
                       ],
@@ -373,12 +315,9 @@ class ProductEditPage extends HookConsumerWidget {
                                 desc: descEditingController.text,
                                 stock: int.parse(stockEditingController.text),
                                 price: int.parse(priceEditingController.text),
-                                expirationFrom: startDayFormatter(
-                                  expirationFromEditingController.text,
-                                ),
-                                expirationTo: endDayFormatter(
-                                  expirationToEditingController.text,
-                                ),
+                                // 使用期間はプログラムの期間に固定
+                                expirationFrom: program.eventFrom,
+                                expirationTo: program.eventTo,
                                 isActive: isActive.value,
                                 isPublish: isPublish.value,
                                 // expirationLink: ,
