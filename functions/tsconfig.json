@@ -10,6 +10,5 @@
     "skipLibCheck": true
   },
   "compileOnSave": true,
-  "include": ["src/v2/**/*", "src/utils/**/*", "src/index.ts"],
-  "exclude": ["src/v1/**/*"]
+  "include": ["src/v2/**/*", "src/v1/**/*", "src/utils/**/*", "src/index.ts"]
 }

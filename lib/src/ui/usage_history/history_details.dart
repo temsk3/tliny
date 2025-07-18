@@ -120,11 +120,17 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
           duration: Duration(milliseconds: 300 + (index * 100)),
           curve: Curves.easeInOut,
           child: ticketAsyncValue.when(
-            data: (data) => _buildTicketCard(context, data, theme, index),
+            data: (data) => _buildTicketCard(context, data, theme, l10n, index),
             loading: () => _buildLoadingCard(context, theme, index),
             error:
-                (error, stackTrace) =>
-                    _buildErrorCard(context, ticketId, error, theme, index),
+                (error, stackTrace) => _buildErrorCard(
+                  context,
+                  ticketId,
+                  error,
+                  theme,
+                  l10n,
+                  index,
+                ),
           ),
         );
       },
@@ -135,6 +141,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
     BuildContext context,
     dynamic ticket,
     ThemeData theme,
+    AppLocalizations l10n,
     int index,
   ) {
     final ticketName = ticket.name as String?;
@@ -252,7 +259,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '価格: ¥${price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                    '${l10n.priceLabel}: ¥${price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.secondary,
                       fontWeight: FontWeight.w500,
@@ -328,6 +335,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
     String ticketId,
     Object error,
     ThemeData theme,
+    AppLocalizations l10n,
     int index,
   ) {
     return Card(
@@ -362,7 +370,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'チケットが見つかりません',
+                        l10n.ticketNotFound,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: theme.colorScheme.error,
@@ -390,7 +398,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'エラー',
+                    l10n.error,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.error,
                       fontWeight: FontWeight.w600,
@@ -413,7 +421,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'エラー詳細:',
+                    '${l10n.errorDetails}:',
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: theme.colorScheme.onSurface,

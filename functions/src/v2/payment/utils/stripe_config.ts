@@ -7,6 +7,12 @@ export const currency = 'jpy'
 const stripeDevSk = defineSecret('STRIPE_SECRET')
 const stripeWebhookEndpointSecret = defineSecret('STRIPE_EP')
 
+// デバッグ用: シークレット定義の確認
+console.log('Secret definitions debug:', {
+  hasStripeDevSk: !!stripeDevSk,
+  hasStripeWebhookEndpointSecret: !!stripeWebhookEndpointSecret,
+})
+
 let stripe: Stripe | null = null
 
 /**
@@ -40,8 +46,40 @@ export const stripeOptions: Stripe.StripeConfig & {
 export const APPLICATION_FEE_PERCENT = 1.3 // 10%
 
 // Webhook endpoint secret
-export const getStripeWebhookEndpointSecret = () =>
-  process.env.STRIPE_EP || stripeWebhookEndpointSecret.value()
+export const getStripeWebhookEndpointSecret = () => {
+  const processEnvValue = process.env.STRIPE_EP
+  const secretValue = stripeWebhookEndpointSecret.value()
+
+  console.log('getStripeWebhookEndpointSecret debug:', {
+    hasProcessEnv: !!processEnvValue,
+    hasSecretValue: !!secretValue,
+    processEnvLength: processEnvValue ? processEnvValue.length : 0,
+    secretValueLength: secretValue ? secretValue.length : 0,
+    processEnvPrefix: processEnvValue
+      ? processEnvValue.substring(0, 10) + '...'
+      : 'undefined',
+    secretValuePrefix: secretValue
+      ? secretValue.substring(0, 10) + '...'
+      : 'undefined',
+    stripeWebhookEndpointSecretType: typeof stripeWebhookEndpointSecret,
+    stripeWebhookEndpointSecretValueType:
+      typeof stripeWebhookEndpointSecret.value,
+  })
+
+  // エラーハンドリングを追加
+  try {
+    const result = processEnvValue || secretValue
+    console.log('getStripeWebhookEndpointSecret result:', {
+      hasResult: !!result,
+      resultLength: result ? result.length : 0,
+      resultPrefix: result ? result.substring(0, 10) + '...' : 'undefined',
+    })
+    return result
+  } catch (error) {
+    console.error('getStripeWebhookEndpointSecret error:', error)
+    return null
+  }
+}
 
 export const country = 'JP'
 

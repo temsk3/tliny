@@ -722,6 +722,24 @@ abstract class AppLocalizations {
   /// **'利用可能な在庫: {stock}個'**
   String availableStock(int stock);
 
+  /// No description provided for @specificCommercialCode.
+  ///
+  /// In ja, this message translates to:
+  /// **'特定商取引法に基づく表記'**
+  String get specificCommercialCode;
+
+  /// No description provided for @copyToClipboard.
+  ///
+  /// In ja, this message translates to:
+  /// **'クリップボードにコピー'**
+  String get copyToClipboard;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In ja, this message translates to:
+  /// **'クリップボードにコピーしました'**
+  String get copiedToClipboard;
+
   /// No description provided for @adjustQuantityToStock.
   ///
   /// In ja, this message translates to:
@@ -943,6 +961,324 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'イベント開催期間'**
   String get eventPeriod;
+
+  /// No description provided for @sellerName.
+  ///
+  /// In ja, this message translates to:
+  /// **'販売業社の名称'**
+  String get sellerName;
+
+  /// No description provided for @address.
+  ///
+  /// In ja, this message translates to:
+  /// **'所在地'**
+  String get address;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In ja, this message translates to:
+  /// **'電話番号'**
+  String get phoneNumber;
+
+  /// No description provided for @emailAddress.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス'**
+  String get emailAddress;
+
+  /// No description provided for @operatorInCharge.
+  ///
+  /// In ja, this message translates to:
+  /// **'運営統括責任者'**
+  String get operatorInCharge;
+
+  /// No description provided for @additionalFees.
+  ///
+  /// In ja, this message translates to:
+  /// **'追加手数料等の追加料金'**
+  String get additionalFees;
+
+  /// No description provided for @returnPolicy.
+  ///
+  /// In ja, this message translates to:
+  /// **'交換および返品（返金ポリシー）'**
+  String get returnPolicy;
+
+  /// No description provided for @deliveryPeriod.
+  ///
+  /// In ja, this message translates to:
+  /// **'引渡時期'**
+  String get deliveryPeriod;
+
+  /// No description provided for @paymentMethods.
+  ///
+  /// In ja, this message translates to:
+  /// **'受け付け可能な決済手段'**
+  String get paymentMethods;
+
+  /// No description provided for @paymentPeriod.
+  ///
+  /// In ja, this message translates to:
+  /// **'決済期間'**
+  String get paymentPeriod;
+
+  /// No description provided for @sellingPrice.
+  ///
+  /// In ja, this message translates to:
+  /// **'販売価格'**
+  String get sellingPrice;
+
+  /// No description provided for @disclosureOnRequest.
+  ///
+  /// In ja, this message translates to:
+  /// **'請求があったら遅滞なく開示します'**
+  String get disclosureOnRequest;
+
+  /// No description provided for @noAdditionalFees.
+  ///
+  /// In ja, this message translates to:
+  /// **'なし'**
+  String get noAdditionalFees;
+
+  /// No description provided for @customerReturnPolicy.
+  ///
+  /// In ja, this message translates to:
+  /// **'＜お客様都合の返品・交換の場合＞'**
+  String get customerReturnPolicy;
+
+  /// No description provided for @beforeDelivery.
+  ///
+  /// In ja, this message translates to:
+  /// **'引渡し処理前の商品：メールにてお問い合わせください。'**
+  String get beforeDelivery;
+
+  /// No description provided for @afterDelivery.
+  ///
+  /// In ja, this message translates to:
+  /// **'引渡し処理後の商品：原則、返品・交換はお受けしておりません。'**
+  String get afterDelivery;
+
+  /// No description provided for @defectiveProduct.
+  ///
+  /// In ja, this message translates to:
+  /// **'＜商品に不備がある場合＞'**
+  String get defectiveProduct;
+
+  /// No description provided for @contactByEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールにてご連絡ください。'**
+  String get contactByEmail;
+
+  /// No description provided for @creditCard.
+  ///
+  /// In ja, this message translates to:
+  /// **'クレジットカード'**
+  String get creditCard;
+
+  /// No description provided for @creditCardProcessing.
+  ///
+  /// In ja, this message translates to:
+  /// **'クレジットカード決済はただちに処理されます。'**
+  String get creditCardProcessing;
+
+  /// No description provided for @priceOnProductPage.
+  ///
+  /// In ja, this message translates to:
+  /// **'各商品ページに記載の金額'**
+  String get priceOnProductPage;
+
+  /// No description provided for @noEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスなし'**
+  String get noEmail;
+
+  /// No description provided for @noName.
+  ///
+  /// In ja, this message translates to:
+  /// **'名前なし'**
+  String get noName;
+
+  /// No description provided for @priceLabel.
+  ///
+  /// In ja, this message translates to:
+  /// **'価格'**
+  String get priceLabel;
+
+  /// No description provided for @ticketNotFound.
+  ///
+  /// In ja, this message translates to:
+  /// **'チケットが見つかりません'**
+  String get ticketNotFound;
+
+  /// No description provided for @error.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラー'**
+  String get error;
+
+  /// No description provided for @errorDetails.
+  ///
+  /// In ja, this message translates to:
+  /// **'エラー詳細'**
+  String get errorDetails;
+
+  /// No description provided for @genreGoods.
+  ///
+  /// In ja, this message translates to:
+  /// **'物品'**
+  String get genreGoods;
+
+  /// No description provided for @genreFoods.
+  ///
+  /// In ja, this message translates to:
+  /// **'食品'**
+  String get genreFoods;
+
+  /// No description provided for @genreOthers.
+  ///
+  /// In ja, this message translates to:
+  /// **'その他'**
+  String get genreOthers;
+
+  /// No description provided for @changeEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス変更'**
+  String get changeEmail;
+
+  /// No description provided for @currentEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'現在のメールアドレス'**
+  String get currentEmail;
+
+  /// No description provided for @newEmail.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいメールアドレス'**
+  String get newEmail;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワード確認'**
+  String get confirmPassword;
+
+  /// No description provided for @changeEmailDescription.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレスを変更するには、現在のパスワードを入力してください。'**
+  String get changeEmailDescription;
+
+  /// No description provided for @emailChangeSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス変更の確認メールを送信しました。新しいメールアドレスで確認メールを確認してください。'**
+  String get emailChangeSuccess;
+
+  /// No description provided for @emailChangeError.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス変更に失敗しました'**
+  String get emailChangeError;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードを入力してください'**
+  String get passwordRequired;
+
+  /// No description provided for @passwordIncorrect.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードが正しくありません'**
+  String get passwordIncorrect;
+
+  /// No description provided for @emailAlreadyInUse.
+  ///
+  /// In ja, this message translates to:
+  /// **'このメールアドレスは既に使用されています'**
+  String get emailAlreadyInUse;
+
+  /// No description provided for @emailChangeInProgress.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス変更処理中...'**
+  String get emailChangeInProgress;
+
+  /// No description provided for @emailChangeCompleted.
+  ///
+  /// In ja, this message translates to:
+  /// **'メールアドレス変更が完了しました'**
+  String get emailChangeCompleted;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワード変更'**
+  String get changePassword;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In ja, this message translates to:
+  /// **'現在のパスワード'**
+  String get currentPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいパスワード'**
+  String get newPassword;
+
+  /// No description provided for @confirmNewPassword.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいパスワード（確認）'**
+  String get confirmNewPassword;
+
+  /// No description provided for @changePasswordDescription.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードを変更するには、現在のパスワードを入力してください。'**
+  String get changePasswordDescription;
+
+  /// No description provided for @passwordChangeSuccess.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードが正常に変更されました。'**
+  String get passwordChangeSuccess;
+
+  /// No description provided for @passwordChangeError.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワード変更に失敗しました'**
+  String get passwordChangeError;
+
+  /// No description provided for @passwordMismatch.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいパスワードが一致しません'**
+  String get passwordMismatch;
+
+  /// No description provided for @passwordTooWeak.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワードが弱すぎます。6文字以上の英数字で入力してください'**
+  String get passwordTooWeak;
+
+  /// No description provided for @passwordChangeInProgress.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワード変更処理中...'**
+  String get passwordChangeInProgress;
+
+  /// No description provided for @passwordChangeCompleted.
+  ///
+  /// In ja, this message translates to:
+  /// **'パスワード変更が完了しました'**
+  String get passwordChangeCompleted;
 }
 
 class _AppLocalizationsDelegate

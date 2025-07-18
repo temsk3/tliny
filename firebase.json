@@ -1,1 +1,78 @@
-{"firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"},"functions":[{"ignore":["node_modules",".git","firebase-debug.log","firebase-debug.*.log"],"predeploy":["npm --prefix \"$RESOURCE_DIR\" run lint","npm --prefix \"$RESOURCE_DIR\" run build"],"source":"functions","codebase":"default"}],"hosting":{"public":"build/web","ignore":["firebase.json","**/.* !**/.env","**/node_modules/**"]},"storage":{"rules":"storage.rules"},"emulators":{"auth":{"port":9099},"functions":{"port":5001},"firestore":{"port":8081},"hosting":{"port":5002},"pubsub":{"port":8085},"storage":{"port":9199},"eventarc":{"port":9299},"ui":{"enabled":true},"singleProjectMode":true},"remoteconfig":{"template":"remoteconfig.template.json"},"flutter":{"platforms":{"android":{"default":{"projectId":"tliny-c9630","appId":"1:736590453040:android:94b02e3c23b2e383cd10f5","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"tliny-c9630","appId":"1:736590453040:ios:1d94bc3ef08c18eecd10f5","uploadDebugSymbols":true,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"tliny-c9630","appId":"1:736590453040:ios:1d94bc3ef08c18eecd10f5","uploadDebugSymbols":true,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"tliny-c9630","configurations":{"android":"1:736590453040:android:94b02e3c23b2e383cd10f5","ios":"1:736590453040:ios:1d94bc3ef08c18eecd10f5","macos":"1:736590453040:ios:1d94bc3ef08c18eecd10f5","web":"1:736590453040:web:a4125c7a199f8e22cd10f5","windows":"1:736590453040:web:3c66100e985694fccd10f5"}}}}}}
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ],
+      "source": "functions",
+      "codebase": "default"
+    }
+  ],
+  "hosting": {
+    "public": "build/web",
+    "ignore": ["firebase.json", "**/.* !**/.env", "**/node_modules/**"]
+  },
+  "storage": { "rules": "storage.rules" },
+  "emulators": {
+    "auth": { "port": 9099 },
+    "functions": { "port": 5001 },
+    "firestore": { "port": 8081 },
+    "hosting": { "port": 5002 },
+    "pubsub": { "port": 8085 },
+    "storage": { "port": 9199 },
+    "eventarc": { "port": 9299 },
+    "ui": { "enabled": true },
+    "singleProjectMode": true
+  },
+  "remoteconfig": { "template": "remoteconfig.template.json" },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tliny-c9630",
+          "appId": "1:736590453040:android:94b02e3c23b2e383cd10f5",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "tliny-c9630",
+          "appId": "1:736590453040:ios:1d94bc3ef08c18eecd10f5",
+          "uploadDebugSymbols": true,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "tliny-c9630",
+          "appId": "1:736590453040:ios:1d94bc3ef08c18eecd10f5",
+          "uploadDebugSymbols": true,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tliny-c9630",
+          "configurations": {
+            "android": "1:736590453040:android:94b02e3c23b2e383cd10f5",
+            "ios": "1:736590453040:ios:1d94bc3ef08c18eecd10f5",
+            "macos": "1:736590453040:ios:1d94bc3ef08c18eecd10f5",
+            "web": "1:736590453040:web:a4125c7a199f8e22cd10f5",
+            "windows": "1:736590453040:web:3c66100e985694fccd10f5"
+          }
+        }
+      }
+    }
+  }
+}

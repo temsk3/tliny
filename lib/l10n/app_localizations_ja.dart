@@ -363,6 +363,15 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String get specificCommercialCode => '特定商取引法に基づく表記';
+
+  @override
+  String get copyToClipboard => 'クリップボードにコピー';
+
+  @override
+  String get copiedToClipboard => 'クリップボードにコピーしました';
+
+  @override
   String get adjustQuantityToStock => '数量を在庫数に調整します。';
 
   @override
@@ -483,4 +492,164 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get eventPeriod => 'イベント開催期間';
+
+  @override
+  String get sellerName => '販売業社の名称';
+
+  @override
+  String get address => '所在地';
+
+  @override
+  String get phoneNumber => '電話番号';
+
+  @override
+  String get emailAddress => 'メールアドレス';
+
+  @override
+  String get operatorInCharge => '運営統括責任者';
+
+  @override
+  String get additionalFees => '追加手数料等の追加料金';
+
+  @override
+  String get returnPolicy => '交換および返品（返金ポリシー）';
+
+  @override
+  String get deliveryPeriod => '引渡時期';
+
+  @override
+  String get paymentMethods => '受け付け可能な決済手段';
+
+  @override
+  String get paymentPeriod => '決済期間';
+
+  @override
+  String get sellingPrice => '販売価格';
+
+  @override
+  String get disclosureOnRequest => '請求があったら遅滞なく開示します';
+
+  @override
+  String get noAdditionalFees => 'なし';
+
+  @override
+  String get customerReturnPolicy => '＜お客様都合の返品・交換の場合＞';
+
+  @override
+  String get beforeDelivery => '引渡し処理前の商品：メールにてお問い合わせください。';
+
+  @override
+  String get afterDelivery => '引渡し処理後の商品：原則、返品・交換はお受けしておりません。';
+
+  @override
+  String get defectiveProduct => '＜商品に不備がある場合＞';
+
+  @override
+  String get contactByEmail => 'メールにてご連絡ください。';
+
+  @override
+  String get creditCard => 'クレジットカード';
+
+  @override
+  String get creditCardProcessing => 'クレジットカード決済はただちに処理されます。';
+
+  @override
+  String get priceOnProductPage => '各商品ページに記載の金額';
+
+  @override
+  String get noEmail => 'メールアドレスなし';
+
+  @override
+  String get noName => '名前なし';
+
+  @override
+  String get priceLabel => '価格';
+
+  @override
+  String get ticketNotFound => 'チケットが見つかりません';
+
+  @override
+  String get error => 'エラー';
+
+  @override
+  String get errorDetails => 'エラー詳細';
+
+  @override
+  String get genreGoods => '物品';
+
+  @override
+  String get genreFoods => '食品';
+
+  @override
+  String get genreOthers => 'その他';
+
+  @override
+  String get changeEmail => 'メールアドレス変更';
+
+  @override
+  String get currentEmail => '現在のメールアドレス';
+
+  @override
+  String get newEmail => '新しいメールアドレス';
+
+  @override
+  String get confirmPassword => 'パスワード確認';
+
+  @override
+  String get changeEmailDescription => 'メールアドレスを変更するには、現在のパスワードを入力してください。';
+
+  @override
+  String get emailChangeSuccess =>
+      'メールアドレス変更の確認メールを送信しました。新しいメールアドレスで確認メールを確認してください。';
+
+  @override
+  String get emailChangeError => 'メールアドレス変更に失敗しました';
+
+  @override
+  String get passwordRequired => 'パスワードを入力してください';
+
+  @override
+  String get passwordIncorrect => 'パスワードが正しくありません';
+
+  @override
+  String get emailAlreadyInUse => 'このメールアドレスは既に使用されています';
+
+  @override
+  String get emailChangeInProgress => 'メールアドレス変更処理中...';
+
+  @override
+  String get emailChangeCompleted => 'メールアドレス変更が完了しました';
+
+  @override
+  String get changePassword => 'パスワード変更';
+
+  @override
+  String get currentPassword => '現在のパスワード';
+
+  @override
+  String get newPassword => '新しいパスワード';
+
+  @override
+  String get confirmNewPassword => '新しいパスワード（確認）';
+
+  @override
+  String get changePasswordDescription => 'パスワードを変更するには、現在のパスワードを入力してください。';
+
+  @override
+  String get passwordChangeSuccess => 'パスワードが正常に変更されました。';
+
+  @override
+  String get passwordChangeError => 'パスワード変更に失敗しました';
+
+  @override
+  String get passwordMismatch => '新しいパスワードが一致しません';
+
+  @override
+  String get passwordTooWeak => 'パスワードが弱すぎます。6文字以上の英数字で入力してください';
+
+  @override
+  String get passwordChangeInProgress => 'パスワード変更処理中...';
+
+  @override
+  String get passwordChangeCompleted => 'パスワード変更が完了しました';
 }

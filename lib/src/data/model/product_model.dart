@@ -3,19 +3,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../l10n/app_localizations.dart';
 import 'util/json_converter.dart';
 
 part 'product_model.freezed.dart';
 part 'product_model.g.dart';
 
 enum GenreType {
-  goods(name: '物品'),
-  foods(name: '食品'),
-  others(name: 'その他');
+  goods,
+  foods,
+  others;
 
-  const GenreType({required this.name});
-
-  final String name;
+  String getLocalizedName(AppLocalizations l10n) {
+    switch (this) {
+      case GenreType.goods:
+        return l10n.genreGoods;
+      case GenreType.foods:
+        return l10n.genreFoods;
+      case GenreType.others:
+        return l10n.genreOthers;
+    }
+  }
 }
 
 //
@@ -64,7 +72,6 @@ class Product with _$Product {
     name: '',
     genre: GenreType.others,
     desc: '',
-    price: 50,
     pictureURL: [],
     expirationFrom: DateTime(1999, 12, 31, 23, 59),
     expirationTo: DateTime(1999, 12, 31, 23, 59),

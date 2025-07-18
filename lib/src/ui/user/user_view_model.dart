@@ -10,6 +10,8 @@ import '../../data/repository/stripe_repository.dart';
 import '../../data/repository/user_repository.dart';
 import '../../utils/logger.dart';
 import '../common/loading_screen.dart';
+import 'email_change_view_model.dart';
+import 'password_change_view_model.dart';
 
 part 'user_view_model.g.dart';
 
@@ -28,6 +30,9 @@ class UserViewModel extends _$UserViewModel {
 
   @override
   FutureOr<User> build() {
+    // メールアドレス変更とパスワード変更の状態を監視
+    ref.watch(emailChangeViewModelProvider);
+    ref.watch(passwordChangeViewModelProvider);
     return _getUserDirectly();
   }
 
@@ -169,8 +174,9 @@ class UserViewModel extends _$UserViewModel {
   void updateProfile(User user) {
     authRepository
       ..updateDisplayName(user.displayName)
-      // ..updateEmail(user.email)
       ..updatePhotoUrl(user.photoUrl);
+    // メールアドレスは専用ページで変更するため、ここでは更新しない
+    // ..updateEmail(user.email)
     // ..updatePhoneNumber(user.phoneNumber);
   }
 

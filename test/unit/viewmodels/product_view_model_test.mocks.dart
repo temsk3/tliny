@@ -329,10 +329,13 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
   );
 
   @override
-  void updateEmail(String? email) => super.noSuchMethod(
-    Invocation.method(#updateEmail, [email]),
-    returnValueForMissingStub: null,
-  );
+  _i6.Future<void> updateEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateEmail, [email]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 
   @override
   void updatePassword(String? password) => super.noSuchMethod(

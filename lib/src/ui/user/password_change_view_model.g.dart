@@ -2,28 +2,31 @@
 
 // ignore_for_file: type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type
 
-part of 'user_view_model.dart';
+part of 'password_change_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userViewModelHash() => r'2a7ad60444cc403a57127aa85eaa04dfc0f5e737';
+String _$passwordChangeViewModelHash() =>
+    r'51e644bf0ff1102efcc8e543891b8539c1479e13';
 
-/// See also [UserViewModel].
-@ProviderFor(UserViewModel)
-final userViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<UserViewModel, User>.internal(
-      UserViewModel.new,
-      name: r'userViewModelProvider',
+/// パスワード変更を管理する ViewModel
+///
+/// Copied from [PasswordChangeViewModel].
+@ProviderFor(PasswordChangeViewModel)
+final passwordChangeViewModelProvider =
+    AutoDisposeAsyncNotifierProvider<PasswordChangeViewModel, void>.internal(
+      PasswordChangeViewModel.new,
+      name: r'passwordChangeViewModelProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$userViewModelHash,
+              : _$passwordChangeViewModelHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-typedef _$UserViewModel = AutoDisposeAsyncNotifier<User>;
+typedef _$PasswordChangeViewModel = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -395,7 +395,7 @@ class CustomCommerceListTile extends HookWidget {
     // final appRoute = useRouter();
     return ListTile(
       leading: const Icon(Icons.library_books_outlined),
-      title: const Text('特定商取引法に基づく表記'),
+      title: Text(l10n.specificCommercialCode),
       onTap: () async {
         final txtContent = await rootBundle.loadString(
           'assets/files/TLINY_commerce.txt',
@@ -404,7 +404,7 @@ class CustomCommerceListTile extends HookWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: const Text('特定商取引法に基づく表記'),
+              title: Text(l10n.specificCommercialCode),
               content: SingleChildScrollView(child: Text(txtContent)),
               actions: [
                 TextButton(

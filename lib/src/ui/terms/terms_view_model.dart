@@ -28,6 +28,9 @@ class TermsViewModel extends _$TermsViewModel {
 
   @override
   FutureOr<User> build(String uid) {
+    if (uid.isEmpty) {
+      return User.empty();
+    }
     return _readUserDirectly(uid);
   }
 

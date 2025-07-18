@@ -22,3 +22,6 @@ firebaseAdmin.initializeApp()
 
 // V2 functions - direct exports
 export * from './v2'
+
+// V1 functions - direct exports
+export * from './v1/payment/webhook'

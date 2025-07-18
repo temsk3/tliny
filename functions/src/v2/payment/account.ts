@@ -7,7 +7,7 @@ import Stripe from 'stripe'
 import * as firebaseAdmin from 'firebase-admin'
 
 import { getStripe, stripeOptions, stripeErrors } from './utils'
-import { accountType } from './utils/stripe_config'
+import { accountType, country } from './utils/stripe_config'
 import { db, getStripeConnectAccountId } from '../../utils/firebase_utils'
 import paths from '../firestore/utils/db_paths'
 
@@ -167,6 +167,7 @@ export const v2_payment_account_onList = onCall(async (request) => {
 export const v2_payment_account_onCreateAccountLink = onCall(
   async (request) => {
     const uid = requireAuth(request)
+    const email = (request.data as any).email
     const returnUrl =
       (request.data as any).returnUrl || 'https://tliny-sample.spel1.com/user'
     const refreshUrl =
@@ -268,29 +269,60 @@ export const v2_payment_account_onCreateAccountLink = onCall(
       }
 
       // 新しいアカウントを作成
+      // 新規アカウントを作成
+      const params: Stripe.AccountCreateParams = {
+        type: accountType as Stripe.AccountCreateParams.Type,
+        country: country,
+        email: email,
+        metadata: { uid },
+        business_type: 'individual',
+        business_profile: {
+          url: 'https://web.tliny.jp/#/terms?uid=' + uid,
+          mcc: '8398',
+          product_description:
+            '学校のPTAが主催するチャリティーバザー。保護者から提供された手作り品や中古品を販売し、収益は学校の備品（図書やスポーツ用品など）の購入費用に充当します。',
+          support_email: email,
+        },
+        individual: {
+          email: email,
+        },
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+          jcb_payments: { requested: true },
+        },
+        settings: {
+          payouts: {
+            schedule: {
+              interval: 'manual',
+            },
+          },
+        },
+      }
       if (!accountId) {
         logger.info('Creating new Stripe Connect account...')
         stripeOptions.idempotencyKey = `create_account_${uid}_${Date.now()}`
 
         const account = await getStripe().accounts.create(
-          {
-            type: accountType,
-            country: 'JP',
-            email: (request.data as any).email,
-            business_type: 'individual',
-            metadata: { uid },
-            capabilities: {
-              card_payments: { requested: true },
-              transfers: { requested: true },
-            },
-            settings: {
-              payouts: {
-                schedule: {
-                  interval: 'manual',
-                },
-              },
-            },
-          },
+          // {
+          //   type: accountType,
+          //   country: 'JP',
+          //   email: (request.data as any).email,
+          //   business_type: 'individual',
+          //   metadata: { uid },
+          //   capabilities: {
+          //     card_payments: { requested: true },
+          //     transfers: { requested: true },
+          //   },
+          //   settings: {
+          //     payouts: {
+          //       schedule: {
+          //         interval: 'manual',
+          //       },
+          //     },
+          //   },
+          // },
+          params,
           stripeOptions,
         )
 

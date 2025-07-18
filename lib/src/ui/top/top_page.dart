@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/program_model.dart';
-import '../../settings/routes/routes.dart';
 import '../../ui/common/main_body.dart';
 import '../common/asyncvalue_widget.dart';
 import '../program/program_state.dart';
 import '../program/widget/program_button.dart';
 import 'program_screen.dart';
+import 'widgets/program_search_card.dart';
 
 // final logger = Logger();
 
@@ -148,17 +148,8 @@ class TopPage extends HookConsumerWidget {
       itemCount: searchIndexList.length,
       itemBuilder: (context, int index) {
         index = searchIndexListNotifier.state.toList()[index];
-        return Card(
-          child: ListTile(
-            onTap: () {
-              // appRoute.push(ProgramDetailsRoute(program: data[index]));
-              if (data[index].id != null) {
-                ProgramDetailRoute($extra: data[index]).push(context);
-              }
-            },
-            title: Text(data[index].name.toString()),
-          ),
-        );
+        final program = data[index];
+        return ProgramSearchCard(program: program);
       },
     );
   }

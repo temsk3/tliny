@@ -367,6 +367,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get specificCommercialCode => 'Specified Commercial Transaction Act';
+
+  @override
+  String get copyToClipboard => 'Copy to clipboard';
+
+  @override
+  String get copiedToClipboard => 'Copied to clipboard';
+
+  @override
   String get adjustQuantityToStock =>
       'Quantity will be adjusted to stock level.';
 
@@ -496,4 +505,172 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventPeriod => 'Event Period';
+
+  @override
+  String get sellerName => 'Seller Name';
+
+  @override
+  String get address => 'Address';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get emailAddress => 'Email Address';
+
+  @override
+  String get operatorInCharge => 'Operator in Charge';
+
+  @override
+  String get additionalFees => 'Additional Fees';
+
+  @override
+  String get returnPolicy => 'Return and Exchange Policy';
+
+  @override
+  String get deliveryPeriod => 'Delivery Period';
+
+  @override
+  String get paymentMethods => 'Accepted Payment Methods';
+
+  @override
+  String get paymentPeriod => 'Payment Period';
+
+  @override
+  String get sellingPrice => 'Selling Price';
+
+  @override
+  String get disclosureOnRequest =>
+      'Will be disclosed without delay upon request';
+
+  @override
+  String get noAdditionalFees => 'None';
+
+  @override
+  String get customerReturnPolicy =>
+      '＜For customer-initiated returns/exchanges＞';
+
+  @override
+  String get beforeDelivery =>
+      'Before delivery processing: Please contact us by email.';
+
+  @override
+  String get afterDelivery =>
+      'After delivery processing: Returns/exchanges are generally not accepted.';
+
+  @override
+  String get defectiveProduct => '＜For defective products＞';
+
+  @override
+  String get contactByEmail => 'Please contact us by email.';
+
+  @override
+  String get creditCard => 'Credit Card';
+
+  @override
+  String get creditCardProcessing =>
+      'Credit card payments are processed immediately.';
+
+  @override
+  String get priceOnProductPage => 'Price listed on each product page';
+
+  @override
+  String get noEmail => 'No Email';
+
+  @override
+  String get noName => 'No Name';
+
+  @override
+  String get priceLabel => 'Price';
+
+  @override
+  String get ticketNotFound => 'Ticket not found';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get errorDetails => 'Error Details';
+
+  @override
+  String get genreGoods => 'Goods';
+
+  @override
+  String get genreFoods => 'Foods';
+
+  @override
+  String get genreOthers => 'Others';
+
+  @override
+  String get changeEmail => 'Change Email Address';
+
+  @override
+  String get currentEmail => 'Current Email Address';
+
+  @override
+  String get newEmail => 'New Email Address';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get changeEmailDescription =>
+      'To change your email address, please enter your current password.';
+
+  @override
+  String get emailChangeSuccess =>
+      'Email change confirmation email has been sent. Please check the confirmation email at your new email address.';
+
+  @override
+  String get emailChangeError => 'Failed to change email address';
+
+  @override
+  String get passwordRequired => 'Please enter your password';
+
+  @override
+  String get passwordIncorrect => 'Password is incorrect';
+
+  @override
+  String get emailAlreadyInUse => 'This email address is already in use';
+
+  @override
+  String get emailChangeInProgress => 'Email change in progress...';
+
+  @override
+  String get emailChangeCompleted => 'Email address change completed';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get currentPassword => 'Current Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get confirmNewPassword => 'Confirm New Password';
+
+  @override
+  String get changePasswordDescription =>
+      'To change your password, please enter your current password.';
+
+  @override
+  String get passwordChangeSuccess => 'Password has been changed successfully.';
+
+  @override
+  String get passwordChangeError => 'Failed to change password';
+
+  @override
+  String get passwordMismatch => 'New passwords do not match';
+
+  @override
+  String get passwordTooWeak =>
+      'Password is too weak. Please enter at least 6 alphanumeric characters';
+
+  @override
+  String get passwordChangeInProgress => 'Password change in progress...';
+
+  @override
+  String get passwordChangeCompleted => 'Password change completed';
 }

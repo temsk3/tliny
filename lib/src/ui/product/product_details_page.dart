@@ -42,7 +42,7 @@ class ProductDetailsPage extends HookConsumerWidget {
 
     final code = data.code ?? 'No code';
     final name = data.name ?? 'No Name';
-    final genre = data.genre?.name ?? 'No Genre';
+    final genre = data.genre?.getLocalizedName(l10n) ?? 'No Genre';
     final desc = data.desc ?? 'No Desc';
     final stock = data.stock;
     final price = data.price;

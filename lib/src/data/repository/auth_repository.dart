@@ -150,13 +150,22 @@ class AuthRepository {
   }
 
   /// ユーザーのメールアドレスを更新する
-  void updateEmail(String email) {
+  Future<void> updateEmail(String email) async {
     logger.i('updateEmail: ユーザーのメールアドレスを更新します');
     try {
-      if (_auth.currentUser!.email != email ||
-          _auth.currentUser!.email != null) {
-        _auth.currentUser!.verifyBeforeUpdateEmail(email);
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw GeneralException(
+          message: 'ユーザーが認証されていません',
+          stackTrace: StackTrace.current,
+        );
+      }
+
+      if (currentUser.email != email) {
+        await currentUser.verifyBeforeUpdateEmail(email);
         logger.i('updateEmail: ユーザーのメールアドレス更新成功');
+      } else {
+        logger.i('updateEmail: メールアドレスが同じため更新をスキップ');
       }
     } on FirebaseAuthException catch (e) {
       logger.e('updateEmail: ユーザーのメールアドレス更新失敗', error: e);

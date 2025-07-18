@@ -2,6 +2,9 @@
   "buckets": [
     {
       "id": "tliny-sample.appspot.com"
+    },
+    {
+      "id": "tliny-c9630.appspot.com"
     }
   ]
 }
