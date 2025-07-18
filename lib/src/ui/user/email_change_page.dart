@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
 import '../../utils/router_utils.dart';
@@ -177,18 +178,9 @@ class EmailChangePage extends HookConsumerWidget {
 
                                         // 成功時の処理
                                         if (context.mounted) {
-                                          ScaffoldMessenger.of(
+                                          ErrorHandler.showSuccessSnackBar(
                                             context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                l10n.emailChangeSuccess,
-                                              ),
-                                              backgroundColor:
-                                                  Theme.of(
-                                                    context,
-                                                  ).colorScheme.primary,
-                                            ),
+                                            l10n.emailChangeSuccess,
                                           );
                                           RouterUtils.safePop(context);
                                         }

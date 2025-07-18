@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_media_query.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
 import '../../utils/router_utils.dart';
@@ -52,12 +53,7 @@ class SellerRegistrationPage extends HookConsumerWidget {
                         await viewModel.getAccountLink(data.email ?? '');
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
+                          ErrorHandler.showErrorSnackBar(context, e, l10n);
                         }
                       }
                     },
@@ -66,12 +62,7 @@ class SellerRegistrationPage extends HookConsumerWidget {
                         await viewModel.createLoginLink();
                       } catch (e) {
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
+                          ErrorHandler.showErrorSnackBar(context, e, l10n);
                         }
                       }
                     },

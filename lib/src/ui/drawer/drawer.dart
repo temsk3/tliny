@@ -10,8 +10,10 @@ import '../../data/repository/auth_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/auth/auth_view_model.dart';
 import '../../ui/common/asyncvalue_widget.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/drawer/drawer_state.dart';
 import '../../ui/program/program_state.dart';
+import '../../utils/logger.dart';
 import '../my_program/my_program_view_model.dart';
 
 class CustomDrawer extends HookConsumerWidget {
@@ -325,14 +327,21 @@ class CustomSignListTile extends HookWidget {
                 leading: const Icon(Icons.login_outlined),
                 title: Text(l10n.signIn),
                 onTap: () async {
-                  // await appRoute.replace(
-                  //   SignInRoute(
-                  //     onSigninCallback: (bool bool) {
-                  //       appRoute.replace(const HomeRoute());
-                  // },
-                  //   ),
-                  // );
-                  context.push(AppRoutes.signInPage);
+                  try {
+                    // await appRoute.replace(
+                    //   SignInRoute(
+                    //     onSigninCallback: (bool bool) {
+                    //       appRoute.replace(const HomeRoute());
+                    // },
+                    //   ),
+                    // );
+                    context.push(AppRoutes.signInPage);
+                  } catch (e) {
+                    logger.e('Failed to navigate to sign in page: $e');
+                    if (context.mounted) {
+                      ErrorHandler.showErrorSnackBar(context, e, l10n);
+                    }
+                  }
                 },
               );
             }
@@ -378,27 +387,34 @@ class CustomTermsListTile extends HookWidget {
       leading: const Icon(Icons.library_books_outlined),
       title: const Text('Terms'),
       onTap: () async {
-        final txtContent = await rootBundle.loadString(
-          'assets/files/TLINY_terms.txt',
-        );
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Terms'),
-              content: SingleChildScrollView(child: Text(txtContent)),
-              actions: [
-                TextButton(
-                  child: Text(l10n.close),
-                  onPressed: () {
-                    // appRoute.pop(false);
-                    context.pop(false);
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        try {
+          final txtContent = await rootBundle.loadString(
+            'assets/files/TLINY_terms.txt',
+          );
+          await showDialog<void>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Terms'),
+                content: SingleChildScrollView(child: Text(txtContent)),
+                actions: [
+                  TextButton(
+                    child: Text(l10n.close),
+                    onPressed: () {
+                      // appRoute.pop(false);
+                      context.pop(false);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } catch (e) {
+          logger.e('Failed to load terms: $e');
+          if (context.mounted) {
+            ErrorHandler.showErrorSnackBar(context, e, l10n);
+          }
+        }
       },
     );
   }
@@ -415,27 +431,34 @@ class CustomCommerceListTile extends HookWidget {
       leading: const Icon(Icons.library_books_outlined),
       title: Text(l10n.specificCommercialCode),
       onTap: () async {
-        final txtContent = await rootBundle.loadString(
-          'assets/files/TLINY_commerce.txt',
-        );
-        await showDialog<void>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(l10n.specificCommercialCode),
-              content: SingleChildScrollView(child: Text(txtContent)),
-              actions: [
-                TextButton(
-                  child: Text(l10n.close),
-                  onPressed: () {
-                    // appRoute.pop(false);
-                    context.pop(false);
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        try {
+          final txtContent = await rootBundle.loadString(
+            'assets/files/TLINY_commerce.txt',
+          );
+          await showDialog<void>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(l10n.specificCommercialCode),
+                content: SingleChildScrollView(child: Text(txtContent)),
+                actions: [
+                  TextButton(
+                    child: Text(l10n.close),
+                    onPressed: () {
+                      // appRoute.pop(false);
+                      context.pop(false);
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } catch (e) {
+          logger.e('Failed to load commerce: $e');
+          if (context.mounted) {
+            ErrorHandler.showErrorSnackBar(context, e, l10n);
+          }
+        }
       },
     );
   }

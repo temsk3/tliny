@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../ui/common/error_handler.dart';
+
 SnackBarController useSnackBar() {
   final context = useContext();
   return SnackBarController(context: context);
@@ -13,14 +15,11 @@ class SnackBarController {
   final BuildContext context;
 
   void showAlertSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Colors.red, content: Text(message)),
-    );
+    // ErrorHandlerを使うように統一
+    ErrorHandler.showWarningSnackBar(context, message);
   }
 
   void showSuccessSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: Colors.green, content: Text(message)),
-    );
+    ErrorHandler.showSuccessSnackBar(context, message);
   }
 }

@@ -9,7 +9,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../data/model/ticket_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_snackbar.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
+import '../../utils/logger.dart';
 import '../../utils/security.dart';
 import 'qrcode_scanner_view_model.dart';
 
@@ -21,6 +23,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
     final snackBar = useSnackBar();
+    final errorHandler = useErrorHandler();
     // モバイルスキャナーコントローラー
     final mobileScannerController = useMemoized(MobileScannerController.new);
     final viewModel = ref.read(qRCodeScannerViewModelProvider.notifier);
@@ -109,6 +112,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
         snackBar.showSuccessSnackBar('Ticket scanned successfully.');
       } on Exception catch (e) {
+        logger.e('Failed to handle QR code scan: $e');
         snackBar.showAlertSnackBar('Failed to process QR code: $e');
       } finally {
         isScanning.value = false;
@@ -203,70 +207,75 @@ class QRCodeScannerPage extends HookConsumerWidget {
               ? FloatingActionButton(
                 heroTag: 'qr_scanner_fab',
                 onPressed: () async {
-                  print('FloatingActionButton onPressed'); // 追加
-                  isDialogShowing.value = true;
-                  await mobileScannerController.stop();
-                  bool? confirmed = false;
-                  final tickets = scannedTickets.value.toList();
+                  try {
+                    print('FloatingActionButton onPressed'); // 追加
+                    isDialogShowing.value = true;
+                    await mobileScannerController.stop();
+                    bool? confirmed = false;
+                    final tickets = scannedTickets.value.toList();
 
-                  await showDialog<void>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder:
-                        (context) => AlertDialog(
-                          title: const Text('Scanned Tickets'),
-                          content: Text(viewModel.ticketCounts(tickets)),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                  );
-
-                  confirmed = await showDialog<bool>(
-                    context: context,
-                    barrierDismissible: false,
-                    builder:
-                        (context) => AlertDialog(
-                          title: const Text('Confirm Action'),
-                          content: const Text(
-                            'Do you want to mark the scanned ticket as used?',
+                    await showDialog<void>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Scanned Tickets'),
+                            content: Text(viewModel.ticketCounts(tickets)),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
                           ),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, false),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, true),
-                              child: const Text('Confirm'),
-                            ),
-                          ],
-                        ),
-                  );
+                    );
 
-                  if (confirmed == true) {
-                    try {
-                      print('Updating database tickets...');
-                      await viewModel.updateDatabaseTickets(tickets);
-                      print('Tickets updated successfully.');
-                      await Future.delayed(const Duration(milliseconds: 5));
-                      viewModel.resetUserId();
-                      scannedTickets.value = {};
-                      snackBar.showSuccessSnackBar(
-                        'Tickets updated successfully.',
-                      );
-                    } on Exception catch (e) {
-                      print('Failed to update tickets: $e');
-                      snackBar.showAlertSnackBar('チケットの更新に失敗しました: $e');
+                    confirmed = await showDialog<bool>(
+                      context: context,
+                      barrierDismissible: false,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Confirm Action'),
+                            content: const Text(
+                              'Do you want to mark the scanned ticket as used?',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: const Text('Confirm'),
+                              ),
+                            ],
+                          ),
+                    );
+
+                    if (confirmed == true) {
+                      try {
+                        print('Updating database tickets...');
+                        await viewModel.updateDatabaseTickets(tickets);
+                        print('Tickets updated successfully.');
+                        await Future.delayed(const Duration(milliseconds: 5));
+                        viewModel.resetUserId();
+                        scannedTickets.value = {};
+                        errorHandler.showSuccessSnackBar(
+                          'Tickets updated successfully.',
+                        );
+                      } on Exception catch (e) {
+                        print('Failed to update tickets: $e');
+                        errorHandler.showError(e, errorContext: 'チケット更新');
+                      }
                     }
+                  } catch (e) {
+                    errorHandler.showError(e, errorContext: 'QRスキャナー操作');
+                  } finally {
+                    isDialogShowing.value = false;
+                    await mobileScannerController.start();
                   }
-                  isDialogShowing.value = false;
-                  await mobileScannerController.start();
                 },
                 child: const Icon(Icons.check),
               )

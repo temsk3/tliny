@@ -5,6 +5,8 @@ import 'package:tliny/src/settings/routes/routes.dart';
 import '../../../data/model/product_model.dart';
 import '../../../data/model/program_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
+import '../../../ui/common/error_handler.dart';
+import '../../../utils/logger.dart';
 import '../../image/image_screen.dart';
 
 // final logger = Logger();
@@ -43,13 +45,20 @@ class ProductCard extends HookConsumerWidget {
       children: [
         InkWell(
           onTap: () async {
-            if (program.id != null && product.id != null) {
-              // await appRoute.push(
-              ProductDetailsRoute(
-                programId: program.id!,
-                productId: product.id!,
-              ).push(context);
-              // );
+            try {
+              if (program.id != null && product.id != null) {
+                // await appRoute.push(
+                ProductDetailsRoute(
+                  programId: program.id!,
+                  productId: product.id!,
+                ).push(context);
+                // );
+              }
+            } catch (e) {
+              logger.e('Failed to navigate to product details: $e');
+              if (context.mounted) {
+                ErrorHandler.showErrorSnackBar(context, e, l10n);
+              }
             }
           },
           child: Card(

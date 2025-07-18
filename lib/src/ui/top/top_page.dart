@@ -85,8 +85,11 @@ class TopPage extends HookConsumerWidget {
                     ),
                   )
                   : const EventScreen(), // TikTok風の全画面表示
-          floatingActionButton: const AddProgramFloatingActionButton(
+          floatingActionButton: AddProgramFloatingActionButton(
             heroTag: 'top_page_fab',
+            onPressed: () {
+              // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
+            },
           ),
         );
       },

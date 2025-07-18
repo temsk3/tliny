@@ -117,37 +117,52 @@ class CommercialTransactionSection extends HookConsumerWidget {
                         ),
                         child: IconButton(
                           onPressed: () async {
-                            await Clipboard.setData(ClipboardData(text: url));
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle_outline,
-                                        color:
-                                            theme.colorScheme.onInverseSurface,
-                                        size: 20,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Text(
-                                        l10n.copiedToClipboard,
-                                        style: TextStyle(
+                            try {
+                              await Clipboard.setData(ClipboardData(text: url));
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.check_circle_outline,
                                           color:
                                               theme
                                                   .colorScheme
                                                   .onInverseSurface,
+                                          size: 20,
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          l10n.copiedToClipboard,
+                                          style: TextStyle(
+                                            color:
+                                                theme
+                                                    .colorScheme
+                                                    .onInverseSurface,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    duration: const Duration(seconds: 2),
                                   ),
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
+                                );
+                              }
+                            } catch (e) {
+                              // クリップボード操作のエラーは軽微なため、スナックバーで表示
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('クリップボードへのコピーに失敗しました'),
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 2),
                                   ),
-                                  duration: const Duration(seconds: 2),
-                                ),
-                              );
+                                );
+                              }
                             }
                           },
                           icon: Icon(

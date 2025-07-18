@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,6 +12,7 @@ import '../../data/repository/auth_repository.dart';
 import '../../data/repository/stripe_repository.dart';
 import '../../settings/routes/routes.dart';
 import '../../utils/logger.dart';
+import '../common/error_handler.dart';
 import '../common/loading_screen.dart';
 
 part 'checkout_view_model.g.dart';
@@ -224,16 +226,12 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
                     } on AppException catch (e, st) {
                       loading.stopLoading();
                       logger.e(
-                        'paymentWithBrowser: cancel AppException - [${e.message}',
+                        'paymentWithBrowser: cancel AppException -  [${e.message}',
                         stackTrace: st,
                       );
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('キャンセル処理に失敗しました: ${e.message}'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
+                        final l10n = AppLocalizations.of(context)!;
+                        ErrorHandler.showErrorSnackBar(context, e, l10n);
                       }
                       completer.completeError(e);
                     } on Exception catch (e, st) {
@@ -243,12 +241,8 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
                         stackTrace: st,
                       );
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('キャンセル処理に失敗しました'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
+                        final l10n = AppLocalizations.of(context)!;
+                        ErrorHandler.showErrorSnackBar(context, e, l10n);
                       }
                       completer.completeError(e);
                     }

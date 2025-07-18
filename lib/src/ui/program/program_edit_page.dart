@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
+import '../../ui/common/error_handler.dart';
 import '../../utils/date_formatter.dart';
 import '../../utils/logger.dart';
 import '../../utils/router_utils.dart';
@@ -33,6 +34,7 @@ class ProgramEditPage extends HookConsumerWidget {
 
     // final viewModel = ref.watch(programViewModelProvider.notifier);
     final imageViewModel = ref.watch(tempImageListViewModelProvider.notifier);
+    final errorHandler = useErrorHandler();
 
     final form = GlobalKey<FormState>();
     final focusNode = FocusNode();
@@ -272,28 +274,35 @@ class ProgramEditPage extends HookConsumerWidget {
                             width: double.infinity,
                             child: ElevatedButton.icon(
                               onPressed: () async {
-                                final dateRange = await showDateRangePicker(
-                                  context: context,
-                                  initialDateRange: DateTimeRange(
-                                    start: DateTime.parse(
-                                      salesStartEditingController.text,
+                                try {
+                                  final dateRange = await showDateRangePicker(
+                                    context: context,
+                                    initialDateRange: DateTimeRange(
+                                      start: DateTime.parse(
+                                        salesStartEditingController.text,
+                                      ),
+                                      end: DateTime.parse(
+                                        salesEndEditingController.text,
+                                      ),
                                     ),
-                                    end: DateTime.parse(
-                                      salesEndEditingController.text,
+                                    firstDate: DateTime(
+                                      now.year,
+                                      now.month,
+                                      now.day,
                                     ),
-                                  ),
-                                  firstDate: DateTime(
-                                    now.year,
-                                    now.month,
-                                    now.day,
-                                  ),
-                                  lastDate: DateTime(now.year + 3),
-                                );
-                                if (dateRange != null) {
-                                  salesStartEditingController.text = dateFormat
-                                      .format(dateRange.start);
-                                  salesEndEditingController.text = dateFormat
-                                      .format(dateRange.end);
+                                    lastDate: DateTime(now.year + 3),
+                                  );
+                                  if (dateRange != null) {
+                                    salesStartEditingController.text =
+                                        dateFormat.format(dateRange.start);
+                                    salesEndEditingController.text = dateFormat
+                                        .format(dateRange.end);
+                                  }
+                                } catch (e) {
+                                  errorHandler.showError(
+                                    e,
+                                    errorContext: '販売期間選択',
+                                  );
                                 }
                               },
                               icon: const Icon(Icons.calendar_today),
@@ -378,28 +387,35 @@ class ProgramEditPage extends HookConsumerWidget {
                             width: double.infinity,
                             child: ElevatedButton.icon(
                               onPressed: () async {
-                                final dateRange = await showDateRangePicker(
-                                  context: context,
-                                  initialDateRange: DateTimeRange(
-                                    start: DateTime.parse(
-                                      eventFromEditingController.text,
+                                try {
+                                  final dateRange = await showDateRangePicker(
+                                    context: context,
+                                    initialDateRange: DateTimeRange(
+                                      start: DateTime.parse(
+                                        eventFromEditingController.text,
+                                      ),
+                                      end: DateTime.parse(
+                                        eventToEditingController.text,
+                                      ),
                                     ),
-                                    end: DateTime.parse(
-                                      eventToEditingController.text,
+                                    firstDate: DateTime(
+                                      now.year,
+                                      now.month,
+                                      now.day,
                                     ),
-                                  ),
-                                  firstDate: DateTime(
-                                    now.year,
-                                    now.month,
-                                    now.day,
-                                  ),
-                                  lastDate: DateTime(now.year + 3),
-                                );
-                                if (dateRange != null) {
-                                  eventFromEditingController.text = dateFormat
-                                      .format(dateRange.start);
-                                  eventToEditingController.text = dateFormat
-                                      .format(dateRange.end);
+                                    lastDate: DateTime(now.year + 3),
+                                  );
+                                  if (dateRange != null) {
+                                    eventFromEditingController.text = dateFormat
+                                        .format(dateRange.start);
+                                    eventToEditingController.text = dateFormat
+                                        .format(dateRange.end);
+                                  }
+                                } catch (e) {
+                                  errorHandler.showError(
+                                    e,
+                                    errorContext: 'イベント期間選択',
+                                  );
                                 }
                               },
                               icon: const Icon(Icons.calendar_today),
@@ -478,55 +494,63 @@ class ProgramEditPage extends HookConsumerWidget {
                       Expanded(
                         child: RegisterProgramElevatedButton(
                           onPressed: () async {
-                            if (form.currentState!.validate()) {
-                              form.currentState!.save();
+                            try {
+                              if (form.currentState!.validate()) {
+                                form.currentState!.save();
 
-                              final storageId = await imageViewModel.createUuid;
-                              final photo = await imageViewModel.getTempImage(
-                                'program/$storageId',
-                                program.pictureURL,
-                              );
+                                final storageId =
+                                    await imageViewModel.createUuid;
+                                final photo = await imageViewModel.getTempImage(
+                                  'program/$storageId',
+                                  program.pictureURL,
+                                );
 
-                              final data = program.copyWith(
-                                id: id,
-                                organizerId: organizerId,
-                                name: nameEditingController.text,
-                                message: messageEditingController.text,
-                                salesStart: startDayFormatter(
-                                  salesStartEditingController.text,
-                                ),
-                                salesEnd: endDayFormatter(
-                                  salesEndEditingController.text,
-                                ),
-                                eventFrom: startDayFormatter(
-                                  eventFromEditingController.text,
-                                ),
-                                eventTo: endDayFormatter(
-                                  eventToEditingController.text,
-                                ),
-                                place: placeEditingController.text,
-                                isActive: isActive.value,
-                                isPublish: isPublish.value,
-                                storageId: storageId,
-                                pictureURL: photo,
-                                staffCode: staffCodeEditingController.text,
-                              );
+                                final data = program.copyWith(
+                                  id: id,
+                                  organizerId: organizerId,
+                                  name: nameEditingController.text,
+                                  message: messageEditingController.text,
+                                  salesStart: startDayFormatter(
+                                    salesStartEditingController.text,
+                                  ),
+                                  salesEnd: endDayFormatter(
+                                    salesEndEditingController.text,
+                                  ),
+                                  eventFrom: startDayFormatter(
+                                    eventFromEditingController.text,
+                                  ),
+                                  eventTo: endDayFormatter(
+                                    eventToEditingController.text,
+                                  ),
+                                  place: placeEditingController.text,
+                                  isActive: isActive.value,
+                                  isPublish: isPublish.value,
+                                  storageId: storageId,
+                                  pictureURL: photo,
+                                  staffCode: staffCodeEditingController.text,
+                                );
 
-                              logger.d(data);
-                              final result = await ref
-                                  .read(
-                                    globalLoadingControllerProvider.notifier,
-                                  )
-                                  .guardFuture<bool>(
-                                    () async => ref
-                                        .watch(
-                                          programViewModelProvider.notifier,
-                                        )
-                                        .registerProgram(data),
-                                  );
-                              if (context.mounted && result) {
-                                RouterUtils.safePop(context);
+                                logger.d(data);
+                                final result = await ref
+                                    .read(
+                                      globalLoadingControllerProvider.notifier,
+                                    )
+                                    .guardFuture<bool>(
+                                      () async => ref
+                                          .watch(
+                                            programViewModelProvider.notifier,
+                                          )
+                                          .registerProgram(data),
+                                    );
+                                if (context.mounted && result) {
+                                  RouterUtils.safePop(context);
+                                }
                               }
+                            } catch (e) {
+                              errorHandler.showError(
+                                e,
+                                errorContext: 'プログラム登録',
+                              );
                             }
                           },
                         ),

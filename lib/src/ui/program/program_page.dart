@@ -49,8 +49,11 @@ class ProgramPage extends HookConsumerWidget {
                     )
                     : Container(),
           ),
-          floatingActionButton: const AddProgramFloatingActionButton(
+          floatingActionButton: AddProgramFloatingActionButton(
             heroTag: 'program_page_fab',
+            onPressed: () {
+              // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
+            },
           ),
         );
       },

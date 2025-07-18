@@ -14,6 +14,7 @@ import '../../cart/cart_view_model.dart';
 import '../../common/asyncvalue_widget.dart';
 import '../../common/base_button_widget.dart';
 import '../../common/custom_alert_dialog.dart';
+import '../../common/error_handler.dart';
 import '../product_state.dart';
 import '../product_view_model.dart';
 
@@ -217,6 +218,7 @@ class InCartElevatedButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     // final appRoute = useRouter();
     final now = DateTime.now();
     final salesStart = program.salesStart!;
@@ -239,12 +241,8 @@ class InCartElevatedButton extends HookWidget {
                             .watch(cartViewModelProvider.notifier)
                             .cart(quantity, product.id!, program.id!);
                         logger.d('showFluttertoast: start');
-                        await showFluttertoast(
+                        errorHandler.showSuccessSnackBar(
                           '${product.name!} ${l10n.addedToCart}',
-                          webBgColor: 'amber',
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          textColor: Theme.of(context).colorScheme.onPrimary,
                         );
                         logger.d('showFluttertoast: end');
                         logger.d('pop');
@@ -258,7 +256,7 @@ class InCartElevatedButton extends HookWidget {
                         error: e,
                         stackTrace: st,
                       );
-                      rethrow;
+                      errorHandler.showError(e, errorContext: 'カート追加');
                     }
                   }
                   : null,
@@ -315,6 +313,7 @@ class DeleteProductElevatedButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     // final appRoute = useRouter();
     return Consumer(
       child: Text(l10n.delete),
@@ -327,20 +326,24 @@ class DeleteProductElevatedButton extends HookWidget {
               child: BaseElevatedButton(
                 l10n: l10n,
                 onPressed: () async {
-                  final result = await showConfirmDialog(
-                    context,
-                    // appRoute,
-                    title: l10n.delete,
-                    contentWidget: Text(l10n.doYouWantToDeleteIt),
-                    cancelText: l10n.no,
-                    decisionText: l10n.yes,
-                  );
-                  if (result!) {
-                    await showFluttertoast(l10n.processingData);
-                    await ref
-                        .watch(productViewModelProvider.notifier)
-                        .deleteProduct(product.id.toString());
-                    context.pop();
+                  try {
+                    final result = await showConfirmDialog(
+                      context,
+                      // appRoute,
+                      title: l10n.delete,
+                      contentWidget: Text(l10n.doYouWantToDeleteIt),
+                      cancelText: l10n.no,
+                      decisionText: l10n.yes,
+                    );
+                    if (result!) {
+                      errorHandler.showInfoSnackBar(l10n.processingData);
+                      await ref
+                          .watch(productViewModelProvider.notifier)
+                          .deleteProduct(product.id.toString());
+                      context.pop();
+                    }
+                  } catch (e) {
+                    errorHandler.showError(e, errorContext: '商品削除');
                   }
                 },
                 child: child!,
@@ -359,12 +362,19 @@ class RegisterProductElevatedButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     return Consumer(
       child: Text(l10n.register),
       builder: (context, ref, child) {
         return BaseElevatedButton(
           l10n: l10n,
-          onPressed: () async => onPressed(),
+          onPressed: () async {
+            try {
+              onPressed();
+            } catch (e) {
+              errorHandler.showError(e, errorContext: '商品登録');
+            }
+          },
           child: child!,
         );
       },
@@ -378,12 +388,19 @@ class CancelElevatedButton extends HookWidget {
   Widget build(BuildContext context) {
     // final appRoute = useRouter();
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     return Consumer(
       child: Text(l10n.cancel),
       builder: (context, ref, child) {
         return BaseElevatedButton(
           l10n: l10n,
-          onPressed: () async => RouterUtils.safePop(context),
+          onPressed: () async {
+            try {
+              RouterUtils.safePop(context);
+            } catch (e) {
+              errorHandler.showError(e, errorContext: '画面遷移');
+            }
+          },
           child: child!,
         );
       },

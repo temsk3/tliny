@@ -83,7 +83,14 @@ class ImageScreen extends HookConsumerWidget {
       children: [
         OutlinedButton(
           onPressed: () async {
-            await pickImage();
+            try {
+              await pickImage();
+            } catch (e) {
+              logger.e('Failed to pick image: $e');
+              if (context.mounted) {
+                ErrorHandler.showErrorSnackBar(context, e, l10n);
+              }
+            }
           },
           child: Text(l10n.selectImage),
         ),

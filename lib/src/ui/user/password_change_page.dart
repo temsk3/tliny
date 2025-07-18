@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
 import '../../utils/router_utils.dart';
-import '../../utils/validation_utils.dart';
 import 'password_change_view_model.dart';
 
 class PasswordChangePage extends HookConsumerWidget {
@@ -165,18 +165,9 @@ class PasswordChangePage extends HookConsumerWidget {
 
                                         // 成功時の処理
                                         if (context.mounted) {
-                                          ScaffoldMessenger.of(
+                                          ErrorHandler.showSuccessSnackBar(
                                             context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                l10n.passwordChangeSuccess,
-                                              ),
-                                              backgroundColor:
-                                                  Theme.of(
-                                                    context,
-                                                  ).colorScheme.primary,
-                                            ),
+                                            l10n.passwordChangeSuccess,
                                           );
                                           RouterUtils.safePop(context);
                                         }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/ui/checkout/checkout_view_model.dart';
 
 import '../../../data/model/cart_model.dart';
@@ -278,17 +279,13 @@ class PaymentButton extends HookWidget {
                                 } else {
                                   // その他のエラーは適切にユーザーに表示
                                   if (context.mounted) {
-                                    ErrorHandler.showErrorDialog(
-                                      ctx,
-                                      e,
+                                    final l10n = AppLocalizations.of(context)!;
+                                    ErrorHandler.showErrorSnackBar(
+                                      context,
+                                      Exception(
+                                        '在庫不足エラーが発生しました。カートの数量を確認してください。',
+                                      ),
                                       l10n,
-                                      title: l10n.paymentErrorTitle,
-                                      onRetry: () {
-                                        // 再試行時は同じ処理を実行
-                                        Navigator.of(ctx).pop();
-                                        // ボタンのonPressedを再実行するためのトリガー
-                                        // 実際の再実行はユーザーが再度ボタンを押す必要がある
-                                      },
                                     );
                                   }
                                 }
@@ -458,11 +455,11 @@ class PaymentButton extends HookWidget {
       );
       // エラーが発生した場合はシンプルなエラーメッセージを表示
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('在庫不足エラーが発生しました。カートの数量を確認してください。'),
-            backgroundColor: Colors.red,
-          ),
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showErrorSnackBar(
+          context,
+          Exception('在庫不足エラーが発生しました。カートの数量を確認してください。'),
+          l10n,
         );
       }
     }

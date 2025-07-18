@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../data/model/user_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
+import '../../../ui/common/error_handler.dart';
+import '../../../utils/logger.dart';
 import '../../image/image_screen.dart';
 import '../email_change_page.dart';
 import '../password_change_page.dart';
@@ -165,9 +167,16 @@ class UserEditForm extends HookConsumerWidget {
       width: double.infinity,
       child: OutlinedButton.icon(
         onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const EmailChangePage()),
-          );
+          try {
+            await Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const EmailChangePage()),
+            );
+          } catch (e) {
+            logger.e('Failed to navigate to email change page: $e');
+            if (context.mounted) {
+              ErrorHandler.showErrorSnackBar(context, e, l10n);
+            }
+          }
         },
         icon: const Icon(Icons.email_outlined),
         label: Text(l10n.changeEmail),
@@ -191,9 +200,18 @@ class UserEditForm extends HookConsumerWidget {
       width: double.infinity,
       child: OutlinedButton.icon(
         onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const PasswordChangePage()),
-          );
+          try {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const PasswordChangePage(),
+              ),
+            );
+          } catch (e) {
+            logger.e('Failed to navigate to password change page: $e');
+            if (context.mounted) {
+              ErrorHandler.showErrorSnackBar(context, e, l10n);
+            }
+          }
         },
         icon: const Icon(Icons.lock_outlined),
         label: Text(l10n.changePassword),

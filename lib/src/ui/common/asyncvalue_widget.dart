@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../data/model/exception/app_exception.dart';
 import '../../utils/logger.dart';
+import 'error_handler.dart';
 import 'error_screen.dart';
 
 /// 非同期処理の結果に応じて異なるWidgetを表示するWidget
@@ -30,6 +32,22 @@ class AsyncValueWidget<T> extends StatelessWidget {
           'AsyncValueWidget: error=$error, stackTrace=$stackTrace',
           time: DateTime.now(),
         );
+
+        // ErrorHandlerでエラーを表示
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            final l10n = AppLocalizations.of(context);
+            if (l10n != null) {
+              ErrorHandler.showError(
+                context,
+                error,
+                l10n,
+                errorContext: 'AsyncValueWidget',
+              );
+            }
+          }
+        });
+
         return ErrorScreen(e: error, st: stackTrace);
       },
     );
@@ -77,6 +95,21 @@ class AsyncValueButtonWidget<T> extends StatelessWidget {
             error.toString().contains('null')) {
           return const SizedBox.shrink();
         }
+
+        // ErrorHandlerでエラーを表示
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            final l10n = AppLocalizations.of(context);
+            if (l10n != null) {
+              ErrorHandler.showError(
+                context,
+                error,
+                l10n,
+                errorContext: 'AsyncValueButtonWidget',
+              );
+            }
+          }
+        });
 
         final message =
             error is AppException ? error.userMessage : error.toString();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -6,62 +7,197 @@ import '../../data/model/exception/app_exception.dart';
 import '../../utils/logger.dart';
 import 'loading_screen.dart';
 
+/// エラーの重要度レベル
+enum ErrorSeverity {
+  /// 軽微なエラー（スナックバーで表示）
+  minor,
+
+  /// 重要なエラー（ダイアログで表示）
+  major,
+
+  /// 致命的なエラー（ダイアログで表示、リトライ可能）
+  critical,
+}
+
+/// エラーの種類
+enum ErrorType {
+  /// ネットワークエラー
+  network,
+
+  /// 認証エラー
+  authentication,
+
+  /// バリデーションエラー
+  validation,
+
+  /// 権限エラー
+  permission,
+
+  /// データベースエラー
+  database,
+
+  /// 決済エラー
+  payment,
+
+  /// 在庫不足エラー
+  insufficientStock,
+
+  /// 画像関連エラー
+  image,
+
+  /// ファイル形式エラー
+  fileFormat,
+
+  /// サーバーエラー
+  server,
+
+  /// タイムアウトエラー
+  timeout,
+
+  /// その他のエラー
+  general,
+}
+
 /// 統一されたエラーハンドリング機能を提供するユーティリティクラス
 class ErrorHandler {
+  /// エラーの種類を判定
+  static ErrorType _getErrorType(Object error) {
+    final errorString = error.toString().toLowerCase();
+
+    if (error is AppException) {
+      if (error is NetworkException) return ErrorType.network;
+      if (error is AuthenticationException) return ErrorType.authentication;
+      if (error is ValidationException) return ErrorType.validation;
+      if (error is PermissionException) return ErrorType.permission;
+      if (error is DatabaseException) return ErrorType.database;
+      if (error is PaymentException) return ErrorType.payment;
+    }
+
+    // 文字列ベースの判定
+    if (errorString.contains('less stock than the quantity') ||
+        errorString.contains('insufficient stock')) {
+      return ErrorType.insufficientStock;
+    }
+
+    if (errorString.contains('network') || errorString.contains('connection')) {
+      return ErrorType.network;
+    }
+
+    if (errorString.contains('auth') || errorString.contains('unauthorized')) {
+      return ErrorType.authentication;
+    }
+
+    if (errorString.contains('payment') || errorString.contains('stripe')) {
+      return ErrorType.payment;
+    }
+
+    if (errorString.contains('server') || errorString.contains('500')) {
+      return ErrorType.server;
+    }
+
+    if (errorString.contains('timeout')) {
+      return ErrorType.timeout;
+    }
+
+    if (errorString.contains('imagecodecexception') ||
+        errorString.contains('failed to decode image') ||
+        errorString.contains('invalidstateerror') ||
+        errorString.contains('track metadata')) {
+      return ErrorType.image;
+    }
+
+    if (errorString.contains('heic') || errorString.contains('heic')) {
+      return ErrorType.fileFormat;
+    }
+
+    return ErrorType.general;
+  }
+
+  /// エラーの重要度を判定
+  static ErrorSeverity _getErrorSeverity(ErrorType errorType) {
+    switch (errorType) {
+      case ErrorType.network:
+      case ErrorType.timeout:
+      case ErrorType.image:
+      case ErrorType.fileFormat:
+      case ErrorType.validation:
+        return ErrorSeverity.minor;
+      case ErrorType.authentication:
+      case ErrorType.permission:
+      case ErrorType.insufficientStock:
+        return ErrorSeverity.major;
+      case ErrorType.database:
+      case ErrorType.payment:
+      case ErrorType.server:
+      case ErrorType.general:
+        return ErrorSeverity.critical;
+    }
+  }
+
   /// エラーメッセージを取得（AppExceptionの場合はuserMessageを優先）
   static String getErrorMessage(Object error, AppLocalizations l10n) {
     if (error is AppException) {
       return error.userMessage;
     }
 
-    // Functionsエラーの場合の専用処理
-    final errorString = error.toString();
+    final errorType = _getErrorType(error);
 
-    // 在庫不足エラー
-    if (errorString.contains('less stock than the quantity')) {
-      return l10n.insufficientStock;
+    switch (errorType) {
+      case ErrorType.insufficientStock:
+        return l10n.insufficientStock;
+      case ErrorType.network:
+        return l10n.networkError;
+      case ErrorType.authentication:
+        return l10n.authenticationError;
+      case ErrorType.payment:
+        return l10n.paymentError;
+      case ErrorType.server:
+        return l10n.serverError;
+      case ErrorType.timeout:
+        return l10n.timeoutError;
+      case ErrorType.image:
+        return l10n.imageLoadError;
+      case ErrorType.fileFormat:
+        return l10n.heicNotSupported;
+      case ErrorType.validation:
+        return '入力内容に誤りがあります。確認してから再度お試しください。';
+      case ErrorType.permission:
+        return '権限が不足しています。管理者にお問い合わせください。';
+      case ErrorType.database:
+        return 'データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+      case ErrorType.general:
+        return l10n.generalError;
     }
+  }
 
-    // ネットワークエラー
-    if (errorString.contains('network') || errorString.contains('connection')) {
-      return l10n.networkError;
+  /// エラータイトルを取得
+  static String getErrorTitle(ErrorType errorType, AppLocalizations l10n) {
+    switch (errorType) {
+      case ErrorType.insufficientStock:
+        return l10n.insufficientStockTitle;
+      case ErrorType.payment:
+        return l10n.paymentErrorTitle;
+      case ErrorType.network:
+        return 'ネットワークエラー';
+      case ErrorType.authentication:
+        return '認証エラー';
+      case ErrorType.validation:
+        return '入力エラー';
+      case ErrorType.permission:
+        return '権限エラー';
+      case ErrorType.database:
+        return 'データベースエラー';
+      case ErrorType.server:
+        return 'サーバーエラー';
+      case ErrorType.timeout:
+        return 'タイムアウトエラー';
+      case ErrorType.image:
+        return '画像エラー';
+      case ErrorType.fileFormat:
+        return 'ファイル形式エラー';
+      case ErrorType.general:
+        return 'エラー';
     }
-
-    // 認証エラー
-    if (errorString.contains('auth') || errorString.contains('unauthorized')) {
-      return l10n.authenticationError;
-    }
-
-    // 決済エラー
-    if (errorString.contains('payment') || errorString.contains('stripe')) {
-      return l10n.paymentError;
-    }
-
-    // サーバーエラー
-    if (errorString.contains('server') || errorString.contains('500')) {
-      return l10n.serverError;
-    }
-
-    // タイムアウトエラー
-    if (errorString.contains('timeout')) {
-      return l10n.timeoutError;
-    }
-
-    // 画像関連エラー
-    if (errorString.contains('ImageCodecException') ||
-        errorString.contains('Failed to decode image') ||
-        errorString.contains('InvalidStateError') ||
-        errorString.contains('track metadata')) {
-      return l10n.imageLoadError;
-    }
-
-    // ファイル形式エラー
-    if (errorString.contains('heic') || errorString.contains('HEIC')) {
-      return l10n.heicNotSupported;
-    }
-
-    // その他のエラー
-    return l10n.generalError;
   }
 
   /// エラーをログに記録
@@ -70,12 +206,43 @@ class ErrorHandler {
     StackTrace? stackTrace, {
     String? context,
   }) {
+    final errorType = _getErrorType(error);
+    final severity = _getErrorSeverity(errorType);
+
     logger.e(
-      'ErrorHandler: ${context ?? 'Unknown error'}',
+      'ErrorHandler: ${context ?? 'Unknown error'} - Type: $errorType, Severity: $severity',
       time: DateTime.now(),
       error: error,
       stackTrace: stackTrace,
     );
+  }
+
+  /// エラーを適切な方法で表示
+  static void showError(
+    BuildContext context,
+    Object error,
+    AppLocalizations l10n, {
+    String? errorContext,
+    VoidCallback? onRetry,
+  }) {
+    final errorType = _getErrorType(error);
+    final severity = _getErrorSeverity(errorType);
+
+    logError(error, null, context: errorContext);
+
+    switch (severity) {
+      case ErrorSeverity.minor:
+        showErrorSnackBar(context, error, l10n);
+      case ErrorSeverity.major:
+      case ErrorSeverity.critical:
+        showErrorDialog(
+          context,
+          error,
+          l10n,
+          title: getErrorTitle(errorType, l10n),
+          onRetry: onRetry,
+        );
+    }
   }
 
   /// エラーをスナックバーで表示
@@ -85,14 +252,42 @@ class ErrorHandler {
     AppLocalizations l10n,
   ) {
     final message = getErrorMessage(error, l10n);
+    final errorType = _getErrorType(error);
+
+    Color backgroundColor;
+    IconData icon;
+
+    switch (errorType) {
+      case ErrorType.network:
+      case ErrorType.timeout:
+        backgroundColor = Colors.orange;
+        icon = Icons.wifi_off;
+      case ErrorType.validation:
+        backgroundColor = Colors.orange;
+        icon = Icons.warning;
+      case ErrorType.image:
+      case ErrorType.fileFormat:
+        backgroundColor = Colors.orange;
+        icon = Icons.image_not_supported;
+      default:
+        backgroundColor = Theme.of(context).colorScheme.error;
+        icon = Icons.error;
+    }
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
-        backgroundColor: Theme.of(context).colorScheme.error,
+        content: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
         action: SnackBarAction(
           label: l10n.close,
-          textColor: Theme.of(context).colorScheme.onError,
+          textColor: Colors.white,
           onPressed: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
           },
@@ -110,13 +305,60 @@ class ErrorHandler {
     VoidCallback? onRetry,
   }) async {
     final message = getErrorMessage(error, l10n);
+    final errorType = _getErrorType(error);
+    final severity = _getErrorSeverity(errorType);
+
+    IconData icon;
+    Color iconColor;
+
+    switch (errorType) {
+      case ErrorType.authentication:
+        icon = Icons.lock;
+        iconColor = Colors.orange;
+      case ErrorType.permission:
+        icon = Icons.block;
+        iconColor = Colors.red;
+      case ErrorType.payment:
+        icon = Icons.payment;
+        iconColor = Colors.red;
+      case ErrorType.insufficientStock:
+        icon = Icons.inventory;
+        iconColor = Colors.orange;
+      case ErrorType.database:
+      case ErrorType.server:
+        icon = Icons.error;
+        iconColor = Colors.red;
+      default:
+        icon = Icons.error;
+        iconColor = Colors.red;
+    }
 
     return showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder:
           (context) => AlertDialog(
-            title: Text(title ?? l10n.generalError),
-            content: Text(message),
+            title: Row(
+              children: [
+                Icon(icon, color: iconColor),
+                const SizedBox(width: 8),
+                Expanded(child: Text(title ?? getErrorTitle(errorType, l10n))),
+              ],
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(message),
+                if (severity == ErrorSeverity.critical) ...[
+                  const SizedBox(height: 16),
+                  const Text(
+                    'このエラーが繰り返し発生する場合は、アプリを再起動するか、しばらく時間をおいてから再度お試しください。',
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ],
+            ),
             actions: [
               if (onRetry != null)
                 TextButton(
@@ -139,8 +381,14 @@ class ErrorHandler {
   static void showSuccessSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        content: Row(
+          children: [
+            const Icon(Icons.check_circle, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
       ),
@@ -151,10 +399,33 @@ class ErrorHandler {
   static void showInfoSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
+        content: Row(
+          children: [
+            const Icon(Icons.info, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.blue,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  /// 警告メッセージをスナックバーで表示
+  static void showWarningSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.warning, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.orange,
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
@@ -190,20 +461,24 @@ mixin ErrorHandlingMixin {
         loadingController.stopLoading();
       }
 
-      ErrorHandler.logError(e, st, context: errorContext);
-      ErrorHandler.showErrorSnackBar(context, e, l10n);
+      ErrorHandler.showError(
+        context,
+        e,
+        l10n,
+        errorContext: errorContext,
+        onRetry: onRetry,
+      );
       return null;
     } on Exception catch (e, st) {
       if (showLoading) {
         loadingController.stopLoading();
       }
 
-      ErrorHandler.logError(e, st, context: errorContext);
-      ErrorHandler.showErrorDialog(
+      ErrorHandler.showError(
         context,
         e,
         l10n,
-        title: errorContext ?? 'エラー',
+        errorContext: errorContext,
         onRetry: onRetry,
       );
       return null;
@@ -221,8 +496,12 @@ extension ErrorHandlingProviderExtension<T> on AsyncValue<T> {
   }) {
     whenOrNull(
       error: (error, stackTrace) {
-        ErrorHandler.logError(error, stackTrace, context: errorContext);
-        ErrorHandler.showErrorSnackBar(context, error, l10n);
+        ErrorHandler.showError(
+          context,
+          error,
+          l10n,
+          errorContext: errorContext,
+        );
       },
     );
   }
@@ -237,7 +516,6 @@ extension ErrorHandlingProviderExtension<T> on AsyncValue<T> {
   }) {
     whenOrNull(
       error: (error, stackTrace) {
-        ErrorHandler.logError(error, stackTrace, context: errorContext);
         ErrorHandler.showErrorDialog(
           context,
           error,
@@ -247,5 +525,178 @@ extension ErrorHandlingProviderExtension<T> on AsyncValue<T> {
         );
       },
     );
+  }
+}
+
+/// エラー表示用のウィジェット
+class ErrorDisplayWidget extends StatelessWidget {
+  const ErrorDisplayWidget({
+    super.key,
+    required this.error,
+    required this.l10n,
+    this.onRetry,
+    this.showRetryButton = true,
+  });
+
+  final Object error;
+  final AppLocalizations l10n;
+  final VoidCallback? onRetry;
+  final bool showRetryButton;
+
+  @override
+  Widget build(BuildContext context) {
+    final errorType = ErrorHandler._getErrorType(error);
+    final message = ErrorHandler.getErrorMessage(error, l10n);
+
+    IconData icon;
+    Color iconColor;
+
+    switch (errorType) {
+      case ErrorType.network:
+        icon = Icons.wifi_off;
+        iconColor = Colors.orange;
+      case ErrorType.authentication:
+        icon = Icons.lock;
+        iconColor = Colors.orange;
+      case ErrorType.payment:
+        icon = Icons.payment;
+        iconColor = Colors.red;
+      case ErrorType.insufficientStock:
+        icon = Icons.inventory;
+        iconColor = Colors.orange;
+      default:
+        icon = Icons.error;
+        iconColor = Colors.red;
+    }
+
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 64, color: iconColor),
+            const SizedBox(height: 16),
+            Text(
+              ErrorHandler.getErrorTitle(errorType, l10n),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: iconColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            if (showRetryButton && onRetry != null) ...[
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(Icons.refresh),
+                label: Text(l10n.retry),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// ErrorHandlerのカスタムフック
+/// React Hooks風のAPIでErrorHandlerを使用できるようにする
+ErrorHandlerController useErrorHandler() {
+  final context = useContext();
+  return ErrorHandlerController(context: context);
+}
+
+/// ErrorHandlerのコントローラークラス
+/// 直感的なメソッド名でエラーハンドリングを提供
+class ErrorHandlerController {
+  ErrorHandlerController({required this.context});
+  final BuildContext context;
+
+  /// エラーを適切な方法で表示
+  void showError(Object error, {String? errorContext, VoidCallback? onRetry}) {
+    final l10n = AppLocalizations.of(context)!;
+    ErrorHandler.showError(
+      context,
+      error,
+      l10n,
+      errorContext: errorContext,
+      onRetry: onRetry,
+    );
+  }
+
+  /// エラーをスナックバーで表示
+  void showErrorSnackBar(Object error) {
+    final l10n = AppLocalizations.of(context)!;
+    ErrorHandler.showErrorSnackBar(context, error, l10n);
+  }
+
+  /// エラーをダイアログで表示
+  void showErrorDialog(Object error, {String? title, VoidCallback? onRetry}) {
+    final l10n = AppLocalizations.of(context)!;
+    ErrorHandler.showErrorDialog(
+      context,
+      error,
+      l10n,
+      title: title,
+      onRetry: onRetry,
+    );
+  }
+
+  /// 成功メッセージをスナックバーで表示
+  void showSuccessSnackBar(String message) {
+    ErrorHandler.showSuccessSnackBar(context, message);
+  }
+
+  /// 警告メッセージをスナックバーで表示
+  void showWarningSnackBar(String message) {
+    ErrorHandler.showWarningSnackBar(context, message);
+  }
+
+  /// 情報メッセージをスナックバーで表示
+  void showInfoSnackBar(String message) {
+    ErrorHandler.showInfoSnackBar(context, message);
+  }
+
+  /// 非同期処理をエラーハンドリング付きで実行
+  Future<T?> executeWithErrorHandling<T>(
+    Future<T> Function() operation, {
+    String? errorContext,
+    VoidCallback? onRetry,
+  }) async {
+    final l10n = AppLocalizations.of(context)!;
+    final loadingController = GlobalLoadingController();
+
+    try {
+      loadingController.startLoading();
+      final result = await operation();
+      loadingController.stopLoading();
+      return result;
+    } on AppException catch (e, st) {
+      loadingController.stopLoading();
+      ErrorHandler.showError(
+        context,
+        e,
+        l10n,
+        errorContext: errorContext,
+        onRetry: onRetry,
+      );
+      return null;
+    } on Exception catch (e, st) {
+      loadingController.stopLoading();
+      ErrorHandler.showError(
+        context,
+        e,
+        l10n,
+        errorContext: errorContext,
+        onRetry: onRetry,
+      );
+      return null;
+    }
   }
 }

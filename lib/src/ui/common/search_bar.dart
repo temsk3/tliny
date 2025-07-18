@@ -77,9 +77,7 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
       // エラーが発生した場合、エラーログを出力
       logger.e('SearchBar: error=$e, stackTrace=$st', time: DateTime.now());
       // エラーメッセージを表示
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
+      ErrorHandler.showErrorSnackBar(context, e, l10n);
       // エラー画面を表示
       return const Scaffold(body: Center(child: Text('エラーが発生しました')));
     }
@@ -149,9 +147,7 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
                     time: DateTime.now(),
                   );
                   // エラーメッセージを表示
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(e.toString())));
+                  ErrorHandler.showErrorSnackBar(context, e, l10n);
                 }
               },
             ),

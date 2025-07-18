@@ -1,6 +1,8 @@
 // HookWidgetで使用するカスタムHook
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:tliny/l10n/app_localizations.dart';
+import 'package:tliny/src/ui/common/error_handler.dart';
 
 DialogController useDialog() {
   final context = useContext();
@@ -13,20 +15,16 @@ class DialogController {
   final BuildContext context;
 
   void showErrorDialog(String title, String content) {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(title: Text(title), content: Text(content));
-      },
+    // ErrorHandlerを使うように統一
+    ErrorHandler.showErrorDialog(
+      context,
+      Exception(content),
+      AppLocalizations.of(context)!,
+      title: title,
     );
   }
 
   void showSuccessDialog(String title, String content) {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(title: Text(title), content: Text(content));
-      },
-    );
+    ErrorHandler.showSuccessSnackBar(context, content);
   }
 }

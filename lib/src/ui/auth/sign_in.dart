@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../gen/assets.gen.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_snackbar.dart';
 import '../../settings/routes/routes.dart';
+import '../../ui/common/error_handler.dart';
 import '../../utils/logger.dart';
 import '../common/form_validator.dart';
 import 'auth_view_model.dart';
@@ -22,10 +22,10 @@ class SignInPage extends HookConsumerWidget {
     FlutterNativeSplash.remove();
 
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final isVisible = useState(false);
-    final snackBarController = useSnackBar();
     final formKey = GlobalKey<FormState>();
     // バリデーション関数を変数として定義
     String? validateEmail(String? value) =>
@@ -85,19 +85,19 @@ class SignInPage extends HookConsumerWidget {
                       const SizedBox(height: 48),
                       ElevatedButton(
                         onPressed: () async {
-                          // Formのバリデーションを実行
-                          final state = formKey.currentState;
-                          if (state == null || !state.validate()) {
-                            return;
-                          }
                           try {
+                            // Formのバリデーションを実行
+                            final state = formKey.currentState;
+                            if (state == null || !state.validate()) {
+                              return;
+                            }
                             await viewModel.signIn(
                               emailController.text,
                               passwordController.text,
                             );
                             context.go(AppRoutes.topPage);
                           } catch (e) {
-                            snackBarController.showAlertSnackBar(e.toString());
+                            errorHandler.showError(e, errorContext: 'サインイン');
                             logger.e('signInButton: error=$e');
                           }
                         },
@@ -132,7 +132,10 @@ class SignInPage extends HookConsumerWidget {
                             await viewModel.signInWithGoogle();
                             context.go(AppRoutes.topPage);
                           } catch (e) {
-                            snackBarController.showAlertSnackBar(e.toString());
+                            errorHandler.showError(
+                              e,
+                              errorContext: 'Googleサインイン',
+                            );
                             logger.e('googleSignInButton: error=$e');
                           }
                         },
@@ -161,11 +164,14 @@ class SignInPage extends HookConsumerWidget {
                             await viewModel.sendPasswordResetEmail(
                               emailController.text,
                             );
-                            snackBarController.showSuccessSnackBar(
+                            errorHandler.showSuccessSnackBar(
                               'パスワードリセット用のメールを送信しました',
                             );
                           } catch (e) {
-                            snackBarController.showAlertSnackBar(e.toString());
+                            errorHandler.showError(
+                              e,
+                              errorContext: 'パスワードリセット',
+                            );
                             logger.e('resetPasswordButton: error=$e');
                           }
                         },

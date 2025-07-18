@@ -4,9 +4,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../settings/hooks/use_dialog.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/routes/routes.dart';
+import '../../ui/common/error_handler.dart';
 import '../../utils/logger.dart';
 import '../common/form_validator.dart';
 import '../common/main_body.dart';
@@ -22,7 +22,6 @@ class SignUpPage extends HookConsumerWidget {
     FlutterNativeSplash.remove();
 
     final l10n = useL10n();
-    final dialogController = useDialog(); // snackbar controller を初期化
     final emailController = useTextEditingController();
     final passwordController = useTextEditingController();
     final formKey = useMemoized(GlobalKey<FormState>.new);
@@ -81,10 +80,12 @@ class SignUpPage extends HookConsumerWidget {
                       context.go(AppRoutes.topPage);
                     } catch (e) {
                       logger.e('signUpButton: error=$e');
-                      dialogController.showErrorDialog(
-                        'サインアップエラー',
-                        e.toString(),
-                      ); // snackbar を使ってエラーを表示
+                      ErrorHandler.showError(
+                        context,
+                        e,
+                        l10n,
+                        errorContext: 'サインアップ処理',
+                      );
                     }
                   },
                   child: Text(l10n.signUp),

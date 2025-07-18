@@ -46,8 +46,11 @@ class EventScreen extends HookConsumerWidget {
         }
 
         return Scaffold(
-          floatingActionButton: const AddProgramFloatingActionButton(
+          floatingActionButton: AddProgramFloatingActionButton(
             heroTag: 'program_screen_fab',
+            onPressed: () {
+              // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
+            },
           ),
           body: Stack(
             children: [
@@ -197,8 +200,11 @@ class EventScreen extends HookConsumerWidget {
 
   Widget _buildEmptyEventsWidget(BuildContext context, AppLocalizations l10n) {
     return Scaffold(
-      floatingActionButton: const AddProgramFloatingActionButton(
+      floatingActionButton: AddProgramFloatingActionButton(
         heroTag: 'program_screen_empty_fab',
+        onPressed: () {
+          // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
+        },
       ),
       body: Center(
         child: Column(

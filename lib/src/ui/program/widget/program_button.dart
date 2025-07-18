@@ -10,6 +10,7 @@ import '../../../data/model/program_model.dart';
 import '../../../data/repository/favorite_repository.dart';
 import '../../../settings/hooks/use_l10n.dart';
 import '../../../settings/routes/routes.dart';
+import '../../../ui/common/error_handler.dart';
 import '../../../utils/router_utils.dart';
 import '../../common/asyncvalue_widget.dart';
 import '../../common/base_button_widget.dart';
@@ -21,15 +22,23 @@ import '../program_view_model.dart';
 // final logger = Logger();
 
 class AddProgramFloatingActionButton extends HookWidget {
-  const AddProgramFloatingActionButton({super.key, this.heroTag, this.child});
-  final String? heroTag;
+  const AddProgramFloatingActionButton({
+    super.key,
+    required this.onPressed,
+    this.child,
+    this.heroTag,
+  });
+  final VoidCallback onPressed;
   final Widget? child;
+  final String? heroTag;
 
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
+    // final appRoute = useRouter();
     return Consumer(
-      child: child ?? const Icon(Icons.add_sharp),
+      child: child ?? const Icon(Icons.add),
       builder: (context, ref, child) {
         return AsyncValueWidget(
           value: ref.watch(addProgramButtonStateProvider),
@@ -38,9 +47,13 @@ class AddProgramFloatingActionButton extends HookWidget {
               return BaseFloatingActionButton(
                 heroTag: heroTag ?? 'add_program_fab',
                 onPressed: () async {
-                  // await appRoute
-                  //     .push(ProgramEditRoute(program: Program.empty()));
-                  ProgramEditRoute($extra: Program.empty()).push(context);
+                  try {
+                    // await appRoute
+                    //     .push(ProgramEditRoute(program: Program.empty()));
+                    ProgramEditRoute($extra: Program.empty()).push(context);
+                  } catch (e) {
+                    errorHandler.showError(e, errorContext: 'プログラム追加画面遷移');
+                  }
                 },
                 l10n: l10n,
                 child: child!,
@@ -68,6 +81,7 @@ class DeleteProgramIconButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     // final appRoute = useRouter();
     return Consumer(
       builder: (context, ref, child) {
@@ -80,21 +94,25 @@ class DeleteProgramIconButton extends HookWidget {
                 icon: const Icon(Icons.delete),
                 tooltip: l10n.delete,
                 onPressed: () async {
-                  final result = await showConfirmDialog(
-                    context,
-                    // appRoute,
-                    cancelText: l10n.no,
-                    decisionText: l10n.yes,
-                    contentWidget: Text(l10n.doYouWantToDeleteIt),
-                    title: l10n.delete,
-                  );
-                  if (result!) {
-                    // await showFluttertoast('Processing Data');
-                    await ref
-                        .watch(programViewModelProvider.notifier)
-                        .deleteProgram(program.id.toString());
-                    // appRoute.popUntilRoot();
-                    RouterUtils.safePop(context);
+                  try {
+                    final result = await showConfirmDialog(
+                      context,
+                      // appRoute,
+                      cancelText: l10n.no,
+                      decisionText: l10n.yes,
+                      contentWidget: Text(l10n.doYouWantToDeleteIt),
+                      title: l10n.delete,
+                    );
+                    if (result!) {
+                      // await showFluttertoast('Processing Data');
+                      await ref
+                          .watch(programViewModelProvider.notifier)
+                          .deleteProgram(program.id.toString());
+                      // appRoute.popUntilRoot();
+                      RouterUtils.safePop(context);
+                    }
+                  } catch (e) {
+                    errorHandler.showError(e, errorContext: 'プログラム削除');
                   }
                 },
                 l10n: l10n,
@@ -119,14 +137,19 @@ class EditProgramIconButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     // final appRoute = useRouter();
     return Consumer(
       child: BaseIconButton(
         icon: const Icon(Icons.edit),
         tooltip: l10n.edit,
         onPressed: () async {
-          // await appRoute.push(ProgramEditRoute(program: program));
-          ProgramEditRoute($extra: program).push(context);
+          try {
+            // await appRoute.push(ProgramEditRoute(program: program));
+            ProgramEditRoute($extra: program).push(context);
+          } catch (e) {
+            errorHandler.showError(e, errorContext: 'プログラム編集画面遷移');
+          }
         },
         l10n: l10n,
       ),
@@ -149,6 +172,7 @@ class AddStaffIconButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     // final appRoute = useRouter();
     final controller = useTextEditingController();
     return Consumer(
@@ -164,42 +188,41 @@ class AddStaffIconButton extends HookWidget {
                 icon: const Icon(Icons.person_add_alt, size: 16),
                 tooltip: 'staff request',
                 onPressed: () async {
-                  final result = await showConfirmDialog(
-                    context,
-                    // appRoute,
-                    title:
-                        // 'Do you want to apply for staffs?'
-                        l10n.wouldYouLikeToRegisterAsAStaffMember,
-                    contentWidget: TextFormField(
-                      autofocus: true,
-                      controller: controller,
-                    ),
-                    cancelText: l10n.no,
-                    decisionText: l10n.yes,
-                  );
-                  if (result!) {
-                    if (program.staffCode == controller.text) {
-                      await ref
-                          .watch(staffViewModelProvider(program.id!).notifier)
-                          .addStaff(program.id!);
-                      // await appRoute.pop();
-                      await showFluttertoast(
-                        l10n.registered,
-                        webBgColor: 'amber',
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        textColor: Theme.of(context).colorScheme.onPrimary,
-                      );
-                      return;
+                  try {
+                    final result = await showConfirmDialog(
+                      context,
+                      // appRoute,
+                      title:
+                          // 'Do you want to apply for staffs?'
+                          l10n.wouldYouLikeToRegisterAsAStaffMember,
+                      contentWidget: TextFormField(
+                        autofocus: true,
+                        controller: controller,
+                      ),
+                      cancelText: l10n.no,
+                      decisionText: l10n.yes,
+                    );
+                    if (result!) {
+                      if (program.staffCode == controller.text) {
+                        await ref
+                            .watch(staffViewModelProvider(program.id!).notifier)
+                            .addStaff(program.id!);
+                        // await appRoute.pop();
+                        errorHandler.showSuccessSnackBar(l10n.registered);
+                        return;
+                      }
+                      if (context.mounted) {
+                        await showTextDialog(
+                          context,
+                          // appRoute,
+                          title: l10n.notification,
+                          message: l10n.theCodeIsWrong,
+                          defaultActionText: l10n.ok,
+                        );
+                      }
                     }
-                    if (context.mounted) {
-                      await showTextDialog(
-                        context,
-                        // appRoute,
-                        title: l10n.notification,
-                        message: l10n.theCodeIsWrong,
-                        defaultActionText: l10n.ok,
-                      );
-                    }
+                  } catch (e) {
+                    errorHandler.showError(e, errorContext: 'スタッフ登録');
                   }
                 },
                 l10n: l10n,

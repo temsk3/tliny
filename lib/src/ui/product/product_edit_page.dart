@@ -7,12 +7,12 @@ import 'package:intl/intl.dart';
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../ui/product/widget/product_button.dart';
 import '../../utils/date_formatter.dart';
 import '../../utils/logger.dart';
 import '../../utils/router_utils.dart';
-import '../common/custom_alert_dialog.dart';
 import '../common/loading_screen.dart';
 import '../image/image_screen.dart';
 import '../image/image_view_model.dart';
@@ -32,6 +32,7 @@ class ProductEditPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
+    final errorHandler = useErrorHandler();
     // final appRoute = useRouter();
     // final appMediaQuery = useMediaQuery();
     // final state = ref.watch(productStateProvider(product.id.toString()));
@@ -343,13 +344,8 @@ class ProductEditPage extends HookConsumerWidget {
                                     ),
                                   );
                               if (context.mounted && result) {
-                                await showFluttertoast(
+                                errorHandler.showInfoSnackBar(
                                   l10n.processingData,
-                                  webBgColor: 'amber',
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  textColor:
-                                      Theme.of(context).colorScheme.onPrimary,
                                 );
                                 // await appRoute.pop();
                                 // appRoute.popUntilRouteWithName(
