@@ -106,6 +106,43 @@ class SignInPage extends HookConsumerWidget {
                         ),
                         child: Text(l10n.signIn),
                       ),
+                      const SizedBox(height: 16),
+                      // 区切り線
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.grey[400])),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              'または',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Divider(color: Colors.grey[400])),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // Googleログインボタン
+                      OutlinedButton.icon(
+                        onPressed: () async {
+                          try {
+                            await viewModel.signInWithGoogle();
+                            context.go(AppRoutes.topPage);
+                          } catch (e) {
+                            snackBarController.showAlertSnackBar(e.toString());
+                            logger.e('googleSignInButton: error=$e');
+                          }
+                        },
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: const Size(128, 32),
+                          side: BorderSide(color: Colors.grey[400]!),
+                        ),
+                        icon: const Icon(Icons.g_mobiledata, size: 24),
+                        label: const Text('Googleでログイン'),
+                      ),
                       const SizedBox(height: 8), // 余白調整
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center, // 中央寄せ

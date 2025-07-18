@@ -283,6 +283,28 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
           as _i6.Stream<String?>);
 
   @override
+  _i6.Future<_i4.UserCredential> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue: _i6.Future<_i4.UserCredential>.value(
+              _FakeUserCredential_2(
+                this,
+                Invocation.method(#signInWithGoogle, []),
+              ),
+            ),
+          )
+          as _i6.Future<_i4.UserCredential>);
+
+  @override
+  _i6.Future<void> signOutGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOutGoogle, []),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
   _i6.Future<void> signInWithEmail(String? email, String? password) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithEmail, [email, password]),

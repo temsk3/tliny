@@ -45,7 +45,9 @@ class UserRepository {
     logger.d('watchUser: uid=$uid');
     try {
       final docRef = _collectionRef.doc(uid);
-      return docRef.snapshots().map((user) {
+      return docRef.snapshots().where((snapshot) => snapshot.exists).map((
+        user,
+      ) {
         final data = user.data();
         if (data == null) {
           logger.e('watchUser: data is null for uid=$uid');
@@ -227,7 +229,9 @@ class PublicUserRepository {
     logger.d('watchUser: uid=$uid');
     try {
       final docRef = _collectionRef.doc(uid);
-      return docRef.snapshots().map((user) {
+      return docRef.snapshots().where((snapshot) => snapshot.exists).map((
+        user,
+      ) {
         final data = user.data();
         if (data == null) {
           logger.e('watchUser: data is null for uid=$uid');

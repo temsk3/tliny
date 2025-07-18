@@ -40,6 +40,30 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
+  /// Googleアカウントを使用してサインインする
+  Future<void> signInWithGoogle() async {
+    final loading = ref.read(globalLoadingControllerProvider.notifier);
+    try {
+      await loading.guardFuture(() async {
+        await ref.read(authRepositoryProvider).signInWithGoogle();
+        logger.i('Successfully signed in with Google'); // 成功ログを追加
+      });
+    } on FirebaseAuthException catch (e) {
+      logger.e('signInWithGoogle failed: ${e.code} - ${e.message}');
+      throw AuthenticationException(
+        message: _convertAuthError(e.code),
+        code: e.code,
+        stackTrace: e.stackTrace,
+      );
+    } on AppException catch (e, st) {
+      logger.e('signInWithGoogle failed: ${e.message}', stackTrace: st);
+      rethrow;
+    } catch (e, st) {
+      logger.e('signInWithGoogle failed: $e', stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    }
+  }
+
   /// パスワードリセットメールを送信する
   Future<void> sendPasswordResetEmail(String email) async {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
@@ -101,6 +125,23 @@ class AuthViewModel extends _$AuthViewModel {
       rethrow;
     } catch (e, st) {
       logger.e('signOut failed: $e', stackTrace: st);
+      throw GeneralException(message: e.toString(), stackTrace: st);
+    }
+  }
+
+  /// Googleサインアウトする
+  Future<void> signOutGoogle() async {
+    final loading = ref.read(globalLoadingControllerProvider.notifier);
+    try {
+      await loading.guardFuture(() async {
+        await ref.read(authRepositoryProvider).signOutGoogle();
+        logger.i('Successfully signed out from Google.'); // 成功ログを追加
+      });
+    } on AppException catch (e, st) {
+      logger.e('signOutGoogle failed: ${e.message}', stackTrace: st);
+      rethrow;
+    } catch (e, st) {
+      logger.e('signOutGoogle failed: $e', stackTrace: st);
       throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
