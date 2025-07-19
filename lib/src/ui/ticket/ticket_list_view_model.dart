@@ -32,6 +32,7 @@ class TicketListViewModel extends _$TicketListViewModel {
   final Set<String> selectedTicketIds = {};
   String? selectedEventId;
   String? sharedUuid;
+  bool showExpiredTickets = false; // 期限切れチケットの表示・非表示フラグ（デフォルト：非表示）
 
   // TicketRepositoryへのアクセスを簡略化
   TicketRepository get _repository => ref.watch(ticketRepositoryProvider);
@@ -40,6 +41,84 @@ class TicketListViewModel extends _$TicketListViewModel {
   FutureOr<Set<String>> build() {
     selectedEventId = null;
     return selectedTicketIds;
+  }
+
+  // 期限切れチケットの表示・非表示を切り替える
+  void toggleExpiredTicketsVisibility() {
+    showExpiredTickets = !showExpiredTickets;
+    // 状態を更新してUIの再構築を促す
+    state = AsyncValue.data({...selectedTicketIds});
+    // 選択状態をリセット（期限切れチケットが非表示になった場合の対応）
+    if (!showExpiredTickets) {
+      resetSelectedTickets();
+    }
+  }
+
+  // 期限切れチケットの表示状態を取得
+  bool get isExpiredTicketsVisible => showExpiredTickets;
+
+  // 期限切れ判定を共通化
+  bool isTicketExpired(Ticket ticket) {
+    final now = DateTime.now();
+
+    // チケットの有効期限が設定されている場合
+    if (ticket.expirationTo != null) {
+      return ticket.expirationTo!.isBefore(now);
+    }
+
+    // イベントの開催期間で判定する場合
+    if (ticket.eventId != null) {
+      final event = getEvent(ticket.eventId!);
+      if (event != null && event.eventTo != null) {
+        return event.eventTo!.isBefore(now);
+      }
+    }
+
+    return false; // デフォルトでは期限切れでない
+  }
+
+  // 期限切れチケットをフィルタリングする
+  List<Ticket> filterExpiredTickets(List<Ticket> tickets) {
+    if (showExpiredTickets) {
+      return tickets; // 全て表示
+    }
+
+    return tickets.where((ticket) => !isTicketExpired(ticket)).toList();
+  }
+
+  // 使用可能なチケットが無いイベントをフィルタリングする
+  Map<String, List<Ticket>> filterEventsWithNoValidTickets(
+    Map<String, List<Ticket>> groupedTickets,
+  ) {
+    if (showExpiredTickets) {
+      return groupedTickets; // 全て表示
+    }
+
+    final now = DateTime.now();
+    final filteredMap = <String, List<Ticket>>{};
+
+    for (final entry in groupedTickets.entries) {
+      final eventId = entry.key;
+      final tickets = entry.value;
+
+      // このイベントに使用可能なチケットがあるかチェック
+      final hasValidTickets = tickets.any((ticket) {
+        // 使用済みでない
+        if (ticket.isUsed) return false;
+
+        // 期限切れでない
+        if (isTicketExpired(ticket)) return false;
+
+        return true;
+      });
+
+      // 使用可能なチケットがある場合のみイベントを表示
+      if (hasValidTickets) {
+        filteredMap[eventId] = tickets;
+      }
+    }
+
+    return filteredMap;
   }
 
   Future<List<Ticket>> getTickets() async {

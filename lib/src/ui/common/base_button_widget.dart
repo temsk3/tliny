@@ -127,6 +127,7 @@ class BaseElevatedButton extends HookWidget {
     required this.onPressed,
     required this.child,
     required this.l10n,
+    this.style,
   });
 
   /// 押下時に実行されるコールバック関数
@@ -137,6 +138,9 @@ class BaseElevatedButton extends HookWidget {
 
   /// 多言語対応オブジェクト
   final AppLocalizations l10n;
+
+  /// ボタンのスタイル
+  final ButtonStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -166,6 +170,7 @@ class BaseElevatedButton extends HookWidget {
                   waiting.value = false;
                 }
               },
+      style: style,
       child: child,
     );
   }

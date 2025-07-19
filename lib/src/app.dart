@@ -11,6 +11,9 @@ import 'ui/common/loading_screen.dart';
 class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
+  // SnackBarの表示を制御するためのグローバルキー
+  static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(appThemeModeProvider);
@@ -21,8 +24,16 @@ class MyApp extends HookConsumerWidget {
       builder:
           (context, orientation, screenType) => MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            theme: appTheme.lightTheme,
-            darkTheme: appTheme.darkTheme,
+            theme: appTheme.lightTheme.copyWith(
+              snackBarTheme: const SnackBarThemeData(
+                behavior: SnackBarBehavior.fixed,
+              ),
+            ),
+            darkTheme: appTheme.darkTheme.copyWith(
+              snackBarTheme: const SnackBarThemeData(
+                behavior: SnackBarBehavior.fixed,
+              ),
+            ),
             themeMode: themeMode,
             locale: DevicePreview.locale(context),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -31,6 +42,7 @@ class MyApp extends HookConsumerWidget {
             routerDelegate: router.routerDelegate,
             routeInformationProvider: router.routeInformationProvider,
             routeInformationParser: router.routeInformationParser,
+            scaffoldMessengerKey: scaffoldMessengerKey,
             builder: (context, child) {
               return Stack(children: [child!, const GlobalLoadingOverlay()]);
             },

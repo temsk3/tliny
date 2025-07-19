@@ -128,35 +128,93 @@ class CartViewModel extends _$CartViewModel {
       'cart: quantity=$quantity, productId=$productId, programId=$programId',
       time: DateTime.now(),
     );
-    final cart = Cart(
-      quantity: quantity,
-      productId: productId,
-      programId: programId,
-    );
+
+    // 認証状態を確認
+    final authState = ref.watch(authStateChangesProvider);
     final uidAsyncValue = ref.watch(userIdProvider);
+
+    logger.d('cart: authState.value=${authState.value}', time: DateTime.now());
+    logger.d(
+      'cart: uidAsyncValue.value=${uidAsyncValue.value}',
+      time: DateTime.now(),
+    );
+
     final uid = uidAsyncValue.value;
-    if (uid == null) {
-      return;
+    if (uid == null || authState.value != true) {
+      logger.w('cart: 認証されていないため、カートに追加できません', time: DateTime.now());
+      logger.w(
+        'cart: uid=$uid, authState.value=${authState.value}',
+        time: DateTime.now(),
+      );
+      throw const AuthenticationException(message: 'ログインが必要です');
     }
-    final data = await cartRepository.readCart(uid);
-    if (data.isNotEmpty) {
-      for (final item in data) {
-        if (item.productId == productId) {
-          final update = Cart(
-            id: item.id,
-            quantity: item.quantity + quantity,
-            productDocRef: item.productDocRef,
-            productId: productId,
-            programId: item.programId,
-            createdAt: item.createdAt,
-            updatedAt: item.updatedAt,
-          );
-          await updateCart(uid, update);
-          return;
+
+    try {
+      logger.d('cart: 認証確認完了 - uid: $uid', time: DateTime.now());
+
+      final cart = Cart(
+        quantity: quantity,
+        productId: productId,
+        programId: programId,
+      );
+
+      logger.d('cart: 既存カートを確認中...', time: DateTime.now());
+      final data = await cartRepository.readCart(uid);
+      logger.d('cart: 既存カート数=${data.length}', time: DateTime.now());
+
+      // 既存カートの内容をログ出力
+      for (var i = 0; i < data.length; i++) {
+        logger.d(
+          'cart: 既存カート[$i] - productId: ${data[i].productId}, quantity: ${data[i].quantity}',
+          time: DateTime.now(),
+        );
+      }
+
+      if (data.isNotEmpty) {
+        for (final item in data) {
+          if (item.productId == productId) {
+            logger.d(
+              'cart: 既存商品を更新中... - 現在の数量: ${item.quantity}, 追加数量: $quantity',
+              time: DateTime.now(),
+            );
+            final update = Cart(
+              id: item.id,
+              quantity: item.quantity + quantity,
+              productDocRef: item.productDocRef,
+              productId: productId,
+              programId: item.programId,
+              createdAt: item.createdAt,
+              updatedAt: item.updatedAt,
+            );
+            await updateCart(uid, update);
+            logger.d(
+              'cart: 商品更新完了 - 新しい数量: ${update.quantity}',
+              time: DateTime.now(),
+            );
+            return;
+          }
         }
       }
+
+      logger.d('cart: 新規商品を追加中...', time: DateTime.now());
+      await addCart(uid, cart);
+      logger.d('cart: 商品追加完了', time: DateTime.now());
+    } on AppException catch (e, st) {
+      logger.e(
+        'cart: AppException - ${e.message}',
+        stackTrace: st,
+        time: DateTime.now(),
+      );
+      rethrow;
+    } on Exception catch (e, st) {
+      logger.e('cart: Exception - $e', stackTrace: st, time: DateTime.now());
+      logger.e('cart: Exception詳細 - ${e.runtimeType}', time: DateTime.now());
+      final appException = GeneralException(
+        message: 'カートへの追加に失敗しました: $e',
+        stackTrace: st,
+      );
+      throw appException;
     }
-    await addCart(uid, cart);
   }
 
   /// カートに商品を追加する

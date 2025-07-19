@@ -228,39 +228,231 @@ class InCartElevatedButton extends HookWidget {
     return Consumer(
       builder: (innerContext, ref, child) {
         final auth = ref.watch(authStateChangesProvider).value;
+        final isAuthenticated = auth ?? false;
+        final isButtonEnabled =
+            stateIndicate && isAuthenticated && product.id != null;
+
         return BaseElevatedButton(
           l10n: l10n,
           onPressed:
-              stateIndicate && auth != null && product.id != null
+              isButtonEnabled
                   ? () async {
                     try {
-                      const result = true;
-                      if (result) {
-                        logger.d('inCart');
-                        await ref
-                            .watch(cartViewModelProvider.notifier)
-                            .cart(quantity, product.id!, program.id!);
-                        logger.d('showFluttertoast: start');
-                        errorHandler.showSuccessSnackBar(
-                          '${product.name!} ${l10n.addedToCart}',
+                      logger.d(
+                        'AddToCartElevatedButton: 認証チェック開始',
+                        time: DateTime.now(),
+                      );
+
+                      // 認証状態を再確認
+                      final currentAuth =
+                          ref.read(authStateChangesProvider).value;
+                      final currentUid = ref.read(userIdProvider).value;
+
+                      logger.d(
+                        'AddToCartElevatedButton: currentAuth=$currentAuth',
+                        time: DateTime.now(),
+                      );
+                      logger.d(
+                        'AddToCartElevatedButton: currentUid=$currentUid',
+                        time: DateTime.now(),
+                      );
+
+                      if (currentAuth != true || currentUid == null) {
+                        logger.w(
+                          'AddToCartElevatedButton: 認証されていないため、カートに追加できません',
+                          time: DateTime.now(),
                         );
-                        logger.d('showFluttertoast: end');
-                        logger.d('pop');
-                        // await appRoute.pop();
-                        RouterUtils.safePop(context);
+                        // エラーハンドラーではなく、直接SnackBarを表示
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Row(
+                                children: [
+                                  Icon(
+                                    Icons.lock,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(child: Text('ログインが必要です')),
+                                ],
+                              ),
+                              backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                              action: SnackBarAction(
+                                label: '閉じる',
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                        return;
                       }
+
+                      // 追加の認証確認：Firebase Authの現在のユーザーを直接確認
+                      final firebaseUser =
+                          ref.read(authRepositoryProvider).getCurrentUser();
+                      if (firebaseUser == null) {
+                        logger.w(
+                          'AddToCartElevatedButton: Firebase Authでユーザーが見つかりません',
+                          time: DateTime.now(),
+                        );
+                        // エラーハンドラーではなく、直接SnackBarを表示
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: const Row(
+                                children: [
+                                  Icon(
+                                    Icons.lock,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(child: Text('ログインが必要です')),
+                                ],
+                              ),
+                              backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
+                              action: SnackBarAction(
+                                label: '閉じる',
+                                textColor: Colors.white,
+                                onPressed: () {
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).hideCurrentSnackBar();
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                        return;
+                      }
+
+                      logger.d(
+                        'AddToCartElevatedButton: 認証OK - uid: $currentUid, firebaseUid: ${firebaseUser.uid}',
+                        time: DateTime.now(),
+                      );
+
+                      await ref
+                          .watch(cartViewModelProvider.notifier)
+                          .cart(quantity, product.id!, program.id!);
+                      logger.d('showFluttertoast: start');
+
+                      // 成功メッセージを直接SnackBarで表示
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              children: [
+                                const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    '${product.name!} ${l10n.addedToCart}',
+                                  ),
+                                ),
+                              ],
+                            ),
+                            backgroundColor: Colors.green,
+                            behavior: SnackBarBehavior.floating,
+                            duration: const Duration(seconds: 3),
+                            action: SnackBarAction(
+                              label: '閉じる',
+                              textColor: Colors.white,
+                              onPressed: () {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).hideCurrentSnackBar();
+                              },
+                            ),
+                          ),
+                        );
+                      }
+
+                      logger.d('showFluttertoast: end');
+                      logger.d('pop');
+                      // await appRoute.pop();
+                      RouterUtils.safePop(context);
                     } on Exception catch (e, st) {
                       logger.e(
-                        'Error',
+                        'AddToCartElevatedButton: カート追加エラー',
                         time: DateTime.now(),
                         error: e,
                         stackTrace: st,
                       );
-                      errorHandler.showError(e, errorContext: 'カート追加');
+
+                      // エラーの種類に応じて適切なメッセージを表示
+                      String errorMessage;
+                      Color backgroundColor;
+                      IconData icon;
+
+                      if (e.toString().contains('AuthenticationException') ||
+                          e.toString().contains('ログインが必要です')) {
+                        errorMessage = 'ログインが必要です';
+                        backgroundColor = Colors.red;
+                        icon = Icons.lock;
+                      } else if (e.toString().contains('insufficient stock') ||
+                          e.toString().contains('在庫不足')) {
+                        errorMessage = '在庫が不足しています';
+                        backgroundColor = Colors.orange;
+                        icon = Icons.warning;
+                      } else if (e.toString().contains('network') ||
+                          e.toString().contains('connection')) {
+                        errorMessage = 'ネットワークエラーが発生しました';
+                        backgroundColor = Colors.orange;
+                        icon = Icons.wifi_off;
+                      } else {
+                        errorMessage = 'カートへの追加に失敗しました';
+                        backgroundColor = Colors.red;
+                        icon = Icons.error;
+                      }
+
+                      // 直接SnackBarを表示
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Row(
+                              children: [
+                                Icon(icon, color: Colors.white, size: 20),
+                                const SizedBox(width: 8),
+                                Expanded(child: Text(errorMessage)),
+                              ],
+                            ),
+                            backgroundColor: backgroundColor,
+                            behavior: SnackBarBehavior.floating,
+                            action: SnackBarAction(
+                              label: '閉じる',
+                              textColor: Colors.white,
+                              onPressed: () {
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).hideCurrentSnackBar();
+                              },
+                            ),
+                          ),
+                        );
+                      }
                     }
                   }
                   : null,
-          child: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.addToCart)),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isButtonEnabled ? null : Colors.grey,
+            foregroundColor: isButtonEnabled ? null : Colors.white,
+          ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(isAuthenticated ? l10n.addToCart : 'ログインしてください'),
+          ),
         );
       },
     );

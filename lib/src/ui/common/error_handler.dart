@@ -140,25 +140,75 @@ class ErrorHandler {
       return error.userMessage;
     }
 
-    final errorType = _getErrorType(error);
+    final errorString = error.toString().toLowerCase();
 
+    // より具体的なエラーメッセージの判定
+    if (errorString.contains('less stock than the quantity') ||
+        errorString.contains('insufficient stock')) {
+      return l10n.insufficientStock;
+    }
+
+    if (errorString.contains('network') || errorString.contains('connection')) {
+      return l10n.networkError;
+    }
+
+    if (errorString.contains('auth') ||
+        errorString.contains('unauthorized') ||
+        errorString.contains('ログインが必要です')) {
+      return l10n.authenticationError;
+    }
+
+    if (errorString.contains('payment') || errorString.contains('stripe')) {
+      return l10n.paymentError;
+    }
+
+    if (errorString.contains('server') || errorString.contains('500')) {
+      return l10n.serverError;
+    }
+
+    if (errorString.contains('timeout')) {
+      return l10n.timeoutError;
+    }
+
+    if (errorString.contains('imagecodecexception') ||
+        errorString.contains('failed to decode image') ||
+        errorString.contains('invalidstateerror') ||
+        errorString.contains('track metadata')) {
+      return l10n.imageLoadError;
+    }
+
+    if (errorString.contains('heic') || errorString.contains('heic')) {
+      return l10n.heicNotSupported;
+    }
+
+    // カート関連のエラー
+    if (errorString.contains('カートへの追加に失敗しました')) {
+      return error.toString().replaceAll('Exception: ', '');
+    }
+
+    // 認証関連のエラー
+    if (errorString.contains('authenticationexception')) {
+      return 'ログインが必要です';
+    }
+
+    // Firebase関連のエラー
+    if (errorString.contains('firebase')) {
+      if (errorString.contains('permission-denied')) {
+        return 'アクセス権限がありません';
+      } else if (errorString.contains('not-found')) {
+        return 'データが見つかりません';
+      } else if (errorString.contains('already-exists')) {
+        return 'データが既に存在します';
+      } else if (errorString.contains('unavailable')) {
+        return 'サービスが一時的に利用できません';
+      } else if (errorString.contains('deadline-exceeded')) {
+        return 'リクエストがタイムアウトしました';
+      }
+    }
+
+    // その他のエラーの場合、エラーメッセージをそのまま表示
+    final errorType = _getErrorType(error);
     switch (errorType) {
-      case ErrorType.insufficientStock:
-        return l10n.insufficientStock;
-      case ErrorType.network:
-        return l10n.networkError;
-      case ErrorType.authentication:
-        return l10n.authenticationError;
-      case ErrorType.payment:
-        return l10n.paymentError;
-      case ErrorType.server:
-        return l10n.serverError;
-      case ErrorType.timeout:
-        return l10n.timeoutError;
-      case ErrorType.image:
-        return l10n.imageLoadError;
-      case ErrorType.fileFormat:
-        return l10n.heicNotSupported;
       case ErrorType.validation:
         return '入力内容に誤りがあります。確認してから再度お試しください。';
       case ErrorType.permission:
@@ -166,7 +216,13 @@ class ErrorHandler {
       case ErrorType.database:
         return 'データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。';
       case ErrorType.general:
-        return l10n.generalError;
+      default:
+        // エラーメッセージが長すぎる場合は短縮
+        final message = error.toString();
+        if (message.length > 100) {
+          return '${message.substring(0, 100)}...';
+        }
+        return message;
     }
   }
 
@@ -269,10 +325,16 @@ class ErrorHandler {
       case ErrorType.fileFormat:
         backgroundColor = Colors.orange;
         icon = Icons.image_not_supported;
+      case ErrorType.authentication:
+        backgroundColor = Colors.red;
+        icon = Icons.lock;
       default:
         backgroundColor = Theme.of(context).colorScheme.error;
         icon = Icons.error;
     }
+
+    // 既存のSnackBarを非表示にする
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

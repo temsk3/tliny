@@ -151,6 +151,10 @@ class AllPaymentButton extends HookWidget {
           data: (value) {
             return ElevatedButton(
               onPressed: isAuthenticated ? () {} : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isAuthenticated ? null : Colors.grey,
+                foregroundColor: isAuthenticated ? null : Colors.white,
+              ),
               child: Text(
                 isAuthenticated ? l10n.currency(value) : 'ログインしてください',
               ),
@@ -222,6 +226,10 @@ class PaymentButton extends HookWidget {
 
                   return BaseElevatedButton(
                     l10n: l10n,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isButtonEnabled ? null : Colors.grey,
+                      foregroundColor: isButtonEnabled ? null : Colors.white,
+                    ),
                     onPressed:
                         isButtonEnabled
                             ? () async {

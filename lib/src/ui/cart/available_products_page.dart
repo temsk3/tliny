@@ -171,9 +171,11 @@ class AvailableProductsPage extends HookConsumerWidget {
                   final authState = ref.watch(authStateChangesProvider);
                   final isAuthenticated = authState.value ?? false;
 
+                  final isButtonEnabled = product.stock > 0 && isAuthenticated;
+
                   return ElevatedButton.icon(
                     onPressed:
-                        (product.stock > 0 && isAuthenticated)
+                        isButtonEnabled
                             ? () async {
                               try {
                                 // カートに追加（既存のメソッドを使用）
@@ -218,6 +220,8 @@ class AvailableProductsPage extends HookConsumerWidget {
                     ),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
+                      backgroundColor: isButtonEnabled ? null : Colors.grey,
+                      foregroundColor: isButtonEnabled ? null : Colors.white,
                     ),
                   );
                 },

@@ -8,7 +8,6 @@ import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_media_query.dart';
 import '../common/main_body.dart';
-import '../product/widget/product_button.dart';
 import 'program_view_model.dart';
 import 'widget/program_button.dart';
 
@@ -76,6 +75,7 @@ class ProgramDetailsPage extends HookConsumerWidget {
     //     .where((element) => element.id == program.id)
     //     .toList();
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(program.name!),
         actions: [
@@ -85,82 +85,53 @@ class ProgramDetailsPage extends HookConsumerWidget {
           DeleteProgramIconButton(program: program),
           FavoriteProgramIconButton(programId: program.id!),
           TermIconButton(program: program),
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              ProductEditRoute(
+                $extra: (program, Product.empty()),
+              ).push(context);
+            },
+            tooltip: '商品を追加',
+          ),
         ],
       ),
-      body: MainBodyWidget(
-        body: DefaultTabController(
-          length: 4,
-          child: NestedScrollView(
-            headerSliverBuilder: (
-              BuildContext context,
-              bool innerBoxIsScrolled,
-            ) {
-              return <Widget>[
-                _headerSection(context, program.message!),
-                _tabSection(context),
-              ];
-            },
-            body: TabBarView(
-              children: [
-                ProductListPage(program: program),
-                ProductListPage(program: program, genre: GenreType.foods),
-                ProductListPage(program: program, genre: GenreType.goods),
-                ProductListPage(program: program, genre: GenreType.others),
-              ],
+      body: SafeArea(
+        child: MainBodyWidget(
+          body: DefaultTabController(
+            length: 4,
+            child: NestedScrollView(
+              headerSliverBuilder: (
+                BuildContext context,
+                bool innerBoxIsScrolled,
+              ) {
+                return <Widget>[
+                  _headerSection(context, program.message!),
+                  _tabSection(context),
+                ];
+              },
+              body: TabBarView(
+                children: [
+                  ProductListPage(program: program),
+                  ProductListPage(program: program, genre: GenreType.foods),
+                  ProductListPage(program: program, genre: GenreType.goods),
+                  ProductListPage(program: program, genre: GenreType.others),
+                ],
+              ),
             ),
           ),
         ),
-
-        // body: CustomScrollView(
-        //   slivers: [
-        //     SliverAppBar(
-        //       // automaticallyImplyLeading: false,
-        //       title: Text(program.name!),
-        //       actions: [
-        //         AddStaffIconButton(program: program),
-        //         QRCodeScanIconButton(program: program),
-        //         EditProgramIconButton(program: program),
-        //         DeleteProgramIconButton(program: program),
-        //         FavoriteProgramIconButton(programId: program.id!),
-        //       ],
-        //       flexibleSpace: const FlexibleSpaceBar(),
-        //     ),
-        //     SliverList(
-        //       delegate: SliverChildListDelegate([
-        //         Center(
-        //           child: Text(program.message!),
-        //         ),
-        //         const SizedBox(height: 10),
-        //       ]),
-        //     ),
-        //   ],
-        // ),
-        //     Column(
-        //   children: [
-        //     Container(
-        //       padding: const EdgeInsets.symmetric(horizontal: 32),
-        //       child: Text(
-        //         program.message!,
-        //         maxLines: 3,
-        //         overflow: TextOverflow.ellipsis,
-        //       ),
-        //     ),
-        //     Expanded(child: ProductPage(program)),
-        //   ],
-        // ),
       ),
-      floatingActionButton: AddProductFloatingActionButton(
-        program: program,
-        onPressed: () {
-          // appRoute.push(
-          //   ProductEditRoute(
-          //     program: program,
-          //     product: Product.empty(),
-          //   ),
-          // );
-          ProductEditRoute($extra: (program, Product.empty())).push(context);
-        },
-      ),
+      // floatingActionButton: Padding(
+      //   padding: const EdgeInsets.only(bottom: 80), // SnackBar用のスペース
+      //   child: AddProductFloatingActionButton(
+      //     program: program,
+      //     onPressed: () {
+      //       ProductEditRoute($extra: (program, Product.empty())).push(context);
+      //     },
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

@@ -71,30 +71,62 @@ class CartRepository {
       );
       final result = querySnapshot.docs.map((doc) => doc.data()).toList();
       logger.i('readCart: カートのデータを一度に取得しました result=$result');
+
+      // 各カートアイテムの詳細をログ出力
+      for (var i = 0; i < result.length; i++) {
+        final cart = result[i];
+        logger.d(
+          'readCart: カート[$i] - id: ${cart.id}, productId: ${cart.productId}, quantity: ${cart.quantity}',
+          time: DateTime.now(),
+        );
+      }
+
       return result;
     } on Exception catch (e, st) {
-      logger.e('readCart: Exception - $e', stackTrace: st);
+      logger.e(
+        'readCart: Exception - $e',
+        stackTrace: st,
+        time: DateTime.now(),
+      );
+      logger.e(
+        'readCart: Exception詳細 - ${e.runtimeType}',
+        time: DateTime.now(),
+      );
       throw GeneralException(message: e.toString(), stackTrace: st);
     } catch (e, st) {
-      logger.e('readCart: catch - $e', stackTrace: st);
+      logger.e('readCart: catch - $e', stackTrace: st, time: DateTime.now());
+      logger.e('readCart: catch詳細 - ${e.runtimeType}', time: DateTime.now());
       throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
   // カートに商品を追加する
   Future<Cart> createCart(String uid, Cart cart) async {
-    logger.i('createCart: カートに商品を追加します');
+    logger.i('createCart: カートに商品を追加します uid=$uid, cart=$cart');
     try {
       final item = cart.copyWith(
         id: cart.productId,
         productDocRef: 'v/1/products/${cart.productId}',
       );
+      logger.d('createCart: 作成するカートアイテム - $item', time: DateTime.now());
+
       await _collectionRef(uid).doc(cart.productId).set(item);
       logger.i('createCart: カートに商品を追加しました');
       return item;
     } on Exception catch (e, st) {
+      logger.e(
+        'createCart: Exception - $e',
+        stackTrace: st,
+        time: DateTime.now(),
+      );
+      logger.e(
+        'createCart: Exception詳細 - ${e.runtimeType}',
+        time: DateTime.now(),
+      );
       throw GeneralException(message: e.toString(), stackTrace: st);
     } catch (e, st) {
+      logger.e('createCart: catch - $e', stackTrace: st, time: DateTime.now());
+      logger.e('createCart: catch詳細 - ${e.runtimeType}', time: DateTime.now());
       throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
