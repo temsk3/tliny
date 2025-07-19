@@ -95,6 +95,27 @@ class ProgramRepository {
               logger.d('watchEventsByOrganizer: doc=$doc');
               return doc.data();
             }).toList();
+          })
+          .handleError((error, stackTrace) {
+            logger.e(
+              'watchEventsByOrganizer: Firestore error=$error, stackTrace=$stackTrace',
+            );
+            if (error.toString().contains('index')) {
+              throw GeneralException(
+                message: 'データベースのインデックスが不足しています。管理者にお問い合わせください。',
+                stackTrace: stackTrace as StackTrace?,
+              );
+            } else if (error.toString().contains('permission')) {
+              throw GeneralException(
+                message: 'アクセス権限がありません。',
+                stackTrace: stackTrace as StackTrace?,
+              );
+            } else {
+              throw GeneralException(
+                message: 'イベント一覧の取得に失敗しました: $error',
+                stackTrace: stackTrace as StackTrace?,
+              );
+            }
           });
     } on Exception catch (e, st) {
       logger.e('watchEventsByOrganizer: error=$e, stackTrace=$st');

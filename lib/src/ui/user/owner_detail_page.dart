@@ -7,6 +7,7 @@ import '../../data/repository/program_repository.dart';
 import '../../data/repository/user_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/routes/routes.dart';
+import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 
 // オーナーのイベント一覧を取得するプロバイダー
@@ -29,6 +30,13 @@ class OwnerDetailPage extends HookConsumerWidget {
     // リポジトリを直接使用してイベント一覧を取得
     final programRepository = ref.watch(programRepositoryProvider);
     final ownerProgramsAsyncValue = ref.watch(ownerProgramsProvider(ownerId));
+
+    // デバッグ情報をログ出力
+    logger.d('OwnerDetailPage: ownerId=$ownerId');
+    logger.d('OwnerDetailPage: ownerAsyncValue=$ownerAsyncValue');
+    logger.d(
+      'OwnerDetailPage: ownerProgramsAsyncValue=$ownerProgramsAsyncValue',
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -79,17 +87,58 @@ class OwnerDetailPage extends HookConsumerWidget {
                           child: CircleAvatar(
                             radius: 60,
                             backgroundColor: Colors.grey[300],
-                            backgroundImage:
+                            child:
                                 owner.profileImageURL != null &&
                                         owner.profileImageURL!.isNotEmpty
-                                    ? CachedNetworkImageProvider(
-                                      owner.profileImageURL!,
+                                    ? ClipOval(
+                                      child: CachedNetworkImage(
+                                        imageUrl: owner.profileImageURL!,
+                                        width: 120,
+                                        height: 120,
+                                        fit: BoxFit.cover,
+                                        placeholder:
+                                            (context, url) => Container(
+                                              width: 120,
+                                              height: 120,
+                                              color: Colors.grey[300],
+                                              child: const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            ),
+                                        errorWidget: (context, url, error) {
+                                          logger.e(
+                                            'Profile image error: $error for URL: $url',
+                                          );
+                                          return Container(
+                                            width: 120,
+                                            height: 120,
+                                            color: Colors.grey[300],
+                                            child:
+                                                owner.displayName != null &&
+                                                        owner
+                                                            .displayName!
+                                                            .isNotEmpty
+                                                    ? Text(
+                                                      owner.displayName![0]
+                                                          .toUpperCase(),
+                                                      style: const TextStyle(
+                                                        fontSize: 36,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white,
+                                                      ),
+                                                    )
+                                                    : const Icon(
+                                                      Icons.person,
+                                                      color: Colors.grey,
+                                                      size: 60,
+                                                    ),
+                                          );
+                                        },
+                                      ),
                                     )
-                                    : null,
-                            child:
-                                owner.profileImageURL == null ||
-                                        owner.profileImageURL!.isEmpty
-                                    ? (owner.displayName != null &&
+                                    : (owner.displayName != null &&
                                             owner.displayName!.isNotEmpty
                                         ? Text(
                                           owner.displayName![0].toUpperCase(),
@@ -103,8 +152,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                                           Icons.person,
                                           color: Colors.grey,
                                           size: 60,
-                                        ))
-                                    : null,
+                                        )),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -241,6 +289,10 @@ class OwnerDetailPage extends HookConsumerWidget {
                             );
                           },
                           error: (error, stack) {
+                            logger.e(
+                              'Owner programs error: $error',
+                              stackTrace: stack,
+                            );
                             return Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
@@ -266,6 +318,15 @@ class OwnerDetailPage extends HookConsumerWidget {
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    error.toString(),
+                                    style: TextStyle(
+                                      color: Colors.grey[400],
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ],
                               ),
                             );
@@ -290,7 +351,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                                     ),
                                     const SizedBox(height: 12),
                                     Text(
-                                      '作成したイベントはありません',
+                                      '作成したイベントがありません',
                                       style: TextStyle(
                                         color: Colors.grey[400],
                                         fontSize: 16,
@@ -301,6 +362,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                                 ),
                               );
                             }
+
                             return Column(
                               children:
                                   programs.map((program) {
@@ -316,15 +378,6 @@ class OwnerDetailPage extends HookConsumerWidget {
                                             alpha: 0.2,
                                           ),
                                         ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withValues(
-                                              alpha: 0.1,
-                                            ),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ],
                                       ),
                                       child: Material(
                                         color: Colors.transparent,
@@ -342,125 +395,75 @@ class OwnerDetailPage extends HookConsumerWidget {
                                           child: Padding(
                                             padding: const EdgeInsets.all(16),
                                             child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
                                               children: [
                                                 // イベント画像
-                                                Container(
-                                                  width: 80,
-                                                  height: 80,
-                                                  decoration: BoxDecoration(
+                                                if (program
+                                                    .pictureURL
+                                                    .isNotEmpty)
+                                                  ClipRRect(
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                          12,
+                                                          8,
                                                         ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.black
-                                                            .withValues(
-                                                              alpha: 0.2,
-                                                            ),
-                                                        blurRadius: 4,
-                                                        offset: const Offset(
-                                                          0,
-                                                          2,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child:
-                                                      program
-                                                              .pictureURL
-                                                              .isNotEmpty
-                                                          ? ClipRRect(
-                                                            borderRadius:
-                                                                BorderRadius.circular(
-                                                                  12,
-                                                                ),
-                                                            child: CachedNetworkImage(
-                                                              imageUrl:
-                                                                  program
-                                                                      .pictureURL[0],
-                                                              width: 80,
-                                                              height: 80,
-                                                              fit: BoxFit.cover,
-                                                              placeholder:
-                                                                  (
-                                                                    context,
-                                                                    url,
-                                                                  ) => Container(
-                                                                    width: 80,
-                                                                    height: 80,
-                                                                    decoration: BoxDecoration(
-                                                                      color:
-                                                                          Colors
-                                                                              .grey[600],
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                            12,
-                                                                          ),
-                                                                    ),
-                                                                    child: const Center(
-                                                                      child: CircularProgressIndicator(
-                                                                        strokeWidth:
-                                                                            2,
-                                                                        valueColor: AlwaysStoppedAnimation<
-                                                                          Color
-                                                                        >(
-                                                                          Colors
-                                                                              .white,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                              errorWidget:
-                                                                  (
-                                                                    context,
-                                                                    url,
-                                                                    error,
-                                                                  ) => Container(
-                                                                    width: 80,
-                                                                    height: 80,
-                                                                    decoration: BoxDecoration(
-                                                                      color:
-                                                                          Colors
-                                                                              .grey[600],
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                            12,
-                                                                          ),
-                                                                    ),
-                                                                    child: const Icon(
-                                                                      Icons
-                                                                          .event,
-                                                                      color:
-                                                                          Colors
-                                                                              .grey,
-                                                                      size: 32,
-                                                                    ),
-                                                                  ),
-                                                            ),
-                                                          )
-                                                          : Container(
-                                                            width: 80,
-                                                            height: 80,
-                                                            decoration: BoxDecoration(
+                                                    child: SizedBox(
+                                                      width: 60,
+                                                      height: 60,
+                                                      child: CachedNetworkImage(
+                                                        imageUrl:
+                                                            program
+                                                                .pictureURL[0],
+                                                        fit: BoxFit.cover,
+                                                        placeholder:
+                                                            (
+                                                              context,
+                                                              url,
+                                                            ) => Container(
                                                               color:
                                                                   Colors
-                                                                      .grey[600],
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    12,
-                                                                  ),
+                                                                      .grey[300],
+                                                              child: const Center(
+                                                                child:
+                                                                    CircularProgressIndicator(),
+                                                              ),
                                                             ),
+                                                        errorWidget: (
+                                                          context,
+                                                          url,
+                                                          error,
+                                                        ) {
+                                                          logger.e(
+                                                            'Program image error: $error for URL: $url',
+                                                          );
+                                                          return Container(
+                                                            color:
+                                                                Colors
+                                                                    .grey[300],
                                                             child: const Icon(
                                                               Icons.event,
                                                               color:
                                                                   Colors.grey,
-                                                              size: 32,
                                                             ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  )
+                                                else
+                                                  Container(
+                                                    width: 60,
+                                                    height: 60,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[300],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            8,
                                                           ),
-                                                ),
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.event,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
                                                 const SizedBox(width: 16),
                                                 // イベント情報
                                                 Expanded(
@@ -469,13 +472,12 @@ class OwnerDetailPage extends HookConsumerWidget {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      // イベント名
                                                       Text(
                                                         program.name ??
                                                             '無題のイベント',
                                                         style: const TextStyle(
                                                           color: Colors.white,
-                                                          fontSize: 18,
+                                                          fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
@@ -484,114 +486,32 @@ class OwnerDetailPage extends HookConsumerWidget {
                                                             TextOverflow
                                                                 .ellipsis,
                                                       ),
-                                                      const SizedBox(height: 8),
-                                                      // イベント情報
-                                                      if (program.salesStart !=
-                                                              null &&
-                                                          program.salesEnd !=
-                                                              null)
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                bottom: 4,
-                                                              ),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.schedule,
-                                                                color:
-                                                                    Colors
-                                                                        .grey[400],
-                                                                size: 14,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 6,
-                                                              ),
-                                                              Expanded(
-                                                                child: Text(
-                                                                  '${l10n.salesPeriod}: ${l10n.date(program.salesStart!)}〜${l10n.date(program.salesEnd!)}',
-                                                                  style: TextStyle(
-                                                                    color:
-                                                                        Colors
-                                                                            .grey[300],
-                                                                    fontSize:
-                                                                        13,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        program.place ??
+                                                            '場所未設定',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontSize: 14,
                                                         ),
-                                                      if (program.eventFrom !=
-                                                              null &&
-                                                          program.eventTo !=
-                                                              null)
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets.only(
-                                                                bottom: 4,
-                                                              ),
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.event,
-                                                                color:
-                                                                    Colors
-                                                                        .grey[400],
-                                                                size: 14,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 6,
-                                                              ),
-                                                              Expanded(
-                                                                child: Text(
-                                                                  '${l10n.periods}: ${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
-                                                                  style: TextStyle(
-                                                                    color:
-                                                                        Colors
-                                                                            .grey[300],
-                                                                    fontSize:
-                                                                        13,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                        maxLines: 1,
+                                                        overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
+                                                      ),
+                                                      const SizedBox(height: 4),
+                                                      Text(
+                                                        '${l10n.date(program.eventFrom ?? DateTime.now())} - ${l10n.date(program.eventTo ?? DateTime.now())}',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontSize: 12,
                                                         ),
-                                                      if (program.place !=
-                                                              null &&
-                                                          program
-                                                              .place!
-                                                              .isNotEmpty)
-                                                        Row(
-                                                          children: [
-                                                            Icon(
-                                                              Icons.location_on,
-                                                              color:
-                                                                  Colors
-                                                                      .grey[400],
-                                                              size: 14,
-                                                            ),
-                                                            const SizedBox(
-                                                              width: 6,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                '開催地: ${program.place}',
-                                                                style: TextStyle(
-                                                                  color:
-                                                                      Colors
-                                                                          .grey[300],
-                                                                  fontSize: 13,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                      ),
                                                     ],
                                                   ),
                                                 ),
-                                                // 矢印アイコン
                                                 const Icon(
                                                   Icons.chevron_right,
                                                   color: Colors.grey,
