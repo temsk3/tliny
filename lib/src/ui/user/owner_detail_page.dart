@@ -429,41 +429,125 @@ class OwnerDetailPage extends HookConsumerWidget {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Text(
-                                                        program.name ??
-                                                            '無題のイベント',
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                      Flexible(
+                                                        child: LayoutBuilder(
+                                                          builder: (
+                                                            context,
+                                                            constraints,
+                                                          ) {
+                                                            final isNarrow =
+                                                                constraints
+                                                                    .maxWidth <
+                                                                200;
+                                                            return Text(
+                                                              program.name ??
+                                                                  '無題のイベント',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors
+                                                                        .white,
+                                                                fontSize:
+                                                                    isNarrow
+                                                                        ? 14
+                                                                        : 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                              maxLines:
+                                                                  isNarrow
+                                                                      ? 1
+                                                                      : 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            );
+                                                          },
                                                         ),
-                                                        maxLines: 2,
-                                                        overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
                                                       ),
                                                       const SizedBox(height: 4),
-                                                      Text(
-                                                        program.place ??
-                                                            '場所未設定',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontSize: 14,
+                                                      Flexible(
+                                                        child: LayoutBuilder(
+                                                          builder: (
+                                                            context,
+                                                            constraints,
+                                                          ) {
+                                                            final isNarrow =
+                                                                constraints
+                                                                    .maxWidth <
+                                                                200;
+                                                            return Text(
+                                                              program.place ??
+                                                                  '場所未設定',
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors
+                                                                        .grey[400],
+                                                                fontSize:
+                                                                    isNarrow
+                                                                        ? 12
+                                                                        : 14,
+                                                              ),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            );
+                                                          },
                                                         ),
-                                                        maxLines: 1,
-                                                        overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
                                                       ),
                                                       const SizedBox(height: 4),
-                                                      Text(
-                                                        '${l10n.date(program.eventFrom ?? DateTime.now())} - ${l10n.date(program.eventTo ?? DateTime.now())}',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Colors.grey[400],
-                                                          fontSize: 12,
+                                                      Flexible(
+                                                        child: LayoutBuilder(
+                                                          builder: (
+                                                            context,
+                                                            constraints,
+                                                          ) {
+                                                            final isNarrow =
+                                                                constraints
+                                                                    .maxWidth <
+                                                                200;
+                                                            final fromDate =
+                                                                program
+                                                                    .eventFrom ??
+                                                                DateTime.now();
+                                                            final toDate =
+                                                                program
+                                                                    .eventTo ??
+                                                                DateTime.now();
+
+                                                            String dateText;
+                                                            if (isNarrow) {
+                                                              // 狭い幅の場合は短縮形式
+                                                              final fromStr =
+                                                                  '${fromDate.month}/${fromDate.day}';
+                                                              final toStr =
+                                                                  '${toDate.month}/${toDate.day}';
+                                                              dateText =
+                                                                  '$fromStr - $toStr';
+                                                            } else {
+                                                              // 広い幅の場合は通常形式
+                                                              dateText =
+                                                                  '${l10n.date(fromDate)} - ${l10n.date(toDate)}';
+                                                            }
+
+                                                            return Text(
+                                                              dateText,
+                                                              style: TextStyle(
+                                                                color:
+                                                                    Colors
+                                                                        .grey[400],
+                                                                fontSize:
+                                                                    isNarrow
+                                                                        ? 10
+                                                                        : 12,
+                                                              ),
+                                                              maxLines: 1,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            );
+                                                          },
                                                         ),
                                                       ),
                                                     ],

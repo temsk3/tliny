@@ -56,8 +56,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '736590453040',
     projectId: 'tliny-c9630',
     storageBucket: 'tliny-c9630.appspot.com',
-    iosClientId:
-        '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
+    iosClientId: '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
     iosBundleId: 'com.example.tliny',
   );
 
@@ -67,8 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '736590453040',
     projectId: 'tliny-c9630',
     storageBucket: 'tliny-c9630.appspot.com',
-    iosClientId:
-        '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
+    iosClientId: '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
     iosBundleId: 'com.example.tliny',
   );
 
@@ -89,4 +87,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'tliny-c9630.appspot.com',
     measurementId: 'G-PXP1C91BE5',
   );
+
 }

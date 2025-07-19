@@ -237,8 +237,12 @@ class TicketListPage extends HookConsumerWidget {
         tap: false,
       ),
       title: Text(event.name!),
-      subtitle: Text(
-        '  ${l10n.periods} : ${l10n.date(event.eventFrom!)}〜${l10n.date(event.eventTo!)}',
+      subtitle: Flexible(
+        child: Text(
+          '  ${l10n.periods} : ${l10n.date(event.eventFrom!)}〜${l10n.date(event.eventTo!)}',
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
       ),
       initiallyExpanded: eventTickets.any(
         (ticket) => selectedTicketIds.contains(ticket.id),
@@ -335,6 +339,12 @@ class TicketListPage extends HookConsumerWidget {
           ),
           if (ticket.isPrinting)
             const Icon(Icons.print_outlined, color: Colors.green),
+          if (isExpired) // 期限切れの場合（印刷アイコンの上に重ねる）
+            const Icon(
+              Icons.access_time,
+              color: Colors.orange,
+              semanticLabel: '期限切れチケット',
+            ),
         ],
       ),
     );
