@@ -32,6 +32,7 @@ class TicketListViewModel extends _$TicketListViewModel {
   final Set<String> selectedTicketIds = {};
   String? selectedEventId;
   String? sharedUuid;
+  bool showExpiredTickets = false; // 期限切れチケットの表示・非表示フラグ（デフォルト：非表示）
 
   // TicketRepositoryへのアクセスを簡略化
   TicketRepository get _repository => ref.watch(ticketRepositoryProvider);
@@ -40,6 +41,134 @@ class TicketListViewModel extends _$TicketListViewModel {
   FutureOr<Set<String>> build() {
     selectedEventId = null;
     return selectedTicketIds;
+  }
+
+  // 期限切れチケットの表示・非表示を切り替える
+  void toggleExpiredTicketsVisibility() {
+    showExpiredTickets = !showExpiredTickets;
+    print('toggleExpiredTicketsVisibility: $showExpiredTickets');
+    // 状態を更新してUIの再構築を促す
+    state = AsyncValue.data({...selectedTicketIds});
+  }
+
+  // 期限切れチケットの選択を解除する
+  void removeExpiredTicketsFromSelection(List<Ticket> allTickets) {
+    if (showExpiredTickets) return; // 期限切れチケットを表示している場合は何もしない
+
+    final ticketsToRemove = <String>[];
+
+    for (final ticketId in selectedTicketIds) {
+      final ticket = allTickets.firstWhere(
+        (t) => t.id == ticketId,
+        orElse: Ticket.empty,
+      );
+
+      if (ticket.id != null && isTicketExpired(ticket)) {
+        ticketsToRemove.add(ticketId);
+      }
+    }
+
+    for (final ticketId in ticketsToRemove) {
+      selectedTicketIds.remove(ticketId);
+    }
+
+    if (ticketsToRemove.isNotEmpty) {
+      state = AsyncValue.data({...selectedTicketIds});
+    }
+  }
+
+  // 期限切れチケットの表示状態を取得
+  bool get isExpiredTicketsVisible => showExpiredTickets;
+
+  // 期限切れ判定を共通化
+  bool isTicketExpired(Ticket ticket) {
+    final now = DateTime.now();
+
+    // チケットの有効期限が設定されている場合
+    if (ticket.expirationTo != null) {
+      final isExpired = ticket.expirationTo!.isBefore(now);
+      print(
+        'isTicketExpired (ticket.expirationTo): ${ticket.id} -> $isExpired (${ticket.expirationTo} vs $now)',
+      );
+      return isExpired;
+    }
+
+    // イベントの開催期間で判定する場合
+    if (ticket.eventId != null) {
+      try {
+        final event =
+            ref.read(programStreamProvider(ticket.eventId!)).valueOrNull;
+        if (event != null && event.eventTo != null) {
+          final isExpired = event.eventTo!.isBefore(now);
+          print(
+            'isTicketExpired (event.eventTo): ${ticket.id} -> $isExpired (${event.eventTo} vs $now)',
+          );
+          return isExpired;
+        } else {
+          print(
+            'isTicketExpired (no event data): ${ticket.id} -> false (event: $event)',
+          );
+        }
+      } catch (e) {
+        print('isTicketExpired (error): ${ticket.id} -> false (error: $e)');
+        // エラーが発生した場合は期限切れでないとみなす
+        return false;
+      }
+    }
+
+    print('isTicketExpired (default): ${ticket.id} -> false');
+    return false; // デフォルトでは期限切れでない
+  }
+
+  // 期限切れチケットをフィルタリングする
+  List<Ticket> filterExpiredTickets(List<Ticket> tickets) {
+    if (showExpiredTickets) {
+      return tickets; // 全て表示
+    }
+
+    final filteredTickets =
+        tickets.where((ticket) => !isTicketExpired(ticket)).toList();
+    print(
+      'filterExpiredTickets: ${tickets.length} -> ${filteredTickets.length}',
+    );
+    return filteredTickets;
+  }
+
+  // 使用可能なチケットが無いイベントをフィルタリングする
+  Map<String, List<Ticket>> filterEventsWithNoValidTickets(
+    Map<String, List<Ticket>> groupedTickets,
+  ) {
+    if (showExpiredTickets) {
+      return groupedTickets; // 全て表示
+    }
+
+    final filteredMap = <String, List<Ticket>>{};
+
+    for (final entry in groupedTickets.entries) {
+      final eventId = entry.key;
+      final tickets = entry.value;
+
+      // このイベントに使用可能なチケットがあるかチェック
+      final hasValidTickets = tickets.any((ticket) {
+        // 使用済みでない
+        if (ticket.isUsed) return false;
+
+        // 期限切れでない
+        if (isTicketExpired(ticket)) return false;
+
+        return true;
+      });
+
+      // 使用可能なチケットがある場合のみイベントを表示
+      if (hasValidTickets) {
+        filteredMap[eventId] = tickets;
+      }
+    }
+
+    print(
+      'filterEventsWithNoValidTickets: ${groupedTickets.length} -> ${filteredMap.length}',
+    );
+    return filteredMap;
   }
 
   Future<List<Ticket>> getTickets() async {
@@ -84,11 +213,17 @@ class TicketListViewModel extends _$TicketListViewModel {
         // 使用済みチケットは選択できない
         return;
       }
+      if (isTicketExpired(ticket)) {
+        // 期限切れチケットは選択できない
+        return;
+      }
       selectedTicketIds.add(ticket.id!);
       selectedEventId ??= ticket.eventId; // 最初の選択時にイベントIDを設定
     }
 
-    state = AsyncValue.data({...selectedTicketIds});
+    // 状態を強制的に更新（新しいSetオブジェクトを作成）
+    final newSelectedIds = Set<String>.from(selectedTicketIds);
+    state = AsyncValue.data(newSelectedIds);
   }
 
   bool isDifferentEvent(Ticket ticket) {
@@ -214,7 +349,11 @@ class TicketListViewModel extends _$TicketListViewModel {
   }
 
   Program? getEvent(String eventId) {
-    return ref.read(programStreamProvider(eventId)).valueOrNull;
+    try {
+      return ref.read(programStreamProvider(eventId)).valueOrNull;
+    } catch (e) {
+      return null;
+    }
   }
 }
 

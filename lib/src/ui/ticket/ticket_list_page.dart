@@ -29,35 +29,125 @@ class TicketListPage extends HookConsumerWidget {
         value: ticketsAsyncValue,
         data: (tickets) {
           if (tickets.isEmpty) {
+            print('TicketListPage: No tickets found');
             return _buildEmptyTicketsWidget(context, l10n);
           }
 
+          print('TicketListPage: Found ${tickets.length} tickets');
           final sortedTickets = sortTickets(tickets, sortOrder.value);
           final groupedTickets = groupTicketsByEvent(sortedTickets);
+          print('TicketListPage: Grouped into ${groupedTickets.length} events');
 
           return Scaffold(
             body: Column(
               children: [
                 _buildSortMenu(sortOrder),
-                _buildActionButtons(context, ref, sortedTickets),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: groupedTickets.length,
-                    itemBuilder: (context, index) {
-                      final eventId = groupedTickets.keys.elementAt(index);
-                      final eventTickets = groupedTickets[eventId]!;
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final viewModel = ref.read(
+                        ticketListViewModelProvider.notifier,
+                      );
+                      // 期限切れの表示状態の変更を監視
+                      ref.watch(ticketListViewModelProvider);
+                      final filteredTickets = viewModel.filterExpiredTickets(
+                        sortedTickets,
+                      );
+                      print(
+                        'TicketListPage: After expired filter: ${filteredTickets.length} tickets',
+                      );
 
-                      return AsyncValueWidget(
-                        value: ref.watch(programStreamProvider(eventId)),
-                        data: (event) {
-                          return _buildEventExpansionTile(
-                            l10n,
-                            ref,
-                            event,
-                            eventTickets,
-                            viewModel,
+                      final filteredGroupedTickets = groupTicketsByEvent(
+                        filteredTickets,
+                      );
+                      print(
+                        'TicketListPage: After grouping: ${filteredGroupedTickets.length} events',
+                      );
+
+                      // 使用可能なチケットが無いイベントをフィルタリング
+                      final finalGroupedTickets = viewModel
+                          .filterEventsWithNoValidTickets(
+                            filteredGroupedTickets,
                           );
-                        },
+                      print(
+                        'TicketListPage: Final events: ${finalGroupedTickets.length} events',
+                      );
+
+                      return Column(
+                        children: [
+                          // ボタンを独立したConsumerで監視
+                          Consumer(
+                            builder: (context, ref, child) {
+                              final selectedState = ref.watch(
+                                ticketListViewModelProvider,
+                              );
+                              final selectedTicketIds =
+                                  selectedState.value ?? {};
+                              final hasSelectedTickets =
+                                  selectedTicketIds.isNotEmpty;
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.picture_as_pdf),
+                                      onPressed:
+                                          hasSelectedTickets
+                                              ? () => const TicketPdfRoute()
+                                                  .push(context)
+                                              : null,
+                                      tooltip: 'Generate PDF',
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.qr_code),
+                                      onPressed:
+                                          hasSelectedTickets
+                                              ? () => QRCodeDisplayRoute(
+                                                uuid: viewModel.getSharedUuid(
+                                                  filteredTickets,
+                                                ),
+                                              ).push(context)
+                                              : null,
+                                      tooltip: 'Display QR Code',
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: finalGroupedTickets.length,
+                              itemBuilder: (context, index) {
+                                final eventId = finalGroupedTickets.keys
+                                    .elementAt(index);
+                                final eventTickets =
+                                    finalGroupedTickets[eventId]!;
+
+                                return AsyncValueWidget(
+                                  value: ref.watch(
+                                    programStreamProvider(eventId),
+                                  ),
+                                  data: (event) {
+                                    return _buildEventExpansionTile(
+                                      l10n,
+                                      ref,
+                                      event,
+                                      eventTickets,
+                                      viewModel,
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -78,8 +168,36 @@ class TicketListPage extends HookConsumerWidget {
         vertical: 8,
       ), // Adjust values as needed
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end, // Align to the end
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, // 両端に配置
         children: [
+          // 期限切れチケットの表示・非表示ボタン
+          Consumer(
+            builder: (context, ref, child) {
+              final viewModel = ref.read(ticketListViewModelProvider.notifier);
+              // 期限切れの表示状態を監視するために、状態をwatchする
+              ref.watch(ticketListViewModelProvider);
+              final isExpiredVisible = viewModel.isExpiredTicketsVisible;
+
+              return TextButton.icon(
+                onPressed: viewModel.toggleExpiredTicketsVisibility,
+                icon: Icon(
+                  isExpiredVisible ? Icons.visibility : Icons.visibility_off,
+                  size: 20,
+                ),
+                label: Text(
+                  isExpiredVisible ? '期限切れを非表示' : '期限切れを表示',
+                  style: const TextStyle(fontSize: 12),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                ),
+              );
+            },
+          ),
+          // ソートボタン
           PopupMenuButton<SortOrder>(
             onSelected: (sort) => sortOrder.value = sort,
             itemBuilder:
@@ -93,44 +211,6 @@ class TicketListPage extends HookConsumerWidget {
                     child: Text('Sort by Event Date'),
                   ),
                 ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButtons(
-    BuildContext context,
-    WidgetRef ref,
-    List<Ticket> tickets,
-  ) {
-    final viewModel = ref.read(ticketListViewModelProvider.notifier);
-    final selectedTicketIds = viewModel.getSelectedTicketIds();
-    final hasSelectedTickets = selectedTicketIds.isNotEmpty;
-
-    return Padding(
-      // Add padding
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // For better spacing
-        children: [
-          IconButton(
-            icon: const Icon(Icons.picture_as_pdf),
-            onPressed:
-                hasSelectedTickets
-                    ? () => const TicketPdfRoute().push(context)
-                    : null, // Disable if no tickets selected
-            tooltip: 'Generate PDF', // Add tooltip
-          ),
-          IconButton(
-            icon: const Icon(Icons.qr_code),
-            onPressed:
-                hasSelectedTickets
-                    ? () => QRCodeDisplayRoute(
-                      uuid: viewModel.getSharedUuid(tickets),
-                    ).push(context)
-                    : null, // Disable if no tickets selected
-            tooltip: 'Display QR Code', // Add tooltip
           ),
         ],
       ),
@@ -193,6 +273,11 @@ class TicketListPage extends HookConsumerWidget {
           final ticketKey = ValueKey(ticket.id);
           var isSelected = selectedTicketIds.contains(ticket.id);
           if (ticket.isUsed) isSelected = false;
+
+          // 期限切れかどうかを判定（期限切れチケットは常に選択不可）
+          final isExpired = viewModel.isTicketExpired(ticket);
+          if (isExpired) isSelected = false;
+
           return _buildTicketCard(
             ref,
             ticketKey,
@@ -214,19 +299,28 @@ class TicketListPage extends HookConsumerWidget {
     bool isSelected,
     String? selectedEventId,
   ) {
+    // 選択状態をリアルタイムで監視
+    final selectedTicketIds =
+        ref.watch(ticketListViewModelProvider).value ?? {};
+    final currentIsSelected = selectedTicketIds.contains(ticket.id);
+
     final isDisabled =
         selectedEventId != null && selectedEventId != ticket.eventId;
     final isUsed = ticket.isUsed;
     if (isUsed) {
       viewModel.toggleTicketSelection(ticket);
     }
+
+    // 期限切れかどうかを判定
+    final isExpired = viewModel.isTicketExpired(ticket);
+
     return CheckboxListTile(
       key: ticketKey,
       title: Text(ticket.name!),
       subtitle: Text(ticket.code!),
-      value: isSelected,
+      value: currentIsSelected,
       onChanged:
-          isUsed || isDisabled
+          isUsed || isDisabled || isExpired
               ? null
               : (_) => viewModel.toggleTicketSelection(ticket),
 
