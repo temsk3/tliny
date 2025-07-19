@@ -1,10 +1,10 @@
 {
   "projects": {
-    "default": "tliny-sample"
+    "default": "tliny-c9630"
   },
   "targets": {},
   "etags": {
-    "tliny-sample": {
+    "tliny-c9630": {
       "extensionInstances": {
         "firestore-stripe-payments": "d19d02d63afb21d322ce43e514fd6372ecb9c2358b6f067c864475a5b74b9650"
       }
