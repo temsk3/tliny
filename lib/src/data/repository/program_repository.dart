@@ -80,13 +80,14 @@ class ProgramRepository {
     }
   }
 
-  // オーナーIDでイベント一覧を取得するストリーム
+  // オーナーIDでイベント一覧を取得するストリーム（非表示設定のイベントは除外）
   Stream<List<Program>> watchEventsByOrganizer(String organizerId) {
     logger.d('watchEventsByOrganizer: organizerId=$organizerId');
     try {
       return _collectionRef
           .where('organizerId', isEqualTo: organizerId)
           .where('isActive', isEqualTo: true)
+          .where('isPublish', isEqualTo: true)
           .orderBy('createdAt', descending: true)
           .snapshots()
           .map((snapshot) {
