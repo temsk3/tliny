@@ -28,7 +28,7 @@ final ticketsStateProvider =
 // ignore: unused_element
 typedef TicketsStateRef = AutoDisposeProviderRef<AsyncValue<List<Ticket>>>;
 String _$ticketListViewModelHash() =>
-    r'b94d20876e74aeb86ae53ecea5d553c4f2e10266';
+    r'9daf73fb81959eefa6621567d7d961f2d377b518';
 
 /// See also [TicketListViewModel].
 @ProviderFor(TicketListViewModel)

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/program_model.dart';
+import '../../data/model/user_model.dart';
 import '../../data/repository/program_repository.dart';
 import '../../data/repository/user_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
@@ -62,6 +63,27 @@ class OwnerDetailPage extends HookConsumerWidget {
         child: AsyncValueWidget(
           value: ownerAsyncValue,
           data: (owner) {
+            // デバッグ情報をログ出力
+            logger.d('OwnerDetailPage: owner data received');
+            logger.d('OwnerDetailPage: owner.id=${owner.id}');
+            logger.d('OwnerDetailPage: owner.displayName=${owner.displayName}');
+            logger.d(
+              'OwnerDetailPage: owner.profileImageURL=${owner.profileImageURL}',
+            );
+            logger.d(
+              'OwnerDetailPage: owner.profileImageURL is null=${owner.profileImageURL == null}',
+            );
+            logger.d(
+              'OwnerDetailPage: owner.profileImageURL is empty=${owner.profileImageURL?.isEmpty}',
+            );
+
+            // テスト用のダミー画像URLを設定（デバッグ用）
+            if (owner.profileImageURL == null ||
+                owner.profileImageURL!.isEmpty) {
+              logger.d(
+                'OwnerDetailPage: No profile image URL found, this might be the issue',
+              );
+            }
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -87,72 +109,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                           child: CircleAvatar(
                             radius: 60,
                             backgroundColor: Colors.grey[300],
-                            child:
-                                owner.profileImageURL != null &&
-                                        owner.profileImageURL!.isNotEmpty
-                                    ? ClipOval(
-                                      child: CachedNetworkImage(
-                                        imageUrl: owner.profileImageURL!,
-                                        width: 120,
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                        placeholder:
-                                            (context, url) => Container(
-                                              width: 120,
-                                              height: 120,
-                                              color: Colors.grey[300],
-                                              child: const Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              ),
-                                            ),
-                                        errorWidget: (context, url, error) {
-                                          logger.e(
-                                            'Profile image error: $error for URL: $url',
-                                          );
-                                          return Container(
-                                            width: 120,
-                                            height: 120,
-                                            color: Colors.grey[300],
-                                            child:
-                                                owner.displayName != null &&
-                                                        owner
-                                                            .displayName!
-                                                            .isNotEmpty
-                                                    ? Text(
-                                                      owner.displayName![0]
-                                                          .toUpperCase(),
-                                                      style: const TextStyle(
-                                                        fontSize: 36,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white,
-                                                      ),
-                                                    )
-                                                    : const Icon(
-                                                      Icons.person,
-                                                      color: Colors.grey,
-                                                      size: 60,
-                                                    ),
-                                          );
-                                        },
-                                      ),
-                                    )
-                                    : (owner.displayName != null &&
-                                            owner.displayName!.isNotEmpty
-                                        ? Text(
-                                          owner.displayName![0].toUpperCase(),
-                                          style: const TextStyle(
-                                            fontSize: 36,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        )
-                                        : const Icon(
-                                          Icons.person,
-                                          color: Colors.grey,
-                                          size: 60,
-                                        )),
+                            child: _buildProfileImage(owner),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -539,6 +496,62 @@ class OwnerDetailPage extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildProfileImage(PublicUsers owner) {
+    logger.d('_buildProfileImage: profileImageURL=${owner.profileImageURL}');
+
+    if (owner.profileImageURL != null && owner.profileImageURL!.isNotEmpty) {
+      logger.d(
+        '_buildProfileImage: Using CachedNetworkImage for URL: ${owner.profileImageURL}',
+      );
+      return ClipOval(
+        child: CachedNetworkImage(
+          imageUrl: owner.profileImageURL!,
+          width: 120,
+          height: 120,
+          fit: BoxFit.cover,
+          placeholder:
+              (context, url) => Container(
+                width: 120,
+                height: 120,
+                color: Colors.grey[300],
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+          errorWidget: (context, url, error) {
+            logger.e('Profile image error: $error for URL: $url');
+            return Container(
+              width: 120,
+              height: 120,
+              color: Colors.grey[300],
+              child:
+                  owner.displayName != null && owner.displayName!.isNotEmpty
+                      ? Text(
+                        owner.displayName![0].toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      )
+                      : const Icon(Icons.person, color: Colors.grey, size: 60),
+            );
+          },
+        ),
+      );
+    } else {
+      logger.d('_buildProfileImage: No profile image URL, using fallback');
+      return owner.displayName != null && owner.displayName!.isNotEmpty
+          ? Text(
+            owner.displayName![0].toUpperCase(),
+            style: const TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )
+          : const Icon(Icons.person, color: Colors.grey, size: 60);
+    }
   }
 
   Widget _buildInfoRow(String label, String value) {
