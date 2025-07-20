@@ -7,6 +7,7 @@ import '../../data/repository/auth_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import '../../ui/common/main_body.dart';
+import '../../utils/logger.dart';
 import '../common/loading_screen.dart';
 import '../image/image_screen.dart';
 import '../product/product_view_model.dart';
@@ -169,7 +170,12 @@ class AvailableProductsPage extends HookConsumerWidget {
                 builder: (context, ref, child) {
                   // 認証状態を取得
                   final authState = ref.watch(authStateChangesProvider);
-                  final isAuthenticated = authState.value ?? false;
+                  final isAuthenticated =
+                      authState.hasValue && (authState.value ?? false);
+                  logger.d(
+                    'available_products_page: authState=$authState, isAuthenticated=$isAuthenticated, product.stock=${product.stock}',
+                    time: DateTime.now(),
+                  );
 
                   return ElevatedButton.icon(
                     onPressed:
@@ -213,7 +219,7 @@ class AvailableProductsPage extends HookConsumerWidget {
                       product.stock > 0
                           ? (isAuthenticated
                               ? l10n.addToCartButton
-                              : 'ログインしてください')
+                              : l10n.pleaseLogin)
                           : l10n.outOfStock,
                     ),
                     style: ElevatedButton.styleFrom(

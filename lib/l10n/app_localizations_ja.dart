@@ -390,6 +390,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get authenticationError => '認証エラーが発生しました。再度ログインしてください。';
 
   @override
+  String get pleaseLogin => 'ログインしてください';
+
+  @override
   String get paymentError => '決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
 
   @override
@@ -652,4 +655,72 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get passwordChangeCompleted => 'パスワード変更が完了しました';
+
+  @override
+  String get scanQrCodes => 'QRコードをスキャン';
+
+  @override
+  String get scannedTickets => 'スキャンしたチケット';
+
+  @override
+  String scannedTicketsCount(int count) {
+    return 'スキャンしたチケット ($count)';
+  }
+
+  @override
+  String usedTickets(int count) {
+    return '$count 使用済み';
+  }
+
+  @override
+  String get noTicketsScannedYet => 'まだチケットがスキャンされていません';
+
+  @override
+  String get scanQrCodesToSeeTickets => 'QRコードをスキャンしてチケットを表示';
+
+  @override
+  String get unknownTicket => '不明なチケット';
+
+  @override
+  String get used => '使用済み';
+
+  @override
+  String get unused => '未使用';
+
+  @override
+  String get invalidQrCodeFormat => '無効なQRコード形式です';
+
+  @override
+  String failedToDecryptQrCode(String error) {
+    return 'QRコードの復号に失敗しました: $error';
+  }
+
+  @override
+  String get accessDeniedWrongEvent => 'アクセス拒否: イベントが異なります';
+
+  @override
+  String get ticketScannedSuccessfully => 'チケットが正常にスキャンされました';
+
+  @override
+  String failedToProcessQrCode(String error) {
+    return 'QRコードの処理に失敗しました: $error';
+  }
+
+  @override
+  String get scannedTicketsTitle => 'スキャンしたチケット';
+
+  @override
+  String get confirmAction => 'アクションの確認';
+
+  @override
+  String get markTicketsAsUsed => 'スキャンしたチケットを使用済みとしてマークしますか？';
+
+  @override
+  String get ticketsUpdatedSuccessfully => 'チケットが正常に更新されました';
+
+  @override
+  String get ticketUpdateError => 'チケット更新エラー';
+
+  @override
+  String get qrScannerOperationError => 'QRスキャナー操作エラー';
 }

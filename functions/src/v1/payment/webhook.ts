@@ -656,7 +656,10 @@ export const handleWebhookEvents = functions.https.onRequest(
           )
           break
         case 'account.updated':
-          logger.info('Processing account.updated event')
+          logger.info('Processing account.updated event', {
+            eventId: event.id,
+            accountId: (event.data.object as Stripe.Account).id,
+          })
           await handleAccountUpdated(event.data.object as Stripe.Account, res)
           break
         case 'charge.succeeded':

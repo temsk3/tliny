@@ -139,7 +139,8 @@ class TicketListViewModel extends _$TicketListViewModel {
     Map<String, List<Ticket>> groupedTickets,
   ) {
     if (showExpiredTickets) {
-      return groupedTickets; // 全て表示
+      // 期限切れ表示時は、全てのイベントを表示（使用済みでも有効期限がない場合は表示）
+      return groupedTickets;
     }
 
     final filteredMap = <String, List<Ticket>>{};
@@ -150,13 +151,10 @@ class TicketListViewModel extends _$TicketListViewModel {
 
       // このイベントに使用可能なチケットがあるかチェック
       final hasValidTickets = tickets.any((ticket) {
-        // 使用済みでない
-        if (ticket.isUsed) return false;
+        // 未使用で有効期限内のチケットがあるかチェック
+        if (!ticket.isUsed && !isTicketExpired(ticket)) return true;
 
-        // 期限切れでない
-        if (isTicketExpired(ticket)) return false;
-
-        return true;
+        return false;
       });
 
       // 使用可能なチケットがある場合のみイベントを表示
@@ -166,7 +164,7 @@ class TicketListViewModel extends _$TicketListViewModel {
     }
 
     print(
-      'filterEventsWithNoValidTickets: ${groupedTickets.length} -> ${filteredMap.length}',
+      'filterEventsWithNoValidTickets (expired hidden): ${groupedTickets.length} -> ${filteredMap.length}',
     );
     return filteredMap;
   }
@@ -209,6 +207,7 @@ class TicketListViewModel extends _$TicketListViewModel {
         selectedEventId = null; // 全ての選択が解除されたらイベントIDもクリア
       }
     } else {
+      // 未使用で有効期限内のもののみ選択可能
       if (ticket.isUsed) {
         // 使用済みチケットは選択できない
         return;

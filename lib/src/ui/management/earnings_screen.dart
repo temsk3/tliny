@@ -25,11 +25,13 @@ class EarningsScreen extends HookConsumerWidget {
         final productList =
             data.where((product) => product.isActive == true).toList();
         // 商品名を昇順でソート
-        productList
-            .sort((a, b) => a.name.toString().compareTo(b.name.toString()));
+        productList.sort(
+          (a, b) => a.name.toString().compareTo(b.name.toString()),
+        );
         // 商品コードを昇順でソート
-        productList
-            .sort((a, b) => a.code.toString().compareTo(b.code.toString()));
+        productList.sort(
+          (a, b) => a.code.toString().compareTo(b.code.toString()),
+        );
 
         // 商品リストが空でない場合
         if (productList.isNotEmpty) {
@@ -58,16 +60,57 @@ class EarningsScreen extends HookConsumerWidget {
                     ).push(context);
                   } on Exception catch (e) {
                     // エラーが発生した場合、エラーログを出力
-                    logger
-                        .e('Failed to navigate to earnings detail screen: $e');
+                    logger.e(
+                      'Failed to navigate to earnings detail screen: $e',
+                    );
                   }
                 },
               );
             },
           );
         } else {
-          // 商品リストが空の場合、空のコンテナを表示
-          return Container();
+          // 商品リストが空の場合、統一された空状態を表示
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.analytics_outlined,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  '売上データがありません',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '商品が販売されると、ここに売上データが表示されます',
+                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                ),
+              ],
+            ),
+          );
         }
       },
     );

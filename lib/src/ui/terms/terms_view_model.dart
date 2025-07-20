@@ -145,7 +145,7 @@ class TermsViewModel extends _$TermsViewModel {
         return userRepository.updateUser(data);
       });
       final updatedUser = data.copyWith(id: id);
-      updateProfile(data);
+      await updateProfile(data);
       state = AsyncValue.data(updatedUser);
     } on AppException catch (e, st) {
       logger.e('updateUser: AppException - ${e.message}', stackTrace: st);
@@ -187,12 +187,11 @@ class TermsViewModel extends _$TermsViewModel {
   }
 
   //
-  void updateProfile(User user) {
-    authRepository
-      ..updateDisplayName(user.displayName)
-      // ..updateEmail(user.email)
-      ..updatePhotoUrl(user.photoUrl);
-    // ..updatePhoneNumber(user.phoneNumber);
+  Future<void> updateProfile(User user) async {
+    await authRepository.updateDisplayName(user.displayName);
+    // await authRepository.updateEmail(user.email)
+    await authRepository.updatePhotoUrl(user.photoUrl);
+    // await authRepository.updatePhoneNumber(user.phoneNumber);
   }
 
   //

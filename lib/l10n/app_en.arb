@@ -207,6 +207,7 @@
   "insufficientStock": "Insufficient stock. Please adjust the quantity and try again.",
   "networkError": "Network error occurred. Please check your internet connection and try again.",
   "authenticationError": "Authentication error occurred. Please log in again.",
+  "pleaseLogin": "Please log in",
   "paymentError": "Payment processing error occurred. Please try again later.",
   "serverError": "Server error occurred. Please try again later.",
   "timeoutError": "Request timed out. Please try again later.",
@@ -333,5 +334,57 @@
   "passwordMismatch": "New passwords do not match",
   "passwordTooWeak": "Password is too weak. Please enter at least 6 alphanumeric characters",
   "passwordChangeInProgress": "Password change in progress...",
-  "passwordChangeCompleted": "Password change completed"
+  "passwordChangeCompleted": "Password change completed",
+  "scanQrCodes": "Scan QR Codes",
+  "scannedTickets": "Scanned Tickets",
+  "scannedTicketsCount": "Scanned Tickets ({count})",
+  "@scannedTicketsCount": {
+    "description": "Scanned tickets count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "usedTickets": "{count} Used",
+  "@usedTickets": {
+    "description": "Used tickets count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTicketsScannedYet": "No tickets scanned yet",
+  "scanQrCodesToSeeTickets": "Scan QR codes to see tickets here",
+  "unknownTicket": "Unknown Ticket",
+  "used": "Used",
+  "unused": "Unused",
+  "invalidQrCodeFormat": "Invalid QR code format.",
+  "failedToDecryptQrCode": "Failed to decrypt QR code: {error}",
+  "@failedToDecryptQrCode": {
+    "description": "QR code decryption failed message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accessDeniedWrongEvent": "Access denied: Wrong event.",
+  "ticketScannedSuccessfully": "Ticket scanned successfully.",
+  "failedToProcessQrCode": "Failed to process QR code: {error}",
+  "@failedToProcessQrCode": {
+    "description": "QR code processing failed message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "scannedTicketsTitle": "Scanned Tickets",
+  "confirmAction": "Confirm Action",
+  "markTicketsAsUsed": "Do you want to mark the scanned ticket as used?",
+  "ticketsUpdatedSuccessfully": "Tickets updated successfully.",
+  "ticketUpdateError": "Ticket Update Error",
+  "qrScannerOperationError": "QR Scanner Operation Error"
 }

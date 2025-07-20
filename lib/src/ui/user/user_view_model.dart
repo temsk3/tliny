@@ -125,7 +125,7 @@ class UserViewModel extends _$UserViewModel {
         return userRepository.updateUser(data);
       });
       final updatedUser = data.copyWith(id: id);
-      updateProfile(data);
+      await updateProfile(data);
 
       // PublicUsersも更新
       await ref.read(publicUserRepositoryProvider).updateUser(data);
@@ -171,13 +171,12 @@ class UserViewModel extends _$UserViewModel {
   }
 
   //
-  void updateProfile(User user) {
-    authRepository
-      ..updateDisplayName(user.displayName)
-      ..updatePhotoUrl(user.photoUrl);
+  Future<void> updateProfile(User user) async {
+    await authRepository.updateDisplayName(user.displayName);
+    await authRepository.updatePhotoUrl(user.photoUrl);
     // メールアドレスは専用ページで変更するため、ここでは更新しない
-    // ..updateEmail(user.email)
-    // ..updatePhoneNumber(user.phoneNumber);
+    // await authRepository.updateEmail(user.email)
+    // await authRepository.updatePhoneNumber(user.phoneNumber);
   }
 
   //

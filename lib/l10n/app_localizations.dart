@@ -776,6 +776,12 @@ abstract class AppLocalizations {
   /// **'認証エラーが発生しました。再度ログインしてください。'**
   String get authenticationError;
 
+  /// No description provided for @pleaseLogin.
+  ///
+  /// In ja, this message translates to:
+  /// **'ログインしてください'**
+  String get pleaseLogin;
+
   /// No description provided for @paymentError.
   ///
   /// In ja, this message translates to:
@@ -1279,6 +1285,126 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'パスワード変更が完了しました'**
   String get passwordChangeCompleted;
+
+  /// No description provided for @scanQrCodes.
+  ///
+  /// In ja, this message translates to:
+  /// **'QRコードをスキャン'**
+  String get scanQrCodes;
+
+  /// No description provided for @scannedTickets.
+  ///
+  /// In ja, this message translates to:
+  /// **'スキャンしたチケット'**
+  String get scannedTickets;
+
+  /// スキャンしたチケット数
+  ///
+  /// In ja, this message translates to:
+  /// **'スキャンしたチケット ({count})'**
+  String scannedTicketsCount(int count);
+
+  /// 使用済みチケット数
+  ///
+  /// In ja, this message translates to:
+  /// **'{count} 使用済み'**
+  String usedTickets(int count);
+
+  /// No description provided for @noTicketsScannedYet.
+  ///
+  /// In ja, this message translates to:
+  /// **'まだチケットがスキャンされていません'**
+  String get noTicketsScannedYet;
+
+  /// No description provided for @scanQrCodesToSeeTickets.
+  ///
+  /// In ja, this message translates to:
+  /// **'QRコードをスキャンしてチケットを表示'**
+  String get scanQrCodesToSeeTickets;
+
+  /// No description provided for @unknownTicket.
+  ///
+  /// In ja, this message translates to:
+  /// **'不明なチケット'**
+  String get unknownTicket;
+
+  /// No description provided for @used.
+  ///
+  /// In ja, this message translates to:
+  /// **'使用済み'**
+  String get used;
+
+  /// No description provided for @unused.
+  ///
+  /// In ja, this message translates to:
+  /// **'未使用'**
+  String get unused;
+
+  /// No description provided for @invalidQrCodeFormat.
+  ///
+  /// In ja, this message translates to:
+  /// **'無効なQRコード形式です'**
+  String get invalidQrCodeFormat;
+
+  /// QRコード復号失敗メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'QRコードの復号に失敗しました: {error}'**
+  String failedToDecryptQrCode(String error);
+
+  /// No description provided for @accessDeniedWrongEvent.
+  ///
+  /// In ja, this message translates to:
+  /// **'アクセス拒否: イベントが異なります'**
+  String get accessDeniedWrongEvent;
+
+  /// No description provided for @ticketScannedSuccessfully.
+  ///
+  /// In ja, this message translates to:
+  /// **'チケットが正常にスキャンされました'**
+  String get ticketScannedSuccessfully;
+
+  /// QRコード処理失敗メッセージ
+  ///
+  /// In ja, this message translates to:
+  /// **'QRコードの処理に失敗しました: {error}'**
+  String failedToProcessQrCode(String error);
+
+  /// No description provided for @scannedTicketsTitle.
+  ///
+  /// In ja, this message translates to:
+  /// **'スキャンしたチケット'**
+  String get scannedTicketsTitle;
+
+  /// No description provided for @confirmAction.
+  ///
+  /// In ja, this message translates to:
+  /// **'アクションの確認'**
+  String get confirmAction;
+
+  /// No description provided for @markTicketsAsUsed.
+  ///
+  /// In ja, this message translates to:
+  /// **'スキャンしたチケットを使用済みとしてマークしますか？'**
+  String get markTicketsAsUsed;
+
+  /// No description provided for @ticketsUpdatedSuccessfully.
+  ///
+  /// In ja, this message translates to:
+  /// **'チケットが正常に更新されました'**
+  String get ticketsUpdatedSuccessfully;
+
+  /// No description provided for @ticketUpdateError.
+  ///
+  /// In ja, this message translates to:
+  /// **'チケット更新エラー'**
+  String get ticketUpdateError;
+
+  /// No description provided for @qrScannerOperationError.
+  ///
+  /// In ja, this message translates to:
+  /// **'QRスキャナー操作エラー'**
+  String get qrScannerOperationError;
 }
 
 class _AppLocalizationsDelegate

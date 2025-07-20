@@ -323,21 +323,25 @@ class OwnerDetailPage extends HookConsumerWidget {
                             return Column(
                               children:
                                   programs.map((program) {
-                                    return Container(
-                                      margin: const EdgeInsets.only(bottom: 16),
-                                      decoration: BoxDecoration(
+                                    return SizedBox(
+                                      height: 120,
+                                      child: Card(
+                                        margin: const EdgeInsets.only(
+                                          bottom: 16,
+                                        ),
                                         color: Colors.white.withValues(
                                           alpha: 0.1,
                                         ),
-                                        borderRadius: BorderRadius.circular(16),
-                                        border: Border.all(
-                                          color: Colors.white.withValues(
-                                            alpha: 0.2,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.white.withValues(
+                                              alpha: 0.2,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      child: Material(
-                                        color: Colors.transparent,
                                         child: InkWell(
                                           borderRadius: BorderRadius.circular(
                                             16,
@@ -352,6 +356,7 @@ class OwnerDetailPage extends HookConsumerWidget {
                                           child: Padding(
                                             padding: const EdgeInsets.all(16),
                                             child: Row(
+                                              mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 // イベント画像
                                                 if (program
@@ -425,129 +430,57 @@ class OwnerDetailPage extends HookConsumerWidget {
                                                 // イベント情報
                                                 Expanded(
                                                   child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Flexible(
-                                                        child: LayoutBuilder(
-                                                          builder: (
-                                                            context,
-                                                            constraints,
-                                                          ) {
-                                                            final isNarrow =
-                                                                constraints
-                                                                    .maxWidth <
-                                                                200;
-                                                            return Text(
-                                                              program.name ??
-                                                                  '無題のイベント',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors
-                                                                        .white,
-                                                                fontSize:
-                                                                    isNarrow
-                                                                        ? 14
-                                                                        : 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                              maxLines:
-                                                                  isNarrow
-                                                                      ? 1
-                                                                      : 2,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            );
-                                                          },
+                                                      Text(
+                                                        program.name ??
+                                                            '無題のイベント',
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.bold,
                                                         ),
+                                                        maxLines: 2,
+                                                        overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                       ),
                                                       const SizedBox(height: 4),
-                                                      Flexible(
-                                                        child: LayoutBuilder(
-                                                          builder: (
-                                                            context,
-                                                            constraints,
-                                                          ) {
-                                                            final isNarrow =
-                                                                constraints
-                                                                    .maxWidth <
-                                                                200;
-                                                            return Text(
-                                                              program.place ??
-                                                                  '場所未設定',
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors
-                                                                        .grey[400],
-                                                                fontSize:
-                                                                    isNarrow
-                                                                        ? 12
-                                                                        : 14,
-                                                              ),
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            );
-                                                          },
+                                                      Text(
+                                                        program.place ??
+                                                            '場所未設定',
+                                                        style: TextStyle(
+                                                          color:
+                                                              Colors.grey[400],
+                                                          fontSize: 14,
                                                         ),
+                                                        maxLines: 1,
+                                                        overflow:
+                                                            TextOverflow
+                                                                .ellipsis,
                                                       ),
                                                       const SizedBox(height: 4),
-                                                      Flexible(
-                                                        child: LayoutBuilder(
-                                                          builder: (
-                                                            context,
-                                                            constraints,
-                                                          ) {
-                                                            final isNarrow =
-                                                                constraints
-                                                                    .maxWidth <
-                                                                200;
-                                                            final fromDate =
-                                                                program
-                                                                    .eventFrom ??
-                                                                DateTime.now();
-                                                            final toDate =
-                                                                program
-                                                                    .eventTo ??
-                                                                DateTime.now();
-
-                                                            String dateText;
-                                                            if (isNarrow) {
-                                                              // 狭い幅の場合は短縮形式
-                                                              final fromStr =
-                                                                  '${fromDate.month}/${fromDate.day}';
-                                                              final toStr =
-                                                                  '${toDate.month}/${toDate.day}';
-                                                              dateText =
-                                                                  '$fromStr - $toStr';
-                                                            } else {
-                                                              // 広い幅の場合は通常形式
-                                                              dateText =
-                                                                  '${l10n.date(fromDate)} - ${l10n.date(toDate)}';
-                                                            }
-
-                                                            return Text(
-                                                              dateText,
-                                                              style: TextStyle(
-                                                                color:
-                                                                    Colors
-                                                                        .grey[400],
-                                                                fontSize:
-                                                                    isNarrow
-                                                                        ? 10
-                                                                        : 12,
-                                                              ),
-                                                              maxLines: 1,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                            );
-                                                          },
+                                                      FittedBox(
+                                                        fit: BoxFit.scaleDown,
+                                                        alignment:
+                                                            Alignment
+                                                                .centerLeft,
+                                                        child: Text(
+                                                          _buildDateText(
+                                                            program,
+                                                            l10n,
+                                                          ),
+                                                          style: TextStyle(
+                                                            color:
+                                                                Colors
+                                                                    .grey[400],
+                                                            fontSize: 11,
+                                                          ),
                                                         ),
                                                       ),
                                                     ],
@@ -661,5 +594,12 @@ class OwnerDetailPage extends HookConsumerWidget {
         ),
       ],
     );
+  }
+
+  String _buildDateText(Program program, dynamic l10n) {
+    final fromDate = program.eventFrom ?? DateTime.now();
+    final toDate = program.eventTo ?? DateTime.now();
+
+    return '${l10n.date(fromDate)} - ${l10n.date(toDate)}';
   }
 }

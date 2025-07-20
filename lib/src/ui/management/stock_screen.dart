@@ -32,11 +32,13 @@ class StockScreen extends HookConsumerWidget {
         final productList =
             data.where((product) => product.isActive == true).toList();
         // 商品名を昇順でソート
-        productList
-            .sort((a, b) => a.name.toString().compareTo(b.name.toString()));
+        productList.sort(
+          (a, b) => a.name.toString().compareTo(b.name.toString()),
+        );
         // 商品コードを昇順でソート
-        productList
-            .sort((a, b) => a.code.toString().compareTo(b.code.toString()));
+        productList.sort(
+          (a, b) => a.code.toString().compareTo(b.code.toString()),
+        );
 
         // ヘッダー項目のWidgetを作成する関数
         Widget getTitleItemWidget(String label, double width) {
@@ -78,10 +80,7 @@ class StockScreen extends HookConsumerWidget {
         }
 
         // 右側のカラムの行のWidgetを作成する関数
-        Widget generateRightHandSideColumnRow(
-          BuildContext context,
-          int index,
-        ) {
+        Widget generateRightHandSideColumnRow(BuildContext context, int index) {
           return Row(
             children: <Widget>[
               // 商品名を表示
@@ -124,41 +123,81 @@ class StockScreen extends HookConsumerWidget {
           );
         }
 
-        // 商品リストが空の場合、空のコンテナを表示
+        // 商品リストが空の場合、統一された空状態を表示
         return productList.isEmpty
-            ? Container()
+            ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.inventory_2_outlined,
+                      size: 64,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    '在庫データがありません',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '商品が登録されると、ここに在庫データが表示されます',
+                    style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                  ),
+                ],
+              ),
+            )
             // 商品リストが空でない場合、HorizontalDataTableを表示
             : Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                child: HorizontalDataTable(
-                  // 左側のカラムの幅
-                  leftHandSideColumnWidth: 150,
-                  // 右側のカラムの幅
-                  rightHandSideColumnWidth: 350,
-                  // ヘッダーを固定するかどうか
-                  isFixedHeader: true,
-                  // ヘッダーのWidgetリスト
-                  headerWidgets: getTitleWidget(),
-                  // 左側のカラムの行のWidgetを作成する関数
-                  leftSideItemBuilder: generateFirstColumnRow,
-                  // 右側のカラムの行のWidgetを作成する関数
-                  rightSideItemBuilder: generateRightHandSideColumnRow,
-                  // 行の数
-                  itemCount: productList.length,
-                  // 行間の区切り線
-                  rowSeparatorWidget: Divider(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1,
-                    thickness: 0,
-                  ),
-                  // 左側のカラムの背景色
-                  leftHandSideColBackgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
-                  // 右側のカラムの背景色
-                  rightHandSideColBackgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+              child: HorizontalDataTable(
+                // 左側のカラムの幅
+                leftHandSideColumnWidth: 150,
+                // 右側のカラムの幅
+                rightHandSideColumnWidth: 350,
+                // ヘッダーを固定するかどうか
+                isFixedHeader: true,
+                // ヘッダーのWidgetリスト
+                headerWidgets: getTitleWidget(),
+                // 左側のカラムの行のWidgetを作成する関数
+                leftSideItemBuilder: generateFirstColumnRow,
+                // 右側のカラムの行のWidgetを作成する関数
+                rightSideItemBuilder: generateRightHandSideColumnRow,
+                // 行の数
+                itemCount: productList.length,
+                // 行間の区切り線
+                rowSeparatorWidget: Divider(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  height: 1,
+                  thickness: 0,
                 ),
-              );
+                // 左側のカラムの背景色
+                leftHandSideColBackgroundColor:
+                    Theme.of(context).scaffoldBackgroundColor,
+                // 右側のカラムの背景色
+                rightHandSideColBackgroundColor:
+                    Theme.of(context).scaffoldBackgroundColor,
+              ),
+            );
       },
     );
   }

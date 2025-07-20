@@ -144,7 +144,8 @@ class AllPaymentButton extends HookWidget {
       builder: (context, ref, child) {
         // 認証状態を取得
         final authState = ref.watch(authStateChangesProvider);
-        final isAuthenticated = authState.value ?? false;
+        final isAuthenticated =
+            authState.hasValue && (authState.value ?? false);
 
         return AsyncValueButtonWidget(
           value: ref.watch(totalAmountStateProvider(list)),
@@ -152,7 +153,7 @@ class AllPaymentButton extends HookWidget {
             return ElevatedButton(
               onPressed: isAuthenticated ? () {} : null,
               child: Text(
-                isAuthenticated ? l10n.currency(value) : 'ログインしてください',
+                isAuthenticated ? l10n.currency(value) : l10n.pleaseLogin,
               ),
             );
           },
@@ -209,7 +210,8 @@ class PaymentButton extends HookWidget {
 
                   // 認証状態を取得
                   final authState = ref.watch(authStateChangesProvider);
-                  final isAuthenticated = authState.value ?? false;
+                  final isAuthenticated =
+                      authState.hasValue && (authState.value ?? false);
 
                   // 在庫不足、ローディング中、または未認証の場合はボタンを無効化
                   final isButtonEnabled =
@@ -295,7 +297,7 @@ class PaymentButton extends HookWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(isAuthenticated ? l10n.buy : 'ログインしてください'),
+                        Text(isAuthenticated ? l10n.buy : l10n.pleaseLogin),
                         if (isAuthenticated) Text(l10n.currency(value)),
                         if (hasStockIssues)
                           Text(

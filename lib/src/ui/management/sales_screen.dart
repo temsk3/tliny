@@ -192,9 +192,49 @@ class SalesScreen extends HookConsumerWidget {
           );
         }
 
-        // 販売データリストが空の場合、空のコンテナを表示
+        // 販売データリストが空の場合、統一された空状態を表示
         return salesData.isEmpty
-            ? Container()
+            ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Icon(
+                      Icons.point_of_sale_outlined,
+                      size: 64,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    '販売データがありません',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '商品が販売されると、ここに販売データが表示されます',
+                    style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                  ),
+                ],
+              ),
+            )
             // 販売データリストが空でない場合、HorizontalDataTableを表示
             : Padding(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),

@@ -398,6 +398,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Authentication error occurred. Please log in again.';
 
   @override
+  String get pleaseLogin => 'Please log in';
+
+  @override
   String get paymentError =>
       'Payment processing error occurred. Please try again later.';
 
@@ -673,4 +676,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordChangeCompleted => 'Password change completed';
+
+  @override
+  String get scanQrCodes => 'Scan QR Codes';
+
+  @override
+  String get scannedTickets => 'Scanned Tickets';
+
+  @override
+  String scannedTicketsCount(int count) {
+    return 'Scanned Tickets ($count)';
+  }
+
+  @override
+  String usedTickets(int count) {
+    return '$count Used';
+  }
+
+  @override
+  String get noTicketsScannedYet => 'No tickets scanned yet';
+
+  @override
+  String get scanQrCodesToSeeTickets => 'Scan QR codes to see tickets here';
+
+  @override
+  String get unknownTicket => 'Unknown Ticket';
+
+  @override
+  String get used => 'Used';
+
+  @override
+  String get unused => 'Unused';
+
+  @override
+  String get invalidQrCodeFormat => 'Invalid QR code format.';
+
+  @override
+  String failedToDecryptQrCode(String error) {
+    return 'Failed to decrypt QR code: $error';
+  }
+
+  @override
+  String get accessDeniedWrongEvent => 'Access denied: Wrong event.';
+
+  @override
+  String get ticketScannedSuccessfully => 'Ticket scanned successfully.';
+
+  @override
+  String failedToProcessQrCode(String error) {
+    return 'Failed to process QR code: $error';
+  }
+
+  @override
+  String get scannedTicketsTitle => 'Scanned Tickets';
+
+  @override
+  String get confirmAction => 'Confirm Action';
+
+  @override
+  String get markTicketsAsUsed =>
+      'Do you want to mark the scanned ticket as used?';
+
+  @override
+  String get ticketsUpdatedSuccessfully => 'Tickets updated successfully.';
+
+  @override
+  String get ticketUpdateError => 'Ticket Update Error';
+
+  @override
+  String get qrScannerOperationError => 'QR Scanner Operation Error';
 }

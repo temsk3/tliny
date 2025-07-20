@@ -424,28 +424,41 @@ const onStripeWebhook = onRequest(async (req, res) => {
     try {
       switch (event.type) {
         case 'payment_intent.succeeded':
-          logger.info('Processing payment_intent.succeeded event')
+          logger.info('Processing payment_intent.succeeded event', {
+            eventId: event.id,
+            paymentIntentId: (event.data.object as Stripe.PaymentIntent).id,
+          })
           await handlePaymentIntentSucceeded(
             event.data.object as Stripe.PaymentIntent,
             res,
           )
           break
         case 'payment_intent.payment_failed':
-          logger.info('Processing payment_intent.payment_failed event')
+          logger.info('Processing payment_intent.payment_failed event', {
+            eventId: event.id,
+            paymentIntentId: (event.data.object as Stripe.PaymentIntent).id,
+          })
           await handlePaymentIntentFailed(
             event.data.object as Stripe.PaymentIntent,
             res,
           )
           break
         case 'checkout.session.completed':
-          logger.info('Processing checkout.session.completed event')
+          logger.info('Processing checkout.session.completed event', {
+            eventId: event.id,
+            checkoutSessionId: (event.data.object as Stripe.Checkout.Session)
+              .id,
+          })
           await handleCheckoutSessionCompleted(
             event.data.object as Stripe.Checkout.Session,
             res,
           )
           break
         case 'account.updated':
-          logger.info('Processing account.updated event')
+          logger.info('Processing account.updated event', {
+            eventId: event.id,
+            accountId: (event.data.object as Stripe.Account).id,
+          })
           await handleAccountUpdated(event.data.object as Stripe.Account, res)
           break
         case 'charge.succeeded':

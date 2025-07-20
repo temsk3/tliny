@@ -227,11 +227,28 @@ class InCartElevatedButton extends HookWidget {
     final stateIndicate = isOpened && product.stock != 0;
     return Consumer(
       builder: (innerContext, ref, child) {
-        final auth = ref.watch(authStateChangesProvider).value;
+        final authState = ref.watch(authStateChangesProvider);
+        final auth = authState.value;
+        logger.d(
+          'InCartElevatedButton: authState=$authState, authState.hasValue=${authState.hasValue}, authState.isLoading=${authState.isLoading}, authState.hasError=${authState.hasError}, auth=$auth, product.stock=${product.stock}',
+          time: DateTime.now(),
+        );
+        logger.d(
+          'InCartElevatedButton: stateIndicate=$stateIndicate, auth=$auth, product.id=${product.id}',
+          time: DateTime.now(),
+        );
+        // AsyncValueの状態を考慮して認証状態を判定
+        final isAuthenticated = authState.hasValue && auth == true;
+        final isButtonEnabled =
+            stateIndicate && isAuthenticated && product.id != null;
+        logger.d(
+          'InCartElevatedButton: isAuthenticated=$isAuthenticated, isButtonEnabled=$isButtonEnabled',
+          time: DateTime.now(),
+        );
         return BaseElevatedButton(
           l10n: l10n,
           onPressed:
-              stateIndicate && auth != null && product.id != null
+              isButtonEnabled
                   ? () async {
                     try {
                       const result = true;
@@ -260,7 +277,14 @@ class InCartElevatedButton extends HookWidget {
                     }
                   }
                   : null,
-          child: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.addToCart)),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              product.stock > 0
+                  ? (isAuthenticated ? l10n.addToCart : l10n.pleaseLogin)
+                  : l10n.outOfStock,
+            ),
+          ),
         );
       },
     );

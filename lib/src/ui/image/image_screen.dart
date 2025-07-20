@@ -227,7 +227,9 @@ class EditPictureView extends HookConsumerWidget {
                                   child: CircularProgressIndicator(),
                                 ),
                             errorWidget: (context, url, error) {
-                              logger.e('CachedNetworkImage error: $error');
+                              logger.e(
+                                'CachedNetworkImage error: $error for URL: $url',
+                              );
                               return Container(
                                 color: Colors.grey[300],
                                 child: Column(
@@ -282,7 +284,7 @@ class PictureView extends HookWidget {
       color: Colors.grey.withValues(alpha: 0.3),
       alignment: Alignment.center,
       child:
-          (picture.isEmpty)
+          (picture.isEmpty || index >= picture.length)
               ? const Text('NoImage')
               : InkWell(
                 onTap:
@@ -398,7 +400,9 @@ class PictureView extends HookWidget {
                         (context, url) =>
                             const Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) {
-                      logger.e('CachedNetworkImage error: $error');
+                      logger.e(
+                        'CachedNetworkImage error: $error for URL: $url',
+                      );
                       return Container(
                         color: Colors.grey[300],
                         child: Column(

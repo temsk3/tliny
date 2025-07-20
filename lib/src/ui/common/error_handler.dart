@@ -121,8 +121,8 @@ class ErrorHandler {
       case ErrorType.image:
       case ErrorType.fileFormat:
       case ErrorType.validation:
-        return ErrorSeverity.minor;
       case ErrorType.authentication:
+        return ErrorSeverity.minor;
       case ErrorType.permission:
       case ErrorType.insufficientStock:
         return ErrorSeverity.major;
@@ -263,8 +263,11 @@ class ErrorHandler {
         backgroundColor = Colors.orange;
         icon = Icons.wifi_off;
       case ErrorType.validation:
-        backgroundColor = Colors.orange;
-        icon = Icons.warning;
+        backgroundColor = Colors.blue;
+        icon = Icons.info;
+      case ErrorType.authentication:
+        backgroundColor = Colors.red;
+        icon = Icons.lock;
       case ErrorType.image:
       case ErrorType.fileFormat:
         backgroundColor = Colors.orange;

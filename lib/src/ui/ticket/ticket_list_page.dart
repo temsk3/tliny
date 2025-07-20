@@ -73,6 +73,40 @@ class TicketListPage extends HookConsumerWidget {
                         'TicketListPage: Final events: ${finalGroupedTickets.length} events',
                       );
 
+                      // 使用可能なチケットがない場合のメッセージ表示
+                      if (finalGroupedTickets.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.event_busy,
+                                size: 80,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                viewModel.isExpiredTicketsVisible
+                                    ? 'チケットがありません'
+                                    : '使用可能なチケットがありません',
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(color: Colors.grey[600]),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                viewModel.isExpiredTicketsVisible
+                                    ? '新しいチケットを購入してください'
+                                    : '期限切れチケットを表示するか、\n新しいチケットを購入してください',
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Colors.grey[500]),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
                       return Column(
                         children: [
                           // ボタンを独立したConsumerで監視
@@ -228,20 +262,24 @@ class TicketListPage extends HookConsumerWidget {
         ref.watch(ticketListViewModelProvider).value ?? {};
     final selectedEventId =
         ref.read(ticketListViewModelProvider.notifier).selectedEventId;
+
     return ExpansionTile(
       leading: PictureView(
-        picture: event.pictureURL,
+        picture: event.pictureURL ?? [],
         index: 0,
         height: 45,
         width: 80,
         tap: false,
       ),
       title: Text(event.name!),
-      subtitle: Flexible(
+      subtitle: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
         child: Text(
-          '  ${l10n.periods} : ${l10n.date(event.eventFrom!)}〜${l10n.date(event.eventTo!)}',
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
+          event.eventFrom != null && event.eventTo != null
+              ? '  ${l10n.periods} : ${l10n.date(event.eventFrom!)}〜${l10n.date(event.eventTo!)}'
+              : '  ${l10n.periods} : 期間未設定',
+          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
         ),
       ),
       initiallyExpanded: eventTickets.any(
@@ -331,7 +369,7 @@ class TicketListPage extends HookConsumerWidget {
       secondary: Stack(
         children: [
           PictureView(
-            picture: ticket.pictureURL,
+            picture: ticket.pictureURL ?? [],
             index: 0,
             height: 45,
             width: 80,

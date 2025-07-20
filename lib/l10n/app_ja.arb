@@ -207,6 +207,7 @@
   "insufficientStock": "商品の在庫が不足しています。数量を調整してから再度お試しください。",
   "networkError": "ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。",
   "authenticationError": "認証エラーが発生しました。再度ログインしてください。",
+  "pleaseLogin": "ログインしてください",
   "paymentError": "決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。",
   "serverError": "サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。",
   "timeoutError": "処理がタイムアウトしました。しばらく時間をおいてから再度お試しください。",
@@ -333,5 +334,57 @@
   "passwordMismatch": "新しいパスワードが一致しません",
   "passwordTooWeak": "パスワードが弱すぎます。6文字以上の英数字で入力してください",
   "passwordChangeInProgress": "パスワード変更処理中...",
-  "passwordChangeCompleted": "パスワード変更が完了しました"
+  "passwordChangeCompleted": "パスワード変更が完了しました",
+  "scanQrCodes": "QRコードをスキャン",
+  "scannedTickets": "スキャンしたチケット",
+  "scannedTicketsCount": "スキャンしたチケット ({count})",
+  "@scannedTicketsCount": {
+    "description": "スキャンしたチケット数",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "usedTickets": "{count} 使用済み",
+  "@usedTickets": {
+    "description": "使用済みチケット数",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTicketsScannedYet": "まだチケットがスキャンされていません",
+  "scanQrCodesToSeeTickets": "QRコードをスキャンしてチケットを表示",
+  "unknownTicket": "不明なチケット",
+  "used": "使用済み",
+  "unused": "未使用",
+  "invalidQrCodeFormat": "無効なQRコード形式です",
+  "failedToDecryptQrCode": "QRコードの復号に失敗しました: {error}",
+  "@failedToDecryptQrCode": {
+    "description": "QRコード復号失敗メッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accessDeniedWrongEvent": "アクセス拒否: イベントが異なります",
+  "ticketScannedSuccessfully": "チケットが正常にスキャンされました",
+  "failedToProcessQrCode": "QRコードの処理に失敗しました: {error}",
+  "@failedToProcessQrCode": {
+    "description": "QRコード処理失敗メッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "scannedTicketsTitle": "スキャンしたチケット",
+  "confirmAction": "アクションの確認",
+  "markTicketsAsUsed": "スキャンしたチケットを使用済みとしてマークしますか？",
+  "ticketsUpdatedSuccessfully": "チケットが正常に更新されました",
+  "ticketUpdateError": "チケット更新エラー",
+  "qrScannerOperationError": "QRスキャナー操作エラー"
 }

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/error_handler.dart';
+import '../../ui/common/loading_screen.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
 import '../../utils/router_utils.dart';
@@ -24,6 +25,7 @@ class UserEditPage extends HookConsumerWidget {
     final appMediaQuery = useMediaQuery();
     final state = ref.watch(userViewModelProvider);
     final viewModel = ref.watch(userViewModelProvider.notifier);
+    final isLoading = ref.watch(globalLoadingControllerProvider);
 
     return AsyncValueWidget(
       value: state,
@@ -49,11 +51,10 @@ class UserEditPage extends HookConsumerWidget {
                 padding: const EdgeInsets.all(16),
                 child: UserEditForm(
                   user: data,
-                  onSave: () async {
+                  onSave: (updatedUser) async {
                     try {
-                      // フォームの値はUserEditForm内で管理されるため、
-                      // ここでは保存処理のみを実行
-                      await viewModel.getUser();
+                      // ユーザー情報を更新
+                      await viewModel.updateUser(updatedUser);
                       if (context.mounted) {
                         RouterUtils.safePop(context);
                       }
@@ -64,6 +65,7 @@ class UserEditPage extends HookConsumerWidget {
                     }
                   },
                   onCancel: () => RouterUtils.safePop(context),
+                  isLoading: isLoading,
                 ),
               ),
             ),
