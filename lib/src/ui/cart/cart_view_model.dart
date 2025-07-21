@@ -284,6 +284,33 @@ class CartViewModel extends _$CartViewModel {
     }
   }
 
+  /// カート内の全商品を削除する
+  Future<void> clearCart() async {
+    final uidAsyncValue = ref.watch(userIdProvider);
+    final uid = uidAsyncValue.value;
+    if (uid == null) {
+      return;
+    }
+    final loading = ref.read(globalLoadingControllerProvider.notifier);
+    try {
+      final carts = await cartRepository.readCart(uid);
+      for (final cart in carts) {
+        await loading.guardFuture(() async {
+          await cartRepository.deleteCart(uid, cart.id!);
+        });
+      }
+      state = const AsyncValue.data([]);
+    } on Exception catch (e, st) {
+      logger.e('clearCart: Exception - $e', stackTrace: st);
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
+      );
+      state = AsyncValue.error(appException, st);
+      rethrow;
+    }
+  }
+
   /// カート内の商品の合計金額を計算する
   Future<int> sumCart() async {
     logger.d('sumCart', time: DateTime.now());

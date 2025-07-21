@@ -46,12 +46,6 @@ class EventScreen extends HookConsumerWidget {
         }
 
         return Scaffold(
-          floatingActionButton: AddProgramFloatingActionButton(
-            heroTag: 'program_screen_fab',
-            onPressed: () {
-              // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
-            },
-          ),
           body: Stack(
             children: [
               // フルスクリーンのPageView

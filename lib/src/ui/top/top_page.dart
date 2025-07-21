@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/program_model.dart';
+import '../../settings/routes/routes.dart';
 import '../../ui/common/main_body.dart';
 import '../common/asyncvalue_widget.dart';
 import '../program/program_state.dart';
-import '../program/widget/program_button.dart';
 import 'program_screen.dart';
 import 'widgets/program_search_card.dart';
 
@@ -74,6 +74,15 @@ class TopPage extends HookConsumerWidget {
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
+                      IconButton(
+                        onPressed: () {
+                          ProgramEditRoute(
+                            $extra: Program.empty(),
+                          ).push(context);
+                        },
+                        icon: const Icon(Icons.add),
+                        tooltip: 'イベント作成', // 必要に応じてl10nを使って多言語化
+                      ),
                     ],
           ),
           body:
@@ -85,12 +94,6 @@ class TopPage extends HookConsumerWidget {
                     ),
                   )
                   : const EventScreen(), // TikTok風の全画面表示
-          floatingActionButton: AddProgramFloatingActionButton(
-            heroTag: 'top_page_fab',
-            onPressed: () {
-              // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
-            },
-          ),
         );
       },
     );

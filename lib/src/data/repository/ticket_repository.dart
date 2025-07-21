@@ -10,12 +10,10 @@ import '../model/ticket_model.dart';
 part 'ticket_repository.g.dart';
 
 const _defaultPath = 'v/1';
-const _collectionPath = '$_defaultPath/users';
-const _ticketCollectionPath = '$_defaultPath/tickets';
-
-// 利用履歴用のパス
-const _usageHistoryCollectionPath = 'use_of_tickets';
-const _usageHistoryCollectionPathForCustomers = '$_defaultPath/customers';
+const _collectionPath = 'v/1/users'; // 明示的にusersに固定
+const _ticketCollectionPath = 'v/1/tickets'; // 明示的に
+const _usageHistoryCollectionPath = 'use_of_tickets'; // 利用履歴はusers配下のみ
+// customers関連のパスは削除
 
 @Riverpod(keepAlive: true)
 TicketRepository ticketRepository(Ref ref) {
@@ -257,9 +255,10 @@ class UsageHistoryRepository {
   UsageHistoryRepository(this._db);
   final FirebaseFirestore _db;
 
+  // users配下にのみ保存するよう明示
   CollectionReference<UsageHistory> _collectionRef(String uid) {
     return _db
-        .collection(_usageHistoryCollectionPathForCustomers)
+        .collection(_collectionPath)
         .doc(uid)
         .collection(_usageHistoryCollectionPath)
         .withConverter<UsageHistory>(

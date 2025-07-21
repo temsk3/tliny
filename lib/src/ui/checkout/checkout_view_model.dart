@@ -7,11 +7,20 @@ import 'package:tliny/l10n/app_localizations.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/model/cart_model.dart';
 import '../../data/model/exception/app_exception.dart';
+import '../../data/model/order_model.dart';
+import '../../data/model/product_model.dart';
+import '../../data/model/program_model.dart';
+import '../../data/model/ticket_model.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../data/repository/order_repository.dart';
+import '../../data/repository/product_repository.dart';
 import '../../data/repository/stripe_repository.dart';
+import '../../data/repository/ticket_repository.dart';
 import '../../settings/routes/routes.dart';
 import '../../utils/logger.dart';
+import '../cart/cart_view_model.dart';
 import '../common/error_handler.dart';
 import '../common/loading_screen.dart';
 
@@ -311,6 +320,125 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       );
       // エラーが発生しても処理を継続（ローディングは自動で解除される）
       // エラーは上位でハンドリングされるため、ここではrethrowしない
+    }
+  }
+
+  /// 0円購入時の注文・チケット発行処理
+  Future<void> freeOrderAndIssueTickets(
+    BuildContext context,
+    List<Cart> cartList,
+    Program event,
+  ) async {
+    logger.d('freeOrderAndIssueTickets: start', time: DateTime.now());
+    final loading = ref.read(globalLoadingControllerProvider.notifier);
+    try {
+      // ユーザー情報取得
+      final user = ref.read(authRepositoryProvider).getCurrentUser();
+      if (user == null) {
+        throw const AuthenticationException(message: 'ユーザーが認証されていません');
+      }
+      final uid = user.uid;
+      final userName = user.displayName ?? '';
+      final now = DateTime.now();
+
+      // 商品情報取得
+      final productRepo = ref.read(productRepositoryProvider);
+      final orderProducts = <SnapshotProduct>[];
+      final tickets = <Ticket>[];
+      final updatedProducts = <Product>[];
+      for (final cart in cartList) {
+        final product = await productRepo.getProduct(cart.productId!);
+        // 在庫減少
+        final newStock = (product.stock ?? 0) - cart.quantity;
+        final updatedProduct = product.copyWith(stock: newStock);
+        await productRepo.updateProduct(updatedProduct);
+        updatedProducts.add(updatedProduct);
+        orderProducts.add(
+          SnapshotProduct(
+            quantity: cart.quantity,
+            userId: uid,
+            userName: userName,
+            productId: product.id,
+            code: product.code,
+            name: product.name,
+            desc: product.desc,
+            price: product.price,
+            pictureURL: product.pictureURL,
+            expirationFrom: product.expirationFrom,
+            expirationTo: product.expirationTo,
+            register: product.register,
+            organizerId: product.organizerId,
+            eventId: product.eventId,
+            eventName: product.eventName,
+            expirationLink: product.expirationLink ?? true,
+          ),
+        );
+        for (var i = 0; i < cart.quantity; i++) {
+          tickets.add(
+            Ticket(
+              paidUserId: uid,
+              paidUserName: userName,
+              purchaseTime: now,
+              ownerId: uid,
+              ownerName: userName,
+              productId: product.id,
+              code: product.code,
+              name: product.name,
+              desc: product.desc,
+              price: product.price,
+              pictureURL: product.pictureURL,
+              expirationFrom: product.expirationFrom,
+              expirationTo: product.expirationTo,
+              register: product.register,
+              organizerId: product.organizerId,
+              eventId: product.eventId,
+              eventName: product.eventName,
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      }
+
+      // 注文作成
+      final order = Order(
+        userId: uid,
+        eventId: event.id,
+        purchaseTime: now,
+        snapshotProducts: orderProducts,
+        createdAt: now,
+        updatedAt: now,
+        status: StatusType.order, // ← 追加
+      );
+      final orderRepo = ref.read(orderRepositoryProvider);
+      await loading.guardFuture(() async {
+        await orderRepo.createOrder(uid, order);
+      });
+
+      // チケット発行
+      final ticketRepo = ref.read(ticketRepositoryProvider);
+      final ticketIds = <String>[];
+      for (final ticket in tickets) {
+        final id = await loading.guardFuture(() async {
+          return ticketRepo.createTicket(ticket);
+        });
+        ticketIds.add(id);
+      }
+
+      // カートクリア
+      await ref.read(cartViewModelProvider.notifier).clearCart();
+
+      // サンクス画面へ遷移
+      if (context.mounted) {
+        context.go(AppRoutes.checkoutSuccessPage);
+      }
+    } on Exception catch (e, st) {
+      logger.e('freeOrderAndIssueTickets: error=$e', stackTrace: st);
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showErrorSnackBar(context, e, l10n);
+      }
+      rethrow;
     }
   }
 }

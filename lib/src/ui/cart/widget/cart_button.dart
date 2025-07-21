@@ -233,6 +233,19 @@ class PaymentButton extends HookWidget {
                               );
 
                               try {
+                                if (value == 0) {
+                                  await ref
+                                      .watch(
+                                        stripeCheckoutViewModelProvider
+                                            .notifier,
+                                      )
+                                      .freeOrderAndIssueTickets(
+                                        ctx,
+                                        newList,
+                                        event,
+                                      );
+                                  return;
+                                }
                                 final result = await ref
                                     .read(
                                       globalLoadingControllerProvider.notifier,
