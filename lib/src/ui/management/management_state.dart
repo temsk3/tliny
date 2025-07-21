@@ -18,7 +18,10 @@ Stream<List<Order>> managementState(Ref ref, String eventId) {
 
 @riverpod
 Stream<List<Product>> productsManagementState(Ref ref, String eventId) {
-  return ref.watch(productRepositoryProvider).watchProducts();
+  final queryParameter = ProductQueryParameter(eventId, null);
+  return ref
+      .watch(productRepositoryProvider)
+      .streamProgramProducts(queryParameter);
 }
 
 @riverpod

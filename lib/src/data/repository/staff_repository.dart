@@ -12,7 +12,7 @@ part 'staff_repository.g.dart';
 
 const _defaultPath = 'v/1';
 const _eventCollectionPath = '$_defaultPath/events';
-const _collectionPath = '$_defaultPath/staff';
+const _collectionPath = 'staff';
 
 // StaffRepositoryProvider
 @Riverpod(keepAlive: true)

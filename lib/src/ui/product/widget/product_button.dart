@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
+import 'package:tliny/src/data/repository/user_repository.dart';
 
 import '../../../data/model/product_model.dart';
 import '../../../data/model/program_model.dart';
@@ -239,52 +240,95 @@ class InCartElevatedButton extends HookWidget {
         );
         // AsyncValueの状態を考慮して認証状態を判定
         final isAuthenticated = authState.hasValue && auth == true;
-        final isButtonEnabled =
-            stateIndicate && isAuthenticated && product.id != null;
-        logger.d(
-          'InCartElevatedButton: isAuthenticated=$isAuthenticated, isButtonEnabled=$isButtonEnabled',
-          time: DateTime.now(),
-        );
-        return BaseElevatedButton(
-          l10n: l10n,
-          onPressed:
-              isButtonEnabled
-                  ? () async {
-                    try {
-                      const result = true;
-                      if (result) {
-                        logger.d('inCart');
-                        await ref
-                            .watch(cartViewModelProvider.notifier)
-                            .cart(quantity, product.id!, program.id!);
-                        logger.d('showFluttertoast: start');
-                        errorHandler.showSuccessSnackBar(
-                          '${product.name!} ${l10n.addedToCart}',
-                        );
-                        logger.d('showFluttertoast: end');
-                        logger.d('pop');
-                        // await appRoute.pop();
-                        RouterUtils.safePop(context);
+        final isZeroOrFree = product.price == 0;
+        return FutureBuilder<bool>(
+          future: ref
+              .read(userRepositoryProvider)
+              .checkExistenceAccount(program.organizerId!),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return BaseElevatedButton(
+                l10n: l10n,
+                onPressed: null,
+                child: const CircularProgressIndicator(strokeWidth: 2),
+              );
+            }
+            final isOrganizerStripeRegistered = snapshot.data == true;
+            // ボタン有効条件
+            final isButtonEnabled =
+                stateIndicate &&
+                isAuthenticated &&
+                product.id != null &&
+                ((isOrganizerStripeRegistered &&
+                        (product.price == 0 || product.price >= 50)) ||
+                    (!isOrganizerStripeRegistered && product.price == 0));
+            // Stripe未登録かつ0円以外は無効
+            if (!isOrganizerStripeRegistered && product.price != 0) {
+              return Column(
+                children: [
+                  BaseElevatedButton(
+                    l10n: l10n,
+                    onPressed: null,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        product.stock > 0
+                            ? (isAuthenticated
+                                ? l10n.addToCart
+                                : l10n.pleaseLogin)
+                            : l10n.outOfStock,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '主催者が販売者登録未登録のため0円商品しか購入できません',
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                  ),
+                ],
+              );
+            }
+            return BaseElevatedButton(
+              l10n: l10n,
+              onPressed:
+                  isButtonEnabled
+                      ? () async {
+                        try {
+                          const result = true;
+                          if (result) {
+                            logger.d('inCart');
+                            await ref
+                                .watch(cartViewModelProvider.notifier)
+                                .cart(quantity, product.id!, program.id!);
+                            logger.d('showFluttertoast: start');
+                            errorHandler.showSuccessSnackBar(
+                              '${product.name!} ${l10n.addedToCart}',
+                            );
+                            logger.d('showFluttertoast: end');
+                            logger.d('pop');
+                            RouterUtils.safePop(context);
+                          }
+                        } on Exception catch (e, st) {
+                          logger.e(
+                            'Error',
+                            time: DateTime.now(),
+                            error: e,
+                            stackTrace: st,
+                          );
+                          errorHandler.showError(e, errorContext: 'カート追加');
+                        }
                       }
-                    } on Exception catch (e, st) {
-                      logger.e(
-                        'Error',
-                        time: DateTime.now(),
-                        error: e,
-                        stackTrace: st,
-                      );
-                      errorHandler.showError(e, errorContext: 'カート追加');
-                    }
-                  }
-                  : null,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              product.stock > 0
-                  ? (isAuthenticated ? l10n.addToCart : l10n.pleaseLogin)
-                  : l10n.outOfStock,
-            ),
-          ),
+                      : null,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  product.stock > 0
+                      ? (isAuthenticated ? l10n.addToCart : l10n.pleaseLogin)
+                      : l10n.outOfStock,
+                ),
+              ),
+            );
+          },
         );
       },
     );

@@ -151,7 +151,7 @@ class _ManagementStateProviderElement
 }
 
 String _$productsManagementStateHash() =>
-    r'15ecf795cc2671ec8a6b5a9107f249f0b592084b';
+    r'2cac642211350595b0edb0285895fc782ec9ef73';
 
 /// See also [productsManagementState].
 @ProviderFor(productsManagementState)

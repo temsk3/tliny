@@ -5,7 +5,6 @@ import '../../data/model/program_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/program_repository.dart';
 import '../../data/repository/staff_repository.dart';
-import '../../data/repository/user_repository.dart';
 
 part 'program_state.g.dart';
 
@@ -48,8 +47,8 @@ final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
         return Stream<bool>.value(false);
       }
 
-      // 販売者登録のステータスをチェック（chargesEnabledがtrueかどうか）
-      return ref.read(userRepositoryProvider).streamCheckAccountStatus(uid);
+      // Stripe登録状況に関係なく、認証済みユーザーなら作成可能
+      return Stream<bool>.value(true);
     });
 
 final AutoDisposeStreamProviderFamily<bool, Program>

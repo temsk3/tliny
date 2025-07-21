@@ -8,7 +8,7 @@ part of 'auth_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authViewModelHash() => r'dfc014aee694fb391cd91b6211e47e1c10afacd0';
+String _$authViewModelHash() => r'47ca99d82d4e0657f1a31b9e9e4ce0b0994a64cc';
 
 /// 認証状態を管理する ViewModel
 ///

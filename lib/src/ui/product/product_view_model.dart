@@ -86,12 +86,16 @@ class ProductViewModel extends _$ProductViewModel {
       throw const AuthenticationException(message: 'ユーザーが認証されていません');
     }
 
-    // スタッフかどうかをチェック
+    // スタッフまたは開催者かどうかをチェック
     final isStaff = await staffRepository.checkExistenceStaff(program.id!, uid);
+    final isOrganizer = uid == program.organizerId;
+    if (!isStaff && !isOrganizer) {
+      throw const GeneralException(message: 'スタッフまたは開催者のみ商品登録が可能です');
+    }
 
-    // 商品の金額は50円以上で設定する
-    if (product.price < 50) {
-      throw const GeneralException(message: '商品の金額は¥50以上で設定してください');
+    // Stripe登録判定を廃止し、金額バリデーションは「0円または50円以上」のみ
+    if (!(product.price == 0 || product.price >= 50)) {
+      throw const GeneralException(message: '商品の金額は0円または¥50以上で設定してください');
     }
 
     final data = product.copyWith(
@@ -134,15 +138,19 @@ class ProductViewModel extends _$ProductViewModel {
       throw const AuthenticationException(message: 'ユーザーが認証されていません');
     }
 
-    // スタッフかどうかをチェック
+    // スタッフまたは開催者かどうかをチェック
     final isStaff = await staffRepository.checkExistenceStaff(
       data.eventId!,
       uid,
     );
+    final isOrganizer = uid == data.organizerId;
+    if (!isStaff && !isOrganizer) {
+      throw const GeneralException(message: 'スタッフまたは開催者のみ商品登録が可能です');
+    }
 
-    // 商品の金額は50円以上で設定する
-    if (data.price < 50) {
-      throw const GeneralException(message: '商品の金額は¥50以上で設定してください');
+    // Stripe登録判定を廃止し、金額バリデーションは「0円または50円以上」のみ
+    if (!(data.price == 0 || data.price >= 50)) {
+      throw const GeneralException(message: '商品の金額は0円または¥50以上で設定してください');
     }
 
     state = const AsyncLoading();

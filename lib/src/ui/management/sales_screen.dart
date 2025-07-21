@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
 import 'package:tliny/src/ui/management/management_state.dart';
 
@@ -109,165 +108,252 @@ class SalesScreen extends HookConsumerWidget {
           logger.e('Error', time: DateTime.now(), error: e, stackTrace: st);
         }
 
-        // ヘッダー項目のWidgetを作成する関数
-        Widget getTitleItemWidget(String label, double width) {
-          return Container(
-            width: width,
-            height: 56,
-            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          );
-        }
-
-        // ヘッダー項目のWidgetリストを作成する関数
-        List<Widget> getTitleWidget() {
-          return [
-            getTitleItemWidget('コード', 150),
-            getTitleItemWidget('商品名', 150),
-            getTitleItemWidget('販売数', 80),
-            getTitleItemWidget('金額', 100),
-          ];
-        }
-
-        // 左側のカラムの行のWidgetを作成する関数
-        Widget generateFirstColumnRow(BuildContext context, int index) {
-          return Container(
-            width: 150,
-            height: 52,
-            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              salesData[index]['code'].toString(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          );
-        }
-
-        // 右側のカラムの行のWidgetを作成する関数
-        Widget generateRightHandSideColumnRow(BuildContext context, int index) {
-          return Row(
-            children: <Widget>[
-              // 商品名を表示
-              Container(
-                width: 150,
-                height: 52,
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  salesData[index]['name'].toString(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              // 販売数を表示
-              Container(
-                width: 80,
-                height: 52,
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  l10n.decimalPattern(salesData[index]['quantity'] as int),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              // 金額を表示
-              Container(
-                width: 100,
-                height: 52,
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  l10n.currency(salesData[index]['amount'] as int),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          );
-        }
-
         // 販売データリストが空の場合、統一された空状態を表示
-        return salesData.isEmpty
-            ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                          offset: const Offset(0, 2),
+        if (salesData.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.point_of_sale_outlined,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  '販売データがありません',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '商品が販売されると、ここに販売データが表示されます',
+                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                ),
+              ],
+            ),
+          );
+        }
+
+        // 販売データリストが空でない場合、洗練されたカードレイアウトを表示
+        return ListView.separated(
+          padding: const EdgeInsets.all(20),
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: salesData.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
+          itemBuilder: (context, index) {
+            final sale = salesData[index];
+            final salesLevel = _getSalesLevel(sale['quantity'] as int);
+
+            return AnimatedContainer(
+              duration: Duration(milliseconds: 300 + (index * 100)),
+              curve: Curves.easeOutCubic,
+              child: Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Colors.grey.shade50],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // ヘッダー部分
+                        Row(
+                          children: [
+                            // 商品アイコン
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: salesLevel.color.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                Icons.point_of_sale,
+                                color: salesLevel.color,
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            // 商品情報
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    sale['name'].toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'コード: ${sale['code']}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // 販売ステータスバッジ
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: salesLevel.color.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: salesLevel.color.withOpacity(0.3),
+                                ),
+                              ),
+                              child: Text(
+                                salesLevel.label,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: salesLevel.color,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // 販売詳細情報
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              // 販売数
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '販売数',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey[600],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      l10n.decimalPattern(
+                                        sale['quantity'] as int,
+                                      ),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // 販売金額
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '販売金額',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey[600],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      l10n.currency(sale['amount'] as int),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    child: Icon(
-                      Icons.point_of_sale_outlined,
-                      size: 64,
-                      color: Colors.grey[400],
-                    ),
                   ),
-                  const SizedBox(height: 24),
-                  Text(
-                    '販売データがありません',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '商品が販売されると、ここに販売データが表示されます',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[500]),
-                  ),
-                ],
-              ),
-            )
-            // 販売データリストが空でない場合、HorizontalDataTableを表示
-            : Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-              child: HorizontalDataTable(
-                // 左側のカラムの幅
-                leftHandSideColumnWidth: 150,
-                // 右側のカラムの幅
-                rightHandSideColumnWidth: 350,
-                // ヘッダーを固定するかどうか
-                isFixedHeader: true,
-                // ヘッダーのWidgetリスト
-                headerWidgets: getTitleWidget(),
-                // 左側のカラムの行のWidgetを作成する関数
-                leftSideItemBuilder: generateFirstColumnRow,
-                // 右側のカラムの行のWidgetを作成する関数
-                rightSideItemBuilder: generateRightHandSideColumnRow,
-                // 行の数
-                itemCount: salesData.length,
-                // 行間の区切り線
-                rowSeparatorWidget: Divider(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  height: 1,
-                  thickness: 0,
                 ),
-                // 左側のカラムの背景色
-                leftHandSideColBackgroundColor:
-                    Theme.of(context).scaffoldBackgroundColor,
-                // 右側のカラムの背景色
-                rightHandSideColBackgroundColor:
-                    Theme.of(context).scaffoldBackgroundColor,
               ),
             );
+          },
+        );
       },
     );
   }
+
+  // 販売レベルを判定する関数
+  SalesLevel _getSalesLevel(int quantity) {
+    if (quantity >= 100) {
+      return SalesLevel(label: '大ヒット', color: Colors.green);
+    } else if (quantity >= 50) {
+      return SalesLevel(label: '好調', color: Colors.blue);
+    } else if (quantity >= 20) {
+      return SalesLevel(label: '普通', color: Colors.orange);
+    } else {
+      return SalesLevel(label: '少ない', color: Colors.grey);
+    }
+  }
+}
+
+// 販売レベルを表すクラス
+class SalesLevel {
+  SalesLevel({required this.label, required this.color});
+  final String label;
+  final Color color;
 }

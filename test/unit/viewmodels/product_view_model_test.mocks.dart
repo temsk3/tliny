@@ -345,10 +345,13 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
           as _i6.Future<void>);
 
   @override
-  void updateDisplayName(String? displayName) => super.noSuchMethod(
-    Invocation.method(#updateDisplayName, [displayName]),
-    returnValueForMissingStub: null,
-  );
+  _i6.Future<void> updateDisplayName(String? displayName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateDisplayName, [displayName]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 
   @override
   _i6.Future<void> updateEmail(String? email) =>
@@ -366,10 +369,13 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
   );
 
   @override
-  void updatePhotoUrl(String? photoUrl) => super.noSuchMethod(
-    Invocation.method(#updatePhotoUrl, [photoUrl]),
-    returnValueForMissingStub: null,
-  );
+  _i6.Future<void> updatePhotoUrl(String? photoUrl) =>
+      (super.noSuchMethod(
+            Invocation.method(#updatePhotoUrl, [photoUrl]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 }
 
 /// A class which mocks [User].
