@@ -30,6 +30,8 @@ class SalesScreen extends HookConsumerWidget {
     return AsyncValueWidget(
       value: ref.watch(managementStateProvider(eventId)),
       data: (orderList) {
+        // null安全: orderListがnullなら空リストとして扱う
+        final safeOrderList = orderList ?? <Order>[];
         // 商品リスト
         final productList = <SnapshotProduct>[];
         // 商品種類リスト
@@ -41,7 +43,7 @@ class SalesScreen extends HookConsumerWidget {
         try {
           // 注文ステータスが「注文済み」の注文リストを取得
           final data =
-              orderList
+              safeOrderList
                   .where((element) => element.status == StatusType.order)
                   .toList();
           // 注文リストをログ出力
@@ -49,12 +51,17 @@ class SalesScreen extends HookConsumerWidget {
 
           // 注文リストから商品リストを作成
           for (final order in data) {
-            productList.addAll(order.snapshotProducts!);
+            // null安全: snapshotProductsがnullならスキップ
+            if (order.snapshotProducts != null) {
+              productList.addAll(order.snapshotProducts!);
+            }
           }
 
           // 商品リストから商品種類リストを作成
           for (final product in productList) {
-            kindsList.add(product.productId.toString());
+            if (product.productId != null) {
+              kindsList.add(product.productId.toString());
+            }
           }
 
           // 商品種類リストから販売データリストを作成
@@ -73,16 +80,21 @@ class SalesScreen extends HookConsumerWidget {
 
             // 商品リストから販売数と金額を計算
             for (final element in result) {
-              amount += element.quantity! * element.price!;
-              quantity += element.quantity!;
+              // null安全: quantity, priceがnullなら0として扱う
+              final q = element.quantity ?? 0;
+              final p = element.price ?? 0;
+              amount += q * p;
+              quantity += q;
 
               // 商品情報を取得
-              final product =
-                  ref.watch(productStreamProvider(element.productId!)).value!;
-
-              // 商品コードと商品名を設定
-              code = product.code.toString();
-              name = product.name.toString();
+              if (element.productId != null) {
+                final product =
+                    ref.watch(productStreamProvider(element.productId!)).value;
+                if (product != null) {
+                  code = product.code?.toString() ?? '';
+                  name = product.name?.toString() ?? '';
+                }
+              }
             }
 
             // 販売データリストに販売データを追加

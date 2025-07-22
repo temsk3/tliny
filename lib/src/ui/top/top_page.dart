@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../../data/model/program_model.dart';
+import '../../settings/hooks/use_l10n.dart';
 import '../../settings/routes/routes.dart';
 import '../../ui/common/main_body.dart';
 import '../common/asyncvalue_widget.dart';
@@ -23,7 +25,7 @@ class TopPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
-    // final l10n = useL10n();
+    final l10n = useL10n();
     // final appRoute = useRouter();
     // final appMediaQuery = useMediaQuery();
 
@@ -48,7 +50,7 @@ class TopPage extends HookConsumerWidget {
             automaticallyImplyLeading: false,
             title:
                 onSearch
-                    ? _searchTextField(context, ref, data)
+                    ? _searchTextField(context, ref, l10n, data)
                     : null, // const Text('Search'),
             actions:
                 onSearch
@@ -73,6 +75,7 @@ class TopPage extends HookConsumerWidget {
                           Icons.search,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
+                        tooltip: l10n.searchEvent,
                       ),
                       IconButton(
                         onPressed: () {
@@ -81,7 +84,7 @@ class TopPage extends HookConsumerWidget {
                           ).push(context);
                         },
                         icon: const Icon(Icons.add),
-                        tooltip: 'イベント作成', // 必要に応じてl10nを使って多言語化
+                        tooltip: l10n.createEvent, // 必要に応じてl10nを使って多言語化
                       ),
                     ],
           ),
@@ -102,6 +105,7 @@ class TopPage extends HookConsumerWidget {
   Widget _searchTextField(
     BuildContext context,
     WidgetRef ref,
+    AppLocalizations l10n,
     List<Program> data,
   ) {
     final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
@@ -117,9 +121,9 @@ class TopPage extends HookConsumerWidget {
           margin: const EdgeInsets.symmetric(vertical: 10),
           child: TextField(
             style: const TextStyle(color: Colors.black),
-            decoration: const InputDecoration(
-              hintText: 'Search Text',
-              contentPadding: EdgeInsets.only(left: 8),
+            decoration: InputDecoration(
+              hintText: l10n.searchText,
+              contentPadding: const EdgeInsets.only(left: 8),
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
               isDense: true,

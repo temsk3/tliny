@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -54,6 +55,9 @@ enum ErrorType {
   /// タイムアウトエラー
   timeout,
 
+  /// Cloud Functionsエラー
+  cloudFunctions,
+
   /// その他のエラー
   general,
 }
@@ -64,6 +68,11 @@ class ErrorHandler {
   static ErrorType _getErrorType(Object error) {
     final errorString = error.toString().toLowerCase();
 
+    // FirebaseFunctionsExceptionの処理
+    if (error is FirebaseFunctionsException) {
+      return ErrorType.cloudFunctions;
+    }
+
     if (error is AppException) {
       if (error is NetworkException) return ErrorType.network;
       if (error is AuthenticationException) return ErrorType.authentication;
@@ -71,6 +80,7 @@ class ErrorHandler {
       if (error is PermissionException) return ErrorType.permission;
       if (error is DatabaseException) return ErrorType.database;
       if (error is PaymentException) return ErrorType.payment;
+      if (error is CloudFunctionsException) return ErrorType.cloudFunctions;
     }
 
     // 文字列ベースの判定
@@ -129,6 +139,7 @@ class ErrorHandler {
       case ErrorType.database:
       case ErrorType.payment:
       case ErrorType.server:
+      case ErrorType.cloudFunctions:
       case ErrorType.general:
         return ErrorSeverity.critical;
     }
@@ -136,6 +147,11 @@ class ErrorHandler {
 
   /// エラーメッセージを取得（AppExceptionの場合はuserMessageを優先）
   static String getErrorMessage(Object error, AppLocalizations l10n) {
+    // FirebaseFunctionsExceptionの処理
+    if (error is FirebaseFunctionsException) {
+      return _getFirebaseFunctionsErrorMessage(error, l10n);
+    }
+
     if (error is AppException) {
       return error.userMessage;
     }
@@ -160,13 +176,57 @@ class ErrorHandler {
       case ErrorType.fileFormat:
         return l10n.heicNotSupported;
       case ErrorType.validation:
-        return '入力内容に誤りがあります。確認してから再度お試しください。';
+        return l10n.validationError;
       case ErrorType.permission:
-        return '権限が不足しています。管理者にお問い合わせください。';
+        return l10n.permissionError;
       case ErrorType.database:
-        return 'データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+        return l10n.databaseError;
+      case ErrorType.cloudFunctions:
+        return 'サーバー処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
       case ErrorType.general:
         return l10n.generalError;
+    }
+  }
+
+  /// FirebaseFunctionsExceptionのエラーメッセージを取得
+  static String _getFirebaseFunctionsErrorMessage(
+    FirebaseFunctionsException error,
+    AppLocalizations l10n,
+  ) {
+    // エラーコードに基づいてメッセージを決定
+    switch (error.code) {
+      case 'unauthenticated':
+        return '認証が必要です。再度ログインしてください。';
+      case 'permission-denied':
+        return 'この操作を実行する権限がありません。';
+      case 'not-found':
+        return 'リクエストされたリソースが見つかりません。';
+      case 'already-exists':
+        return '既に存在するリソースです。';
+      case 'resource-exhausted':
+        return 'リソースが不足しています。しばらく時間をおいてから再度お試しください。';
+      case 'cancelled':
+        return '操作がキャンセルされました。';
+      case 'internal':
+        return 'サーバー内部エラーが発生しました。しばらく時間をおいてから再度お試しください。';
+      case 'unimplemented':
+        return 'この機能は現在利用できません。';
+      case 'unavailable':
+        return 'サービスが一時的に利用できません。しばらく時間をおいてから再度お試しください。';
+      case 'deadline-exceeded':
+        return 'リクエストがタイムアウトしました。しばらく時間をおいてから再度お試しください。';
+      case 'invalid-argument':
+        return '無効なリクエストです。入力内容を確認してください。';
+      default:
+        // エラーデータから詳細メッセージを取得
+        final details = error.details;
+        if (details != null && details is Map<String, dynamic>) {
+          final message = details['message'] as String?;
+          if (message != null && message.isNotEmpty) {
+            return message;
+          }
+        }
+        return 'サーバー処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
     }
   }
 
@@ -195,6 +255,8 @@ class ErrorHandler {
         return '画像エラー';
       case ErrorType.fileFormat:
         return 'ファイル形式エラー';
+      case ErrorType.cloudFunctions:
+        return 'サーバーエラー';
       case ErrorType.general:
         return 'エラー';
     }
@@ -209,12 +271,22 @@ class ErrorHandler {
     final errorType = _getErrorType(error);
     final severity = _getErrorSeverity(errorType);
 
-    logger.e(
-      'ErrorHandler: ${context ?? 'Unknown error'} - Type: $errorType, Severity: $severity',
-      time: DateTime.now(),
-      error: error,
-      stackTrace: stackTrace,
-    );
+    // FirebaseFunctionsExceptionの詳細ログ
+    if (error is FirebaseFunctionsException) {
+      logger.e(
+        'ErrorHandler: ${context ?? 'FirebaseFunctionsException'} - Type: $errorType, Severity: $severity, Code: ${error.code}, Details: ${error.details}',
+        time: DateTime.now(),
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } else {
+      logger.e(
+        'ErrorHandler: ${context ?? 'Unknown error'} - Type: $errorType, Severity: $severity',
+        time: DateTime.now(),
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   /// エラーを適切な方法で表示
@@ -272,6 +344,9 @@ class ErrorHandler {
       case ErrorType.fileFormat:
         backgroundColor = Colors.orange;
         icon = Icons.image_not_supported;
+      case ErrorType.cloudFunctions:
+        backgroundColor = Colors.red;
+        icon = Icons.cloud_off;
       default:
         backgroundColor = Theme.of(context).colorScheme.error;
         icon = Icons.error;
@@ -329,6 +404,7 @@ class ErrorHandler {
         iconColor = Colors.orange;
       case ErrorType.database:
       case ErrorType.server:
+      case ErrorType.cloudFunctions:
         icon = Icons.error;
         iconColor = Colors.red;
       default:
@@ -358,6 +434,24 @@ class ErrorHandler {
                   const Text(
                     'このエラーが繰り返し発生する場合は、アプリを再起動するか、しばらく時間をおいてから再度お試しください。',
                     style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+                // FirebaseFunctionsExceptionの場合は詳細情報を表示
+                if (error is FirebaseFunctionsException &&
+                    error.details != null) ...[
+                  const SizedBox(height: 16),
+                  const Text(
+                    '詳細情報:',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'エラーコード: ${error.code}',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
               ],

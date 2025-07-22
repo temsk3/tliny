@@ -90,7 +90,7 @@ class CustomMyEventListTile extends HookWidget {
               return widgetList.isEmpty
                   ? Container()
                   : ExpansionTile(
-                    title: const Text('My Event'),
+                    title: Text(l10n.myEvent),
                     children: widgetList,
                   );
             } else {
@@ -155,6 +155,7 @@ class CustomUserAccountsDrawerHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n();
     return Consumer(
       builder: (context, ref, child) {
         return AsyncValueButtonWidget(
@@ -168,7 +169,7 @@ class CustomUserAccountsDrawerHeader extends HookWidget {
                 // onDetailsPressed: () => appRoute.push(const UserRoute()),
                 accountName:
                     data.displayName == null
-                        ? const Text('non')
+                        ? Text(l10n.non)
                         : Text(data.displayName!),
                 accountEmail: Text(data.email!),
                 currentAccountPicture: CircleAvatar(
@@ -385,7 +386,7 @@ class CustomTermsListTile extends HookWidget {
     // final appRoute = useRouter();
     return ListTile(
       leading: const Icon(Icons.library_books_outlined),
-      title: const Text('Terms'),
+      title: Text(l10n.terms),
       onTap: () async {
         try {
           final txtContent = await rootBundle.loadString(
@@ -395,7 +396,7 @@ class CustomTermsListTile extends HookWidget {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: const Text('Terms'),
+                title: Text(l10n.terms),
                 content: SingleChildScrollView(child: Text(txtContent)),
                 actions: [
                   TextButton(

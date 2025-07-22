@@ -75,6 +75,38 @@ class PaymentException extends AppException {
   });
 }
 
+/// Cloud Functions関連のエラー
+class CloudFunctionsException extends AppException {
+  const CloudFunctionsException({
+    required super.message,
+    super.code,
+    this.details,
+    super.stackTrace,
+  });
+
+  /// エラーの詳細情報
+  final Map<String, dynamic>? details;
+
+  /// ファンクション側のエラーコードを取得
+  String? get functionCode => details?['code'] as String?;
+
+  /// ファンクション側のエラーメッセージを取得
+  String? get functionMessage => details?['message'] as String?;
+
+  /// ファンクション側のエラー詳細を取得
+  Map<String, dynamic>? get functionDetails =>
+      details?['details'] as Map<String, dynamic>?;
+
+  @override
+  String get userMessage {
+    // ファンクション側から詳細なエラーメッセージが提供されている場合はそれを使用
+    if (functionMessage != null && functionMessage!.isNotEmpty) {
+      return functionMessage!;
+    }
+    return message;
+  }
+}
+
 /// その他の一般的なエラー
 class GeneralException extends AppException {
   const GeneralException({

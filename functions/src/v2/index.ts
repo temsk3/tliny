@@ -24,7 +24,11 @@ export {
 // export * from './firestore/user'
 
 // Auth functions
-export { onUserCreatedTrigger } from './auth/user'
+export {
+  onUserCreatedTrigger,
+  repairUserStripeCustomer,
+  setAdminRole,
+} from './auth/user'
 
 // Business functions
 export { v2_business_account_onCreate } from './business/account'
@@ -152,4 +156,8 @@ export {
 } from './payment/invoice_settings'
 
 // Test functions
-export { v2_test_function, v2_test_http_function } from './test'
+export {
+  v2_test_function,
+  v2_test_http_function,
+  testRepairBrokenUsers,
+} from './test'

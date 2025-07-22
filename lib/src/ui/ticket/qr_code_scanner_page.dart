@@ -93,9 +93,8 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
         final newTickets = await viewModel.findTicketsByUuid(prefix, uuid);
         if (newTickets.isNotEmpty) {
-          // 重複チェック
+          // 重複チェックのみ（isUsedは問わない）
           for (final newTicket in newTickets) {
-            // IDが一致するチケットがscannedTicketsに存在しない場合に追加
             if (!scannedTickets.value.any(
               (ticket) => ticket.id == newTicket.id,
             )) {
@@ -470,7 +469,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
         ),
       ),
       floatingActionButton:
-          scannedTickets.value.isNotEmpty
+          scannedTickets.value.any((t) => !t.isUsed)
               ? FloatingActionButton(
                 heroTag: 'qr_scanner_fab',
                 onPressed: () async {
@@ -479,7 +478,9 @@ class QRCodeScannerPage extends HookConsumerWidget {
                     isDialogShowing.value = true;
                     await mobileScannerController.stop();
                     bool? confirmed = false;
-                    final tickets = scannedTickets.value.toList();
+                    // 使用済みチケットを除外
+                    final tickets =
+                        scannedTickets.value.where((t) => !t.isUsed).toList();
 
                     await showDialog<void>(
                       context: context,

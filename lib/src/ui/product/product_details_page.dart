@@ -40,10 +40,10 @@ class ProductDetailsPage extends HookConsumerWidget {
     logger.d('ProductDetailsPage: product.name=${data.name}');
     logger.d('ProductDetailsPage: product.price=${data.price}');
 
-    final code = data.code ?? 'No code';
-    final name = data.name ?? 'No Name';
-    final genre = data.genre?.getLocalizedName(l10n) ?? 'No Genre';
-    final desc = data.desc ?? 'No Desc';
+    final code = data.code ?? l10n.noCode;
+    final name = data.name ?? l10n.noName;
+    final genre = data.genre?.getLocalizedName(l10n) ?? l10n.noGenre;
+    final desc = data.desc ?? l10n.noDesc;
     final stock = data.stock;
     final price = data.price;
     final picture = data.pictureURL;

@@ -287,6 +287,7 @@ class PaymentButton extends HookWidget {
                                   if (context.mounted) {
                                     await _showStockInsufficientDialog(
                                       ctx,
+                                      l10n,
                                       ref,
                                       newList,
                                     );
@@ -376,6 +377,7 @@ class PaymentButton extends HookWidget {
   /// 在庫不足エラー時のダイアログを表示する
   Future<void> _showStockInsufficientDialog(
     BuildContext context,
+    AppLocalizations l10n,
     WidgetRef ref,
     List<Cart> cartList,
   ) async {
@@ -408,20 +410,20 @@ class PaymentButton extends HookWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Row(
+              title: Row(
                 children: [
-                  Icon(Icons.error, color: Colors.red),
-                  SizedBox(width: 8),
-                  Text('在庫不足エラー'),
+                  const Icon(Icons.error, color: Colors.red),
+                  const SizedBox(width: 8),
+                  Text(l10n.insufficientStockTitle),
                 ],
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    '以下の商品の在庫が不足しています：',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Text(
+                    l10n.insufficientStockDetails,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   ...stockIssues.map((issue) {
@@ -438,15 +440,20 @@ class PaymentButton extends HookWidget {
                             '・${product.name}',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           ),
-                          Text('  数量: $currentQuantity → $availableStock個'),
+                          Text(
+                            l10n.quantityAdjustment(
+                              currentQuantity,
+                              availableStock,
+                            ),
+                          ),
                         ],
                       ),
                     );
                   }),
                   const SizedBox(height: 8),
-                  const Text(
-                    'カートの数量を調整してから再度お試しください。',
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                  Text(
+                    l10n.adjustCartAndRetry,
+                    style: const TextStyle(fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -455,7 +462,7 @@ class PaymentButton extends HookWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('OK'),
+                  child: Text(l10n.ok),
                 ),
               ],
             );

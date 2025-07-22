@@ -71,8 +71,12 @@ class AuthRepository {
 
     while (retryCount < maxRetries) {
       try {
+        // Cloud Functionsが作成するパスに合わせて修正
         final userDoc =
-            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+            await FirebaseFirestore.instance
+                .collection('v/1/users')
+                .doc(uid)
+                .get();
 
         if (userDoc.exists) {
           logger.i('_waitForUserDataCreation: ユーザーデータ作成完了');

@@ -40,9 +40,10 @@ class HomePage extends HookConsumerWidget {
   }
 
   AppBar _appBar(BuildContext context) {
+    final l10n = useL10n();
     return AppBar(
       leading: _showLeading(context) ? _leadButton(context) : null,
-      title: const Text('TLINY'),
+      title: Text(l10n.appTitle),
       actions: const [
         // テストページへのアクセスボタン（開発時のみ表示）
         // if (kDebugMode)

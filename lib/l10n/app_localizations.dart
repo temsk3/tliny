@@ -1405,6 +1405,186 @@ abstract class AppLocalizations {
   /// In ja, this message translates to:
   /// **'QRスキャナー操作エラー'**
   String get qrScannerOperationError;
+
+  /// No description provided for @terms.
+  ///
+  /// In ja, this message translates to:
+  /// **'利用規約'**
+  String get terms;
+
+  /// No description provided for @sellerRegistration.
+  ///
+  /// In ja, this message translates to:
+  /// **'出品者登録'**
+  String get sellerRegistration;
+
+  /// No description provided for @sellerFeature.
+  ///
+  /// In ja, this message translates to:
+  /// **'出品者機能'**
+  String get sellerFeature;
+
+  /// No description provided for @sellerDescription.
+  ///
+  /// In ja, this message translates to:
+  /// **'出品者として商品を販売するには、以下の手続きが必要です。'**
+  String get sellerDescription;
+
+  /// No description provided for @registerUpdateSeller.
+  ///
+  /// In ja, this message translates to:
+  /// **'出品者登録・更新'**
+  String get registerUpdateSeller;
+
+  /// No description provided for @manageSite.
+  ///
+  /// In ja, this message translates to:
+  /// **'管理サイト'**
+  String get manageSite;
+
+  /// No description provided for @manageSiteDescription.
+  ///
+  /// In ja, this message translates to:
+  /// **'販売情報を確認したい場合は以下のボタンから管理サイトに遷移してください'**
+  String get manageSiteDescription;
+
+  /// No description provided for @pleasePurchaseNewTicket.
+  ///
+  /// In ja, this message translates to:
+  /// **'新しいチケットを購入してください'**
+  String get pleasePurchaseNewTicket;
+
+  /// No description provided for @showExpiredOrPurchaseNewTicket.
+  ///
+  /// In ja, this message translates to:
+  /// **'期限切れチケットを表示するか、\n新しいチケットを購入してください'**
+  String get showExpiredOrPurchaseNewTicket;
+
+  /// No description provided for @noCode.
+  ///
+  /// In ja, this message translates to:
+  /// **'コードなし'**
+  String get noCode;
+
+  /// No description provided for @noGenre.
+  ///
+  /// In ja, this message translates to:
+  /// **'ジャンルなし'**
+  String get noGenre;
+
+  /// No description provided for @noDesc.
+  ///
+  /// In ja, this message translates to:
+  /// **'説明なし'**
+  String get noDesc;
+
+  /// No description provided for @validationError.
+  ///
+  /// In ja, this message translates to:
+  /// **'入力内容に誤りがあります。確認してから再度お試しください。'**
+  String get validationError;
+
+  /// No description provided for @permissionError.
+  ///
+  /// In ja, this message translates to:
+  /// **'権限が不足しています。管理者にお問い合わせください。'**
+  String get permissionError;
+
+  /// No description provided for @databaseError.
+  ///
+  /// In ja, this message translates to:
+  /// **'データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。'**
+  String get databaseError;
+
+  /// No description provided for @searchEvent.
+  ///
+  /// In ja, this message translates to:
+  /// **'イベント検索'**
+  String get searchEvent;
+
+  /// No description provided for @createEvent.
+  ///
+  /// In ja, this message translates to:
+  /// **'イベント作成'**
+  String get createEvent;
+
+  /// No description provided for @searchText.
+  ///
+  /// In ja, this message translates to:
+  /// **'検索テキスト'**
+  String get searchText;
+
+  /// No description provided for @noTickets.
+  ///
+  /// In ja, this message translates to:
+  /// **'チケットがありません'**
+  String get noTickets;
+
+  /// No description provided for @noAvailableTickets.
+  ///
+  /// In ja, this message translates to:
+  /// **'使用可能なチケットがありません'**
+  String get noAvailableTickets;
+
+  /// No description provided for @purchasedTicketsDisplayedHere.
+  ///
+  /// In ja, this message translates to:
+  /// **'購入したチケットがここに表示されます'**
+  String get purchasedTicketsDisplayedHere;
+
+  /// No description provided for @hideExpired.
+  ///
+  /// In ja, this message translates to:
+  /// **'期限切れを非表示'**
+  String get hideExpired;
+
+  /// No description provided for @showExpired.
+  ///
+  /// In ja, this message translates to:
+  /// **'期限切れを表示'**
+  String get showExpired;
+
+  /// No description provided for @sortByEventName.
+  ///
+  /// In ja, this message translates to:
+  /// **'イベント名でソート'**
+  String get sortByEventName;
+
+  /// No description provided for @sortByEventDate.
+  ///
+  /// In ja, this message translates to:
+  /// **'イベント日でソート'**
+  String get sortByEventDate;
+
+  /// No description provided for @generatePdf.
+  ///
+  /// In ja, this message translates to:
+  /// **'PDFを生成'**
+  String get generatePdf;
+
+  /// No description provided for @displayQrCode.
+  ///
+  /// In ja, this message translates to:
+  /// **'QRコードを表示'**
+  String get displayQrCode;
+
+  /// No description provided for @expiredTicket.
+  ///
+  /// In ja, this message translates to:
+  /// **'期限切れチケット'**
+  String get expiredTicket;
+
+  /// No description provided for @myEvent.
+  ///
+  /// In ja, this message translates to:
+  /// **'マイイベント'**
+  String get myEvent;
+
+  /// No description provided for @non.
+  ///
+  /// In ja, this message translates to:
+  /// **'なし'**
+  String get non;
 }
 
 class _AppLocalizationsDelegate

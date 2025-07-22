@@ -29,7 +29,7 @@ class SellerRegistrationPage extends HookConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('出品者登録'),
+            title: Text(l10n.sellerRegistration),
             elevation: 0,
             backgroundColor: Colors.transparent,
             leading: IconButton(
