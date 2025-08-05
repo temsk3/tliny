@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/cart_model.dart';
@@ -22,6 +23,9 @@ class CartViewModel extends _$CartViewModel {
   late final ProductRepository productRepository = ref.watch(
     productRepositoryProvider,
   );
+
+  /// デバウンス用のタイマー
+  Timer? _debounceTimer;
 
   /// ViewModel が初期化された際に呼ばれる
   @override
@@ -185,26 +189,48 @@ class CartViewModel extends _$CartViewModel {
     }
   }
 
+  /// カート内の商品を更新する（デバウンス付き）
+  void updateCartDebounced(String uid, Cart data) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      updateCart(uid, data);
+    });
+  }
+
   /// カート内の商品を更新する
   Future<void> updateCart(String uid, Cart data) async {
-    logger.d('updateCart: $data', time: DateTime.now());
+    if (kDebugMode) {
+      logger.d('updateCart: $data', time: DateTime.now());
+    }
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    state = const AsyncLoading();
+    
+    // 楽観的更新: UIを即座に更新
+    final currentCarts = state.value ?? [];
+    final optimisticCarts = [
+      for (final cart in currentCarts)
+        if (cart.id == data.id) cart.copyWith(quantity: data.quantity) else cart,
+    ];
+    state = AsyncValue.data(optimisticCarts);
+    
     try {
       final id = await loading.guardFuture(() {
         return cartRepository.updateCart(uid, data);
       });
-      final updatedCarts = [
-        for (final cart in state.value!)
-          if (cart.id == id) cart.copyWith(quantity: data.quantity) else cart,
-      ];
-      state = AsyncValue.data(updatedCarts);
+      // 成功した場合は既に楽観的更新済みなので何もしない
     } on AppException catch (e, st) {
-      logger.e('updateCart: AppException - ${e.message}', stackTrace: st);
+      if (kDebugMode) {
+        logger.e('updateCart: AppException - ${e.message}', stackTrace: st);
+      }
+      // エラー時は元の状態に戻す
+      state = AsyncValue.data(currentCarts);
       state = AsyncValue.error(e, st);
       rethrow;
     } on Exception catch (e, st) {
-      logger.e('updateCart: Exception - $e', stackTrace: st);
+      if (kDebugMode) {
+        logger.e('updateCart: Exception - $e', stackTrace: st);
+      }
+      // エラー時は元の状態に戻す
+      state = AsyncValue.data(currentCarts);
       final appException = GeneralException(
         message: e.toString(),
         stackTrace: st,

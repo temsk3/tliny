@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/product_model.dart';
@@ -27,8 +28,13 @@ class ProductListPage extends HookConsumerWidget {
     return AsyncValueWidget(
       value: state,
       data: (list) {
-        list.sort((a, b) => a.name!.compareTo(b.name!));
-        final data = list.where((element) => element.isActive == true).toList();
+        // 高価な操作をメモ化して最適化
+        final sortedProducts = useMemoized(() {
+          final filtered = list.where((element) => element.isActive == true).toList();
+          filtered.sort((a, b) => a.name!.compareTo(b.name!));
+          return filtered;
+        }, [list]);
+        final data = sortedProducts;
         return GridView.builder(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 200,

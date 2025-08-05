@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,7 +18,9 @@ class PictureCover extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    logger.d('PictureCover build'); // build時のロギング
+    if (kDebugMode) {
+      logger.d('PictureCover build'); // build時のロギング
+    }
     return Container(
       // color: theme.appColors.primary,
       child: Center(
@@ -30,29 +33,36 @@ class PictureCover extends HookConsumerWidget {
                 : SizedBox.expand(
                   child: CachedNetworkImage(
                     imageUrl: picture.toString(),
-                    placeholder:
-                        (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      color: Colors.grey[300],
+                      child: const Center(child: CircularProgressIndicator()),
+                    ),
                     errorWidget: (context, url, error) {
-                      logger.e('CachedNetworkImage error: $error');
+                      if (kDebugMode) {
+                        logger.e('CachedNetworkImage error: $error');
+                      }
                       return Container(
                         color: Colors.grey[300],
-                        child: Column(
+                        child: const Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.error, color: Colors.red),
-                            const SizedBox(height: 4),
+                            Icon(Icons.error, color: Colors.red),
+                            SizedBox(height: 4),
                             Text(
                               '画像読み込みエラー',
                               style: TextStyle(
                                 fontSize: 10,
-                                color: Colors.red[700],
+                                color: Colors.red,
                               ),
                             ),
                           ],
                         ),
                       );
                     },
+                    // メモリ最適化のためのサイズ指定
+                    memCacheWidth: (200 * MediaQuery.of(context).devicePixelRatio).round(),
+                    memCacheHeight: (200 * MediaQuery.of(context).devicePixelRatio).round(),
                   ),
                 ),
       ),
@@ -69,7 +79,9 @@ class PictureDetail extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    logger.d('PictureDetail build'); // build時のロギング
+    if (kDebugMode) {
+      logger.d('PictureDetail build'); // build時のロギング
+    }
     return Container(
       height: 100,
       width: 160,
@@ -82,29 +94,40 @@ class PictureDetail extends HookConsumerWidget {
                   : SizedBox.expand(
                     child: CachedNetworkImage(
                       imageUrl: oldPicture!,
-                      placeholder:
-                          (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        width: 160,
+                        height: 100,
+                        color: Colors.grey[300],
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
                       errorWidget: (context, url, error) {
-                        logger.e('CachedNetworkImage error: $error');
+                        if (kDebugMode) {
+                          logger.e('CachedNetworkImage error: $error');
+                        }
                         return Container(
+                          width: 160,
+                          height: 100,
                           color: Colors.grey[300],
-                          child: Column(
+                          child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.error, color: Colors.red),
-                              const SizedBox(height: 4),
+                              Icon(Icons.error, color: Colors.red),
+                              SizedBox(height: 4),
                               Text(
                                 '画像読み込みエラー',
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: Colors.red[700],
+                                  color: Colors.red,
                                 ),
                               ),
                             ],
                           ),
                         );
                       },
+                      // メモリ最適化のためのサイズ指定
+                      memCacheWidth: (160 * MediaQuery.of(context).devicePixelRatio).round(),
+                      memCacheHeight: (100 * MediaQuery.of(context).devicePixelRatio).round(),
                     ),
                   )
               : SizedBox.expand(child: Image.memory(picture!)),
