@@ -18,6 +18,13 @@ import {
 import { updateAccountStatus } from '../business/services/account.service'
 
 import { checkDocumentExistsByQuery } from '../firestore/utils/idempotency'
+import {
+  stripeSecret,
+  stripeEpSecret,
+  stripeDevSk,
+  stripeDevEp,
+  getStripeWebhookEndpointSecret,
+} from './utils/stripe_config'
 
 const handleError = (
   error: any,
@@ -109,7 +116,13 @@ const handlePaymentIntentSucceeded = async (
       { params },
     )
 
-    await createTicketDocument(latestPaymentIntent.metadata.orderId)
+    // チケット作成はcheckout.session.completedで実行するため、ここではスキップ
+    logger.info(
+      'Skipping ticket creation in payment_intent.succeeded (handled in checkout.session.completed)',
+      {
+        orderId: latestPaymentIntent.metadata.orderId,
+      },
+    )
 
     V2Logger.success(methodName, { received: true })
     setImmediate(() => {
@@ -172,10 +185,7 @@ const handleCheckoutSessionCompleted = async (
 ) => {
   const methodName = 'handleCheckoutSessionCompleted'
 
-  // 関数呼び出し直後に強制DEBUG出力
-  logger.error('!!! FORCE DEBUG: handleCheckoutSessionCompleted called', {
-    checkoutSession,
-  })
+  // チェックアウトセッション完了の処理
 
   try {
     V2Logger.start(methodName, { checkoutSessionId: checkoutSession.id })
@@ -186,14 +196,7 @@ const handleCheckoutSessionCompleted = async (
       async () => {
         // accountIdはmetadataから取得
         const accountId = checkoutSession.metadata?.accountId
-        logger.info('!!! DEBUG: Stripe CheckoutSession Retrieve params', {
-          checkoutSessionId: checkoutSession.id,
-          stripeAccount: accountId || undefined,
-          stripeApiKey:
-            process.env.STRIPE_KEY ||
-            process.env.STRIPE_SECRET_KEY ||
-            'not_set',
-        })
+        // CheckoutSession取得パラメータ設定
         return await getStripe()
           .checkout.sessions.retrieve(
             checkoutSession.id,
@@ -203,14 +206,7 @@ const handleCheckoutSessionCompleted = async (
           .then(
             (result: Stripe.Response<Stripe.Checkout.Session>) => result,
             (error: any) => {
-              // Stripe APIエラー詳細も出力
-              logger.error('!!! DEBUG: Stripe API Error', {
-                code: error?.code,
-                type: error?.type,
-                raw: error?.raw,
-                message: error?.message,
-                stack: error?.stack,
-              })
+              // Stripe APIエラーのログ記録
               stripeErrors(error)
               throw new Error('Failed to retrieve checkout session')
             },
@@ -219,12 +215,8 @@ const handleCheckoutSessionCompleted = async (
       { checkoutSessionId: checkoutSession.id },
     )
 
-    // --- ここからデバッグ用ログと型ガード追加 ---
+    // metadataからorderIdを取得
     const metadata = latestCheckoutSession.metadata
-    logger.info('!!! FORCE DEBUG: checkoutSession.metadata', {
-      metadata,
-      type: typeof metadata,
-    })
 
     let orderId: string | undefined
     if (typeof metadata === 'object' && metadata !== null) {
@@ -237,23 +229,11 @@ const handleCheckoutSessionCompleted = async (
         orderId = undefined
       }
     }
-    // --- ここまで追加 ---
+
 
     if (!orderId) {
       throw new Error('orderId not found in checkout session metadata')
     }
-
-    // デバッグログ: line_itemsの詳細を出力
-    logger.info('!!! FORCE DEBUG: checkout session line items', {
-      checkoutSessionId: latestCheckoutSession.id,
-      lineItems: latestCheckoutSession.line_items?.data,
-      lineItemsImages: latestCheckoutSession.line_items?.data?.map(
-        (item: any) => ({
-          name: item.description,
-          images: item.price?.product?.images,
-        }),
-      ),
-    })
 
     logger.info('Processing checkout session completion', {
       checkoutSessionId: latestCheckoutSession.id,
@@ -274,16 +254,7 @@ const handleCheckoutSessionCompleted = async (
       response.json({ received: true })
     })
   } catch (error: any) {
-    // まずconsole.errorで生のerrorを出す
-    console.error('!!! RAW ERROR:', error)
-    logger.error('!!! FORCE DEBUG: CATCH', {
-      error,
-      errorType: typeof error,
-      errorString: JSON.stringify(error),
-      errorMessage: error?.message,
-      errorStack: error?.stack,
-      checkoutSession,
-    })
+    // エラーログの記録
     V2Logger.error(methodName, error, { checkoutSessionId: checkoutSession.id })
     handleError(error, response)
   }
@@ -314,15 +285,7 @@ const handleAccountUpdated = async (account: Stripe.Account, response: any) => {
 
     let status = 'unverified'
 
-    // デバッグ用ログを追加
-    logger.info('Account structure debug:', {
-      accountId: latestAccount.id,
-      hasIndividual: !!latestAccount.individual,
-      individualKeys: latestAccount.individual
-        ? Object.keys(latestAccount.individual)
-        : [],
-      accountKeys: Object.keys(latestAccount),
-    })
+    // アカウント構造の確認
 
     // 複数の方法でstatusを取得
     if (latestAccount.individual?.verification?.status) {
@@ -363,134 +326,137 @@ const handleAccountUpdated = async (account: Stripe.Account, response: any) => {
 }
 
 // Webhook endpoint for Stripe events
-const onStripeWebhook = onRequest(async (req, res) => {
-  const methodName = 'onStripeWebhook'
+const onStripeWebhook = onRequest(
+  async (req, res) => {
+    const methodName = 'onStripeWebhook'
 
-  try {
-    V2Logger.start(methodName, {
-      method: req.method,
-      eventType: req.headers['stripe-signature'] ? 'stripe-webhook' : 'unknown',
-    })
-
-    if (req.method !== 'POST') {
-      res.status(405).send('Method Not Allowed')
-      return
-    }
-    const sig = req.headers['stripe-signature']
-    const endpointSecret = process.env.STRIPE_DEV_EP
-    if (!sig || !endpointSecret) {
-      res.status(400).send('Webhook signature verification failed')
-      return
-    }
-
-    let rawBody = (req as any).rawBody
-    if (!(rawBody instanceof Buffer)) {
-      rawBody = Buffer.from(rawBody)
-    }
-    const event = getStripe().webhooks.constructEvent(
-      rawBody,
-      sig as string,
-      endpointSecret,
-    )
-
-    // 冪等性保証: 同じWebhookイベントが既に処理済みかチェック
-    const eventExists = await checkDocumentExistsByQuery(
-      'v/1/platform/spel1/stripe_events',
-      'stripe_event_id',
-      event.id,
-    )
-    if (eventExists) {
-      V2Logger.warn(methodName, 'Webhook event already processed, skipping', {
-        eventId: event.id,
-        eventType: event.type,
-      })
-      res.status(200).send('Event already processed')
-      return
-    }
-
-    // Webhookイベントドキュメントを作成（本番と同じタイミング）
-    await V2Logger.measure(
-      'createWebhookEventDocument',
-      async () => {
-        return await createWebhookEventDocument(event)
-      },
-      { eventId: event.id, eventType: event.type },
-    )
-
-    logger.info('Processing webhook event', {
-      eventId: event.id,
-      eventType: event.type,
-    })
     try {
-      switch (event.type) {
-        case 'payment_intent.succeeded':
-          logger.info('Processing payment_intent.succeeded event', {
-            eventId: event.id,
-            paymentIntentId: (event.data.object as Stripe.PaymentIntent).id,
-          })
-          await handlePaymentIntentSucceeded(
-            event.data.object as Stripe.PaymentIntent,
-            res,
-          )
-          break
-        case 'payment_intent.payment_failed':
-          logger.info('Processing payment_intent.payment_failed event', {
-            eventId: event.id,
-            paymentIntentId: (event.data.object as Stripe.PaymentIntent).id,
-          })
-          await handlePaymentIntentFailed(
-            event.data.object as Stripe.PaymentIntent,
-            res,
-          )
-          break
-        case 'checkout.session.completed':
-          logger.info('Processing checkout.session.completed event', {
-            eventId: event.id,
-            checkoutSessionId: (event.data.object as Stripe.Checkout.Session)
-              .id,
-          })
-          await handleCheckoutSessionCompleted(
-            event.data.object as Stripe.Checkout.Session,
-            res,
-          )
-          break
-        case 'account.updated':
-          logger.info('Processing account.updated event', {
-            eventId: event.id,
-            accountId: (event.data.object as Stripe.Account).id,
-          })
-          await handleAccountUpdated(event.data.object as Stripe.Account, res)
-          break
-        case 'charge.succeeded':
-          V2Logger.success(methodName, { eventType: 'charge.succeeded' })
-          res.status(200).send('OK: charge.succeeded')
-          return
-        default:
-          V2Logger.warn(methodName, 'Unhandled event type', {
-            eventType: event.type,
-          })
-          setImmediate(() => {
-            res.status(200).send('Event type not handled')
-          })
-          return
+      V2Logger.start(methodName, {
+        method: req.method,
+        eventType: req.headers['stripe-signature']
+          ? 'stripe-webhook'
+          : 'unknown',
+      })
+
+      if (req.method !== 'POST') {
+        res.status(405).send('Method Not Allowed')
+        return
       }
-    } catch (error: any) {
-      V2Logger.error(methodName, error, {
+      const sig = req.headers['stripe-signature']
+      const endpointSecret = getStripeWebhookEndpointSecret()
+      if (!sig || !endpointSecret) {
+        res.status(400).send('Webhook signature verification failed')
+        return
+      }
+
+      // v2関数では request.body が既にBuffer形式で提供される
+      const rawBody = req.body
+      const event = getStripe().webhooks.constructEvent(
+        rawBody,
+        sig as string,
+        endpointSecret,
+      )
+
+      // 冪等性保証: 同じWebhookイベントが既に処理済みかチェック
+      const eventExists = await checkDocumentExistsByQuery(
+        'v/1/platform/spel1/stripe_events',
+        'stripe_event_id',
+        event.id,
+      )
+      if (eventExists) {
+        V2Logger.warn(methodName, 'Webhook event already processed, skipping', {
+          eventId: event.id,
+          eventType: event.type,
+        })
+        res.status(200).send('Event already processed')
+        return
+      }
+
+      // Webhookイベントドキュメントを作成（本番と同じタイミング）
+      await V2Logger.measure(
+        'createWebhookEventDocument',
+        async () => {
+          return await createWebhookEventDocument(event)
+        },
+        { eventId: event.id, eventType: event.type },
+      )
+
+      logger.info('Processing webhook event', {
         eventId: event.id,
         eventType: event.type,
       })
-      setImmediate(() => {
-        res.status(500).send('Webhook processing failed')
+      try {
+        switch (event.type) {
+          case 'payment_intent.succeeded':
+            logger.info('Processing payment_intent.succeeded event', {
+              eventId: event.id,
+              paymentIntentId: (event.data.object as Stripe.PaymentIntent).id,
+            })
+            await handlePaymentIntentSucceeded(
+              event.data.object as Stripe.PaymentIntent,
+              res,
+            )
+            break
+          case 'payment_intent.payment_failed':
+            logger.info('Processing payment_intent.payment_failed event', {
+              eventId: event.id,
+              paymentIntentId: (event.data.object as Stripe.PaymentIntent).id,
+            })
+            await handlePaymentIntentFailed(
+              event.data.object as Stripe.PaymentIntent,
+              res,
+            )
+            break
+          case 'checkout.session.completed':
+            logger.info('Processing checkout.session.completed event', {
+              eventId: event.id,
+              checkoutSessionId: (event.data.object as Stripe.Checkout.Session)
+                .id,
+            })
+            await handleCheckoutSessionCompleted(
+              event.data.object as Stripe.Checkout.Session,
+              res,
+            )
+            break
+          case 'account.updated':
+            logger.info('Processing account.updated event', {
+              eventId: event.id,
+              accountId: (event.data.object as Stripe.Account).id,
+            })
+            await handleAccountUpdated(event.data.object as Stripe.Account, res)
+            break
+          case 'charge.succeeded':
+            V2Logger.success(methodName, { eventType: 'charge.succeeded' })
+            res.status(200).send('OK: charge.succeeded')
+            return
+          default:
+            V2Logger.warn(methodName, 'Unhandled event type', {
+              eventType: event.type,
+            })
+            setImmediate(() => {
+              res.status(200).send('Event type not handled')
+            })
+            return
+        }
+      } catch (error: any) {
+        V2Logger.error(methodName, error, {
+          eventId: event.id,
+          eventType: event.type,
+        })
+        setImmediate(() => {
+          res.status(500).send('Webhook processing failed')
+        })
+        return
+      }
+    } catch (err: any) {
+      V2Logger.error(methodName, err, {
+        errorType: 'webhook_construction',
       })
+      res.status(400).send(`Webhook Error: ${err.message}`)
       return
     }
-  } catch (err: any) {
-    V2Logger.error(methodName, err, {
-      errorType: 'webhook_construction',
-    })
-    res.status(400).send(`Webhook Error: ${err.message}`)
-    return
-  }
-})
+  },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
+)
 
 export { onStripeWebhook as 'v2_payment_webhook_onStripeWebhook' }
