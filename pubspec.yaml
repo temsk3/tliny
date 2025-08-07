@@ -85,6 +85,7 @@ dependencies:
   go_router:
   flutter_gen:
   pedantic_mono:
+  algolia_lite: ^1.1.0
 
 dev_dependencies:
   flutter_test:

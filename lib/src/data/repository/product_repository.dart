@@ -1,3 +1,4 @@
+import 'package:algolia_lite/algolia_lite.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:riverpod/riverpod.dart';
@@ -311,7 +312,13 @@ class ProductRepository {
     }
   }
 
-  /// 商品を検索する（パフォーマンス最適化版）
+  // Algolia Client
+  static final _algolia = Algolia.init(
+    applicationId: 'YOUR_ALGOLIA_APP_ID', // TODO: Replace with your Algolia App ID
+    apiKey: 'YOUR_ALGOLIA_SEARCH_KEY', // TODO: Replace with your Algolia Search API Key
+  );
+
+  /// 商品を検索する（Algoliaを利用したパフォーマンス最適化版）
   Future<List<Product>> searchProducts({
     String? keyword,
     GenreType? genre,
@@ -319,47 +326,49 @@ class ProductRepository {
     int? limit,
   }) async {
     logger.i(
-      'searchProducts: 商品を検索します keyword=$keyword, genre=$genre, programId=$programId, limit=$limit',
+      'searchProducts (Algolia): 商品を検索します keyword=$keyword, genre=$genre, programId=$programId, limit=$limit',
     );
     try {
-      Query<Product> query = _collectionRef;
+      // Algoliaクエリを作成
+      var query = _algolia.instance.index('products').query(keyword ?? '');
 
-      // フィルター条件を適用
+      // フィルター条件を構築
+      final List<String> filters = [];
       if (genre != null) {
-        query = query.where(
-          'genre',
-          isEqualTo: EnumToString.convertToString(genre),
-        );
+        filters.add('genre:${EnumToString.convertToString(genre)}');
       }
       if (programId != null) {
-        query = query.where('eventId', isEqualTo: programId);
+        filters.add('eventId:$programId');
       }
 
-      // ソート
-      query = query.orderBy('name');
+      if (filters.isNotEmpty) {
+        query = query.filters(filters.join(' AND '));
+      }
 
       // リミット
       if (limit != null) {
-        query = query.limit(limit);
+        query = query.setHitsPerPage(limit);
       }
 
-      final querySnapshot = await query.get();
-      final products = querySnapshot.docs.map((doc) => doc.data()).toList();
+      // Algoliaで検索実行
+      final result = await query.getObjects();
 
-      // キーワード検索（クライアントサイド）
-      if (keyword != null && keyword.isNotEmpty) {
-        final lowerKeyword = keyword.toLowerCase();
-        products.removeWhere(
-          (product) =>
-              !(product.name?.toLowerCase().contains(lowerKeyword) ?? false) &&
-              !(product.desc?.toLowerCase().contains(lowerKeyword) ?? false),
-        );
-      }
+      // 結果をProductモデルに変換
+      final products = result.hits.map((hit) {
+        final json = hit.data;
+        // AlgoliaのobjectIDをidとしてモデルに含める
+        json['id'] = hit.objectID;
+        return Product.fromJson(json);
+      }).toList();
 
-      logger.i('searchProducts: 商品検索完了 count=${products.length}');
+      logger.i('searchProducts (Algolia): 商品検索完了 count=${products.length}');
       return products;
     } on Exception catch (e, st) {
-      logger.e('searchProducts: 商品検索エラー', error: e, stackTrace: st);
+      logger.e(
+        'searchProducts (Algolia): 商品検索エラー',
+        error: e,
+        stackTrace: st,
+      );
       throw GeneralException(message: '商品の検索に失敗しました', stackTrace: st);
     }
   }

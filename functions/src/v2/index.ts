@@ -2,6 +2,8 @@
 // Import all functions from their respective domains and export them directly
 
 // Firestore functions
+export { v2_firestore_onProductWritten } from './firestore/algolia'
+
 export {
   v2_firestore_product_onCreate,
   v2_firestore_product_onUpdate,
