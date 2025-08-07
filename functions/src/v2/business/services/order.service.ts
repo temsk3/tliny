@@ -108,91 +108,68 @@ export const createPreOrder = async (
     // LineItemsとsubtotalの初期化
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = []
     let subtotal = 0
+    // トランザクション内で取得した商品情報を格納する配列
+    const processedProducts: { product: Model.Product; cartItem: any }[] = []
 
     // トランザクションを利用して、カートにいれた商品の在庫があり購入可能かを確認する
     await db.runTransaction(async (transaction) => {
-      const promises: Promise<void>[] = []
-      for (const cartItem of cartItems) {
-        promises.push(
-          (async () => {
-            const productDoc = (await transaction.get(
-              cartItem.productDocRef,
-            )) as unknown as DocumentSnapshot
-            if (!productDoc.exists) {
-              throw new Error('Product not found!')
-            }
+      const promises = cartItems.map(async (cartItem) => {
+        const productDoc = (await transaction.get(
+          cartItem.productDocRef,
+        )) as unknown as DocumentSnapshot
+        if (!productDoc.exists) {
+          throw new Error('Product not found!')
+        }
 
-            const product = productDoc.data() as Model.Product
-            if (cartItem.quantity <= product.stock) {
-              // 購入できるのが確認できたら、`Product`の在庫を減らす
-              transaction.update(productDoc.ref, {
-                stock: product.stock - cartItem.quantity,
-              })
-              // Stripe最新API仕様に合わせてlineItemsを生成
-              const lineItem = {
-                price_data: {
-                  currency: currency,
-                  product_data: {
-                    name: product.name,
-                    description: product.desc,
-                    images: product.pictureURL, // 商品写真を追加
-                  },
-                  unit_amount: product.price,
-                },
-                quantity: cartItem.quantity,
-              }
+        const product = productDoc.data() as Model.Product
+        if (cartItem.quantity > product.stock) {
+          throw new HttpsError(
+            'failed-precondition',
+            'There is less stock than the quantity to buy',
+          )
+        }
 
-              // デバッグログ: lineItemの詳細を出力
-              logger.info('Creating line item with images', {
-                productName: product.name,
-                productImages: product.pictureURL,
-                lineItemImages: lineItem.price_data.product_data.images,
-                lineItem: JSON.stringify(lineItem),
-              })
+        // 購入できるのが確認できたら、`Product`の在庫を減らす
+        transaction.update(productDoc.ref, {
+          stock: product.stock - cartItem.quantity,
+        })
 
-              lineItems.push(lineItem as any)
-              subtotal += product.price * cartItem.quantity
-            } else {
-              throw new HttpsError(
-                'failed-precondition',
-                'There is less stock than the quantity to buy',
-              )
-            }
-          })(),
-        )
-      }
-      return Promise.all(promises)
+        // 後続処理のために商品情報を保存
+        processedProducts.push({ product, cartItem })
+      })
+      await Promise.all(promises)
     })
+
+    // トランザクション後の処理
+    for (const { product, cartItem } of processedProducts) {
+      // Stripe最新API仕様に合わせてlineItemsを生成
+      const lineItem = {
+        price_data: {
+          currency: currency,
+          product_data: {
+            name: product.name,
+            description: product.desc,
+            images: product.pictureURL, // 商品写真を追加
+          },
+          unit_amount: product.price,
+        },
+        quantity: cartItem.quantity,
+      }
+
+      // デバッグログ: lineItemの詳細を出力
+      logger.info('Creating line item with images', {
+        productName: product.name,
+        productImages: product.pictureURL,
+        lineItemImages: lineItem.price_data.product_data.images,
+        lineItem: JSON.stringify(lineItem),
+      })
+
+      lineItems.push(lineItem as any)
+      subtotal += product.price * cartItem.quantity
+    }
 
     // 注文情報の作成
     const now = Timestamp.now()
-
-    const products = await Promise.all(
-      cartItems.map((c: any) => {
-        let docRef: admin.firestore.DocumentReference
-        if (typeof c.productDocRef === 'string') {
-          docRef = db.doc(c.productDocRef)
-        } else {
-          docRef = c.productDocRef
-        }
-        return docRef
-          .get()
-          .then((doc: admin.firestore.DocumentSnapshot) => {
-            return doc.data() as Model.Product
-          })
-          .catch((err: any) => {
-            logger.error('Error retrieving product document', {
-              productId: c.productId,
-              productDocRef: docRef.path,
-              error:
-                err && typeof err === 'object' && 'message' in err
-                  ? err.message
-                  : err,
-            })
-            throw err
-          })
-      }),
-    )
 
     // 購入日時と、購入した時点での商品の情報を配列として持たせる
     const order: Model.Order = {
@@ -201,8 +178,7 @@ export const createPreOrder = async (
       eventId: eventId,
       purchaseTime: now,
       createdAt: now,
-      snapshotProducts: products.map((product, index) => {
-        const cartItem = cartItems[index]
+      snapshotProducts: processedProducts.map(({ product, cartItem }) => {
         const quantity = cartItem.quantity
         const productId = cartItem.productDocRef.id
 
@@ -251,8 +227,12 @@ export const createPreOrder = async (
       true,
     )
 
-    // カートの中身を削除
-    await Promise.all(cartItems.map((cartItem) => cartItem.ref.delete()))
+    // カートの中身をバッチ削除
+    const batch = db.batch()
+    cartItems.forEach((cartItem) => {
+      batch.delete(cartItem.ref)
+    })
+    await batch.commit()
 
     logger.info('Pre-order created successfully', {
       orderId,
