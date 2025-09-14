@@ -11,17 +11,18 @@ on:
 
   # Issues assigned
   issues:
-    types: [assigned]
+    types: [assigned, opened]
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
+  actions: read
 
 jobs:
   claude:
-    # Claudeがメンションされた場合のみ実行
-    if: contains(github.event.comment.body, '@claude') || contains(github.event.review.body, '@claude') || github.event.action == 'assigned'
+    # Claudeがメンションされた場合、またはissue割り当て時に実行
+    if: contains(github.event.comment.body, '@claude') || contains(github.event.review.body, '@claude') || github.event.action == 'assigned' || github.event.action == 'opened'
 
     runs-on: ubuntu-latest
 
