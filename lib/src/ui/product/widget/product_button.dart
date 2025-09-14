@@ -305,6 +305,7 @@ class InCartElevatedButton extends HookWidget {
                               '${product.name!} ${l10n.addedToCart}',
                             );
                             logger.d('showFluttertoast: end');
+                            // SnackBarが閉じられた後にpop
                             logger.d('pop');
                             RouterUtils.safePop(context);
                           }

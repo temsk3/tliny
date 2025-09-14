@@ -150,7 +150,7 @@ class StripeRepository extends BaseRepository {
     try {
       final docRef =
           await _db
-              .collection('users')
+              .collection('v/1/users') // パスを統一
               .doc(uid)
               .collection('settlement')
               .doc(sessionId)

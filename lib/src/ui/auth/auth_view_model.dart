@@ -20,10 +20,10 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> signIn(String email, String password) async {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         await ref.read(authRepositoryProvider).signInWithEmail(email, password);
         logger.i('Successfully signed in with email: $email'); // 成功ログを追加
-      });
+      }, message: 'ログイン中...');
     } on FirebaseAuthException catch (e) {
       logger.e('signIn failed: ${e.code} - ${e.message}');
       throw AuthenticationException(
@@ -44,10 +44,10 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> signInWithGoogle() async {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         await ref.read(authRepositoryProvider).signInWithGoogle();
         logger.i('Successfully signed in with Google'); // 成功ログを追加
-      });
+      }, message: 'Googleでログイン中...');
     } on FirebaseAuthException catch (e) {
       logger.e('signInWithGoogle failed: ${e.code} - ${e.message}');
       throw AuthenticationException(
@@ -77,12 +77,12 @@ class AuthViewModel extends _$AuthViewModel {
 
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         await ref
             .read(authRepositoryProvider)
             .sendPasswordResetEmail(trimmedEmail);
         logger.i('Password reset email sent to: $trimmedEmail'); // 成功ログを追加
-      });
+      }, message: 'パスワードリセットメール送信中...');
     } on FirebaseAuthException catch (e) {
       logger.e('sendPasswordResetEmail failed: ${e.code} - ${e.message}');
       throw _convertPasswordResetError(e);
@@ -99,10 +99,10 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> signUp(String email, String password) async {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         await ref.read(authRepositoryProvider).signUp(email, password);
         logger.i('Successfully signed up with email: $email'); // 成功ログを追加
-      });
+      }, message: 'アカウント作成中...');
     } on FirebaseAuthException catch (e) {
       logger.e('signUp failed: ${e.code} - ${e.message}');
       throw AuthenticationException(
@@ -123,10 +123,10 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> signOut() async {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         await ref.read(authRepositoryProvider).signOut();
         logger.i('Successfully signed out.'); // 成功ログを追加
-      });
+      }, message: 'ログアウト中...');
     } on AppException catch (e, st) {
       logger.e('signOut failed: ${e.message}', stackTrace: st);
       rethrow;
@@ -140,10 +140,10 @@ class AuthViewModel extends _$AuthViewModel {
   Future<void> signOutGoogle() async {
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         await ref.read(authRepositoryProvider).signOutGoogle();
         logger.i('Successfully signed out from Google.'); // 成功ログを追加
-      });
+      }, message: 'Googleからログアウト中...');
     } on AppException catch (e, st) {
       logger.e('signOutGoogle failed: ${e.message}', stackTrace: st);
       rethrow;

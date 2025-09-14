@@ -8,7 +8,7 @@ part of 'cart_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cartViewModelHash() => r'1c384ce10c64f0e4394b2f94d140bd5e1b937784';
+String _$cartViewModelHash() => r'7039e49b19412a385b7c936885e9741fea689d5b';
 
 /// カートの状態を管理する ViewModel
 ///

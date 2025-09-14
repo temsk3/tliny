@@ -322,10 +322,21 @@ class AuthRepository {
   Future<void> updateDisplayName(String? displayName) async {
     logger.i('updateDisplayName: ユーザーの表示名を更新します');
     try {
-      if (_auth.currentUser!.displayName != displayName ||
-          _auth.currentUser!.displayName != null) {
-        await _auth.currentUser!.updateDisplayName(displayName);
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw GeneralException(
+          message: 'ユーザーが認証されていません',
+          stackTrace: StackTrace.current,
+        );
+      }
+
+      // 現在のdisplayNameと新しいdisplayNameを比較
+      final currentDisplayName = currentUser.displayName;
+      if (currentDisplayName != displayName) {
+        await currentUser.updateDisplayName(displayName);
         logger.i('updateDisplayName: ユーザーの表示名更新成功');
+      } else {
+        logger.i('updateDisplayName: 表示名が同じため更新をスキップ');
       }
     } on FirebaseAuthException catch (e) {
       logger.e('updateDisplayName: ユーザーの表示名更新失敗', error: e);

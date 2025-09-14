@@ -7,23 +7,101 @@ import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
 
 /// テスト用のAppLocalizationsモック
-class MockAppLocalizations {
-  const MockAppLocalizations();
+class MockAppLocalizations extends AppLocalizations {
+  MockAppLocalizations() : super('ja');
 
+  @override
   String get close => '閉じる';
+  
+  @override
   String get retry => '再試行';
+  
+  @override
   String get generalError => 'エラー';
+  
+  @override
   String get timeoutError => 'タイムアウトエラー';
+  
+  @override
   String get imageLoadError => '画像読み込みエラー';
+  
+  @override
   String get heicNotSupported => 'HEIC形式はサポートされていません';
+  
+  @override
   String get networkError => 'ネットワークエラー';
+  
+  @override
   String get serverError => 'サーバーエラー';
+  
+  @override
   String get databaseError => 'データベースエラー';
+  
+  @override
   String get authenticationError => '認証エラー';
+  
+  @override
   String get validationError => 'バリデーションエラー';
-  String get fileNotFoundError => 'ファイルが見つかりません';
+  
+  @override
   String get permissionError => '権限エラー';
+  
+  @override
   String get unknownError => '不明なエラー';
+
+  // すべての抽象メソッドのデフォルト実装
+  @override
+  String get appTitle => 'TLINY';
+  
+  @override
+  String get home => 'ホーム';
+  
+  @override
+  String get hello => 'こんにちは';
+  
+  @override
+  String get profile => 'ユーザー情報';
+  
+  @override
+  String get usageHistory => 'チケット使用履歴';
+  
+  @override
+  String get ok => 'ok';
+  
+  @override
+  String get yes => 'yes';
+  
+  @override
+  String get no => 'no';
+  
+  @override
+  String get title => 'タイトル';
+  
+  @override
+  String get fileNotFoundError => 'ファイルが見つかりません';
+  
+  @override
+  String get insufficientStock => '在庫が不足しています';
+  
+  @override
+  String get paymentError => '決済エラー';
+  
+  @override
+  String get insufficientStockTitle => '在庫不足';
+  
+  @override
+  String get paymentErrorTitle => '決済エラー';
+
+  // noSuchMethodを使用してすべての未実装メソッドに対応
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    // getterの場合はデフォルト文字列を返す
+    if (invocation.isGetter) {
+      return 'Mock String';
+    }
+    // メソッドの場合もデフォルト文字列を返す
+    return 'Mock String';
+  }
 }
 
 /// テスト用のヘルパー関数群

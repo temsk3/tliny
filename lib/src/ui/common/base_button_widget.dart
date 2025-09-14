@@ -130,7 +130,7 @@ class BaseElevatedButton extends HookWidget {
   });
 
   /// 押下時に実行されるコールバック関数
-  final VoidCallback? onPressed;
+  final Future<void> Function()? onPressed;
 
   /// ボタンに表示する子Widget
   final Widget child;
@@ -148,24 +148,26 @@ class BaseElevatedButton extends HookWidget {
           waiting.value || onPressed == null
               ? null
               : () async {
-                // 処理開始時に true に設定
                 waiting.value = true;
                 logger.d('BaseElevatedButton: onPressed', time: DateTime.now());
                 try {
-                  // コールバック関数を実行
-                  onPressed!();
+                  await onPressed!();
                 } on Exception catch (e, st) {
-                  // エラーが発生した場合、エラーログを出力
                   logger.e(
                     'BaseElevatedButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
                   ErrorHandler.showErrorSnackBar(context, e, l10n);
                 } finally {
-                  // 処理終了時に false に設定
                   waiting.value = false;
                 }
               },
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+        minimumSize: const Size(0, 0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        elevation: 2,
+      ),
       child: child,
     );
   }

@@ -285,7 +285,11 @@ class PictureView extends HookWidget {
       alignment: Alignment.center,
       child:
           (picture.isEmpty || index >= picture.length)
-              ? const Text('NoImage')
+              ? const Icon(
+                Icons.image_not_supported,
+                color: Colors.grey,
+                size: 24,
+              )
               : InkWell(
                 onTap:
                     tap

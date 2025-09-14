@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/ticket_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_snackbar.dart';
@@ -531,10 +532,26 @@ class QRCodeScannerPage extends HookConsumerWidget {
                         errorHandler.showSuccessSnackBar(
                           l10n.ticketsUpdatedSuccessfully,
                         );
-                      } on Exception catch (e) {
-                        print('Failed to update tickets: $e');
+                      } on AppException catch (e, st) {
+                        logger.e(
+                          'Failed to update tickets AppException: ${e.message}',
+                          stackTrace: st,
+                        );
                         errorHandler.showError(
                           e,
+                          errorContext: l10n.ticketUpdateError,
+                        );
+                      } on Exception catch (e, st) {
+                        logger.e(
+                          'Failed to update tickets Exception: $e',
+                          stackTrace: st,
+                        );
+                        final appException = GeneralException(
+                          message: 'チケットの更新に失敗しました。',
+                          stackTrace: st,
+                        );
+                        errorHandler.showError(
+                          appException,
                           errorContext: l10n.ticketUpdateError,
                         );
                       }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../l10n/app_localizations.dart';
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/my_program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../ui/my_program/my_program_view_model.dart';
 import '../../utils/logger.dart';
@@ -75,9 +78,38 @@ class MyProgramPage extends HookConsumerWidget {
                 viewModel.addMyProgram(MyProgram.empty());
                 // マイプログラムを追加したことをログ出力
                 logger.d('Added my program');
-              } on Exception catch (e) {
-                // エラーが発生した場合、エラーログを出力
-                logger.e('Failed to add my program: $e');
+              } on AppException catch (e, st) {
+                logger.e(
+                  'Failed to add my program AppException: ${e.message}',
+                  stackTrace: st,
+                );
+                if (context.mounted) {
+                  final l10n = AppLocalizations.of(context)!;
+                  ErrorHandler.showError(
+                    context,
+                    e,
+                    l10n,
+                    errorContext: 'MyProgramPage_addProgram',
+                  );
+                }
+              } on Exception catch (e, st) {
+                logger.e(
+                  'Failed to add my program Exception: $e',
+                  stackTrace: st,
+                );
+                if (context.mounted) {
+                  final l10n = AppLocalizations.of(context)!;
+                  final appException = GeneralException(
+                    message: 'マイプログラムの追加に失敗しました。',
+                    stackTrace: st,
+                  );
+                  ErrorHandler.showError(
+                    context,
+                    appException,
+                    l10n,
+                    errorContext: 'MyProgramPage_addProgram',
+                  );
+                }
               }
             },
             // ボタンのアイコンを設定

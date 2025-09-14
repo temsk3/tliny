@@ -7,7 +7,6 @@ import '../../settings/hooks/use_l10n.dart';
 import '../../settings/routes/routes.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import '../../ui/common/main_body.dart';
-import '../common/loading_screen.dart';
 import '../image/image_screen.dart';
 import '../program/program_details_page.dart';
 import '../program/program_view_model.dart';
@@ -27,56 +26,54 @@ class AvailableEventsPage extends HookConsumerWidget {
       appBar: AppBar(title: Text('${l10n.event}一覧')),
       body: MainBodyWidget(
         width: 400,
-        body: WidgetWithLoading(
-          child: AsyncValueWidget<List<Program>>(
-            value: eventsState,
-            data: (events) {
-              // 購入可能なイベントのみをフィルタリング
-              final availableEvents =
-                  events.where((event) {
-                    // イベントがアクティブで公開されているもののみ
-                    if (event.isActive != true || event.isPublish != true) {
+        body: AsyncValueWidget<List<Program>>(
+          value: eventsState,
+          data: (events) {
+            // 購入可能なイベントのみをフィルタリング
+            final availableEvents =
+                events.where((event) {
+                  // イベントがアクティブで公開されているもののみ
+                  if (event.isActive != true || event.isPublish != true) {
+                    return false;
+                  }
+
+                  // 販売期間内のイベントのみ
+                  final now = DateTime.now();
+                  if (event.salesStart != null && event.salesEnd != null) {
+                    if (now.isBefore(event.salesStart!) ||
+                        now.isAfter(event.salesEnd!)) {
                       return false;
                     }
+                  }
 
-                    // 販売期間内のイベントのみ
-                    final now = DateTime.now();
-                    if (event.salesStart != null && event.salesEnd != null) {
-                      if (now.isBefore(event.salesStart!) ||
-                          now.isAfter(event.salesEnd!)) {
-                        return false;
-                      }
+                  // イベント期間が終了していないもののみ
+                  if (event.eventTo != null) {
+                    if (now.isAfter(event.eventTo!)) {
+                      return false;
                     }
+                  }
 
-                    // イベント期間が終了していないもののみ
-                    if (event.eventTo != null) {
-                      if (now.isAfter(event.eventTo!)) {
-                        return false;
-                      }
-                    }
+                  return true;
+                }).toList();
 
-                    return true;
-                  }).toList();
+            if (availableEvents.isEmpty) {
+              return _buildEmptyEventsWidget(context, l10n);
+            }
 
-              if (availableEvents.isEmpty) {
-                return _buildEmptyEventsWidget(context, l10n);
-              }
-
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(programViewModelProvider);
+            return RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(programViewModelProvider);
+              },
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: availableEvents.length,
+                itemBuilder: (context, index) {
+                  final event = availableEvents[index];
+                  return _buildEventCard(context, event, l10n);
                 },
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: availableEvents.length,
-                  itemBuilder: (context, index) {
-                    final event = availableEvents[index];
-                    return _buildEventCard(context, event, l10n);
-                  },
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );

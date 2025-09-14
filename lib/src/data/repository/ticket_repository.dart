@@ -155,7 +155,8 @@ class TicketRepository {
   Future<String> updateTicket(Ticket ticket) async {
     logger.d('updateTicket: ticket=$ticket');
     try {
-      await _ticketRef.doc(ticket.id).update(ticket.toFirestore());
+      final docRef = _ticketRef.doc(ticket.id);
+      await docRef.set(ticket, SetOptions(merge: true));
       logger.d('updateTicket: success');
       return ticket.id!;
     } on Exception catch (e, st) {
@@ -170,7 +171,9 @@ class TicketRepository {
     Map<String, dynamic> data,
   ) async {
     try {
-      await _ticketRef.doc(ticketId).update(data);
+      // updatedAtを追加
+      final updateData = {...data, 'updatedAt': FieldValue.serverTimestamp()};
+      await _ticketRef.doc(ticketId).update(updateData);
     } catch (e, st) {
       logger.e('Error updating ticket field: $e', stackTrace: st);
       rethrow; // エラーを上に伝える

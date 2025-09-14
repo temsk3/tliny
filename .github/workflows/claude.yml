@@ -1,0 +1,38 @@
+name: Claude Code Action
+
+on:
+  # Issue comments (including PR comments)
+  issue_comment:
+    types: [created]
+
+  # Pull request reviews
+  pull_request_review:
+    types: [submitted]
+
+  # Issues assigned
+  issues:
+    types: [assigned]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  claude:
+    # Claudeがメンションされた場合のみ実行
+    if: contains(github.event.comment.body, '@claude') || contains(github.event.review.body, '@claude') || github.event.action == 'assigned'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Claude Code Action
+        uses: anthropics/claude-code-action@v1
+        with:
+          # 必須: APIキー
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # オプション設定
+          model: "claude-3-5-sonnet-20241022"  # モデル選択
+          max_turns: 10                        # 最大ターン数
+          trigger_phrase: "@claude"            # トリガーフレーズ

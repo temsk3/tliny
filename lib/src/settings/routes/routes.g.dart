@@ -10,6 +10,10 @@ part of 'routes.dart';
 
 List<RouteBase> get $appRoutes => [
   $appShellRoute,
+  $snsMessagesRoute,
+  $snsChatRoute,
+  $snsProfileRoute,
+  $snsSearchRoute,
   $signInRoute,
   $signUpRoute,
   $checkoutSuccessRoute,
@@ -74,6 +78,17 @@ RouteBase get $appShellRoute => StatefulShellRouteData.$route(
         ),
       ],
     ),
+    StatefulShellBranchData.$branch(
+      navigatorKey: SnsShellBranchData.$navigatorKey,
+
+      routes: [
+        GoRouteData.$route(
+          path: '/sns',
+
+          factory: $SnsRouteExtension._fromState,
+        ),
+      ],
+    ),
   ],
 );
 
@@ -130,6 +145,122 @@ extension $TicketRouteExtension on TicketRoute {
   static TicketRoute _fromState(GoRouterState state) => TicketRoute();
 
   String get location => GoRouteData.$location('/ticket');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $SnsRouteExtension on SnsRoute {
+  static SnsRoute _fromState(GoRouterState state) => SnsRoute();
+
+  String get location => GoRouteData.$location('/sns');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $snsMessagesRoute => GoRouteData.$route(
+  path: '/sns/messages',
+
+  factory: $SnsMessagesRouteExtension._fromState,
+);
+
+extension $SnsMessagesRouteExtension on SnsMessagesRoute {
+  static SnsMessagesRoute _fromState(GoRouterState state) =>
+      const SnsMessagesRoute();
+
+  String get location => GoRouteData.$location('/sns/messages');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $snsChatRoute => GoRouteData.$route(
+  path: '/sns/chat',
+
+  factory: $SnsChatRouteExtension._fromState,
+);
+
+extension $SnsChatRouteExtension on SnsChatRoute {
+  static SnsChatRoute _fromState(GoRouterState state) => SnsChatRoute(
+    conversationId: state.uri.queryParameters['conversation-id']!,
+    otherUserId: state.uri.queryParameters['other-user-id']!,
+    otherUserName: state.uri.queryParameters['other-user-name']!,
+    otherUserPhotoUrl: state.uri.queryParameters['other-user-photo-url'],
+  );
+
+  String get location => GoRouteData.$location(
+    '/sns/chat',
+    queryParams: {
+      'conversation-id': conversationId,
+      'other-user-id': otherUserId,
+      'other-user-name': otherUserName,
+      if (otherUserPhotoUrl != null) 'other-user-photo-url': otherUserPhotoUrl,
+    },
+  );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $snsProfileRoute => GoRouteData.$route(
+  path: '/sns/profile',
+
+  factory: $SnsProfileRouteExtension._fromState,
+);
+
+extension $SnsProfileRouteExtension on SnsProfileRoute {
+  static SnsProfileRoute _fromState(GoRouterState state) =>
+      SnsProfileRoute(userId: state.uri.queryParameters['user-id']!);
+
+  String get location =>
+      GoRouteData.$location('/sns/profile', queryParams: {'user-id': userId});
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $snsSearchRoute => GoRouteData.$route(
+  path: '/sns/search',
+
+  factory: $SnsSearchRouteExtension._fromState,
+);
+
+extension $SnsSearchRouteExtension on SnsSearchRoute {
+  static SnsSearchRoute _fromState(GoRouterState state) =>
+      const SnsSearchRoute();
+
+  String get location => GoRouteData.$location('/sns/search');
 
   void go(BuildContext context) => context.go(location);
 

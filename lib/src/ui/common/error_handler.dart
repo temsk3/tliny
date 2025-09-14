@@ -220,10 +220,30 @@ class ErrorHandler {
       default:
         // エラーデータから詳細メッセージを取得
         final details = error.details;
-        if (details != null && details is Map<String, dynamic>) {
-          final message = details['message'] as String?;
-          if (message != null && message.isNotEmpty) {
-            return message;
+        if (details != null) {
+          try {
+            Map<String, dynamic>? safeDetails;
+            if (details is Map<String, dynamic>) {
+              safeDetails = details;
+            } else if (details is Map) {
+              // LinkedMap<Object?, Object?>の場合の安全な変換
+              final rawDetails = details;
+              safeDetails = <String, dynamic>{};
+              for (final entry in rawDetails.entries) {
+                if (entry.key is String) {
+                  safeDetails[entry.key as String] = entry.value;
+                }
+              }
+            }
+
+            if (safeDetails != null) {
+              final message = safeDetails['message'] as String?;
+              if (message != null && message.isNotEmpty) {
+                return message;
+              }
+            }
+          } catch (e) {
+            // キャストに失敗した場合はデフォルトメッセージを使用
           }
         }
         return 'サーバー処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
@@ -437,8 +457,7 @@ class ErrorHandler {
                   ),
                 ],
                 // FirebaseFunctionsExceptionの場合は詳細情報を表示
-                if (error is FirebaseFunctionsException &&
-                    error.details != null) ...[
+                if (error is FirebaseFunctionsException) ...[
                   const SizedBox(height: 16),
                   const Text(
                     '詳細情報:',
@@ -453,6 +472,13 @@ class ErrorHandler {
                     'エラーコード: ${error.code}',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
+                  if (error.details != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'エラー詳細: ${error.details}',
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
                 ],
               ],
             ),
@@ -475,8 +501,11 @@ class ErrorHandler {
   }
 
   /// 成功メッセージをスナックバーで表示
-  static void showSuccessSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  static Future<SnackBarClosedReason> showSuccessSnackBar(
+    BuildContext context,
+    String message,
+  ) {
+    final controller = ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
@@ -487,9 +516,10 @@ class ErrorHandler {
         ),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 5),
       ),
     );
+    return controller.closed;
   }
 
   /// 情報メッセージをスナックバーで表示

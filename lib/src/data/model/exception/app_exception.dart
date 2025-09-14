@@ -94,8 +94,29 @@ class CloudFunctionsException extends AppException {
   String? get functionMessage => details?['message'] as String?;
 
   /// ファンクション側のエラー詳細を取得
-  Map<String, dynamic>? get functionDetails =>
-      details?['details'] as Map<String, dynamic>?;
+  Map<String, dynamic>? get functionDetails {
+    if (details == null) return null;
+
+    try {
+      final detailsData = details!['details'];
+      if (detailsData is Map<String, dynamic>) {
+        return detailsData;
+      } else if (detailsData is Map) {
+        // LinkedMap<Object?, Object?>の場合の安全な変換
+        final rawDetails = detailsData;
+        final safeDetails = <String, dynamic>{};
+        for (final entry in rawDetails.entries) {
+          if (entry.key is String) {
+            safeDetails[entry.key as String] = entry.value;
+          }
+        }
+        return safeDetails;
+      }
+    } catch (e) {
+      // キャストに失敗した場合はnullを返す
+    }
+    return null;
+  }
 
   @override
   String get userMessage {

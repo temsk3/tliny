@@ -11,7 +11,7 @@ class StripeCustomerRepairTest {
       print('🔧 自分のStripe Customer修復を開始...');
 
       final callable = _functions.httpsCallable('repairUserStripeCustomer');
-      final result = await callable.call({});
+      final result = await callable.call(<String, dynamic>{});
 
       print('✅ 修復結果: ${result.data}');
       return Map<String, dynamic>.from(result.data as Map);
@@ -30,7 +30,7 @@ class StripeCustomerRepairTest {
       print('対象ユーザー: $targetUid');
 
       final callable = _functions.httpsCallable('repairUserStripeCustomer');
-      final result = await callable.call({'uid': targetUid});
+      final result = await callable.call(<String, dynamic>{'uid': targetUid});
 
       print('✅ 修復結果: ${result.data}');
       return Map<String, dynamic>.from(result.data as Map);
@@ -50,7 +50,7 @@ class StripeCustomerRepairTest {
       print('対象ユーザー: $targetUid, 管理者: $isAdmin');
 
       final callable = _functions.httpsCallable('setAdminRole');
-      final result = await callable.call({
+      final result = await callable.call(<String, dynamic>{
         'uid': targetUid,
         'isAdmin': isAdmin,
       });

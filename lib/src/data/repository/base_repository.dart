@@ -111,10 +111,32 @@ abstract class BaseRepository {
         code = error.code;
     }
 
+    // 型安全なキャスト処理
+    Map<String, dynamic>? safeDetails;
+    if (error.details != null) {
+      try {
+        if (error.details is Map<String, dynamic>) {
+          safeDetails = error.details as Map<String, dynamic>;
+        } else if (error.details is Map) {
+          // LinkedMap<Object?, Object?>の場合の安全な変換
+          final rawDetails = error.details as Map;
+          safeDetails = <String, dynamic>{};
+          for (final entry in rawDetails.entries) {
+            if (entry.key is String) {
+              safeDetails[entry.key as String] = entry.value;
+            }
+          }
+        }
+      } catch (e) {
+        // キャストに失敗した場合はnullにする
+        safeDetails = null;
+      }
+    }
+
     return CloudFunctionsException(
       message: message,
       code: code,
-      details: error.details as Map<String, dynamic>?,
+      details: safeDetails,
       stackTrace: StackTrace.current,
     );
   }

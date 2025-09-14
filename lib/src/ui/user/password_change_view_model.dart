@@ -29,7 +29,7 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
 
     try {
       final loading = ref.read(globalLoadingControllerProvider.notifier);
-      await loading.guardFuture(() async {
+      await loading.guardFutureWithMinDuration(() async {
         // 現在のユーザーを取得
         final currentUser = authRepository.getCurrentUser();
         if (currentUser == null) {
@@ -50,7 +50,7 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
         authRepository.updatePassword(newPassword);
 
         logger.i('changePassword: パスワード変更が完了しました');
-      });
+      }, message: 'パスワード変更中...');
 
       // ユーザー情報を再取得してUIを更新
       try {

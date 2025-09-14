@@ -8,17 +8,17 @@ import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 import 'usage_history_view_model_test.mocks.dart';
 
-@GenerateMocks([TicketRepository])
+@GenerateMocks([UsageHistoryRepository])
 void main() {
   group('UsageHistoryViewModel', () {
     late ProviderContainer container;
-    late MockTicketRepository mockTicketRepository;
+    late MockUsageHistoryRepository mockUsageHistoryRepository;
 
     setUp(() {
-      mockTicketRepository = MockTicketRepository();
+      mockUsageHistoryRepository = MockUsageHistoryRepository();
       container = ProviderContainer(
         overrides: [
-          ticketRepositoryProvider.overrideWithValue(mockTicketRepository),
+          usageHistoryRepositoryProvider.overrideWithValue(mockUsageHistoryRepository),
         ],
       );
     });
@@ -48,7 +48,7 @@ void main() {
         ];
 
         when(
-          mockTicketRepository.readUsageHistory('user1'),
+          mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenAnswer((_) async => mockUsageHistories);
 
         // Act
@@ -61,13 +61,13 @@ void main() {
         expect(result.length, 2);
         expect(result[0].id, 'history1');
         expect(result[1].id, 'history2');
-        verify(mockTicketRepository.readUsageHistory('user1')).called(1);
+        verify(mockUsageHistoryRepository.readUsageHistory('user1')).called(1);
       });
 
       test('利用履歴が空の場合、空のリストを返す', () async {
         // Arrange
         when(
-          mockTicketRepository.readUsageHistory('user1'),
+          mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenAnswer((_) async => []);
 
         // Act
@@ -77,13 +77,13 @@ void main() {
 
         // Assert
         expect(result, isEmpty);
-        verify(mockTicketRepository.readUsageHistory('user1')).called(1);
+        verify(mockUsageHistoryRepository.readUsageHistory('user1')).called(1);
       });
 
       test('エラーが発生した場合、例外を投げる', () async {
         // Arrange
         when(
-          mockTicketRepository.readUsageHistory('user1'),
+          mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenThrow(Exception('Database error'));
 
         // Act & Assert
@@ -91,7 +91,7 @@ void main() {
           () => container.read(usageHistoryViewModelProvider.future),
           throwsA(isA<Exception>()),
         );
-        verify(mockTicketRepository.readUsageHistory('user1')).called(1);
+        verify(mockUsageHistoryRepository.readUsageHistory('user1')).called(1);
       });
     });
 
@@ -116,7 +116,7 @@ void main() {
         ];
 
         when(
-          mockTicketRepository.readUsageHistory('user1'),
+          mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenAnswer((_) async => mockUsageHistories);
 
         // Act

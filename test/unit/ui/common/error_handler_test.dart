@@ -293,10 +293,17 @@ class _TestWidgetState extends State<TestWidget> with ErrorHandlingMixin {
   }
 }
 
-class TestGlobalLoadingController implements GlobalLoadingController {
+class TestGlobalLoadingController extends GlobalLoadingController {
   @override
-  void startLoading() {}
+  bool build() => false;
 
   @override
-  void stopLoading() {}
+  void startLoading([String? message]) {
+    // Test implementation - no-op
+  }
+
+  @override
+  void stopLoading() {
+    // Test implementation - no-op
+  }
 }

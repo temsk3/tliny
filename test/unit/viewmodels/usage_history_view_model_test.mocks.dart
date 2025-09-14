@@ -3,12 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
-import 'package:tliny/src/data/model/ticket_model.dart' as _i2;
-import 'package:tliny/src/data/repository/ticket_repository.dart' as _i3;
+import 'package:tliny/src/data/model/ticket_model.dart' as _i4;
+import 'package:tliny/src/data/repository/ticket_repository.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -24,123 +24,79 @@ import 'package:tliny/src/data/repository/ticket_repository.dart' as _i3;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeTicket_0 extends _i1.SmartFake implements _i2.Ticket {
-  _FakeTicket_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-/// A class which mocks [TicketRepository].
+/// A class which mocks [UsageHistoryRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTicketRepository extends _i1.Mock implements _i3.TicketRepository {
-  MockTicketRepository() {
+class MockUsageHistoryRepository extends _i1.Mock
+    implements _i2.UsageHistoryRepository {
+  MockUsageHistoryRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Stream<List<_i2.Ticket>> watchAllTicket() =>
+  _i3.Stream<List<_i4.UsageHistory>> watchUsageHistoryList(String? uid) =>
       (super.noSuchMethod(
-            Invocation.method(#watchAllTicket, []),
-            returnValue: _i4.Stream<List<_i2.Ticket>>.empty(),
+            Invocation.method(#watchUsageHistoryList, [uid]),
+            returnValue: _i3.Stream<List<_i4.UsageHistory>>.empty(),
           )
-          as _i4.Stream<List<_i2.Ticket>>);
+          as _i3.Stream<List<_i4.UsageHistory>>);
 
   @override
-  _i4.Stream<List<_i2.Ticket>> watchTickets(String? uid) =>
+  _i3.Stream<_i4.UsageHistory> watchUsageHistory(String? uid, String? id) =>
       (super.noSuchMethod(
-            Invocation.method(#watchTickets, [uid]),
-            returnValue: _i4.Stream<List<_i2.Ticket>>.empty(),
+            Invocation.method(#watchUsageHistory, [uid, id]),
+            returnValue: _i3.Stream<_i4.UsageHistory>.empty(),
           )
-          as _i4.Stream<List<_i2.Ticket>>);
+          as _i3.Stream<_i4.UsageHistory>);
 
   @override
-  _i4.Stream<_i2.Ticket> watchTicket(String? uid, String? ticketId) =>
+  _i3.Future<List<_i4.UsageHistory>> readUsageHistory(String? uid) =>
       (super.noSuchMethod(
-            Invocation.method(#watchTicket, [uid, ticketId]),
-            returnValue: _i4.Stream<_i2.Ticket>.empty(),
-          )
-          as _i4.Stream<_i2.Ticket>);
-
-  @override
-  _i4.Future<_i2.Ticket> searchTicket(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#searchTicket, [id]),
-            returnValue: _i4.Future<_i2.Ticket>.value(
-              _FakeTicket_0(this, Invocation.method(#searchTicket, [id])),
+            Invocation.method(#readUsageHistory, [uid]),
+            returnValue: _i3.Future<List<_i4.UsageHistory>>.value(
+              <_i4.UsageHistory>[],
             ),
           )
-          as _i4.Future<_i2.Ticket>);
+          as _i3.Future<List<_i4.UsageHistory>>);
 
   @override
-  _i4.Future<List<_i2.Ticket>> readAllTicket() =>
-      (super.noSuchMethod(
-            Invocation.method(#readAllTicket, []),
-            returnValue: _i4.Future<List<_i2.Ticket>>.value(<_i2.Ticket>[]),
-          )
-          as _i4.Future<List<_i2.Ticket>>);
-
-  @override
-  _i4.Future<List<_i2.Ticket>> readTicket(String? uid) =>
-      (super.noSuchMethod(
-            Invocation.method(#readTicket, [uid]),
-            returnValue: _i4.Future<List<_i2.Ticket>>.value(<_i2.Ticket>[]),
-          )
-          as _i4.Future<List<_i2.Ticket>>);
-
-  @override
-  _i4.Future<String> createTicket(_i2.Ticket? ticket) =>
-      (super.noSuchMethod(
-            Invocation.method(#createTicket, [ticket]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
-                this,
-                Invocation.method(#createTicket, [ticket]),
-              ),
-            ),
-          )
-          as _i4.Future<String>);
-
-  @override
-  _i4.Future<String> updateTicket(_i2.Ticket? ticket) =>
-      (super.noSuchMethod(
-            Invocation.method(#updateTicket, [ticket]),
-            returnValue: _i4.Future<String>.value(
-              _i5.dummyValue<String>(
-                this,
-                Invocation.method(#updateTicket, [ticket]),
-              ),
-            ),
-          )
-          as _i4.Future<String>);
-
-  @override
-  _i4.Future<void> updateTicketField(
-    String? ticketId,
-    Map<String, dynamic>? data,
+  _i3.Future<String> createUsageHistory(
+    String? uid,
+    _i4.UsageHistory? usageHistory,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#updateTicketField, [ticketId, data]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
-          )
-          as _i4.Future<void>);
-
-  @override
-  _i4.Future<void> deleteTicket(String? ticketId) =>
-      (super.noSuchMethod(
-            Invocation.method(#deleteTicket, [ticketId]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
-          )
-          as _i4.Future<void>);
-
-  @override
-  _i4.Future<List<Map<String, dynamic>>> testTicket(String? uid) =>
-      (super.noSuchMethod(
-            Invocation.method(#testTicket, [uid]),
-            returnValue: _i4.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
+            Invocation.method(#createUsageHistory, [uid, usageHistory]),
+            returnValue: _i3.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#createUsageHistory, [uid, usageHistory]),
+              ),
             ),
           )
-          as _i4.Future<List<Map<String, dynamic>>>);
+          as _i3.Future<String>);
+
+  @override
+  _i3.Future<String> updateUsageHistory(
+    String? uid,
+    _i4.UsageHistory? usageHistory,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateUsageHistory, [uid, usageHistory]),
+            returnValue: _i3.Future<String>.value(
+              _i5.dummyValue<String>(
+                this,
+                Invocation.method(#updateUsageHistory, [uid, usageHistory]),
+              ),
+            ),
+          )
+          as _i3.Future<String>);
+
+  @override
+  _i3.Future<void> deleteUsageHistory(String? uid, String? id) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteUsageHistory, [uid, id]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
 }
