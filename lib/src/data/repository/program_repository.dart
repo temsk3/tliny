@@ -39,11 +39,14 @@ class ProgramRepository {
             },
       );
 
-  // イベント一覧を取得するストリーム
+  // イベント一覧を取得するストリーム（シークレットイベントは除外）
   Stream<List<Program>> watchEventList() {
     logger.d('watchEventList');
     try {
-      final list = _collectionRef.snapshots().map((snapshot) {
+      final list = _collectionRef
+          .where('isSecret', isEqualTo: false)
+          .snapshots()
+          .map((snapshot) {
         logger.d('watchEventList: snapshot=$snapshot');
         return snapshot.docs.map((doc) {
           logger.d('watchEventList: doc=$doc');
@@ -80,7 +83,7 @@ class ProgramRepository {
     }
   }
 
-  // オーナーIDでイベント一覧を取得するストリーム（非表示設定のイベントは除外）
+  // オーナーIDでイベント一覧を取得するストリーム（非表示設定とシークレットイベントは除外）
   Stream<List<Program>> watchEventsByOrganizer(String organizerId) {
     logger.d('watchEventsByOrganizer: organizerId=$organizerId');
     try {
@@ -88,6 +91,7 @@ class ProgramRepository {
           .where('organizerId', isEqualTo: organizerId)
           .where('isActive', isEqualTo: true)
           .where('isPublish', isEqualTo: true)
+          .where('isSecret', isEqualTo: false)
           .orderBy('createdAt', descending: true)
           .snapshots()
           .map((snapshot) {
@@ -124,11 +128,13 @@ class ProgramRepository {
     }
   }
 
-  // イベント一覧を取得する
+  // イベント一覧を取得する（シークレットイベントは除外）
   Future<List<Program>> readEvents() async {
     logger.d('readEvents');
     try {
-      final querySnapshot = await _collectionRef.get();
+      final querySnapshot = await _collectionRef
+          .where('isSecret', isEqualTo: false)
+          .get();
       logger.d('readEvents: querySnapshot=$querySnapshot');
       return querySnapshot.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
@@ -206,6 +212,29 @@ class ProgramRepository {
       }
     } on Exception catch (e, st) {
       logger.e('getProduct: error=$e, stackTrace=$st');
+      rethrow;
+    }
+  }
+
+  // シークレットURLでイベントを取得する
+  Future<Program?> getEventBySecretUrl(String secretUrl) async {
+    logger.d('getEventBySecretUrl: secretUrl=$secretUrl');
+    try {
+      final querySnapshot = await _collectionRef
+          .where('secretUrl', isEqualTo: secretUrl)
+          .where('isSecret', isEqualTo: true)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        logger.d('getEventBySecretUrl: シークレットイベントを取得しました');
+        return querySnapshot.docs.first.data();
+      } else {
+        logger.d('getEventBySecretUrl: シークレットイベントが見つかりません');
+        return null;
+      }
+    } on Exception catch (e, st) {
+      logger.e('getEventBySecretUrl: error=$e, stackTrace=$st');
       rethrow;
     }
   }

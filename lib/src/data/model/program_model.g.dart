@@ -30,6 +30,8 @@ _$ProgramImpl _$$ProgramImplFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
       isActive: json['isActive'] as bool?,
       isPublish: json['isPublish'] as bool?,
+      isSecret: json['isSecret'] as bool? ?? false,
+      secretUrl: json['secretUrl'] as String?,
       staffCode: json['staffCode'] as String?,
       staff:
           (json['staff'] as List<dynamic>?)
@@ -59,6 +61,8 @@ Map<String, dynamic> _$$ProgramImplToJson(_$ProgramImpl instance) =>
       'deletedAt': timestampFromDateValue(instance.deletedAt),
       'isActive': instance.isActive,
       'isPublish': instance.isPublish,
+      'isSecret': instance.isSecret,
+      'secretUrl': instance.secretUrl,
       'staffCode': instance.staffCode,
       'staff': instance.staff,
       'product': instance.product,

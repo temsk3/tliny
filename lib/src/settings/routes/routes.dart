@@ -45,6 +45,7 @@ import '../../ui/sns/messages/sns_messages_page.dart';
 import '../../ui/sns/chat/sns_chat_page.dart';
 import '../../ui/sns/profile/profile_page.dart';
 import '../../ui/sns/search/search_page.dart';
+import '../../ui/secret_event/secret_event_page.dart';
 
 part 'routes.g.dart';
 
@@ -345,6 +346,18 @@ class CheckoutCancelRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     final sessionId = state.uri.queryParameters['session_id'];
     return CheckoutCancelPage(sessionId: sessionId);
+  }
+}
+
+@TypedGoRoute<SecretEventRoute>(path: '/secret/:secretUrl')
+class SecretEventRoute extends GoRouteData {
+  const SecretEventRoute({required this.secretUrl});
+
+  final String secretUrl;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SecretEventPage(secretUrl: secretUrl);
   }
 }
 

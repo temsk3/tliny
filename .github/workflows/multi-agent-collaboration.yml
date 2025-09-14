@@ -1,0 +1,155 @@
+name: Multi-Agent Collaboration
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  detect-multi-agent-task:
+    if: contains(github.event.issue.title, '[MULTI-AGENT]') || contains(github.event.issue.body, '[MULTI-AGENT]')
+    runs-on: ubuntu-latest
+    outputs:
+      task_type: ${{ steps.analyze.outputs.task_type }}
+      required_agents: ${{ steps.analyze.outputs.required_agents }}
+
+    steps:
+      - name: Analyze Task Requirements
+        id: analyze
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: "claude-4-opus-20250805"
+          max_turns: 5
+          prompt: |
+            This is a multi-agent task coordination request. Analyze the GitHub issue and determine:
+            1. What type of task this is (feature, bugfix, optimization, etc.)
+            2. Which specialized agents are needed
+            3. The dependency order for execution
+
+            Available agents:
+            - firebase-functions-developer
+            - flutter-ui-builder
+            - riverpod-state-manager
+            - stripe-payment-integrator
+            - test-automation-engineer
+            - firestore-optimizer
+            - performance-optimizer
+
+            Issue Title: ${{ github.event.issue.title }}
+            Issue Body: ${{ github.event.issue.body }}
+
+            Respond in JSON format:
+            {
+              "task_type": "feature|bugfix|optimization",
+              "required_agents": ["agent1", "agent2"],
+              "execution_phases": [
+                {"phase": 1, "agents": ["agent1"], "description": "Phase description"},
+                {"phase": 2, "agents": ["agent2"], "depends_on": [1]}
+              ],
+              "estimated_complexity": "low|medium|high"
+            }
+
+  conductor-orchestration:
+    needs: detect-multi-agent-task
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Coordination Issue
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: "claude-4-opus-20250805"
+          subagent_type: "conductor-agent"
+          max_turns: 15
+          prompt: |
+            You are the Conductor Agent responsible for orchestrating multi-agent collaboration.
+
+            Original Issue: ${{ github.event.issue.title }}
+            Task Analysis: ${{ needs.detect-multi-agent-task.outputs.task_type }}
+            Required Agents: ${{ needs.detect-multi-agent-task.outputs.required_agents }}
+
+            Your responsibilities:
+            1. Create a detailed project plan
+            2. Break down the task into agent-specific subtasks
+            3. Create tracking issues for each agent
+            4. Establish communication protocols
+            5. Monitor progress and coordinate dependencies
+
+            Start by creating a comprehensive project breakdown and agent assignment.
+
+  execute-specialized-agents:
+    needs: [detect-multi-agent-task, conductor-orchestration]
+    if: success()
+    strategy:
+      matrix:
+        agent: ${{ fromJson(needs.detect-multi-agent-task.outputs.required_agents) }}
+      max-parallel: 3
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Execute Agent Task
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: "claude-4-opus-20250805"
+          subagent_type: ${{ matrix.agent }}
+          max_turns: 20
+          prompt: |
+            You are a specialized agent: ${{ matrix.agent }}
+
+            Original Issue: ${{ github.event.issue.title }}
+            Issue Body: ${{ github.event.issue.body }}
+
+            Your specialization:
+            ${{ matrix.agent == 'firebase-functions-developer' && 'Firebase Cloud Functions (TypeScript), webhooks, triggers, API endpoints' || '' }}
+            ${{ matrix.agent == 'flutter-ui-builder' && 'Flutter UI components, Material Design, responsive layouts, custom widgets' || '' }}
+            ${{ matrix.agent == 'riverpod-state-manager' && 'Riverpod providers, state management, AsyncNotifier patterns' || '' }}
+            ${{ matrix.agent == 'stripe-payment-integrator' && 'Stripe payments, webhooks, PaymentIntents, billing' || '' }}
+            ${{ matrix.agent == 'test-automation-engineer' && 'Unit tests, widget tests, integration tests, mocking' || '' }}
+            ${{ matrix.agent == 'firestore-optimizer' && 'Firestore queries, indexes, security rules, data modeling' || '' }}
+            ${{ matrix.agent == 'performance-optimizer' && 'Performance optimization, bundle size, rendering, caching' || '' }}
+
+            Tasks:
+            1. Analyze the requirements within your specialization
+            2. Implement the necessary code changes
+            3. Create tests for your implementation
+            4. Document your changes
+            5. Coordinate with other agents as needed
+
+            Focus on your expertise area and create high-quality, production-ready code.
+
+  integration-and-review:
+    needs: [conductor-orchestration, execute-specialized-agents]
+    if: success()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Integration Review and Testing
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: "claude-4-opus-20250805"
+          subagent_type: "conductor-agent"
+          max_turns: 10
+          prompt: |
+            As the Conductor Agent, perform final integration and review:
+
+            1. Review all changes made by specialized agents
+            2. Check for integration issues between components
+            3. Run comprehensive tests
+            4. Verify all requirements are met
+            5. Create final pull request with consolidated changes
+            6. Provide summary of what was accomplished
+
+            Original Issue: ${{ github.event.issue.title }}
+
+            Ensure all code is properly integrated and ready for review.

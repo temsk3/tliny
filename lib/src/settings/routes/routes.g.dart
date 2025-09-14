@@ -18,6 +18,7 @@ List<RouteBase> get $appRoutes => [
   $signUpRoute,
   $checkoutSuccessRoute,
   $checkoutCancelRoute,
+  $secretEventRoute,
   $programRoute,
   $programEditRoute,
   $productRoute,
@@ -347,6 +348,29 @@ extension $CheckoutCancelRouteExtension on CheckoutCancelRoute {
       const CheckoutCancelRoute();
 
   String get location => GoRouteData.$location('/checkout-cancel');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $secretEventRoute => GoRouteData.$route(
+  path: '/secret/:secretUrl',
+
+  factory: $SecretEventRouteExtension._fromState,
+);
+
+extension $SecretEventRouteExtension on SecretEventRoute {
+  static SecretEventRoute _fromState(GoRouterState state) =>
+      SecretEventRoute(secretUrl: state.pathParameters['secretUrl']!);
+
+  String get location =>
+      GoRouteData.$location('/secret/${Uri.encodeComponent(secretUrl)}');
 
   void go(BuildContext context) => context.go(location);
 

@@ -44,6 +44,8 @@ mixin _$Program {
   DateTime? get deletedAt => throw _privateConstructorUsedError;
   bool? get isActive => throw _privateConstructorUsedError;
   bool? get isPublish => throw _privateConstructorUsedError; //
+  bool get isSecret => throw _privateConstructorUsedError;
+  String? get secretUrl => throw _privateConstructorUsedError;
   String? get staffCode => throw _privateConstructorUsedError;
   List<Staff>? get staff => throw _privateConstructorUsedError;
   List<Product>? get product => throw _privateConstructorUsedError;
@@ -79,6 +81,8 @@ abstract class $ProgramCopyWith<$Res> {
     @timestampKey DateTime? deletedAt,
     bool? isActive,
     bool? isPublish,
+    bool isSecret,
+    String? secretUrl,
     String? staffCode,
     List<Staff>? staff,
     List<Product>? product,
@@ -116,6 +120,8 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
     Object? deletedAt = freezed,
     Object? isActive = freezed,
     Object? isPublish = freezed,
+    Object? isSecret = null,
+    Object? secretUrl = freezed,
     Object? staffCode = freezed,
     Object? staff = freezed,
     Object? product = freezed,
@@ -202,6 +208,16 @@ class _$ProgramCopyWithImpl<$Res, $Val extends Program>
                     ? _value.isPublish
                     : isPublish // ignore: cast_nullable_to_non_nullable
                         as bool?,
+            isSecret:
+                null == isSecret
+                    ? _value.isSecret
+                    : isSecret // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            secretUrl:
+                freezed == secretUrl
+                    ? _value.secretUrl
+                    : secretUrl // ignore: cast_nullable_to_non_nullable
+                        as String?,
             staffCode:
                 freezed == staffCode
                     ? _value.staffCode
@@ -248,6 +264,8 @@ abstract class _$$ProgramImplCopyWith<$Res> implements $ProgramCopyWith<$Res> {
     @timestampKey DateTime? deletedAt,
     bool? isActive,
     bool? isPublish,
+    bool isSecret,
+    String? secretUrl,
     String? staffCode,
     List<Staff>? staff,
     List<Product>? product,
@@ -284,6 +302,8 @@ class __$$ProgramImplCopyWithImpl<$Res>
     Object? deletedAt = freezed,
     Object? isActive = freezed,
     Object? isPublish = freezed,
+    Object? isSecret = null,
+    Object? secretUrl = freezed,
     Object? staffCode = freezed,
     Object? staff = freezed,
     Object? product = freezed,
@@ -370,6 +390,16 @@ class __$$ProgramImplCopyWithImpl<$Res>
                 ? _value.isPublish
                 : isPublish // ignore: cast_nullable_to_non_nullable
                     as bool?,
+        isSecret:
+            null == isSecret
+                ? _value.isSecret
+                : isSecret // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        secretUrl:
+            freezed == secretUrl
+                ? _value.secretUrl
+                : secretUrl // ignore: cast_nullable_to_non_nullable
+                    as String?,
         staffCode:
             freezed == staffCode
                 ? _value.staffCode
@@ -410,6 +440,8 @@ class _$ProgramImpl extends _Program {
     @timestampKey this.deletedAt,
     required this.isActive,
     required this.isPublish,
+    this.isSecret = false,
+    this.secretUrl,
     this.staffCode,
     final List<Staff>? staff,
     final List<Product>? product,
@@ -469,6 +501,11 @@ class _$ProgramImpl extends _Program {
   final bool? isPublish;
   //
   @override
+  @JsonKey()
+  final bool isSecret;
+  @override
+  final String? secretUrl;
+  @override
   final String? staffCode;
   final List<Staff>? _staff;
   @override
@@ -492,7 +529,7 @@ class _$ProgramImpl extends _Program {
 
   @override
   String toString() {
-    return 'Program(id: $id, organizerId: $organizerId, name: $name, message: $message, salesStart: $salesStart, salesEnd: $salesEnd, eventFrom: $eventFrom, eventTo: $eventTo, place: $place, storageId: $storageId, pictureURL: $pictureURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, isActive: $isActive, isPublish: $isPublish, staffCode: $staffCode, staff: $staff, product: $product)';
+    return 'Program(id: $id, organizerId: $organizerId, name: $name, message: $message, salesStart: $salesStart, salesEnd: $salesEnd, eventFrom: $eventFrom, eventTo: $eventTo, place: $place, storageId: $storageId, pictureURL: $pictureURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, isActive: $isActive, isPublish: $isPublish, isSecret: $isSecret, secretUrl: $secretUrl, staffCode: $staffCode, staff: $staff, product: $product)';
   }
 
   @override
@@ -529,6 +566,10 @@ class _$ProgramImpl extends _Program {
                 other.isActive == isActive) &&
             (identical(other.isPublish, isPublish) ||
                 other.isPublish == isPublish) &&
+            (identical(other.isSecret, isSecret) ||
+                other.isSecret == isSecret) &&
+            (identical(other.secretUrl, secretUrl) ||
+                other.secretUrl == secretUrl) &&
             (identical(other.staffCode, staffCode) ||
                 other.staffCode == staffCode) &&
             const DeepCollectionEquality().equals(other._staff, _staff) &&
@@ -555,6 +596,8 @@ class _$ProgramImpl extends _Program {
     deletedAt,
     isActive,
     isPublish,
+    isSecret,
+    secretUrl,
     staffCode,
     const DeepCollectionEquality().hash(_staff),
     const DeepCollectionEquality().hash(_product),
@@ -592,6 +635,8 @@ abstract class _Program extends Program {
     @timestampKey final DateTime? deletedAt,
     required final bool? isActive,
     required final bool? isPublish,
+    final bool isSecret,
+    final String? secretUrl,
     final String? staffCode,
     final List<Staff>? staff,
     final List<Product>? product,
@@ -639,6 +684,10 @@ abstract class _Program extends Program {
   bool? get isActive;
   @override
   bool? get isPublish; //
+  @override
+  bool get isSecret;
+  @override
+  String? get secretUrl;
   @override
   String? get staffCode;
   @override

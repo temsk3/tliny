@@ -29,6 +29,8 @@ class Program with _$Program {
     @timestampKey DateTime? deletedAt,
     required bool? isActive,
     required bool? isPublish, //
+    @Default(false) bool isSecret,
+    String? secretUrl,
     String? staffCode,
     List<Staff>? staff,
     List<Product>? product,
