@@ -24,7 +24,6 @@ class ProductListPage extends HookConsumerWidget {
     // );
     final state = ref.watch(productsStateProvider(program.id!, genre));
     // final state = ref.watch(productViewModelProvider);
-    final viewModel = ref.watch(productViewModelProvider.notifier);
     return AsyncValueWidget(
       value: state,
       data: (list) {

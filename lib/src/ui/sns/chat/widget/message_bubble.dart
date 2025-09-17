@@ -87,7 +87,7 @@ class MessageBubble extends StatelessWidget {
                         style: TextStyle(
                           color:
                               isMe
-                                  ? Colors.white.withOpacity(0.7)
+                                  ? Colors.white.withValues(alpha: 0.7)
                                   : Colors.grey[600],
                           fontSize: 12,
                         ),
@@ -100,7 +100,7 @@ class MessageBubble extends StatelessWidget {
                           color:
                               message.isRead == true
                                   ? Colors.blue[300]
-                                  : Colors.white.withOpacity(0.7),
+                                  : Colors.white.withValues(alpha: 0.7),
                         ),
                       ],
                     ],
@@ -129,7 +129,7 @@ class MessageBubble extends StatelessWidget {
       if (difference == 1) {
         return '昨日 ${DateFormat('HH:mm').format(dateTime)}';
       } else if (difference < 7) {
-        return '${difference}日前 ${DateFormat('HH:mm').format(dateTime)}';
+        return '$difference日前 ${DateFormat('HH:mm').format(dateTime)}';
       } else {
         return DateFormat('MM/dd HH:mm').format(dateTime);
       }

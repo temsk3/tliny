@@ -1,5 +1,4 @@
 // /Users/keizo/development/tliny/lib/src/ui/product/widget/picture.dart
-import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
@@ -21,9 +20,7 @@ class PictureCover extends HookConsumerWidget {
     if (kDebugMode) {
       logger.d('PictureCover build'); // build時のロギング
     }
-    return Container(
-      // color: theme.appColors.primary,
-      child: Center(
+    return Center(
         child:
             (picture == null || picture == '')
                 ? const Text(

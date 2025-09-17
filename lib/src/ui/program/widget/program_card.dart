@@ -44,7 +44,7 @@ class EventCard extends HookConsumerWidget {
     //     leading: Container(
     //       width: 120,
     //       //   decoration: BoxDecoration(
-    //       //     color: Colors.grey.withOpacity(.5),
+    //       //     color: Colors.grey.withValues(alpha: .5),
     //       //     borderRadius: BorderRadius.circular(10),
     //       //     image: program.pictureURL != null
     //       //         ? DecorationImage(

@@ -286,16 +286,6 @@ class CartPage extends HookConsumerWidget {
 
     return programAsync.when(
       data: (program) {
-        if (program == null) {
-          if (kDebugMode) {
-            logger.w(
-              'CartPage: groupSeparatorBuilder: program is null for value="$value"',
-              time: DateTime.now(),
-            );
-          }
-          return Container();
-        }
-
         final programCarts = groupCarts;
         return RepaintBoundary(
           child: SizedBox(

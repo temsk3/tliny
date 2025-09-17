@@ -55,7 +55,7 @@ class CommentPage extends HookConsumerWidget {
               color: Colors.grey[50],
               border: Border(
                 bottom: BorderSide(
-                  color: Colors.grey.withOpacity(0.3),
+                  color: Colors.grey.withValues(alpha: 0.3),
                   width: 0.5,
                 ),
               ),

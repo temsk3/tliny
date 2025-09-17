@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../data/model/sns/message_model.dart';
 import '../../common/loading_screen.dart';
 import 'sns_chat_view_model.dart';
 import 'widget/message_bubble.dart';
@@ -152,7 +151,7 @@ class SnsChatPage extends HookConsumerWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         border: Border(
-          top: BorderSide(color: Colors.grey.withOpacity(0.3), width: 0.5),
+          top: BorderSide(color: Colors.grey.withValues(alpha: 0.3), width: 0.5),
         ),
       ),
       child: SafeArea(
@@ -174,11 +173,11 @@ class SnsChatPage extends HookConsumerWidget {
                   hintText: 'メッセージを入力...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
+                    borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.3)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
+                    borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.3)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),

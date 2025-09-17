@@ -19,10 +19,10 @@ class ConversationCard extends StatelessWidget {
     // TODO: 現在のユーザーIDを取得する機能を実装
     final currentUserId = 'current_user_id'; // 仮の値
     final otherUserIndex =
-        conversation.participantIds?[0] == currentUserId ? 1 : 0;
+        conversation.participantIds[0] == currentUserId ? 1 : 0;
     final otherUserName =
-        conversation.participantNames?.isNotEmpty == true
-            ? conversation.participantNames![otherUserIndex]
+        conversation.participantNames.isNotEmpty == true
+            ? conversation.participantNames[otherUserIndex]
             : 'Unknown User';
     final otherUserPhotoUrl =
         conversation.participantPhotoUrls?.isNotEmpty == true

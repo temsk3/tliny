@@ -650,7 +650,7 @@ packages:
     source: hosted
     version: "5.5.0"
   firebase_auth_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: firebase_auth_platform_interface
       sha256: "9c291bafc2a88599405fc810a4b4c249a40065b094379afb701efe443a3b0653"
@@ -868,7 +868,7 @@ packages:
     source: hosted
     version: "2.0.24"
   flutter_riverpod:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_riverpod
       sha256: "9532ee6db4a943a1ed8383072a2e3eeda041db5657cdf6d2acecf3c21ecbe7e1"

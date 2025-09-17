@@ -583,7 +583,7 @@ mixin ErrorHandlingMixin {
       }
 
       return result;
-    } on AppException catch (e, st) {
+    } on AppException catch (e) {
       if (showLoading) {
         loadingController.stopLoading();
       }
@@ -596,7 +596,7 @@ mixin ErrorHandlingMixin {
         onRetry: onRetry,
       );
       return null;
-    } on Exception catch (e, st) {
+    } on Exception catch (e) {
       if (showLoading) {
         loadingController.stopLoading();
       }
@@ -804,7 +804,7 @@ class ErrorHandlerController {
       final result = await operation();
       loadingController.stopLoading();
       return result;
-    } on AppException catch (e, st) {
+    } on AppException catch (e) {
       loadingController.stopLoading();
       ErrorHandler.showError(
         context,
@@ -814,7 +814,7 @@ class ErrorHandlerController {
         onRetry: onRetry,
       );
       return null;
-    } on Exception catch (e, st) {
+    } on Exception catch (e) {
       loadingController.stopLoading();
       ErrorHandler.showError(
         context,

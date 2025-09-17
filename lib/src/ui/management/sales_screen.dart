@@ -133,7 +133,7 @@ class SalesScreen extends HookConsumerWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: Colors.grey.withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -193,7 +193,7 @@ class SalesScreen extends HookConsumerWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.08),
+                        color: Colors.grey.withValues(alpha: 0.08),
                         blurRadius: 20,
                         offset: const Offset(0, 4),
                       ),
@@ -211,7 +211,7 @@ class SalesScreen extends HookConsumerWidget {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: salesLevel.color.withOpacity(0.1),
+                                color: salesLevel.color.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -255,10 +255,10 @@ class SalesScreen extends HookConsumerWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: salesLevel.color.withOpacity(0.1),
+                                color: salesLevel.color.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: salesLevel.color.withOpacity(0.3),
+                                  color: salesLevel.color.withValues(alpha: 0.3),
                                 ),
                               ),
                               child: Text(

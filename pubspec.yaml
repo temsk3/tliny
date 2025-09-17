@@ -85,6 +85,7 @@ dependencies:
   go_router:
   flutter_gen:
 
+  flutter_riverpod: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -101,6 +102,7 @@ dev_dependencies:
   mockito:
   fake_cloud_firestore:
 
+  firebase_auth_platform_interface: any
 flutter:
   generate: true
   uses-material-design: true

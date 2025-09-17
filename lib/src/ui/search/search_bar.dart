@@ -57,7 +57,7 @@ class SearchPage extends ConsumerWidget {
                           },
                           icon: const Icon(Icons.clear),
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.grey.withOpacity(0.1),
+                            backgroundColor: Colors.grey.withValues(alpha: 0.1),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -71,7 +71,7 @@ class SearchPage extends ConsumerWidget {
                           },
                           icon: const Icon(Icons.search),
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.grey.withOpacity(0.1),
+                            backgroundColor: Colors.grey.withValues(alpha: 0.1),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -97,9 +97,9 @@ class SearchPage extends ConsumerWidget {
     return Container(
       height: 48,
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
+        color: Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
       ),
       child: TextField(
         autofocus: true,
@@ -137,14 +137,14 @@ class SearchPage extends ConsumerWidget {
             Icon(
               Icons.search_off,
               size: 64,
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
               'No results found',
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey.withOpacity(0.7),
+                color: Colors.grey.withValues(alpha: 0.7),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -187,7 +187,7 @@ class SearchPage extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.1),
+                            color: Colors.grey.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const Icon(Icons.code, size: 20),
@@ -210,7 +210,7 @@ class SearchPage extends ConsumerWidget {
                                   item['disc'] as String,
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.grey.withOpacity(0.7),
+                                    color: Colors.grey.withValues(alpha: 0.7),
                                   ),
                                 ),
                               ],
@@ -220,7 +220,7 @@ class SearchPage extends ConsumerWidget {
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.grey.withOpacity(0.5),
+                          color: Colors.grey.withValues(alpha: 0.5),
                         ),
                       ],
                     ),
@@ -242,13 +242,13 @@ class SearchPage extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.search,
               size: 64,
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
             ),
           ),
           const SizedBox(height: 24),
@@ -257,14 +257,14 @@ class SearchPage extends ConsumerWidget {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
-              color: Colors.grey.withOpacity(0.8),
+              color: Colors.grey.withValues(alpha: 0.8),
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Tap the search icon to find what you\'re looking for',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: Colors.grey.withOpacity(0.6)),
+            style: TextStyle(fontSize: 16, color: Colors.grey.withValues(alpha: 0.6)),
           ),
         ],
       ),

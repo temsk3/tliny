@@ -16,7 +16,7 @@ class ProgramSearchCard extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 16),
       child: Card(
         elevation: 3,
-        shadowColor: Colors.black.withOpacity(0.08),
+        shadowColor: Colors.black.withValues(alpha: 0.08),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
@@ -256,8 +256,8 @@ class ProgramSearchCard extends ConsumerWidget {
                                     color:
                                         program.isPublish == true &&
                                                 program.isActive == true
-                                            ? Colors.green.withOpacity(0.8)
-                                            : Colors.grey.withOpacity(0.8),
+                                            ? Colors.green.withValues(alpha: 0.8)
+                                            : Colors.grey.withValues(alpha: 0.8),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
