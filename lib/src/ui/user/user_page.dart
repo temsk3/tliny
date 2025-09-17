@@ -24,9 +24,7 @@ class UserPage extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    final appMediaQuery = useMediaQuery();
     final state = ref.watch(userViewModelProvider);
-    final viewModel = ref.watch(userViewModelProvider.notifier);
 
     // スプラッシュスクリーン表示終了
     FlutterNativeSplash.remove();
