@@ -596,8 +596,11 @@ export const manualTicketCreation = functions.https.onRequest(
   async (req, res) => {
     try {
       const apiKey = req.headers['x-api-key']
-      const expectedApiKey =
-        process.env.MANUAL_TICKET_API_KEY || 'test-secret-key-123'
+      const expectedApiKey = process.env.MANUAL_TICKET_API_KEY
+      if (!expectedApiKey) {
+        res.status(500).json({ error: 'API key not configured' })
+        return
+      }
       if (apiKey !== expectedApiKey) {
         res.status(401).json({ error: 'Unauthorized' })
         return
@@ -687,8 +690,11 @@ const cancelOrder = async (orderId: string): Promise<string> => {
 export const manualOrderCancel = functions.https.onRequest(async (req, res) => {
   try {
     const apiKey = req.headers['x-api-key']
-    const expectedApiKey =
-      process.env.MANUAL_TICKET_API_KEY || 'test-secret-key-123'
+    const expectedApiKey = process.env.MANUAL_TICKET_API_KEY
+    if (!expectedApiKey) {
+      res.status(500).json({ error: 'API key not configured' })
+      return
+    }
     if (apiKey !== expectedApiKey) {
       res.status(401).json({ error: 'Unauthorized' })
       return

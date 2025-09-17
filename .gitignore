@@ -69,3 +69,8 @@ emulators
 # MCP configuration (contains secrets)
 .cursor/
 .mcp.json
+
+# Secret files (contains sensitive credentials)
+*.secret.local
+.secret.local
+**/.secret.local
