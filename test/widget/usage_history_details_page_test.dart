@@ -8,11 +8,9 @@ import '../utils/test_helpers.dart';
 
 void main() {
   group('UsageHistoryDetailsPage', () {
-    late List<String> mockTicketIds;
     late Ticket mockTicket;
 
     setUp(() {
-      mockTicketIds = ['ticket1', 'ticket2', 'ticket3'];
       mockTicket = const Ticket(
         id: 'ticket1',
         name: 'テストチケット',

@@ -68,7 +68,7 @@ void main() {
       return MaterialApp(
         home: Scaffold(
           body: ProviderScope(
-            parent: container,
+            container: container,
             child: ProductListPage(program: testProgram),
           ),
         ),
@@ -79,7 +79,7 @@ void main() {
       return MaterialApp(
         home: Scaffold(
           body: ProviderScope(
-            parent: container,
+            container: container,
             child: ProductListPage(program: testProgram, genre: genre),
           ),
         ),
