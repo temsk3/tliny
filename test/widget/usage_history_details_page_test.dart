@@ -196,22 +196,22 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Act - 小さい画面サイズ
-        tester.binding.window.physicalSizeTestValue = const Size(320, 568);
-        tester.binding.window.devicePixelRatioTestValue = 1.0;
+        tester.view.physicalSize = const Size(320, 568);
+        tester.view.devicePixelRatio = 1.0;
         await tester.pumpAndSettle();
 
         // Assert
         expect(find.byType(UsageHistoryDetailsPage), findsOneWidget);
 
         // Act - 大きい画面サイズ
-        tester.binding.window.physicalSizeTestValue = const Size(1024, 768);
+        tester.view.physicalSize = const Size(1024, 768);
         await tester.pumpAndSettle();
 
         // Assert
         expect(find.byType(UsageHistoryDetailsPage), findsOneWidget);
 
         // Cleanup
-        addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+        addTearDown(tester.view.resetPhysicalSize);
       });
     });
 
