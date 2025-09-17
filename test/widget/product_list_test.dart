@@ -15,7 +15,6 @@ import 'product_list_test.mocks.dart';
 void main() {
   group('ProductList Widget Tests', () {
     late MockProductRepository mockProductRepository;
-    late ProviderContainer container;
     late Program testProgram;
     late List<Product> testProducts;
 
@@ -52,35 +51,29 @@ void main() {
           isPublish: true,
         ),
       ];
-
-      container = ProviderContainer(
-        overrides: [
-          productRepositoryProvider.overrideWithValue(mockProductRepository),
-        ],
-      );
-    });
-
-    tearDown(() {
-      container.dispose();
     });
 
     Widget createTestWidget() {
-      return MaterialApp(
-        home: Scaffold(
-          body: ProviderScope(
-            container: container,
-            child: ProductListPage(program: testProgram),
+      return ProviderScope(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: ProductListPage(program: testProgram),
           ),
         ),
       );
     }
 
     Widget createTestWidgetWithGenre(GenreType genre) {
-      return MaterialApp(
-        home: Scaffold(
-          body: ProviderScope(
-            container: container,
-            child: ProductListPage(program: testProgram, genre: genre),
+      return ProviderScope(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+        ],
+        child: MaterialApp(
+          home: Scaffold(
+            body: ProductListPage(program: testProgram, genre: genre),
           ),
         ),
       );
