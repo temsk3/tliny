@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
-import 'package:tliny/src/data/model/user_model.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
+import 'package:tliny/src/data/model/user_model.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 /// テスト用のAppLocalizationsモック
@@ -14,83 +14,83 @@ class MockAppLocalizations extends AppLocalizations {
 
   @override
   String get close => '閉じる';
-  
+
   @override
   String get retry => '再試行';
-  
+
   @override
   String get generalError => 'エラー';
-  
+
   @override
   String get timeoutError => 'タイムアウトエラー';
-  
+
   @override
   String get imageLoadError => '画像読み込みエラー';
-  
+
   @override
   String get heicNotSupported => 'HEIC形式はサポートされていません';
-  
+
   @override
   String get networkError => 'ネットワークエラー';
-  
+
   @override
   String get serverError => 'サーバーエラー';
-  
+
   @override
   String get databaseError => 'データベースエラー';
-  
+
   @override
   String get authenticationError => '認証エラー';
-  
+
   @override
   String get validationError => 'バリデーションエラー';
-  
+
   @override
   String get permissionError => '権限エラー';
-  
+
   @override
   String get unknownError => '不明なエラー';
 
   // すべての抽象メソッドのデフォルト実装
   @override
   String get appTitle => 'TLINY';
-  
+
   @override
   String get home => 'ホーム';
-  
+
   @override
   String get hello => 'こんにちは';
-  
+
   @override
   String get profile => 'ユーザー情報';
-  
+
   @override
   String get usageHistory => 'チケット使用履歴';
-  
+
   @override
   String get ok => 'ok';
-  
+
   @override
   String get yes => 'yes';
-  
+
   @override
   String get no => 'no';
-  
+
   @override
   String get title => 'タイトル';
-  
+
   @override
   String get fileNotFoundError => 'ファイルが見つかりません';
-  
+
   @override
   String get insufficientStock => '在庫が不足しています';
-  
+
   @override
   String get paymentError => '決済エラー';
-  
+
   @override
   String get insufficientStockTitle => '在庫不足';
-  
+
   @override
   String get paymentErrorTitle => '決済エラー';
 
@@ -257,7 +257,7 @@ class MockUsageHistoryViewModel extends UsageHistoryViewModel {
   @override
   Future<List<UsageHistory>> build() async {
     if (_error != null) {
-      throw _error!;
+      throw _error;
     }
     return _data;
   }

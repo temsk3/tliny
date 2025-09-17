@@ -179,8 +179,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String decimalPattern(int value) {
-    final intl.NumberFormat valueNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat = intl
+        .NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -188,8 +188,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String currency(int value) {
-    final intl.NumberFormat valueNumberFormat =
-        intl.NumberFormat.simpleCurrency(locale: localeName);
+    final intl.NumberFormat valueNumberFormat = intl
+        .NumberFormat.simpleCurrency(locale: localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';

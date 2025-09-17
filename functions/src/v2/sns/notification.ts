@@ -145,49 +145,51 @@ export const createNotification = async (data: {
 }
 
 // 全通知を既読にする
-export const v2_sns_notification_markAllAsRead = onCall<Record<string, never>>(async (request) => {
-  const methodName = 'v2_sns_notification_markAllAsRead'
+export const v2_sns_notification_markAllAsRead = onCall<Record<string, never>>(
+  async (request) => {
+    const methodName = 'v2_sns_notification_markAllAsRead'
 
-  try {
-    V2Logger.start(methodName, request.data)
+    try {
+      V2Logger.start(methodName, request.data)
 
-    const userId = request.auth?.uid
+      const userId = request.auth?.uid
 
-    if (!userId) {
-      throw new Error('Authentication required')
-    }
+      if (!userId) {
+        throw new Error('Authentication required')
+      }
 
-    // 未読通知を取得
-    const unreadQuery = await db
-      .collection('v/1/notifications')
-      .where('userId', '==', userId)
-      .where('isRead', '==', false)
-      .get()
+      // 未読通知を取得
+      const unreadQuery = await db
+        .collection('v/1/notifications')
+        .where('userId', '==', userId)
+        .where('isRead', '==', false)
+        .get()
 
-    if (unreadQuery.empty) {
-      V2Logger.success(methodName, { userId, count: 0 })
-      return { success: true, count: 0 }
-    }
+      if (unreadQuery.empty) {
+        V2Logger.success(methodName, { userId, count: 0 })
+        return { success: true, count: 0 }
+      }
 
-    // バッチで一括更新
-    const batch = db.batch()
-    const timestamp = FieldValue.serverTimestamp()
+      // バッチで一括更新
+      const batch = db.batch()
+      const timestamp = FieldValue.serverTimestamp()
 
-    unreadQuery.docs.forEach((doc) => {
-      batch.update(doc.ref, {
-        isRead: true,
-        readAt: timestamp,
-        updatedAt: timestamp,
+      unreadQuery.docs.forEach((doc) => {
+        batch.update(doc.ref, {
+          isRead: true,
+          readAt: timestamp,
+          updatedAt: timestamp,
+        })
       })
-    })
 
-    await batch.commit()
+      await batch.commit()
 
-    V2Logger.success(methodName, { userId, count: unreadQuery.size })
-    return { success: true, count: unreadQuery.size }
-  } catch (error: any) {
-    V2Logger.error(methodName, error, request.data)
-    const appEx = ErrorHandler.convertToAppException(error, methodName)
-    throw ErrorHandler.convertToHttpsError(appEx)
-  }
-})
+      V2Logger.success(methodName, { userId, count: unreadQuery.size })
+      return { success: true, count: unreadQuery.size }
+    } catch (error: any) {
+      V2Logger.error(methodName, error, request.data)
+      const appEx = ErrorHandler.convertToAppException(error, methodName)
+      throw ErrorHandler.convertToHttpsError(appEx)
+    }
+  },
+)
