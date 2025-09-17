@@ -21,6 +21,8 @@ module.exports = [
         console: 'readonly',
         __dirname: 'readonly',
         require: 'readonly',
+        setImmediate: 'readonly',
+        clearImmediate: 'readonly',
         // Firebase環境のグローバル変数
         FirebaseFirestore: 'readonly',
       },
@@ -38,12 +40,12 @@ module.exports = [
       'no-redeclare': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_', 'caughtErrorsIgnorePattern': '^_' }],
       indent: 'off',
       quotes: 'off',
       semi: 'off',
       'no-undef': 'warn',
-      'no-console': 'warn',
+      'no-console': 'off',
     },
   },
   {

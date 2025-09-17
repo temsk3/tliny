@@ -48,7 +48,7 @@ export class PaymentService {
             status: 'expired',
             updatedAt: new Date(),
           })
-        } catch (e) {
+        } catch (_e) {
           // 既にexpire済み等のエラーは握りつぶしてOK
         }
       }

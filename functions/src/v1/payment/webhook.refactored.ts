@@ -430,7 +430,7 @@ const handleCheckoutSessionCompleted = async (
       try {
         const parsed = JSON.parse(metadata)
         orderId = parsed.orderId
-      } catch (e) {
+      } catch (_e) {
         orderId = undefined
       }
     }
@@ -609,20 +609,16 @@ export const manualTicketCreation = functions.https.onRequest(
       }
       console.log(`Manual ticket creation requested for order: ${orderId}`)
       await createTicketDocument(orderId)
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: `Tickets created for order: ${orderId}`,
-        })
+      res.status(200).json({
+        success: true,
+        message: `Tickets created for order: ${orderId}`,
+      })
     } catch (error) {
       console.error('Manual ticket creation failed:', error)
-      res
-        .status(500)
-        .json({
-          error: 'Failed to create tickets',
-          details: error instanceof Error ? error.message : 'Unknown error',
-        })
+      res.status(500).json({
+        error: 'Failed to create tickets',
+        details: error instanceof Error ? error.message : 'Unknown error',
+      })
     }
   },
 )
@@ -730,11 +726,9 @@ export const manualOrderCancel = functions.https.onRequest(async (req, res) => {
       .status(200)
       .json({ success: true, message: `Order ${orderId} canceled` })
   } catch (error: any) {
-    res
-      .status(500)
-      .json({
-        error: 'Failed to cancel order',
-        details: error instanceof Error ? error.message : 'Unknown error',
-      })
+    res.status(500).json({
+      error: 'Failed to cancel order',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    })
   }
 })

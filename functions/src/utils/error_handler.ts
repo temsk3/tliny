@@ -92,7 +92,10 @@ export class ErrorHandler {
    * @param context コンテキスト情報
    * @return AppException
    */
-  static convertToAppException(error: unknown, context?: string): AppException {
+  static convertToAppException(
+    error: unknown,
+    _context?: string,
+  ): AppException {
     // 既にAppExceptionの場合はそのまま返す
     if (error instanceof AppException) {
       return error

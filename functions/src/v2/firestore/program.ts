@@ -39,12 +39,17 @@ export const onProgramCreated = functions.firestore.onDocumentCreated(
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         })
 
-        console.log(`Secret URL generated for program ${programId}: ${secretUrl}`)
+        console.log(
+          `Secret URL generated for program ${programId}: ${secretUrl}`,
+        )
       } catch (error) {
-        console.error(`Failed to update secret URL for program ${programId}:`, error)
+        console.error(
+          `Failed to update secret URL for program ${programId}:`,
+          error,
+        )
       }
     }
-  }
+  },
 )
 
 /**
@@ -68,7 +73,11 @@ export const onProgramUpdated = functions.firestore.onDocumentUpdated(
     const programId = event.params.programId
 
     // シークレット設定がONになった場合
-    if (beforeData.isSecret === false && afterData.isSecret === true && !afterData.secretUrl) {
+    if (
+      beforeData.isSecret === false &&
+      afterData.isSecret === true &&
+      !afterData.secretUrl
+    ) {
       const secretUrl = generateSecretUrl(programId)
 
       try {
@@ -77,9 +86,14 @@ export const onProgramUpdated = functions.firestore.onDocumentUpdated(
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         })
 
-        console.log(`Secret URL generated for program ${programId}: ${secretUrl}`)
+        console.log(
+          `Secret URL generated for program ${programId}: ${secretUrl}`,
+        )
       } catch (error) {
-        console.error(`Failed to update secret URL for program ${programId}:`, error)
+        console.error(
+          `Failed to update secret URL for program ${programId}:`,
+          error,
+        )
       }
     }
 
@@ -93,8 +107,11 @@ export const onProgramUpdated = functions.firestore.onDocumentUpdated(
 
         console.log(`Secret URL removed for program ${programId}`)
       } catch (error) {
-        console.error(`Failed to remove secret URL for program ${programId}:`, error)
+        console.error(
+          `Failed to remove secret URL for program ${programId}:`,
+          error,
+        )
       }
     }
-  }
+  },
 )

@@ -301,7 +301,7 @@ const paymentIntentOnList = onCall(
 
 // Create a AutomaticPaymentIntent
 const paymentIntentOnCreateAutomatic = onCall(
-  async (request) => {
+  async (_request) => {
     // 実装例: 必要に応じて追加
     throw new HttpsError('unimplemented', 'Not implemented')
   },
@@ -310,7 +310,7 @@ const paymentIntentOnCreateAutomatic = onCall(
 
 // Create a ManualPaymentIntent
 const paymentIntentOnCreateManual = onCall(
-  async (request) => {
+  async (_request) => {
     // 実装例: 必要に応じて追加
     throw new HttpsError('unimplemented', 'Not implemented')
   },
