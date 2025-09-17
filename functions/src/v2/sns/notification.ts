@@ -145,7 +145,7 @@ export const createNotification = async (data: {
 }
 
 // 全通知を既読にする
-export const v2_sns_notification_markAllAsRead = onCall<{}>(async (request) => {
+export const v2_sns_notification_markAllAsRead = onCall<Record<string, never>>(async (request) => {
   const methodName = 'v2_sns_notification_markAllAsRead'
 
   try {
