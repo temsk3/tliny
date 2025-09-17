@@ -52,10 +52,6 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_getUserDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -82,11 +78,10 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('getUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -107,11 +102,10 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('addUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -137,11 +131,10 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('updateUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -161,11 +154,10 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('deleteUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -196,10 +188,6 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('updatePhoto: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -216,10 +204,6 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('deletePhoto: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -243,10 +227,6 @@ class UserViewModel extends _$UserViewModel {
         'getAccountLink: Exception - $e',
         time: DateTime.now(),
         error: e,
-        stackTrace: st,
-      );
-      final appException = GeneralException(
-        message: e.toString(),
         stackTrace: st,
       );
       rethrow;
