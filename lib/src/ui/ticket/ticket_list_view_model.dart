@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -110,7 +111,9 @@ class TicketListViewModel extends _$TicketListViewModel {
           );
         }
       } catch (e) {
-        debugPrint('isTicketExpired (error): ${ticket.id} -> false (error: $e)');
+        debugPrint(
+          'isTicketExpired (error): ${ticket.id} -> false (error: $e)',
+        );
         // エラーが発生した場合は期限切れでないとみなす
         return false;
       }
