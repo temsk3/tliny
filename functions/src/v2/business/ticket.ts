@@ -26,8 +26,11 @@ export const businessTicketCreateManually = onRequest(
     try {
       // APIキー認証
       const apiKey = request.headers['x-api-key']
-      const expectedApiKey =
-        process.env.MANUAL_TICKET_API_KEY || 'test-secret-key-123'
+      const expectedApiKey = process.env.MANUAL_TICKET_API_KEY
+      if (!expectedApiKey) {
+        response.status(500).json({ error: 'API key not configured' })
+        return
+      }
 
       if (apiKey !== expectedApiKey) {
         response.status(401).json({ error: 'Unauthorized' })
