@@ -15,7 +15,7 @@ class PictureCover extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
+    // final l10n = useL10n();
     // final appRoute = useRouter();
     if (kDebugMode) {
       logger.d('PictureCover build'); // build時のロギング
@@ -73,7 +73,7 @@ class PictureDetail extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
+    // final l10n = useL10n();
     // final appRoute = useRouter();
     if (kDebugMode) {
       logger.d('PictureDetail build'); // build時のロギング
