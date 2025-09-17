@@ -5,7 +5,10 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // 通知一覧取得
-export const v2_sns_notification_getNotifications = onCall(async (request) => {
+export const v2_sns_notification_getNotifications = onCall<{
+  limit?: number
+  unreadOnly?: boolean
+}>(async (request) => {
   const methodName = 'v2_sns_notification_getNotifications'
 
   try {
@@ -46,7 +49,9 @@ export const v2_sns_notification_getNotifications = onCall(async (request) => {
 })
 
 // 通知を既読にする
-export const v2_sns_notification_markAsRead = onCall(async (request) => {
+export const v2_sns_notification_markAsRead = onCall<{
+  notificationId: string
+}>(async (request) => {
   const methodName = 'v2_sns_notification_markAsRead'
 
   try {
@@ -140,7 +145,7 @@ export const createNotification = async (data: {
 }
 
 // 全通知を既読にする
-export const v2_sns_notification_markAllAsRead = onCall(async (request) => {
+export const v2_sns_notification_markAllAsRead = onCall<{}>(async (request) => {
   const methodName = 'v2_sns_notification_markAllAsRead'
 
   try {

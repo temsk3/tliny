@@ -81,7 +81,7 @@ export const onProgramUpdated = functions.firestore.onDocumentUpdated(
       const secretUrl = generateSecretUrl(programId)
 
       try {
-        await event.data.after.ref.update({
+        await event.data?.after?.ref.update({
           secretUrl: secretUrl,
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         })
@@ -100,7 +100,7 @@ export const onProgramUpdated = functions.firestore.onDocumentUpdated(
     // シークレット設定がOFFになった場合
     if (beforeData.isSecret === true && afterData.isSecret === false) {
       try {
-        await event.data.after.ref.update({
+        await event.data?.after?.ref.update({
           secretUrl: admin.firestore.FieldValue.delete(),
           updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         })

@@ -5,7 +5,7 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // フォロー作成
-export const v2_sns_follow_createFollow = onCall(async (request) => {
+export const v2_sns_follow_createFollow = onCall<{ followingId: string }>(async (request) => {
   const methodName = 'v2_sns_follow_createFollow'
 
   try {
@@ -81,7 +81,7 @@ export const v2_sns_follow_createFollow = onCall(async (request) => {
 })
 
 // フォロー削除
-export const v2_sns_follow_deleteFollow = onCall(async (request) => {
+export const v2_sns_follow_deleteFollow = onCall<{ followingId: string }>(async (request) => {
   const methodName = 'v2_sns_follow_deleteFollow'
 
   try {
@@ -144,7 +144,7 @@ export const v2_sns_follow_deleteFollow = onCall(async (request) => {
 })
 
 // フォロワー一覧取得
-export const v2_sns_follow_getFollowers = onCall(async (request) => {
+export const v2_sns_follow_getFollowers = onCall<{ userId: string; limit?: number }>(async (request) => {
   const methodName = 'v2_sns_follow_getFollowers'
 
   try {
@@ -179,7 +179,7 @@ export const v2_sns_follow_getFollowers = onCall(async (request) => {
 })
 
 // フォロー中一覧取得
-export const v2_sns_follow_getFollowing = onCall(async (request) => {
+export const v2_sns_follow_getFollowing = onCall<{ userId: string; limit?: number }>(async (request) => {
   const methodName = 'v2_sns_follow_getFollowing'
 
   try {

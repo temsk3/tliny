@@ -5,7 +5,12 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // コンテンツ共有
-export const v2_sns_share_shareContent = onCall(async (request) => {
+export const v2_sns_share_shareContent = onCall<{
+  contentId: string
+  contentType: string
+  platform: string
+  customMessage?: string
+}>(async (request) => {
   const methodName = 'v2_sns_share_shareContent'
 
   try {
@@ -118,7 +123,11 @@ export const v2_sns_share_shareContent = onCall(async (request) => {
 })
 
 // 共有可能なURLを生成
-export const v2_sns_share_generateShareUrl = onCall(async (request) => {
+export const v2_sns_share_generateShareUrl = onCall<{
+  contentId: string
+  contentType: string
+  platform: string
+}>(async (request) => {
   const methodName = 'v2_sns_share_generateShareUrl'
 
   try {
@@ -211,7 +220,10 @@ export const v2_sns_share_generateShareUrl = onCall(async (request) => {
 })
 
 // ユーザーの共有履歴を取得
-export const v2_sns_share_getUserShares = onCall(async (request) => {
+export const v2_sns_share_getUserShares = onCall<{
+  limit?: number
+  targetUserId?: string
+}>(async (request) => {
   const methodName = 'v2_sns_share_getUserShares'
 
   try {

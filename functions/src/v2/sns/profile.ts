@@ -5,7 +5,7 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // プロファイル取得
-export const v2_sns_profile_getProfile = onCall(async (request) => {
+export const v2_sns_profile_getProfile = onCall<{ userId: string }>(async (request) => {
   const methodName = 'v2_sns_profile_getProfile'
 
   try {
@@ -73,7 +73,13 @@ export const v2_sns_profile_getProfile = onCall(async (request) => {
 })
 
 // プロファイル更新
-export const v2_sns_profile_updateProfile = onCall(async (request) => {
+export const v2_sns_profile_updateProfile = onCall<{
+  displayName?: string
+  bio?: string
+  profileImageUrl?: string
+  coverImageUrl?: string
+  isPrivate?: boolean
+}>(async (request) => {
   const methodName = 'v2_sns_profile_updateProfile'
 
   try {
@@ -125,7 +131,11 @@ export const v2_sns_profile_updateProfile = onCall(async (request) => {
 })
 
 // ユーザーの投稿一覧取得
-export const v2_sns_profile_getUserPosts = onCall(async (request) => {
+export const v2_sns_profile_getUserPosts = onCall<{
+  userId: string
+  limit?: number
+  lastPostId?: string
+}>(async (request) => {
   const methodName = 'v2_sns_profile_getUserPosts'
 
   try {
@@ -168,7 +178,9 @@ export const v2_sns_profile_getUserPosts = onCall(async (request) => {
 })
 
 // フォロー状態チェック
-export const v2_sns_profile_checkFollowStatus = onCall(async (request) => {
+export const v2_sns_profile_checkFollowStatus = onCall<{
+  targetUserId: string
+}>(async (request) => {
   const methodName = 'v2_sns_profile_checkFollowStatus'
 
   try {

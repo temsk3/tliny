@@ -4,7 +4,11 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // ユーザー検索
-export const v2_sns_search_searchUsers = onCall(async (request) => {
+export const v2_sns_search_searchUsers = onCall<{
+  query: string
+  limit?: number
+  offset?: number
+}>(async (request) => {
   const methodName = 'v2_sns_search_searchUsers'
 
   try {
@@ -46,7 +50,11 @@ export const v2_sns_search_searchUsers = onCall(async (request) => {
 })
 
 // 投稿検索
-export const v2_sns_search_searchPosts = onCall(async (request) => {
+export const v2_sns_search_searchPosts = onCall<{
+  query: string
+  limit?: number
+  offset?: number
+}>(async (request) => {
   const methodName = 'v2_sns_search_searchPosts'
 
   try {
@@ -89,7 +97,11 @@ export const v2_sns_search_searchPosts = onCall(async (request) => {
 })
 
 // 統合検索（ユーザーと投稿を同時に検索）
-export const v2_sns_search_searchAll = onCall(async (request) => {
+export const v2_sns_search_searchAll = onCall<{
+  query: string
+  userLimit?: number
+  postLimit?: number
+}>(async (request) => {
   const methodName = 'v2_sns_search_searchAll'
 
   try {

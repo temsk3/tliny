@@ -5,7 +5,12 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // メッセージ送信
-export const v2_sns_message_sendMessage = onCall(async (request) => {
+export const v2_sns_message_sendMessage = onCall<{
+  receiverId: string
+  content: string
+  type?: string
+  attachmentUrls?: string[]
+}>(async (request) => {
   const methodName = 'v2_sns_message_sendMessage'
 
   try {
@@ -148,7 +153,7 @@ export const v2_sns_message_sendMessage = onCall(async (request) => {
 })
 
 // 会話一覧取得
-export const v2_sns_message_getConversations = onCall(async (request) => {
+export const v2_sns_message_getConversations = onCall<{ limit?: number }>(async (request) => {
   const methodName = 'v2_sns_message_getConversations'
 
   try {
@@ -183,7 +188,11 @@ export const v2_sns_message_getConversations = onCall(async (request) => {
 })
 
 // メッセージ一覧取得
-export const v2_sns_message_getMessages = onCall(async (request) => {
+export const v2_sns_message_getMessages = onCall<{
+  conversationId: string
+  limit?: number
+  lastMessageId?: string
+}>(async (request) => {
   const methodName = 'v2_sns_message_getMessages'
 
   try {
@@ -236,7 +245,12 @@ export const v2_sns_message_getMessages = onCall(async (request) => {
     const messages = messagesSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }))
+    })) as Array<{
+      id: string
+      receiverId: string
+      isRead: boolean
+      [key: string]: any
+    }>
 
     // 未読メッセージを既読にする
     const unreadMessages = messages.filter(

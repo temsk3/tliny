@@ -5,7 +5,13 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // 投稿作成
-export const v2_sns_post_createPost = onCall(async (request) => {
+export const v2_sns_post_createPost = onCall<{
+  content: string
+  imageUrls?: string[]
+  eventId?: string
+  productId?: string
+  type?: string
+}>(async (request) => {
   const methodName = 'v2_sns_post_createPost'
 
   try {
@@ -80,7 +86,10 @@ export const v2_sns_post_createPost = onCall(async (request) => {
 })
 
 // フィード取得
-export const v2_sns_post_getFeed = onCall(async (request) => {
+export const v2_sns_post_getFeed = onCall<{
+  limit?: number
+  lastPostId?: string
+}>(async (request) => {
   const methodName = 'v2_sns_post_getFeed'
 
   try {
@@ -135,7 +144,7 @@ export const v2_sns_post_getFeed = onCall(async (request) => {
 })
 
 // いいね追加
-export const v2_sns_post_likePost = onCall(async (request) => {
+export const v2_sns_post_likePost = onCall<{ postId: string }>(async (request) => {
   const methodName = 'v2_sns_post_likePost'
 
   try {
@@ -202,7 +211,7 @@ export const v2_sns_post_likePost = onCall(async (request) => {
 })
 
 // いいね削除
-export const v2_sns_post_unlikePost = onCall(async (request) => {
+export const v2_sns_post_unlikePost = onCall<{ postId: string }>(async (request) => {
   const methodName = 'v2_sns_post_unlikePost'
 
   try {
