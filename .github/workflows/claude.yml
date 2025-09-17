@@ -1,0 +1,39 @@
+name: Claude Code Action
+
+on:
+  # Issue comments (including PR comments)
+  issue_comment:
+    types: [created]
+
+  # Pull request reviews
+  pull_request_review:
+    types: [submitted]
+
+  # Issues assigned
+  issues:
+    types: [assigned, opened]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  claude:
+    # Claudeがメンションされた場合、またはissue割り当て時に実行
+    if: contains(github.event.comment.body, '@claude') || contains(github.event.review.body, '@claude') || github.event.action == 'assigned' || github.event.action == 'opened'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Claude Code Action
+        uses: anthropics/claude-code-action@v1
+        with:
+          # 必須: APIキー
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+
+          # オプション設定
+          claude_args: |
+            --model claude-4-opus-20250805
+            --max-turns 10

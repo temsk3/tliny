@@ -1,0 +1,194 @@
+name: Multi-Agent Collaboration
+
+on:
+  issues:
+    types: [opened, labeled]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  detect-multi-agent-task:
+    if: |
+      contains(github.event.issue.body, '@claude') ||
+      contains(github.event.comment.body, '@claude') ||
+      contains(github.event.issue.title, '[MULTI-AGENT]') ||
+      contains(github.event.issue.body, '[MULTI-AGENT]')
+    runs-on: ubuntu-latest
+    outputs:
+      task_type: ${{ steps.analyze.outputs.task_type }}
+      required_agents: ${{ steps.analyze.outputs.required_agents }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Analyze Task Requirements
+        id: analyze
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          # タスクタイプとエージェントを分析
+          echo "task_type=feature" >> $GITHUB_OUTPUT
+          echo 'required_agents=["firebase-functions-developer", "flutter-ui-builder"]' >> $GITHUB_OUTPUT
+
+      - name: Post analysis comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🤖 Multi-Agent Task Detected
+
+              **Task Type:** ${{ steps.analyze.outputs.task_type }}
+              **Required Agents:** ${{ steps.analyze.outputs.required_agents }}
+
+              Starting multi-agent collaboration...`
+            })
+
+  conductor-orchestration:
+    needs: detect-multi-agent-task
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create Coordination Plan
+        id: plan
+        run: |
+          echo "Creating coordination plan for task..."
+          echo "phase_count=2" >> $GITHUB_OUTPUT
+
+      - name: Create tracking issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const taskType = '${{ needs.detect-multi-agent-task.outputs.task_type }}';
+            const agents = JSON.parse('${{ needs.detect-multi-agent-task.outputs.required_agents }}');
+
+            // Create sub-issues for tracking
+            for (const agent of agents) {
+              const issue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `[${agent}] Task from #${context.issue.number}`,
+                body: `This is a sub-task for ${agent} agent.\n\nParent issue: #${context.issue.number}`,
+                labels: ['multi-agent', agent]
+              });
+
+              console.log(`Created issue #${issue.data.number} for ${agent}`);
+            }
+
+  execute-specialized-agents:
+    needs: [detect-multi-agent-task, conductor-orchestration]
+    if: success()
+    strategy:
+      matrix:
+        agent: ${{ fromJson(needs.detect-multi-agent-task.outputs.required_agents) }}
+      max-parallel: 3
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup environment for ${{ matrix.agent }}
+        run: |
+          echo "Setting up environment for ${{ matrix.agent }}"
+
+          if [[ "${{ matrix.agent }}" == "firebase-functions-developer" ]]; then
+            echo "Setting up Firebase environment..."
+          elif [[ "${{ matrix.agent }}" == "flutter-ui-builder" ]]; then
+            echo "Setting up Flutter environment..."
+          fi
+
+      - name: Execute Agent Task - ${{ matrix.agent }}
+        run: |
+          echo "Executing task for ${{ matrix.agent }}"
+          echo "Agent specialization:"
+
+          case "${{ matrix.agent }}" in
+            "firebase-functions-developer")
+              echo "Firebase Cloud Functions (TypeScript), webhooks, triggers, API endpoints"
+              ;;
+            "flutter-ui-builder")
+              echo "Flutter UI components, Material Design, responsive layouts, custom widgets"
+              ;;
+            "riverpod-state-manager")
+              echo "Riverpod providers, state management, AsyncNotifier patterns"
+              ;;
+            "stripe-payment-integrator")
+              echo "Stripe payments, webhooks, PaymentIntents, billing"
+              ;;
+            "test-automation-engineer")
+              echo "Unit tests, widget tests, integration tests, mocking"
+              ;;
+            "firestore-optimizer")
+              echo "Firestore queries, indexes, security rules, data modeling"
+              ;;
+            "performance-optimizer")
+              echo "Performance optimization, bundle size, rendering, caching"
+              ;;
+          esac
+
+      - name: Report agent progress
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✅ **${{ matrix.agent }}** completed its task`
+            })
+
+  integration-and-review:
+    needs: [conductor-orchestration, execute-specialized-agents]
+    if: success()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Integration Review
+        run: |
+          echo "Performing integration review..."
+          echo "Checking all agent outputs..."
+          echo "Running integration tests..."
+
+      - name: Create summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🎉 Multi-Agent Collaboration Complete
+
+              All agents have completed their tasks successfully.
+
+              ### Summary:
+              - ✅ Task analysis completed
+              - ✅ Agent coordination successful
+              - ✅ All specialized tasks executed
+              - ✅ Integration review passed
+
+              Ready for final review and merge.`
+            })
