@@ -121,9 +121,9 @@ class TestTicketCreator {
       });
 
       await batch.commit();
-      print('テスト用チケットの作成が完了しました');
+      // print('テスト用チケットの作成が完了しました');
     } catch (e) {
-      print('テスト用チケットの作成に失敗しました: $e');
+      // print('テスト用チケットの作成に失敗しました: $e');
       rethrow;
     }
   }
@@ -163,9 +163,9 @@ class TestTicketCreator {
       }
 
       await batch.commit();
-      print('テスト用チケットの削除が完了しました');
+      // print('テスト用チケットの削除が完了しました');
     } catch (e) {
-      print('テスト用チケットの削除に失敗しました: $e');
+      // print('テスト用チケットの削除に失敗しました: $e');
       rethrow;
     }
   }
