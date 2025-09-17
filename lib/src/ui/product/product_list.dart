@@ -7,7 +7,6 @@ import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import 'product_state.dart';
-import 'product_view_model.dart';
 import 'widget/product_card.dart';
 
 class ProductListPage extends HookConsumerWidget {
