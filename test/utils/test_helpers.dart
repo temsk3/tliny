@@ -48,7 +48,6 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get permissionError => '権限エラー';
 
-  @override
   String get unknownError => '不明なエラー';
 
   // すべての抽象メソッドのデフォルト実装
@@ -79,7 +78,6 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get title => 'タイトル';
 
-  @override
   String get fileNotFoundError => 'ファイルが見つかりません';
 
   @override
