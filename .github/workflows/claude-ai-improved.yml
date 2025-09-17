@@ -1,0 +1,108 @@
+name: Claude AI Assistant (Improved)
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  claude-assistant:
+    # @claudeメンションがある場合のみ実行
+    if: |
+      contains(github.event.issue.body, '@claude') ||
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: '.github/scripts/package-lock.json'
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('.github/scripts/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        working-directory: .github/scripts
+        run: |
+          if [ ! -f package.json ]; then
+            npm init -y
+            npm install axios @octokit/rest
+          else
+            npm ci || npm install
+          fi
+
+      - name: Check API Key
+        run: |
+          if [ -z "${{ secrets.ANTHROPIC_API_KEY }}" ]; then
+            echo "::error::ANTHROPIC_API_KEY secret is not set"
+            exit 1
+          fi
+
+      - name: Process with Claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTION: ${{ contains(github.event.issue.labels.*.name, 'auto-implement') && 'implement' || 'respond' }}
+          ISSUE_BODY: ${{ github.event.issue.body || github.event.comment.body }}
+          ISSUE_TITLE: ${{ github.event.issue.title || '' }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body || '' }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          cd .github/scripts
+          node claude-assistant.js
+
+      - name: Error Notification
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            if (issueNumber) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `## ⚠️ Claude Assistant Error\n\nThe Claude assistant encountered an error while processing your request.\n\n**Possible causes:**\n- API key not configured\n- Rate limit exceeded\n- Network issue\n\nPlease check the [workflow logs](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for more details.`
+              });
+            }
+
+  rate-limit-check:
+    # 定期的にレート制限をチェック
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check Claude API Rate Limits
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # ここでレート制限チェックのロジックを実装
+          echo "Checking Claude API rate limits..."
+          # 実際のAPIエンドポイントがある場合はここでチェック
+
+# スケジュール実行（オプション）
+# 定期的にAPIの状態をチェックする場合は以下のコメントを解除
+# on:
+#   schedule:
+#     - cron: '0 */6 * * *'  # 6時間ごとに実行

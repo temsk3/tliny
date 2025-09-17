@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - button "Enable accessibility" [ref=e2]
-  - img [ref=e3]
+  - paragraph [ref=e6]: Running in emulator mode. Do not use with production credentials.
 ```

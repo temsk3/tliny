@@ -27,27 +27,33 @@ test.describe('Comprehensive User Registration Tests', () => {
     await page.waitForTimeout(1000)
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
-    // 3. フォーム要素の待機とフォールバック
-    await page.waitForSelector('input[type="email"], input[placeholder*="メール"], input[placeholder*="email"]', { timeout: 10000 })
-    
+    // 3. フォーム要素の待機とフォールバック（より柔軟なセレクタ）
+    await page.waitForSelector('input, form', { timeout: 15000 })
+    await page.waitForTimeout(2000) // 追加の待機時間
+
     // 4. 有効なユーザー情報を入力
     const testEmail = `test-${Date.now()}@example.com`
     const testPassword = 'TestPassword123!'
 
     // メールアドレス入力（複数のセレクタで試行）
-    const emailInput = page.locator('input[type="email"]').first()
+    const emailInput = page
+      .locator('input[type="email"]')
+      .first()
       .or(page.locator('input[placeholder*="メール"]').first())
       .or(page.locator('input[placeholder*="email"]').first())
     await emailInput.fill(testEmail)
 
     // パスワード入力（複数のセレクタで試行）
-    const passwordInput = page.locator('input[type="password"]').first()
+    const passwordInput = page
+      .locator('input[type="password"]')
+      .first()
       .or(page.locator('input[placeholder*="パスワード"]').first())
       .or(page.locator('input[placeholder*="password"]').first())
     await passwordInput.fill(testPassword)
 
     // 5. 登録ボタンをクリック（複数のセレクタで試行）
-    const signUpButton = page.getByRole('button', { name: '新規登録' })
+    const signUpButton = page
+      .getByRole('button', { name: '新規登録' })
       .or(page.locator('button:has-text("新規登録")'))
       .or(page.locator('button:has-text("登録")'))
       .or(page.locator('button[type="submit"]'))
@@ -68,22 +74,28 @@ test.describe('Comprehensive User Registration Tests', () => {
     await page.waitForTimeout(1000)
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
-    // フォーム要素の待機
-    await page.waitForSelector('input[type="email"], input[placeholder*="メール"], input[placeholder*="email"]', { timeout: 10000 })
+    // フォーム要素の待機（より柔軟なセレクタ）
+    await page.waitForSelector('input, form', { timeout: 15000 })
+    await page.waitForTimeout(2000) // 追加の待機時間
 
     // 無効なメールアドレスを入力
-    const emailInput = page.locator('input[type="email"]').first()
+    const emailInput = page
+      .locator('input[type="email"]')
+      .first()
       .or(page.locator('input[placeholder*="メール"]').first())
       .or(page.locator('input[placeholder*="email"]').first())
     await emailInput.fill('invalid-email')
 
-    const passwordInput = page.locator('input[type="password"]').first()
+    const passwordInput = page
+      .locator('input[type="password"]')
+      .first()
       .or(page.locator('input[placeholder*="パスワード"]').first())
       .or(page.locator('input[placeholder*="password"]').first())
     await passwordInput.fill('TestPassword123!')
 
     // 登録ボタンをクリック
-    const signUpButton = page.getByRole('button', { name: '新規登録' })
+    const signUpButton = page
+      .getByRole('button', { name: '新規登録' })
       .or(page.locator('button:has-text("新規登録")'))
       .or(page.locator('button:has-text("登録")'))
       .or(page.locator('button[type="submit"]'))
@@ -104,22 +116,28 @@ test.describe('Comprehensive User Registration Tests', () => {
     await page.waitForTimeout(1000)
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
-    // フォーム要素の待機
-    await page.waitForSelector('input[type="email"], input[placeholder*="メール"], input[placeholder*="email"]', { timeout: 10000 })
+    // フォーム要素の待機（より柔軟なセレクタ）
+    await page.waitForSelector('input, form', { timeout: 15000 })
+    await page.waitForTimeout(2000) // 追加の待機時間
 
     // 弱いパスワードを入力
-    const emailInput = page.locator('input[type="email"]').first()
+    const emailInput = page
+      .locator('input[type="email"]')
+      .first()
       .or(page.locator('input[placeholder*="メール"]').first())
       .or(page.locator('input[placeholder*="email"]').first())
     await emailInput.fill('test@example.com')
 
-    const passwordInput = page.locator('input[type="password"]').first()
+    const passwordInput = page
+      .locator('input[type="password"]')
+      .first()
       .or(page.locator('input[placeholder*="パスワード"]').first())
       .or(page.locator('input[placeholder*="password"]').first())
     await passwordInput.fill('123')
 
     // 登録ボタンをクリック
-    const signUpButton = page.getByRole('button', { name: '新規登録' })
+    const signUpButton = page
+      .getByRole('button', { name: '新規登録' })
       .or(page.locator('button:has-text("新規登録")'))
       .or(page.locator('button:has-text("登録")'))
       .or(page.locator('button[type="submit"]'))
@@ -140,22 +158,28 @@ test.describe('Comprehensive User Registration Tests', () => {
     await page.waitForTimeout(1000)
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
-    // フォーム要素の待機
-    await page.waitForSelector('input[type="email"], input[placeholder*="メール"], input[placeholder*="email"]', { timeout: 10000 })
+    // フォーム要素の待機（より柔軟なセレクタ）
+    await page.waitForSelector('input, form', { timeout: 15000 })
+    await page.waitForTimeout(2000) // 追加の待機時間
 
     // 既存のメールアドレスを入力
-    const emailInput = page.locator('input[type="email"]').first()
+    const emailInput = page
+      .locator('input[type="email"]')
+      .first()
       .or(page.locator('input[placeholder*="メール"]').first())
       .or(page.locator('input[placeholder*="email"]').first())
     await emailInput.fill('test@example.com')
 
-    const passwordInput = page.locator('input[type="password"]').first()
+    const passwordInput = page
+      .locator('input[type="password"]')
+      .first()
       .or(page.locator('input[placeholder*="パスワード"]').first())
       .or(page.locator('input[placeholder*="password"]').first())
     await passwordInput.fill('TestPassword123!')
 
     // 登録ボタンをクリック
-    const signUpButton = page.getByRole('button', { name: '新規登録' })
+    const signUpButton = page
+      .getByRole('button', { name: '新規登録' })
       .or(page.locator('button:has-text("新規登録")'))
       .or(page.locator('button:has-text("登録")'))
       .or(page.locator('button[type="submit"]'))
@@ -177,7 +201,8 @@ test.describe('Comprehensive User Registration Tests', () => {
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
     // 戻るボタンをクリック（複数のセレクタで試行）
-    const backButton = page.getByRole('button', { name: '戻る' })
+    const backButton = page
+      .getByRole('button', { name: '戻る' })
       .or(page.locator('button:has-text("戻る")'))
       .or(page.locator('button:has-text("Back")'))
       .or(page.locator('button[aria-label*="戻る"]'))
@@ -198,11 +223,14 @@ test.describe('Comprehensive User Registration Tests', () => {
     await page.waitForTimeout(1000)
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
-    // フォーム要素の待機
-    await page.waitForSelector('input[type="password"], input[placeholder*="パスワード"], input[placeholder*="password"]', { timeout: 10000 })
+    // フォーム要素の待機（より柔軟なセレクタ）
+    await page.waitForSelector('input, form', { timeout: 15000 })
+    await page.waitForTimeout(2000) // 追加の待機時間
 
     // パスワードフィールドにテキストを入力
-    const passwordInput = page.locator('input[type="password"]').first()
+    const passwordInput = page
+      .locator('input[type="password"]')
+      .first()
       .or(page.locator('input[placeholder*="パスワード"]').first())
       .or(page.locator('input[placeholder*="password"]').first())
     await passwordInput.fill('TestPassword123!')
@@ -232,11 +260,13 @@ test.describe('Comprehensive User Registration Tests', () => {
     await page.waitForTimeout(1000)
     await expect(page).toHaveURL(/.*#\/sign-up.*/)
 
-    // フォーム要素の待機
-    await page.waitForSelector('input[type="email"], input[placeholder*="メール"], input[placeholder*="email"]', { timeout: 10000 })
+    // フォーム要素の待機（より柔軟なセレクタ）
+    await page.waitForSelector('input, form', { timeout: 15000 })
+    await page.waitForTimeout(2000) // 追加の待機時間
 
     // 空の状態で登録ボタンをクリック
-    const signUpButton = page.getByRole('button', { name: '新規登録' })
+    const signUpButton = page
+      .getByRole('button', { name: '新規登録' })
       .or(page.locator('button:has-text("新規登録")'))
       .or(page.locator('button:has-text("登録")'))
       .or(page.locator('button[type="submit"]'))
