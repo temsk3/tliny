@@ -21,7 +21,6 @@ class TicketListPage extends HookConsumerWidget {
     final l10n = useL10n();
     final sortOrder = useState(SortOrder.expirationFrom);
     final ticketsAsyncValue = ref.watch(ticketsStateProvider);
-    final viewModel = ref.read(ticketListViewModelProvider.notifier);
 
     return MainBodyWidget(
       width: 400,

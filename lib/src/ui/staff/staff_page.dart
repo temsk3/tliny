@@ -21,7 +21,6 @@ class StaffPage extends HookConsumerWidget {
     // final appMQ = useMediaQuery();
     // final state = ref.watch(programStateProvider);
     final state = ref.watch(staffViewModelProvider(programId));
-    final viewModel = ref.watch(staffViewModelProvider(programId).notifier);
 
     return AsyncValueWidget(
       value: state,
