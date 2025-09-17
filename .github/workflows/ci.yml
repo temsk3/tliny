@@ -33,10 +33,10 @@ jobs:
 
       - name: Run Flutter tests
         run: |
-          if [ -d "test" ]; then
+          if [ -d "test" ] && [ "$(ls -A test)" ]; then
             flutter test
           else
-            echo "No test directory found, skipping tests"
+            echo "No test directory or tests found, skipping tests"
           fi
 
       - name: Check Flutter formatting
@@ -112,8 +112,8 @@ jobs:
 
       - name: Run integration tests
         run: |
-          if [ -d "integration_test" ]; then
+          if [ -d "integration_test" ] && [ "$(ls -A integration_test)" ]; then
             flutter test integration_test/
           else
-            echo "No integration_test directory found, skipping integration tests"
+            echo "No integration_test directory or tests found, skipping integration tests"
           fi

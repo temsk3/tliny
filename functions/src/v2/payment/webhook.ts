@@ -230,7 +230,6 @@ const handleCheckoutSessionCompleted = async (
       }
     }
 
-
     if (!orderId) {
       throw new Error('orderId not found in checkout session metadata')
     }
