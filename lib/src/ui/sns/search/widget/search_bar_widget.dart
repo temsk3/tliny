@@ -22,32 +22,27 @@ class SearchBarWidget extends StatelessWidget {
       decoration: InputDecoration(
         hintText: 'ユーザーや投稿を検索...',
         prefixIcon: const Icon(Icons.search),
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(Icons.clear),
-                onPressed: () {
-                  controller.clear();
-                  onClear();
-                },
-              )
-            : null,
+        suffixIcon:
+            controller.text.isNotEmpty
+                ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    controller.clear();
+                    onClear();
+                  },
+                )
+                : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(
-            color: Colors.grey.withOpacity(0.3),
-          ),
+          borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(
-            color: Colors.grey.withOpacity(0.3),
-          ),
+          borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(25),
-          borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
-          ),
+          borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,

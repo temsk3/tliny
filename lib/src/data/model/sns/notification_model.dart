@@ -28,7 +28,7 @@ class AppNotification with _$AppNotification {
     @timestampKey DateTime? deletedAt,
   }) = _AppNotification;
 
-  factory AppNotification.fromJson(Map<String, dynamic> json) => 
+  factory AppNotification.fromJson(Map<String, dynamic> json) =>
       _$AppNotificationFromJson(json);
 }
 
@@ -46,7 +46,7 @@ class ShareActivity with _$ShareActivity {
     @timestampKey DateTime? createdAt,
   }) = _ShareActivity;
 
-  factory ShareActivity.fromJson(Map<String, dynamic> json) => 
+  factory ShareActivity.fromJson(Map<String, dynamic> json) =>
       _$ShareActivityFromJson(json);
 }
 

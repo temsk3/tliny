@@ -20,9 +20,7 @@ class Favorite with _$Favorite {
 
   const Favorite._();
 
-  factory Favorite.empty() => const Favorite(
-        programId: '',
-      );
+  factory Favorite.empty() => const Favorite(programId: '');
 
   factory Favorite.fromJson(Map<String, dynamic> json) =>
       _$FavoriteFromJson(json);

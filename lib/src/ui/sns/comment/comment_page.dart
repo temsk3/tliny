@@ -10,13 +10,15 @@ import 'widget/comment_input.dart';
 
 class CommentPage extends HookConsumerWidget {
   const CommentPage({super.key, required this.post});
-  
+
   final Post post;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final commentsState = ref.watch(commentViewModelProvider(post.id!));
-    final commentsNotifier = ref.read(commentViewModelProvider(post.id!).notifier);
+    final commentsNotifier = ref.read(
+      commentViewModelProvider(post.id!).notifier,
+    );
     final scrollController = useScrollController();
     final commentController = useTextEditingController();
     final focusNode = useFocusNode();
@@ -62,17 +64,19 @@ class CommentPage extends HookConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  backgroundImage: post.userPhotoUrl != null
-                      ? NetworkImage(post.userPhotoUrl!)
-                      : null,
-                  child: post.userPhotoUrl == null
-                      ? Text(
-                          post.userName.isNotEmpty 
-                              ? post.userName[0].toUpperCase()
-                              : '?',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      : null,
+                  backgroundImage:
+                      post.userPhotoUrl != null
+                          ? NetworkImage(post.userPhotoUrl!)
+                          : null,
+                  child:
+                      post.userPhotoUrl == null
+                          ? Text(
+                            post.userName.isNotEmpty
+                                ? post.userName[0].toUpperCase()
+                                : '?',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          )
+                          : null,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -87,10 +91,7 @@ class CommentPage extends HookConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        post.content,
-                        style: const TextStyle(fontSize: 14),
-                      ),
+                      Text(post.content, style: const TextStyle(fontSize: 14)),
                     ],
                   ),
                 ),
@@ -100,68 +101,85 @@ class CommentPage extends HookConsumerWidget {
           // コメント一覧
           Expanded(
             child: commentsState.when(
-              data: (comments) => comments.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'まだコメントがありません\n最初のコメントを投稿してみましょう',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
+              data:
+                  (comments) =>
+                      comments.isEmpty
+                          ? const Center(
+                            child: Text(
+                              'まだコメントがありません\n最初のコメントを投稿してみましょう',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          )
+                          : ListView.builder(
+                            controller: scrollController,
+                            itemCount:
+                                comments.length +
+                                (commentsNotifier.hasMore ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == comments.length) {
+                                return const Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+
+                              final comment = comments[index];
+                              return CommentCard(
+                                comment: comment,
+                                onDelete:
+                                    comment.userId ==
+                                            'current_user_id' // TODO(dev): 実際のユーザーIDと比較
+                                        ? () => _handleDeleteComment(
+                                          context,
+                                          commentsNotifier,
+                                          comment.id!,
+                                        )
+                                        : null,
+                              );
+                            },
+                          ),
+              loading: () => const LoadingScreen(),
+              error:
+                  (error, stackTrace) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 64,
                           color: Colors.grey,
                         ),
-                      ),
-                    )
-                  : ListView.builder(
-                      controller: scrollController,
-                      itemCount: comments.length + (commentsNotifier.hasMore ? 1 : 0),
-                      itemBuilder: (context, index) {
-                        if (index == comments.length) {
-                          return const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(16),
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
-
-                        final comment = comments[index];
-                        return CommentCard(
-                          comment: comment,
-                          onDelete: comment.userId == 'current_user_id' // TODO(dev): 実際のユーザーIDと比較
-                              ? () => _handleDeleteComment(context, commentsNotifier, comment.id!)
-                              : null,
-                        );
-                      },
+                        const SizedBox(height: 16),
+                        const Text('コメントの読み込みに失敗しました'),
+                        const SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed:
+                              () => commentsNotifier.refreshComments(post.id!),
+                          child: const Text('再試行'),
+                        ),
+                      ],
                     ),
-              loading: () => const LoadingScreen(),
-              error: (error, stackTrace) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-                    const SizedBox(height: 16),
-                    const Text('コメントの読み込みに失敗しました'),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: () => commentsNotifier.refreshComments(post.id!),
-                      child: const Text('再試行'),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
             ),
           ),
           // コメント入力
           CommentInput(
             controller: commentController,
             focusNode: focusNode,
-            onSubmit: (content) => _handleSubmitComment(
-              context,
-              commentsNotifier,
-              commentController,
-              content,
-              post.id!,
-            ),
+            onSubmit:
+                (content) => _handleSubmitComment(
+                  context,
+                  commentsNotifier,
+                  commentController,
+                  content,
+                  post.id!,
+                ),
           ),
         ],
       ),
@@ -197,29 +215,30 @@ class CommentPage extends HookConsumerWidget {
   ) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('コメントを削除'),
-        content: const Text('このコメントを削除しますか？'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('キャンセル'),
+      builder:
+          (context) => AlertDialog(
+            title: const Text('コメントを削除'),
+            content: const Text('このコメントを削除しますか？'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('キャンセル'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('削除'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('削除'),
-          ),
-        ],
-      ),
     );
 
     if (confirmed == true) {
       try {
         await notifier.deleteComment(commentId);
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('コメントを削除しました')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('コメントを削除しました')));
         }
       } catch (e) {
         if (context.mounted) {

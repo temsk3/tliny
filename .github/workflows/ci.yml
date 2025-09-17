@@ -25,6 +25,9 @@ jobs:
           flutter-version: '3.32.8'
           cache: true
 
+      - name: Clean Flutter cache
+        run: flutter clean
+
       - name: Get Flutter dependencies
         run: flutter pub get
 
@@ -93,6 +96,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Clean Flutter cache
+        run: flutter clean
 
       - name: Install Flutter dependencies
         run: flutter pub get

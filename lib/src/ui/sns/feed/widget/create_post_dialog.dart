@@ -56,47 +56,48 @@ class CreatePostDialog extends HookConsumerWidget {
           child: const Text('キャンセル'),
         ),
         ElevatedButton(
-          onPressed: isLoading.value
-              ? null
-              : () async {
-                  final content = contentController.text.trim();
-                  if (content.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('投稿内容を入力してください')),
-                    );
-                    return;
-                  }
+          onPressed:
+              isLoading.value
+                  ? null
+                  : () async {
+                    final content = contentController.text.trim();
+                    if (content.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('投稿内容を入力してください')),
+                      );
+                      return;
+                    }
 
-                  isLoading.value = true;
-                  try {
-                    await ref.read(snsFeedViewModelProvider.notifier).createPost(
-                          content: content,
-                          type: PostType.text,
+                    isLoading.value = true;
+                    try {
+                      await ref
+                          .read(snsFeedViewModelProvider.notifier)
+                          .createPost(content: content, type: PostType.text);
+
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(const SnackBar(content: Text('投稿しました')));
+                      }
+                    } catch (error) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('投稿に失敗しました: $error')),
                         );
-                    
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('投稿しました')),
-                      );
+                      }
+                    } finally {
+                      isLoading.value = false;
                     }
-                  } catch (error) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('投稿に失敗しました: $error')),
-                      );
-                    }
-                  } finally {
-                    isLoading.value = false;
-                  }
-                },
-          child: isLoading.value 
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Text('投稿'),
+                  },
+          child:
+              isLoading.value
+                  ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Text('投稿'),
         ),
       ],
     );

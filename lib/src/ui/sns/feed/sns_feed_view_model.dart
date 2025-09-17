@@ -29,10 +29,9 @@ class SnsFeedViewModel extends _$SnsFeedViewModel {
         _hasMore = true;
       }
 
-      final newPosts = await ref.read(snsRepositoryProvider).getFeed(
-        limit: 20,
-        lastPostId: _lastPostId,
-      );
+      final newPosts = await ref
+          .read(snsRepositoryProvider)
+          .getFeed(limit: 20, lastPostId: _lastPostId);
 
       if (newPosts.isEmpty) {
         _hasMore = false;
@@ -47,7 +46,12 @@ class SnsFeedViewModel extends _$SnsFeedViewModel {
 
       return _posts;
     } catch (error, stackTrace) {
-      logger.e('Failed to load feed', time: DateTime.now(), error: error, stackTrace: stackTrace);
+      logger.e(
+        'Failed to load feed',
+        time: DateTime.now(),
+        error: error,
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
   }
@@ -82,9 +86,10 @@ class SnsFeedViewModel extends _$SnsFeedViewModel {
 
       // UI を先に更新
       _posts[postIndex] = post.copyWith(
-        likesCount: isCurrentlyLiked 
-            ? (post.likesCount! - 1) 
-            : (post.likesCount ?? 0) + 1,
+        likesCount:
+            isCurrentlyLiked
+                ? (post.likesCount! - 1)
+                : (post.likesCount ?? 0) + 1,
       );
       state = AsyncData(_posts);
 
@@ -109,13 +114,15 @@ class SnsFeedViewModel extends _$SnsFeedViewModel {
     PostType? type,
   }) async {
     try {
-      final newPost = await ref.read(snsRepositoryProvider).createPost(
-        content: content,
-        imageUrls: imageUrls,
-        eventId: eventId,
-        productId: productId,
-        type: type,
-      );
+      final newPost = await ref
+          .read(snsRepositoryProvider)
+          .createPost(
+            content: content,
+            imageUrls: imageUrls,
+            eventId: eventId,
+            productId: productId,
+            type: type,
+          );
 
       // 新しい投稿を先頭に追加
       _posts.insert(0, newPost);

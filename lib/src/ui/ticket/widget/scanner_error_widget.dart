@@ -13,11 +13,7 @@ class ScannerErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String errorMessage;
 
-    logger.e(
-      error.errorCode,
-      time: DateTime.now(),
-      error: error.errorDetails,
-    );
+    logger.e(error.errorCode, time: DateTime.now(), error: error.errorDetails);
 
     switch (error.errorCode) {
       case MobileScannerErrorCode.controllerUninitialized:
@@ -44,10 +40,7 @@ class ScannerErrorWidget extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16),
               child: Icon(Icons.error, color: Colors.white),
             ),
-            Text(
-              errorMessage,
-              style: const TextStyle(color: Colors.white),
-            ),
+            Text(errorMessage, style: const TextStyle(color: Colors.white)),
             Text(
               error.errorDetails?.message ?? '',
               style: const TextStyle(color: Colors.white),

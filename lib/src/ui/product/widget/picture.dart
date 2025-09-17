@@ -34,10 +34,13 @@ class PictureCover extends HookConsumerWidget {
                   child: CachedNetworkImage(
                     imageUrl: picture.toString(),
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey[300],
-                      child: const Center(child: CircularProgressIndicator()),
-                    ),
+                    placeholder:
+                        (context, url) => Container(
+                          color: Colors.grey[300],
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                     errorWidget: (context, url, error) {
                       if (kDebugMode) {
                         logger.e('CachedNetworkImage error: $error');
@@ -51,18 +54,17 @@ class PictureCover extends HookConsumerWidget {
                             SizedBox(height: 4),
                             Text(
                               '画像読み込みエラー',
-                              style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.red,
-                              ),
+                              style: TextStyle(fontSize: 10, color: Colors.red),
                             ),
                           ],
                         ),
                       );
                     },
                     // メモリ最適化のためのサイズ指定
-                    memCacheWidth: (200 * MediaQuery.of(context).devicePixelRatio).round(),
-                    memCacheHeight: (200 * MediaQuery.of(context).devicePixelRatio).round(),
+                    memCacheWidth:
+                        (200 * MediaQuery.of(context).devicePixelRatio).round(),
+                    memCacheHeight:
+                        (200 * MediaQuery.of(context).devicePixelRatio).round(),
                   ),
                 ),
       ),
@@ -95,12 +97,15 @@ class PictureDetail extends HookConsumerWidget {
                     child: CachedNetworkImage(
                       imageUrl: oldPicture!,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        width: 160,
-                        height: 100,
-                        color: Colors.grey[300],
-                        child: const Center(child: CircularProgressIndicator()),
-                      ),
+                      placeholder:
+                          (context, url) => Container(
+                            width: 160,
+                            height: 100,
+                            color: Colors.grey[300],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
                       errorWidget: (context, url, error) {
                         if (kDebugMode) {
                           logger.e('CachedNetworkImage error: $error');
@@ -126,8 +131,12 @@ class PictureDetail extends HookConsumerWidget {
                         );
                       },
                       // メモリ最適化のためのサイズ指定
-                      memCacheWidth: (160 * MediaQuery.of(context).devicePixelRatio).round(),
-                      memCacheHeight: (100 * MediaQuery.of(context).devicePixelRatio).round(),
+                      memCacheWidth:
+                          (160 * MediaQuery.of(context).devicePixelRatio)
+                              .round(),
+                      memCacheHeight:
+                          (100 * MediaQuery.of(context).devicePixelRatio)
+                              .round(),
                     ),
                   )
               : SizedBox.expand(child: Image.memory(picture!)),

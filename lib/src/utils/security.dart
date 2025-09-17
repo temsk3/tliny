@@ -4,17 +4,14 @@ import 'package:logger/logger.dart';
 
 class Security {
   Security()
-      : _encrypter =
-            Encrypter(AES(Key.fromUtf8(dotenv.get('KEY')), mode: AESMode.cbc));
+    : _encrypter = Encrypter(
+        AES(Key.fromUtf8(dotenv.get('KEY')), mode: AESMode.cbc),
+      );
 
   final _logger = Logger();
   final Encrypter _encrypter;
 
-  String encrypt(
-    String eventId,
-    String uuid,
-    bool isPdf,
-  ) {
+  String encrypt(String eventId, String uuid, bool isPdf) {
     final prefix = isPdf ? 'PDF' : 'REG';
     final data = '$prefix|$eventId|$uuid';
     _logger.d('Data to encrypt: $data');
@@ -31,10 +28,12 @@ class Security {
   String decrypt(String encryptedWithIv) {
     _logger.d('Encrypted data with IV: $encryptedWithIv');
 
-    final iv =
-        IV.fromBase64(encryptedWithIv.substring(0, 24)); // Extract the IV
+    final iv = IV.fromBase64(
+      encryptedWithIv.substring(0, 24),
+    ); // Extract the IV
     final encrypted = Encrypted.fromBase64(
-        encryptedWithIv.substring(24)); // Extract the encrypted data
+      encryptedWithIv.substring(24),
+    ); // Extract the encrypted data
 
     final decrypted = _encrypter.decrypt(encrypted, iv: iv);
     _logger.d('Decrypted data: $decrypted');

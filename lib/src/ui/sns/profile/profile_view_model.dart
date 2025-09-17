@@ -11,7 +11,7 @@ part 'profile_view_model.g.dart';
 class ProfileViewModel extends _$ProfileViewModel {
   bool _hasMorePosts = true;
   bool _isLoading = false;
-  
+
   bool get hasMorePosts => _hasMorePosts;
   bool get isLoading => _isLoading;
 
@@ -21,33 +21,36 @@ class ProfileViewModel extends _$ProfileViewModel {
     return loadProfile(userId);
   }
 
-  Future<ProfileState> loadProfile(String userId, {bool refresh = false}) async {
+  Future<ProfileState> loadProfile(
+    String userId, {
+    bool refresh = false,
+  }) async {
     if (_isLoading) return state.valueOrNull ?? const ProfileState();
-    
+
     try {
       _isLoading = true;
-      
+
       if (refresh) {
         _hasMorePosts = true;
       }
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
-      
+
       // プロファイル情報、フォロー状態、投稿を並行して取得
       final results = await Future.wait<dynamic>([
         snsRepository.getProfile(userId),
         snsRepository.checkFollowStatus(userId),
         snsRepository.getUserPosts(userId, limit: 20),
       ]);
-      
+
       final profile = results[0] as UserProfile;
       final followStatus = results[1] as Map<String, dynamic>;
       final posts = results[2] as List<Post>;
-      
+
       _hasMorePosts = posts.length >= 20;
-      
+
       logger.d('loadProfile success: profile loaded');
-      
+
       return ProfileState(
         profile: profile,
         isFollowing: followStatus['isFollowing'] as bool,
@@ -74,29 +77,28 @@ class ProfileViewModel extends _$ProfileViewModel {
 
   Future<void> loadMorePosts(String userId) async {
     if (_isLoading || !_hasMorePosts) return;
-    
+
     final currentState = state.valueOrNull;
     if (currentState == null) return;
-    
+
     try {
       _isLoading = true;
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
-      final lastPostId = currentState.posts.isNotEmpty 
-          ? currentState.posts.last.id 
-          : null;
-      
+      final lastPostId =
+          currentState.posts.isNotEmpty ? currentState.posts.last.id : null;
+
       final newPosts = await snsRepository.getUserPosts(
         userId,
         limit: 20,
         lastPostId: lastPostId,
       );
-      
+
       _hasMorePosts = newPosts.length >= 20;
-      
+
       final updatedPosts = [...currentState.posts, ...newPosts];
       final updatedState = currentState.copyWith(posts: updatedPosts);
-      
+
       state = AsyncValue.data(updatedState);
       logger.d('loadMorePosts success: ${newPosts.length} new posts loaded');
     } catch (e, st) {
@@ -110,28 +112,29 @@ class ProfileViewModel extends _$ProfileViewModel {
   Future<void> toggleFollow(String userId) async {
     final currentState = state.valueOrNull;
     if (currentState == null || currentState.isOwnProfile) return;
-    
+
     try {
       final snsRepository = ref.read(snsRepositoryProvider);
-      
+
       if (currentState.isFollowing) {
         await snsRepository.unfollowUser(userId);
       } else {
         await snsRepository.followUser(userId);
       }
-      
+
       // フォロー状態を更新
       final updatedProfile = currentState.profile?.copyWith(
-        followersCount: currentState.isFollowing 
-            ? (currentState.profile?.followersCount ?? 1) - 1
-            : (currentState.profile?.followersCount ?? 0) + 1,
+        followersCount:
+            currentState.isFollowing
+                ? (currentState.profile?.followersCount ?? 1) - 1
+                : (currentState.profile?.followersCount ?? 0) + 1,
       );
-      
+
       final updatedState = currentState.copyWith(
         isFollowing: !currentState.isFollowing,
         profile: updatedProfile,
       );
-      
+
       state = AsyncValue.data(updatedState);
       logger.d('toggleFollow success: ${!currentState.isFollowing}');
     } catch (e, st) {
@@ -150,7 +153,7 @@ class ProfileViewModel extends _$ProfileViewModel {
   }) async {
     final currentState = state.valueOrNull;
     if (currentState == null || !currentState.isOwnProfile) return;
-    
+
     try {
       final snsRepository = ref.read(snsRepositoryProvider);
       final updatedProfile = await snsRepository.updateProfile(
@@ -160,7 +163,7 @@ class ProfileViewModel extends _$ProfileViewModel {
         coverImageUrl: coverImageUrl,
         isPrivate: isPrivate,
       );
-      
+
       final updatedState = currentState.copyWith(profile: updatedProfile);
       state = AsyncValue.data(updatedState);
       logger.d('updateProfile success');

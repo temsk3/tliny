@@ -40,21 +40,23 @@ class ProfileHeader extends StatelessWidget {
               // プロファイル画像
               CircleAvatar(
                 radius: 50,
-                backgroundImage: profile?.profileImageUrl != null
-                    ? NetworkImage(profile!.profileImageUrl!)
-                    : null,
-                child: profile?.profileImageUrl == null
-                    ? Text(
-                        profile?.displayName?.isNotEmpty == true
-                            ? profile!.displayName![0].toUpperCase()
-                            : '?',
-                        style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      )
-                    : null,
+                backgroundImage:
+                    profile?.profileImageUrl != null
+                        ? NetworkImage(profile!.profileImageUrl!)
+                        : null,
+                child:
+                    profile?.profileImageUrl == null
+                        ? Text(
+                          profile?.displayName?.isNotEmpty == true
+                              ? profile!.displayName![0].toUpperCase()
+                              : '?',
+                          style: const TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        )
+                        : null,
               ),
               const SizedBox(height: 16),
               // ユーザー名
@@ -71,10 +73,7 @@ class ProfileHeader extends StatelessWidget {
               if (profile?.bio?.isNotEmpty == true)
                 Text(
                   profile!.bio!,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white70,
-                  ),
+                  style: const TextStyle(fontSize: 16, color: Colors.white70),
                   textAlign: TextAlign.center,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
@@ -108,18 +107,30 @@ class ProfileHeader extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Theme.of(context).primaryColor,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                   ),
                 )
               else
                 ElevatedButton.icon(
                   onPressed: onFollowToggle,
-                  icon: Icon(isFollowing ? Icons.person_remove : Icons.person_add),
+                  icon: Icon(
+                    isFollowing ? Icons.person_remove : Icons.person_add,
+                  ),
                   label: Text(isFollowing ? 'フォロー解除' : 'フォロー'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isFollowing ? Colors.grey[600] : Colors.white,
-                    foregroundColor: isFollowing ? Colors.white : Theme.of(context).primaryColor,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    backgroundColor:
+                        isFollowing ? Colors.grey[600] : Colors.white,
+                    foregroundColor:
+                        isFollowing
+                            ? Colors.white
+                            : Theme.of(context).primaryColor,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                   ),
                 ),
               const SizedBox(height: 16),
@@ -144,10 +155,7 @@ class ProfileHeader extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.white70,
-          ),
+          style: const TextStyle(fontSize: 14, color: Colors.white70),
         ),
       ],
     );

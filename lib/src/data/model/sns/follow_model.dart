@@ -44,7 +44,7 @@ class UserProfile with _$UserProfile {
     @timestampKey DateTime? deletedAt,
   }) = _UserProfile;
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) => 
+  factory UserProfile.fromJson(Map<String, dynamic> json) =>
       _$UserProfileFromJson(json);
 }
 

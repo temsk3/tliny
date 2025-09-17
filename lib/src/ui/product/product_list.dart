@@ -30,7 +30,8 @@ class ProductListPage extends HookConsumerWidget {
       data: (list) {
         // 高価な操作をメモ化して最適化
         final sortedProducts = useMemoized(() {
-          final filtered = list.where((element) => element.isActive == true).toList();
+          final filtered =
+              list.where((element) => element.isActive == true).toList();
           filtered.sort((a, b) => a.name!.compareTo(b.name!));
           return filtered;
         }, [list]);

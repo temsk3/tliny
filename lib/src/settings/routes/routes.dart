@@ -273,13 +273,12 @@ class SnsChatRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      SnsChatPage(
-        conversationId: conversationId,
-        otherUserId: otherUserId,
-        otherUserName: otherUserName,
-        otherUserPhotoUrl: otherUserPhotoUrl,
-      );
+  Widget build(BuildContext context, GoRouterState state) => SnsChatPage(
+    conversationId: conversationId,
+    otherUserId: otherUserId,
+    otherUserName: otherUserName,
+    otherUserPhotoUrl: otherUserPhotoUrl,
+  );
 }
 
 @TypedGoRoute<SnsProfileRoute>(path: AppRoutes.snsProfilePage)
@@ -302,8 +301,7 @@ class SnsSearchRoute extends GoRouteData {
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const SearchPage();
+  Widget build(BuildContext context, GoRouterState state) => const SearchPage();
 }
 
 @TypedGoRoute<SignInRoute>(

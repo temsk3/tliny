@@ -10,7 +10,7 @@ part 'sns_notifications_view_model.g.dart';
 class SnsNotificationsViewModel extends _$SnsNotificationsViewModel {
   bool _hasMore = true;
   bool _isLoading = false;
-  
+
   bool get hasMore => _hasMore;
   bool get isLoading => _isLoading;
 
@@ -20,25 +20,29 @@ class SnsNotificationsViewModel extends _$SnsNotificationsViewModel {
     return loadNotifications();
   }
 
-  Future<List<AppNotification>> loadNotifications({bool refresh = false}) async {
+  Future<List<AppNotification>> loadNotifications({
+    bool refresh = false,
+  }) async {
     if (_isLoading) return state.valueOrNull ?? [];
-    
+
     try {
       _isLoading = true;
-      
+
       if (refresh) {
         _hasMore = true;
       }
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
       final notifications = await snsRepository.getNotifications(
         limit: 20,
         unreadOnly: false,
       );
-      
+
       _hasMore = notifications.length >= 20;
-      logger.d('loadNotifications success: ${notifications.length} notifications loaded');
-      
+      logger.d(
+        'loadNotifications success: ${notifications.length} notifications loaded',
+      );
+
       return notifications;
     } catch (e, st) {
       logger.e('loadNotifications error: $e', error: e, stackTrace: st);
@@ -62,19 +66,20 @@ class SnsNotificationsViewModel extends _$SnsNotificationsViewModel {
     try {
       final snsRepository = ref.read(snsRepositoryProvider);
       await snsRepository.markNotificationAsRead(notificationId);
-      
+
       // 既読状態を反映
       final currentNotifications = state.valueOrNull ?? [];
-      final updatedNotifications = currentNotifications.map((notification) {
-        if (notification.id == notificationId) {
-          return notification.copyWith(
-            isRead: true,
-            readAt: DateTime.now(),
-          );
-        }
-        return notification;
-      }).toList();
-      
+      final updatedNotifications =
+          currentNotifications.map((notification) {
+            if (notification.id == notificationId) {
+              return notification.copyWith(
+                isRead: true,
+                readAt: DateTime.now(),
+              );
+            }
+            return notification;
+          }).toList();
+
       state = AsyncValue.data(updatedNotifications);
       logger.d('markAsRead success: $notificationId');
     } catch (e, st) {

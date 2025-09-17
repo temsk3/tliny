@@ -13,7 +13,7 @@ class SearchViewModel extends _$SearchViewModel {
   bool _hasMorePosts = false;
   bool _isLoading = false;
   String _currentQuery = '';
-  
+
   bool get hasMoreUsers => _hasMoreUsers;
   bool get hasMorePosts => _hasMorePosts;
   bool get isLoading => _isLoading;
@@ -35,29 +35,25 @@ class SearchViewModel extends _$SearchViewModel {
     try {
       _isLoading = true;
       _currentQuery = query.trim();
-      
+
       logger.d('search called with query: $_currentQuery');
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
-      
+
       // ユーザーと投稿を並行して検索
       final results = await Future.wait<dynamic>([
         snsRepository.searchUsers(_currentQuery, limit: 20),
         snsRepository.searchPosts(_currentQuery, limit: 20),
       ]);
-      
+
       final users = results[0] as List<UserProfile>;
       final posts = results[1] as List<Post>;
-      
+
       _hasMoreUsers = users.length >= 20;
       _hasMorePosts = posts.length >= 20;
-      
-      state = SearchState(
-        query: _currentQuery,
-        users: users,
-        posts: posts,
-      );
-      
+
+      state = SearchState(query: _currentQuery, users: users, posts: posts);
+
       logger.d('search success: ${users.length} users, ${posts.length} posts');
     } catch (e, st) {
       logger.e('search error: $e', error: e, stackTrace: st);
@@ -69,16 +65,16 @@ class SearchViewModel extends _$SearchViewModel {
 
   Future<void> loadMoreResults() async {
     if (_isLoading || _currentQuery.isEmpty) return;
-    
+
     final currentState = state;
-    
+
     try {
       _isLoading = true;
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
       List<UserProfile> newUsers = [];
       List<Post> newPosts = [];
-      
+
       // より多くのユーザーがある場合のみ取得
       if (_hasMoreUsers) {
         newUsers = await snsRepository.searchUsers(
@@ -88,7 +84,7 @@ class SearchViewModel extends _$SearchViewModel {
         );
         _hasMoreUsers = newUsers.length >= 20;
       }
-      
+
       // より多くの投稿がある場合のみ取得
       if (_hasMorePosts) {
         newPosts = await snsRepository.searchPosts(
@@ -98,16 +94,15 @@ class SearchViewModel extends _$SearchViewModel {
         );
         _hasMorePosts = newPosts.length >= 20;
       }
-      
+
       final updatedUsers = [...currentState.users, ...newUsers];
       final updatedPosts = [...currentState.posts, ...newPosts];
-      
-      state = currentState.copyWith(
-        users: updatedUsers,
-        posts: updatedPosts,
+
+      state = currentState.copyWith(users: updatedUsers, posts: updatedPosts);
+
+      logger.d(
+        'loadMoreResults success: ${newUsers.length} new users, ${newPosts.length} new posts',
       );
-      
-      logger.d('loadMoreResults success: ${newUsers.length} new users, ${newPosts.length} new posts');
     } catch (e, st) {
       logger.e('loadMoreResults error: $e', error: e, stackTrace: st);
       // エラー時は既存の状態を保持

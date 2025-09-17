@@ -10,7 +10,7 @@ part 'sns_messages_view_model.g.dart';
 class SnsMessagesViewModel extends _$SnsMessagesViewModel {
   bool _hasMore = true;
   bool _isLoading = false;
-  
+
   bool get hasMore => _hasMore;
   bool get isLoading => _isLoading;
 
@@ -22,22 +22,22 @@ class SnsMessagesViewModel extends _$SnsMessagesViewModel {
 
   Future<List<Conversation>> loadConversations({bool refresh = false}) async {
     if (_isLoading) return state.valueOrNull ?? [];
-    
+
     try {
       _isLoading = true;
-      
+
       if (refresh) {
         _hasMore = true;
       }
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
-      final conversations = await snsRepository.getConversations(
-        limit: 20,
-      );
-      
+      final conversations = await snsRepository.getConversations(limit: 20);
+
       _hasMore = conversations.length >= 20;
-      logger.d('loadConversations success: ${conversations.length} conversations loaded');
-      
+      logger.d(
+        'loadConversations success: ${conversations.length} conversations loaded',
+      );
+
       return conversations;
     } catch (e, st) {
       logger.e('loadConversations error: $e', error: e, stackTrace: st);

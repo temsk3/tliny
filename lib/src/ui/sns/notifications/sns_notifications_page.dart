@@ -13,7 +13,9 @@ class SnsNotificationsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationsState = ref.watch(snsNotificationsViewModelProvider);
-    final notificationsNotifier = ref.read(snsNotificationsViewModelProvider.notifier);
+    final notificationsNotifier = ref.read(
+      snsNotificationsViewModelProvider.notifier,
+    );
     final scrollController = useScrollController();
 
     // スクロール監視でページネーション（将来の拡張用）
@@ -41,50 +43,51 @@ class SnsNotificationsPage extends HookConsumerWidget {
         ],
       ),
       body: notificationsState.when(
-        data: (notifications) => RefreshIndicator(
-          onRefresh: notificationsNotifier.refreshNotifications,
-          child: notifications.isEmpty
-              ? const Center(
-                  child: Text(
-                    '通知はありません',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                )
-              : ListView.builder(
-                  controller: scrollController,
-                  itemCount: notifications.length,
-                  itemBuilder: (context, index) {
-                    final notification = notifications[index];
-                    return NotificationCard(
-                      notification: notification,
-                      onTap: () => _handleNotificationTap(
-                        context,
-                        notification,
-                        notificationsNotifier,
+        data:
+            (notifications) => RefreshIndicator(
+              onRefresh: notificationsNotifier.refreshNotifications,
+              child:
+                  notifications.isEmpty
+                      ? const Center(
+                        child: Text(
+                          '通知はありません',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      )
+                      : ListView.builder(
+                        controller: scrollController,
+                        itemCount: notifications.length,
+                        itemBuilder: (context, index) {
+                          final notification = notifications[index];
+                          return NotificationCard(
+                            notification: notification,
+                            onTap:
+                                () => _handleNotificationTap(
+                                  context,
+                                  notification,
+                                  notificationsNotifier,
+                                ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-        ),
+            ),
         loading: () => const LoadingScreen(),
-        error: (error, stackTrace) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-              const SizedBox(height: 16),
-              const Text('通知の読み込みに失敗しました'),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: notificationsNotifier.refreshNotifications,
-                child: const Text('再試行'),
+        error:
+            (error, stackTrace) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+                  const SizedBox(height: 16),
+                  const Text('通知の読み込みに失敗しました'),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: notificationsNotifier.refreshNotifications,
+                    child: const Text('再試行'),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }
@@ -132,8 +135,8 @@ class SnsNotificationsPage extends HookConsumerWidget {
   }
 
   void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 }

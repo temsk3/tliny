@@ -216,16 +216,10 @@ AlertDialog parseRtfToDart(String rtf) {
         color: _getColorFromIndex(int.tryParse(fontColor) ?? 1),
       ),
     ),
-    ..._generateListSpans(listItems, isList, isNumberedList)
+    ..._generateListSpans(listItems, isList, isNumberedList),
   ];
 
-  return AlertDialog(
-    content: RichText(
-      text: TextSpan(
-        children: spans,
-      ),
-    ),
-  );
+  return AlertDialog(content: RichText(text: TextSpan(children: spans)));
 }
 
 List<TextSpan> _generateListSpans(

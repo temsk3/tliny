@@ -54,10 +54,7 @@ class _CommentInputState extends State<CommentInput> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         border: Border(
-          top: BorderSide(
-            color: Colors.grey.withOpacity(0.3),
-            width: 0.5,
-          ),
+          top: BorderSide(color: Colors.grey.withOpacity(0.3), width: 0.5),
         ),
       ),
       child: SafeArea(
@@ -74,15 +71,11 @@ class _CommentInputState extends State<CommentInput> {
                   hintText: 'コメントを入力...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
+                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
+                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -102,9 +95,7 @@ class _CommentInputState extends State<CommentInput> {
             IconButton(
               icon: Icon(
                 Icons.send,
-                color: _isTyping 
-                    ? Theme.of(context).primaryColor 
-                    : Colors.grey,
+                color: _isTyping ? Theme.of(context).primaryColor : Colors.grey,
               ),
               onPressed: _isTyping ? _handleSubmit : null,
             ),

@@ -28,7 +28,7 @@ class DirectMessage with _$DirectMessage {
     @timestampKey DateTime? deletedAt,
   }) = _DirectMessage;
 
-  factory DirectMessage.fromJson(Map<String, dynamic> json) => 
+  factory DirectMessage.fromJson(Map<String, dynamic> json) =>
       _$DirectMessageFromJson(json);
 }
 
@@ -48,7 +48,7 @@ class Conversation with _$Conversation {
     @timestampKey DateTime? deletedAt,
   }) = _Conversation;
 
-  factory Conversation.fromJson(Map<String, dynamic> json) => 
+  factory Conversation.fromJson(Map<String, dynamic> json) =>
       _$ConversationFromJson(json);
 }
 

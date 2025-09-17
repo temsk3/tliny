@@ -42,46 +42,46 @@ class SnsMessagesPage extends HookConsumerWidget {
         ],
       ),
       body: messagesState.when(
-        data: (conversations) => RefreshIndicator(
-          onRefresh: messagesNotifier.refreshConversations,
-          child: conversations.isEmpty
-              ? const Center(
-                  child: Text(
-                    'メッセージはありません',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                )
-              : ListView.builder(
-                  controller: scrollController,
-                  itemCount: conversations.length,
-                  itemBuilder: (context, index) {
-                    final conversation = conversations[index];
-                    return ConversationCard(
-                      conversation: conversation,
-                      onTap: () => _navigateToChat(context, conversation),
-                    );
-                  },
-                ),
-        ),
+        data:
+            (conversations) => RefreshIndicator(
+              onRefresh: messagesNotifier.refreshConversations,
+              child:
+                  conversations.isEmpty
+                      ? const Center(
+                        child: Text(
+                          'メッセージはありません',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      )
+                      : ListView.builder(
+                        controller: scrollController,
+                        itemCount: conversations.length,
+                        itemBuilder: (context, index) {
+                          final conversation = conversations[index];
+                          return ConversationCard(
+                            conversation: conversation,
+                            onTap: () => _navigateToChat(context, conversation),
+                          );
+                        },
+                      ),
+            ),
         loading: () => const LoadingScreen(),
-        error: (error, stackTrace) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-              const SizedBox(height: 16),
-              const Text('メッセージの読み込みに失敗しました'),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: messagesNotifier.refreshConversations,
-                child: const Text('再試行'),
+        error:
+            (error, stackTrace) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+                  const SizedBox(height: 16),
+                  const Text('メッセージの読み込みに失敗しました'),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: messagesNotifier.refreshConversations,
+                    child: const Text('再試行'),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
       ),
     );
   }
@@ -89,17 +89,20 @@ class SnsMessagesPage extends HookConsumerWidget {
   void _navigateToChat(BuildContext context, Conversation conversation) {
     // 現在のユーザーIDを取得（仮の実装）
     const currentUserId = 'current_user_id'; // TODO(dev): 実際のユーザーIDを取得
-    
+
     // 相手のユーザー情報を取得
-    final otherUserIndex = conversation.participantIds[0] == currentUserId ? 1 : 0;
+    final otherUserIndex =
+        conversation.participantIds[0] == currentUserId ? 1 : 0;
     final otherUserId = conversation.participantIds[otherUserIndex];
-    final otherUserName = conversation.participantNames.isNotEmpty
-        ? conversation.participantNames[otherUserIndex]
-        : 'Unknown User';
-    final otherUserPhotoUrl = conversation.participantPhotoUrls?.isNotEmpty == true
-        ? conversation.participantPhotoUrls![otherUserIndex]
-        : null;
-    
+    final otherUserName =
+        conversation.participantNames.isNotEmpty
+            ? conversation.participantNames[otherUserIndex]
+            : 'Unknown User';
+    final otherUserPhotoUrl =
+        conversation.participantPhotoUrls?.isNotEmpty == true
+            ? conversation.participantPhotoUrls![otherUserIndex]
+            : null;
+
     // 型安全な遷移
     SnsChatRoute(
       conversationId: conversation.id!,

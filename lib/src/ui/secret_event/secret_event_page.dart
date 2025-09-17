@@ -5,10 +5,7 @@ import '../../data/repository/program_repository.dart';
 import '../common/loading_screen.dart';
 
 class SecretEventPage extends ConsumerStatefulWidget {
-  const SecretEventPage({
-    super.key,
-    required this.secretUrl,
-  });
+  const SecretEventPage({super.key, required this.secretUrl});
 
   final String secretUrl;
 
@@ -60,18 +57,12 @@ class _SecretEventPageState extends ConsumerState<SecretEventPage> {
 
     if (_errorMessage != null) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('エラー'),
-        ),
+        appBar: AppBar(title: const Text('エラー')),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                size: 64,
-                color: Colors.red,
-              ),
+              const Icon(Icons.error_outline, size: 64, color: Colors.red),
               const SizedBox(height: 16),
               Text(
                 _errorMessage!,
@@ -95,9 +86,7 @@ class _SecretEventPageState extends ConsumerState<SecretEventPage> {
 
     // シークレットイベントが見つかった場合は、簡易表示
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('限定イベント'),
-      ),
+      appBar: AppBar(title: const Text('限定イベント')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -111,9 +100,8 @@ class _SecretEventPageState extends ConsumerState<SecretEventPage> {
                   children: [
                     Text(
                       _program!.name ?? 'イベント名不明',
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     if (_program!.message != null) ...[
@@ -123,7 +111,8 @@ class _SecretEventPageState extends ConsumerState<SecretEventPage> {
                       ),
                       const SizedBox(height: 16),
                     ],
-                    if (_program!.eventFrom != null && _program!.eventTo != null) ...[
+                    if (_program!.eventFrom != null &&
+                        _program!.eventTo != null) ...[
                       Row(
                         children: [
                           const Icon(Icons.schedule, size: 20),
@@ -160,11 +149,7 @@ class _SecretEventPageState extends ConsumerState<SecretEventPage> {
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Icon(
-                      Icons.lock,
-                      size: 48,
-                      color: Colors.amber,
-                    ),
+                    Icon(Icons.lock, size: 48, color: Colors.amber),
                     SizedBox(height: 8),
                     Text(
                       'この限定イベント情報',

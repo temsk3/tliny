@@ -44,7 +44,7 @@ class PostComment with _$PostComment {
     @timestampKey DateTime? deletedAt,
   }) = _PostComment;
 
-  factory PostComment.fromJson(Map<String, dynamic> json) => 
+  factory PostComment.fromJson(Map<String, dynamic> json) =>
       _$PostCommentFromJson(json);
 }
 
@@ -58,7 +58,7 @@ class PostLike with _$PostLike {
     @timestampKey DateTime? createdAt,
   }) = _PostLike;
 
-  factory PostLike.fromJson(Map<String, dynamic> json) => 
+  factory PostLike.fromJson(Map<String, dynamic> json) =>
       _$PostLikeFromJson(json);
 }
 

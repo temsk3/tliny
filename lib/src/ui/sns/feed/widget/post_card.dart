@@ -29,12 +29,14 @@ class PostCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  backgroundImage: post.userPhotoUrl != null
-                      ? NetworkImage(post.userPhotoUrl!)
-                      : null,
-                  child: post.userPhotoUrl == null
-                      ? Text(post.userName.substring(0, 1).toUpperCase())
-                      : null,
+                  backgroundImage:
+                      post.userPhotoUrl != null
+                          ? NetworkImage(post.userPhotoUrl!)
+                          : null,
+                  child:
+                      post.userPhotoUrl == null
+                          ? Text(post.userName.substring(0, 1).toUpperCase())
+                          : null,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -44,14 +46,14 @@ class PostCard extends StatelessWidget {
                       Text(
                         post.userName,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         _formatDateTime(post.createdAt),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.grey[600],
-                            ),
+                          color: Colors.grey[600],
+                        ),
                       ),
                     ],
                   ),
@@ -60,24 +62,19 @@ class PostCard extends StatelessWidget {
                   onSelected: (value) {
                     // Handle menu actions
                   },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'report',
-                      child: Text('報告'),
-                    ),
-                  ],
+                  itemBuilder:
+                      (context) => [
+                        const PopupMenuItem(value: 'report', child: Text('報告')),
+                      ],
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // 投稿内容
-            Text(
-              post.content,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            
+            Text(post.content, style: Theme.of(context).textTheme.bodyMedium),
+
             // 画像表示
             if (post.imageUrls?.isNotEmpty == true) ...[
               const SizedBox(height: 12),
@@ -113,9 +110,9 @@ class PostCard extends StatelessWidget {
                   ),
                 ),
             ],
-            
+
             const SizedBox(height: 12),
-            
+
             // アクションボタン
             Row(
               children: [
@@ -146,10 +143,10 @@ class PostCard extends StatelessWidget {
 
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return '';
-    
+
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inMinutes < 60) {
       return '${difference.inMinutes}分前';
     } else if (difference.inHours < 24) {

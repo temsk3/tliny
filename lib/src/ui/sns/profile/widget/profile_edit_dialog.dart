@@ -18,9 +18,7 @@ class ProfileEditDialog extends HookWidget {
     final displayNameController = useTextEditingController(
       text: profile.displayName ?? '',
     );
-    final bioController = useTextEditingController(
-      text: profile.bio ?? '',
-    );
+    final bioController = useTextEditingController(text: profile.bio ?? '');
     final isPrivate = useState(profile.isPrivate ?? false);
     final isLoading = useState(false);
 
@@ -55,7 +53,8 @@ class ProfileEditDialog extends HookWidget {
               title: const Text('プライベートアカウント'),
               subtitle: const Text('フォロワーのみが投稿を見ることができます'),
               value: isPrivate.value,
-              onChanged: isLoading.value ? null : (value) => isPrivate.value = value,
+              onChanged:
+                  isLoading.value ? null : (value) => isPrivate.value = value,
             ),
           ],
         ),
@@ -66,27 +65,29 @@ class ProfileEditDialog extends HookWidget {
           child: const Text('キャンセル'),
         ),
         ElevatedButton(
-          onPressed: isLoading.value
-              ? null
-              : () async {
-                  isLoading.value = true;
-                  try {
-                    await onSave(
-                      displayNameController.text.trim(),
-                      bioController.text.trim(),
-                      isPrivate.value,
-                    );
-                  } finally {
-                    isLoading.value = false;
-                  }
-                },
-          child: isLoading.value
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Text('保存'),
+          onPressed:
+              isLoading.value
+                  ? null
+                  : () async {
+                    isLoading.value = true;
+                    try {
+                      await onSave(
+                        displayNameController.text.trim(),
+                        bioController.text.trim(),
+                        isPrivate.value,
+                      );
+                    } finally {
+                      isLoading.value = false;
+                    }
+                  },
+          child:
+              isLoading.value
+                  ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Text('保存'),
         ),
       ],
     );

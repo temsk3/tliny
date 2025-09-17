@@ -22,23 +22,26 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isMe && showAvatar) ...[
             CircleAvatar(
               radius: 16,
-              backgroundImage: otherUserPhotoUrl != null
-                  ? NetworkImage(otherUserPhotoUrl!)
-                  : null,
-              child: otherUserPhotoUrl == null
-                  ? Text(
-                      message.senderName.isNotEmpty 
-                          ? message.senderName[0].toUpperCase()
-                          : '?',
-                      style: const TextStyle(fontSize: 12),
-                    )
-                  : null,
+              backgroundImage:
+                  otherUserPhotoUrl != null
+                      ? NetworkImage(otherUserPhotoUrl!)
+                      : null,
+              child:
+                  otherUserPhotoUrl == null
+                      ? Text(
+                        message.senderName.isNotEmpty
+                            ? message.senderName[0].toUpperCase()
+                            : '?',
+                        style: const TextStyle(fontSize: 12),
+                      )
+                      : null,
             ),
             const SizedBox(width: 8),
           ] else if (!isMe && !showAvatar) ...[
@@ -51,14 +54,18 @@ class MessageBubble extends StatelessWidget {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
-                color: isMe 
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey[200],
+                color: isMe ? Theme.of(context).primaryColor : Colors.grey[200],
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(16),
                   topRight: const Radius.circular(16),
-                  bottomLeft: isMe ? const Radius.circular(16) : const Radius.circular(4),
-                  bottomRight: isMe ? const Radius.circular(4) : const Radius.circular(16),
+                  bottomLeft:
+                      isMe
+                          ? const Radius.circular(16)
+                          : const Radius.circular(4),
+                  bottomRight:
+                      isMe
+                          ? const Radius.circular(4)
+                          : const Radius.circular(16),
                 ),
               ),
               child: Column(
@@ -78,22 +85,22 @@ class MessageBubble extends StatelessWidget {
                       Text(
                         _formatTime(message.createdAt),
                         style: TextStyle(
-                          color: isMe 
-                              ? Colors.white.withOpacity(0.7)
-                              : Colors.grey[600],
+                          color:
+                              isMe
+                                  ? Colors.white.withOpacity(0.7)
+                                  : Colors.grey[600],
                           fontSize: 12,
                         ),
                       ),
                       if (isMe) ...[
                         const SizedBox(width: 4),
                         Icon(
-                          message.isRead == true 
-                              ? Icons.done_all 
-                              : Icons.done,
+                          message.isRead == true ? Icons.done_all : Icons.done,
                           size: 16,
-                          color: message.isRead == true 
-                              ? Colors.blue[300]
-                              : Colors.white.withOpacity(0.7),
+                          color:
+                              message.isRead == true
+                                  ? Colors.blue[300]
+                                  : Colors.white.withOpacity(0.7),
                         ),
                       ],
                     ],
@@ -110,11 +117,11 @@ class MessageBubble extends StatelessWidget {
 
   String _formatTime(DateTime? dateTime) {
     if (dateTime == null) return '';
-    
+
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final messageDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
-    
+
     if (messageDate == today) {
       return DateFormat('HH:mm').format(dateTime);
     } else {

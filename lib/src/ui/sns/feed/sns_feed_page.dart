@@ -58,54 +58,58 @@ class SnsFeedPage extends HookConsumerWidget {
         ],
       ),
       body: feedState.when(
-        data: (posts) => RefreshIndicator(
-          onRefresh: feedNotifier.refreshFeed,
-          child: posts.isEmpty
-              ? const Center(
-                  child: Text(
-                    'まだ投稿がありません\\n最初の投稿をしてみましょう！',
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              : ListView.builder(
-                  controller: scrollController,
-                  itemCount: posts.length + (feedNotifier.hasMore ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == posts.length) {
-                      return const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: CircularProgressIndicator(),
+        data:
+            (posts) => RefreshIndicator(
+              onRefresh: feedNotifier.refreshFeed,
+              child:
+                  posts.isEmpty
+                      ? const Center(
+                        child: Text(
+                          'まだ投稿がありません\\n最初の投稿をしてみましょう！',
+                          textAlign: TextAlign.center,
                         ),
-                      );
-                    }
-                    
-                    final post = posts[index];
-                    return PostCard(
-                      post: post,
-                      onLike: () => feedNotifier.toggleLike(post.id!),
-                      onComment: () => _showComments(context, post),
-                      onShare: () => _showShareOptions(context, post),
-                    );
-                  },
-                ),
-        ),
+                      )
+                      : ListView.builder(
+                        controller: scrollController,
+                        itemCount:
+                            posts.length + (feedNotifier.hasMore ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == posts.length) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(16),
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+
+                          final post = posts[index];
+                          return PostCard(
+                            post: post,
+                            onLike: () => feedNotifier.toggleLike(post.id!),
+                            onComment: () => _showComments(context, post),
+                            onShare: () => _showShareOptions(context, post),
+                          );
+                        },
+                      ),
+            ),
         loading: () => const LoadingScreen(),
-        error: (error, stackTrace) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-              const SizedBox(height: 16),
-              const Text('エラーが発生しました'),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: feedNotifier.refreshFeed,
-                child: const Text('再試行'),
+        error:
+            (error, stackTrace) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.grey),
+                  const SizedBox(height: 16),
+                  const Text('エラーが発生しました'),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: feedNotifier.refreshFeed,
+                    child: const Text('再試行'),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showCreatePostDialog(context),
@@ -123,38 +127,39 @@ class SnsFeedPage extends HookConsumerWidget {
 
   void _showComments(BuildContext context, Post post) {
     // TODO(dev): コメント画面への遷移
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('コメント機能は準備中です')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('コメント機能は準備中です')));
   }
 
   void _showShareOptions(BuildContext context, Post post) {
     showModalBottomSheet<void>(
       context: context,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.share),
-              title: const Text('システム共有'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO(dev): システム共有の実装
-              },
+      builder:
+          (context) => Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.share),
+                  title: const Text('システム共有'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // TODO(dev): システム共有の実装
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.link),
+                  title: const Text('リンクをコピー'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    // TODO(dev): リンクコピーの実装
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.link),
-              title: const Text('リンクをコピー'),
-              onTap: () {
-                Navigator.pop(context);
-                // TODO(dev): リンクコピーの実装
-              },
-            ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 }

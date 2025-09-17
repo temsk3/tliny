@@ -29,17 +29,18 @@ class StaffPage extends HookConsumerWidget {
         return Scaffold(
           body: MainBodyWidget(
             body: Center(
-              child: data.isNotEmpty
-                  ? ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      // itemExtent: 100,
-                      itemCount: data.length,
-                      itemBuilder: (_, index) {
-                        final staff = data[index];
-                        return StaffCard(staff: staff);
-                      },
-                    )
-                  : Container(),
+              child:
+                  data.isNotEmpty
+                      ? ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        // itemExtent: 100,
+                        itemCount: data.length,
+                        itemBuilder: (_, index) {
+                          final staff = data[index];
+                          return StaffCard(staff: staff);
+                        },
+                      )
+                      : Container(),
             ),
           ),
         );

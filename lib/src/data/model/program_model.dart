@@ -39,18 +39,18 @@ class Program with _$Program {
   const Program._();
 
   factory Program.empty() => const Program(
-        organizerId: '',
-        name: '',
-        message: '',
-        salesStart: null,
-        salesEnd: null,
-        eventFrom: null,
-        eventTo: null,
-        place: '',
-        isActive: true,
-        isPublish: false,
-        staff: [],
-      );
+    organizerId: '',
+    name: '',
+    message: '',
+    salesStart: null,
+    salesEnd: null,
+    eventFrom: null,
+    eventTo: null,
+    place: '',
+    isActive: true,
+    isPublish: false,
+    staff: [],
+  );
 
   factory Program.fromJson(Map<String, dynamic> json) =>
       _$ProgramFromJson(json);

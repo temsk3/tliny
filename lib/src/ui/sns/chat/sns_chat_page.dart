@@ -24,7 +24,9 @@ class SnsChatPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(snsChatViewModelProvider(conversationId));
-    final chatNotifier = ref.read(snsChatViewModelProvider(conversationId).notifier);
+    final chatNotifier = ref.read(
+      snsChatViewModelProvider(conversationId).notifier,
+    );
     final messageController = useTextEditingController();
     final scrollController = useScrollController();
     final focusNode = useFocusNode();
@@ -53,17 +55,19 @@ class SnsChatPage extends HookConsumerWidget {
           children: [
             CircleAvatar(
               radius: 16,
-              backgroundImage: otherUserPhotoUrl != null
-                  ? NetworkImage(otherUserPhotoUrl!)
-                  : null,
-              child: otherUserPhotoUrl == null
-                  ? Text(
-                      otherUserName.isNotEmpty 
-                          ? otherUserName[0].toUpperCase()
-                          : '?',
-                      style: const TextStyle(fontSize: 14),
-                    )
-                  : null,
+              backgroundImage:
+                  otherUserPhotoUrl != null
+                      ? NetworkImage(otherUserPhotoUrl!)
+                      : null,
+              child:
+                  otherUserPhotoUrl == null
+                      ? Text(
+                        otherUserName.isNotEmpty
+                            ? otherUserName[0].toUpperCase()
+                            : '?',
+                        style: const TextStyle(fontSize: 14),
+                      )
+                      : null,
             ),
             const SizedBox(width: 12),
             Text(otherUserName),
@@ -74,52 +78,64 @@ class SnsChatPage extends HookConsumerWidget {
         children: [
           Expanded(
             child: chatState.when(
-              data: (messages) => messages.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'メッセージがありません\n最初のメッセージを送ってみましょう',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
+              data:
+                  (messages) =>
+                      messages.isEmpty
+                          ? const Center(
+                            child: Text(
+                              'メッセージがありません\n最初のメッセージを送ってみましょう',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          )
+                          : ListView.builder(
+                            controller: scrollController,
+                            padding: const EdgeInsets.all(8),
+                            itemCount: messages.length,
+                            itemBuilder: (context, index) {
+                              final message = messages[index];
+                              final isMe = message.senderId != otherUserId;
+
+                              return MessageBubble(
+                                message: message,
+                                isMe: isMe,
+                                showAvatar: !isMe,
+                                otherUserPhotoUrl: otherUserPhotoUrl,
+                              );
+                            },
+                          ),
+              loading: () => const LoadingScreen(),
+              error:
+                  (error, stackTrace) => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 64,
                           color: Colors.grey,
                         ),
-                      ),
-                    )
-                  : ListView.builder(
-                      controller: scrollController,
-                      padding: const EdgeInsets.all(8),
-                      itemCount: messages.length,
-                      itemBuilder: (context, index) {
-                        final message = messages[index];
-                        final isMe = message.senderId != otherUserId;
-                        
-                        return MessageBubble(
-                          message: message,
-                          isMe: isMe,
-                          showAvatar: !isMe,
-                          otherUserPhotoUrl: otherUserPhotoUrl,
-                        );
-                      },
+                        const SizedBox(height: 16),
+                        const Text('メッセージの読み込みに失敗しました'),
+                        const SizedBox(height: 8),
+                        ElevatedButton(
+                          onPressed: chatNotifier.refreshMessages,
+                          child: const Text('再試行'),
+                        ),
+                      ],
                     ),
-              loading: () => const LoadingScreen(),
-              error: (error, stackTrace) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.grey),
-                    const SizedBox(height: 16),
-                    const Text('メッセージの読み込みに失敗しました'),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: chatNotifier.refreshMessages,
-                      child: const Text('再試行'),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
             ),
           ),
-          _buildMessageInput(context, messageController, focusNode, chatNotifier),
+          _buildMessageInput(
+            context,
+            messageController,
+            focusNode,
+            chatNotifier,
+          ),
         ],
       ),
     );
@@ -136,10 +152,7 @@ class SnsChatPage extends HookConsumerWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         border: Border(
-          top: BorderSide(
-            color: Colors.grey.withOpacity(0.3),
-            width: 0.5,
-          ),
+          top: BorderSide(color: Colors.grey.withOpacity(0.3), width: 0.5),
         ),
       ),
       child: SafeArea(
@@ -161,15 +174,11 @@ class SnsChatPage extends HookConsumerWidget {
                   hintText: 'メッセージを入力...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
+                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(
-                      color: Colors.grey.withOpacity(0.3),
-                    ),
+                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.3)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -207,10 +216,7 @@ class SnsChatPage extends HookConsumerWidget {
     controller.clear();
 
     try {
-      await notifier.sendMessage(
-        receiverId: otherUserId,
-        content: content,
-      );
+      await notifier.sendMessage(receiverId: otherUserId, content: content);
     } catch (e) {
       // エラー時はメッセージを復元
       controller.text = content;

@@ -203,15 +203,18 @@ class CartViewModel extends _$CartViewModel {
       logger.d('updateCart: $data', time: DateTime.now());
     }
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    
+
     // 楽観的更新: UIを即座に更新
     final currentCarts = state.value ?? [];
     final optimisticCarts = [
       for (final cart in currentCarts)
-        if (cart.id == data.id) cart.copyWith(quantity: data.quantity) else cart,
+        if (cart.id == data.id)
+          cart.copyWith(quantity: data.quantity)
+        else
+          cart,
     ];
     state = AsyncValue.data(optimisticCarts);
-    
+
     try {
       final id = await loading.guardFuture(() {
         return cartRepository.updateCart(uid, data);

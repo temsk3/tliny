@@ -11,7 +11,7 @@ class SnsChatViewModel extends _$SnsChatViewModel {
   bool _hasMore = true;
   bool _isLoading = false;
   String? _conversationId;
-  
+
   bool get hasMore => _hasMore;
   bool get isLoading => _isLoading;
   @override
@@ -19,37 +19,39 @@ class SnsChatViewModel extends _$SnsChatViewModel {
 
   @override
   FutureOr<List<DirectMessage>> build(String conversationId) async {
-    logger.d('SnsChatViewModel.build() called with conversationId: $conversationId');
+    logger.d(
+      'SnsChatViewModel.build() called with conversationId: $conversationId',
+    );
     _conversationId = conversationId;
     return loadMessages();
   }
 
   Future<List<DirectMessage>> loadMessages({bool refresh = false}) async {
     if (_isLoading || _conversationId == null) return state.valueOrNull ?? [];
-    
+
     try {
       _isLoading = true;
-      
+
       if (refresh) {
         _hasMore = true;
       }
-      
+
       final snsRepository = ref.read(snsRepositoryProvider);
       final messages = await snsRepository.getMessages(
         conversationId: _conversationId!,
         limit: 50,
       );
-      
+
       _hasMore = messages.length >= 50;
       logger.d('loadMessages success: ${messages.length} messages loaded');
-      
+
       // メッセージを時系列順（古い順）に並び替え
       messages.sort((a, b) {
         final aTime = a.createdAt ?? DateTime.now();
         final bTime = b.createdAt ?? DateTime.now();
         return aTime.compareTo(bTime);
       });
-      
+
       return messages;
     } catch (e, st) {
       logger.e('loadMessages error: $e', error: e, stackTrace: st);
@@ -76,7 +78,7 @@ class SnsChatViewModel extends _$SnsChatViewModel {
     List<String>? attachmentUrls,
   }) async {
     if (content.trim().isEmpty) return;
-    
+
     try {
       final snsRepository = ref.read(snsRepositoryProvider);
       final newMessage = await snsRepository.sendMessage(
@@ -85,12 +87,12 @@ class SnsChatViewModel extends _$SnsChatViewModel {
         type: type,
         attachmentUrls: attachmentUrls,
       );
-      
+
       // 新しいメッセージを既存のリストに追加
       final currentMessages = state.valueOrNull ?? [];
       final updatedMessages = [...currentMessages, newMessage];
       state = AsyncValue.data(updatedMessages);
-      
+
       logger.d('sendMessage success: ${newMessage.id}');
     } catch (e, st) {
       logger.e('sendMessage error: $e', error: e, stackTrace: st);

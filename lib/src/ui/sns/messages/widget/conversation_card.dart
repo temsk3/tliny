@@ -18,37 +18,40 @@ class ConversationCard extends StatelessWidget {
     // 現在のユーザーと相手のユーザー情報を取得
     // TODO: 現在のユーザーIDを取得する機能を実装
     final currentUserId = 'current_user_id'; // 仮の値
-    final otherUserIndex = conversation.participantIds?[0] == currentUserId ? 1 : 0;
-    final otherUserName = conversation.participantNames?.isNotEmpty == true
-        ? conversation.participantNames![otherUserIndex]
-        : 'Unknown User';
-    final otherUserPhotoUrl = conversation.participantPhotoUrls?.isNotEmpty == true
-        ? conversation.participantPhotoUrls![otherUserIndex]
-        : null;
-    
+    final otherUserIndex =
+        conversation.participantIds?[0] == currentUserId ? 1 : 0;
+    final otherUserName =
+        conversation.participantNames?.isNotEmpty == true
+            ? conversation.participantNames![otherUserIndex]
+            : 'Unknown User';
+    final otherUserPhotoUrl =
+        conversation.participantPhotoUrls?.isNotEmpty == true
+            ? conversation.participantPhotoUrls![otherUserIndex]
+            : null;
+
     // 未読数を取得
     final unreadCount = conversation.unreadCounts?[currentUserId] ?? 0;
     final hasUnread = unreadCount > 0;
-    
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       elevation: hasUnread ? 2 : 1,
       child: ListTile(
         onTap: onTap,
         leading: CircleAvatar(
-          backgroundImage: otherUserPhotoUrl != null
-              ? NetworkImage(otherUserPhotoUrl)
-              : null,
-          child: otherUserPhotoUrl == null
-              ? Text(
-                  otherUserName.isNotEmpty 
-                      ? otherUserName[0].toUpperCase()
-                      : '?',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              : null,
+          backgroundImage:
+              otherUserPhotoUrl != null
+                  ? NetworkImage(otherUserPhotoUrl)
+                  : null,
+          child:
+              otherUserPhotoUrl == null
+                  ? Text(
+                    otherUserName.isNotEmpty
+                        ? otherUserName[0].toUpperCase()
+                        : '?',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )
+                  : null,
         ),
         title: Text(
           otherUserName,
@@ -71,40 +74,41 @@ class ConversationCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               _formatDateTime(conversation.lastMessageAt),
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[500],
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
             ),
           ],
         ),
-        trailing: hasUnread
-            ? Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  unreadCount > 99 ? '99+' : unreadCount.toString(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+        trailing:
+            hasUnread
+                ? Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
                   ),
-                ),
-              )
-            : null,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    unreadCount > 99 ? '99+' : unreadCount.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+                : null,
       ),
     );
   }
 
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return '';
-    
+
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inMinutes < 1) {
       return 'たった今';
     } else if (difference.inMinutes < 60) {

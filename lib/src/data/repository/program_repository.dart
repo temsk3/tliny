@@ -47,12 +47,12 @@ class ProgramRepository {
           .where('isSecret', isEqualTo: false)
           .snapshots()
           .map((snapshot) {
-        logger.d('watchEventList: snapshot=$snapshot');
-        return snapshot.docs.map((doc) {
-          logger.d('watchEventList: doc=$doc');
-          return doc.data();
-        }).toList();
-      });
+            logger.d('watchEventList: snapshot=$snapshot');
+            return snapshot.docs.map((doc) {
+              logger.d('watchEventList: doc=$doc');
+              return doc.data();
+            }).toList();
+          });
       return list;
     } on Exception catch (e, st) {
       logger.e('watchEventList: error=$e, stackTrace=$st');
@@ -132,9 +132,8 @@ class ProgramRepository {
   Future<List<Program>> readEvents() async {
     logger.d('readEvents');
     try {
-      final querySnapshot = await _collectionRef
-          .where('isSecret', isEqualTo: false)
-          .get();
+      final querySnapshot =
+          await _collectionRef.where('isSecret', isEqualTo: false).get();
       logger.d('readEvents: querySnapshot=$querySnapshot');
       return querySnapshot.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
@@ -220,11 +219,12 @@ class ProgramRepository {
   Future<Program?> getEventBySecretUrl(String secretUrl) async {
     logger.d('getEventBySecretUrl: secretUrl=$secretUrl');
     try {
-      final querySnapshot = await _collectionRef
-          .where('secretUrl', isEqualTo: secretUrl)
-          .where('isSecret', isEqualTo: true)
-          .limit(1)
-          .get();
+      final querySnapshot =
+          await _collectionRef
+              .where('secretUrl', isEqualTo: secretUrl)
+              .where('isSecret', isEqualTo: true)
+              .limit(1)
+              .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         logger.d('getEventBySecretUrl: シークレットイベントを取得しました');

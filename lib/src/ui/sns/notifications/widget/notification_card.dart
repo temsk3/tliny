@@ -16,7 +16,7 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUnread = notification.isRead != true;
-    
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       elevation: isUnread ? 2 : 1,
@@ -41,23 +41,21 @@ class NotificationCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               _formatDateTime(notification.createdAt),
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[500],
-              ),
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
             ),
           ],
         ),
-        trailing: isUnread
-            ? Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
-                ),
-              )
-            : null,
+        trailing:
+            isUnread
+                ? Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                  ),
+                )
+                : null,
       ),
     );
   }
@@ -107,20 +105,16 @@ class NotificationCard extends StatelessWidget {
 
     return CircleAvatar(
       backgroundColor: iconColor.withOpacity(0.1),
-      child: Icon(
-        iconData,
-        color: iconColor,
-        size: 20,
-      ),
+      child: Icon(iconData, color: iconColor, size: 20),
     );
   }
 
   String _formatDateTime(DateTime? dateTime) {
     if (dateTime == null) return '';
-    
+
     final now = DateTime.now();
     final difference = now.difference(dateTime);
-    
+
     if (difference.inMinutes < 1) {
       return 'たった今';
     } else if (difference.inMinutes < 60) {

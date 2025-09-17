@@ -18,7 +18,9 @@ void main() {
       mockUsageHistoryRepository = MockUsageHistoryRepository();
       container = ProviderContainer(
         overrides: [
-          usageHistoryRepositoryProvider.overrideWithValue(mockUsageHistoryRepository),
+          usageHistoryRepositoryProvider.overrideWithValue(
+            mockUsageHistoryRepository,
+          ),
         ],
       );
     });
