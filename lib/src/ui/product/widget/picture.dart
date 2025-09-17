@@ -21,50 +21,47 @@ class PictureCover extends HookConsumerWidget {
       logger.d('PictureCover build'); // build時のロギング
     }
     return Center(
-        child:
-            (picture == null || picture == '')
-                ? const Text(
-                  'NoImage',
-                  // style: theme.textTheme.h30,
-                )
-                : SizedBox.expand(
-                  child: CachedNetworkImage(
-                    imageUrl: picture.toString(),
-                    fit: BoxFit.cover,
-                    placeholder:
-                        (context, url) => Container(
-                          color: Colors.grey[300],
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                    errorWidget: (context, url, error) {
-                      if (kDebugMode) {
-                        logger.e('CachedNetworkImage error: $error');
-                      }
-                      return Container(
-                        color: Colors.grey[300],
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error, color: Colors.red),
-                            SizedBox(height: 4),
-                            Text(
-                              '画像読み込みエラー',
-                              style: TextStyle(fontSize: 10, color: Colors.red),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    // メモリ最適化のためのサイズ指定
-                    memCacheWidth:
-                        (200 * MediaQuery.of(context).devicePixelRatio).round(),
-                    memCacheHeight:
-                        (200 * MediaQuery.of(context).devicePixelRatio).round(),
+      child: (picture == null || picture == '')
+          ? const Text(
+              'NoImage',
+              // style: theme.textTheme.h30,
+            )
+          : SizedBox.expand(
+              child: CachedNetworkImage(
+                imageUrl: picture.toString(),
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[300],
+                  child: const Center(
+                    child: CircularProgressIndicator(),
                   ),
                 ),
-      ),
+                errorWidget: (context, url, error) {
+                  if (kDebugMode) {
+                    logger.e('CachedNetworkImage error: $error');
+                  }
+                  return Container(
+                    color: Colors.grey[300],
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.error, color: Colors.red),
+                        SizedBox(height: 4),
+                        Text(
+                          '画像読み込みエラー',
+                          style: TextStyle(fontSize: 10, color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                // メモリ最適化のためのサイズ指定
+                memCacheWidth:
+                    (200 * MediaQuery.of(context).devicePixelRatio).round(),
+                memCacheHeight:
+                    (200 * MediaQuery.of(context).devicePixelRatio).round(),
+              ),
+            ),
     );
   }
 }
