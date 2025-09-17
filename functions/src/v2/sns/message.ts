@@ -153,39 +153,41 @@ export const v2_sns_message_sendMessage = onCall<{
 })
 
 // 会話一覧取得
-export const v2_sns_message_getConversations = onCall<{ limit?: number }>(async (request) => {
-  const methodName = 'v2_sns_message_getConversations'
+export const v2_sns_message_getConversations = onCall<{ limit?: number }>(
+  async (request) => {
+    const methodName = 'v2_sns_message_getConversations'
 
-  try {
-    V2Logger.start(methodName, request.data)
+    try {
+      V2Logger.start(methodName, request.data)
 
-    const { limit = 20 } = request.data
-    const userId = request.auth?.uid
+      const { limit = 20 } = request.data
+      const userId = request.auth?.uid
 
-    if (!userId) {
-      throw new Error('Authentication required')
+      if (!userId) {
+        throw new Error('Authentication required')
+      }
+
+      const conversationsQuery = await db
+        .collection('v/1/conversations')
+        .where('participantIds', 'array-contains', userId)
+        .orderBy('lastMessageAt', 'desc')
+        .limit(limit)
+        .get()
+
+      const conversations = conversationsQuery.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+
+      V2Logger.success(methodName, { userId, count: conversations.length })
+      return { conversations }
+    } catch (error: any) {
+      V2Logger.error(methodName, error, request.data)
+      const appEx = ErrorHandler.convertToAppException(error, methodName)
+      throw ErrorHandler.convertToHttpsError(appEx)
     }
-
-    const conversationsQuery = await db
-      .collection('v/1/conversations')
-      .where('participantIds', 'array-contains', userId)
-      .orderBy('lastMessageAt', 'desc')
-      .limit(limit)
-      .get()
-
-    const conversations = conversationsQuery.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }))
-
-    V2Logger.success(methodName, { userId, count: conversations.length })
-    return { conversations }
-  } catch (error: any) {
-    V2Logger.error(methodName, error, request.data)
-    const appEx = ErrorHandler.convertToAppException(error, methodName)
-    throw ErrorHandler.convertToHttpsError(appEx)
-  }
-})
+  },
+)
 
 // メッセージ一覧取得
 export const v2_sns_message_getMessages = onCall<{

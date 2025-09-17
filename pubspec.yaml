@@ -84,7 +84,6 @@ dependencies:
   flutter_native_splash:
   go_router:
   flutter_gen:
-  pedantic_mono:
 
 dev_dependencies:
   flutter_test:

@@ -144,120 +144,124 @@ export const v2_sns_post_getFeed = onCall<{
 })
 
 // いいね追加
-export const v2_sns_post_likePost = onCall<{ postId: string }>(async (request) => {
-  const methodName = 'v2_sns_post_likePost'
+export const v2_sns_post_likePost = onCall<{ postId: string }>(
+  async (request) => {
+    const methodName = 'v2_sns_post_likePost'
 
-  try {
-    V2Logger.start(methodName, request.data)
+    try {
+      V2Logger.start(methodName, request.data)
 
-    const { postId } = request.data
-    const userId = request.auth?.uid
+      const { postId } = request.data
+      const userId = request.auth?.uid
 
-    if (!userId) {
-      throw new Error('Authentication required')
-    }
-
-    if (!postId) {
-      throw new Error('postId is required')
-    }
-
-    // ユーザー情報を取得
-    const userDoc = await db.collection('v/1/users').doc(userId).get()
-    if (!userDoc.exists) {
-      throw new Error('User not found')
-    }
-
-    const userData = userDoc.data()
-
-    await db.runTransaction(async (transaction) => {
-      // 既存のいいねをチェック
-      const existingLikeQuery = await db
-        .collection('v/1/post_likes')
-        .where('postId', '==', postId)
-        .where('userId', '==', userId)
-        .limit(1)
-        .get()
-
-      if (!existingLikeQuery.empty) {
-        throw new Error('Already liked this post')
+      if (!userId) {
+        throw new Error('Authentication required')
       }
 
-      // いいねを作成
-      const likeData = {
-        postId,
-        userId,
-        userName: userData?.displayName || userData?.name || 'Unknown User',
-        createdAt: FieldValue.serverTimestamp(),
+      if (!postId) {
+        throw new Error('postId is required')
       }
 
-      const likeRef = db.collection('v/1/post_likes').doc()
-      transaction.set(likeRef, likeData)
+      // ユーザー情報を取得
+      const userDoc = await db.collection('v/1/users').doc(userId).get()
+      if (!userDoc.exists) {
+        throw new Error('User not found')
+      }
 
-      // 投稿のいいね数を更新
-      const postRef = db.collection('v/1/posts').doc(postId)
-      transaction.update(postRef, {
-        likesCount: FieldValue.increment(1),
-        updatedAt: FieldValue.serverTimestamp(),
+      const userData = userDoc.data()
+
+      await db.runTransaction(async (transaction) => {
+        // 既存のいいねをチェック
+        const existingLikeQuery = await db
+          .collection('v/1/post_likes')
+          .where('postId', '==', postId)
+          .where('userId', '==', userId)
+          .limit(1)
+          .get()
+
+        if (!existingLikeQuery.empty) {
+          throw new Error('Already liked this post')
+        }
+
+        // いいねを作成
+        const likeData = {
+          postId,
+          userId,
+          userName: userData?.displayName || userData?.name || 'Unknown User',
+          createdAt: FieldValue.serverTimestamp(),
+        }
+
+        const likeRef = db.collection('v/1/post_likes').doc()
+        transaction.set(likeRef, likeData)
+
+        // 投稿のいいね数を更新
+        const postRef = db.collection('v/1/posts').doc(postId)
+        transaction.update(postRef, {
+          likesCount: FieldValue.increment(1),
+          updatedAt: FieldValue.serverTimestamp(),
+        })
       })
-    })
 
-    V2Logger.success(methodName, { postId, userId })
-    return { success: true }
-  } catch (error: any) {
-    V2Logger.error(methodName, error, request.data)
-    const appEx = ErrorHandler.convertToAppException(error, methodName)
-    throw ErrorHandler.convertToHttpsError(appEx)
-  }
-})
+      V2Logger.success(methodName, { postId, userId })
+      return { success: true }
+    } catch (error: any) {
+      V2Logger.error(methodName, error, request.data)
+      const appEx = ErrorHandler.convertToAppException(error, methodName)
+      throw ErrorHandler.convertToHttpsError(appEx)
+    }
+  },
+)
 
 // いいね削除
-export const v2_sns_post_unlikePost = onCall<{ postId: string }>(async (request) => {
-  const methodName = 'v2_sns_post_unlikePost'
+export const v2_sns_post_unlikePost = onCall<{ postId: string }>(
+  async (request) => {
+    const methodName = 'v2_sns_post_unlikePost'
 
-  try {
-    V2Logger.start(methodName, request.data)
+    try {
+      V2Logger.start(methodName, request.data)
 
-    const { postId } = request.data
-    const userId = request.auth?.uid
+      const { postId } = request.data
+      const userId = request.auth?.uid
 
-    if (!userId) {
-      throw new Error('Authentication required')
-    }
-
-    if (!postId) {
-      throw new Error('postId is required')
-    }
-
-    await db.runTransaction(async (transaction) => {
-      // 既存のいいねを取得
-      const likeQuery = await db
-        .collection('v/1/post_likes')
-        .where('postId', '==', postId)
-        .where('userId', '==', userId)
-        .limit(1)
-        .get()
-
-      if (likeQuery.empty) {
-        throw new Error('Like not found')
+      if (!userId) {
+        throw new Error('Authentication required')
       }
 
-      // いいねを削除
-      const likeDoc = likeQuery.docs[0]
-      transaction.delete(likeDoc.ref)
+      if (!postId) {
+        throw new Error('postId is required')
+      }
 
-      // 投稿のいいね数を更新
-      const postRef = db.collection('v/1/posts').doc(postId)
-      transaction.update(postRef, {
-        likesCount: FieldValue.increment(-1),
-        updatedAt: FieldValue.serverTimestamp(),
+      await db.runTransaction(async (transaction) => {
+        // 既存のいいねを取得
+        const likeQuery = await db
+          .collection('v/1/post_likes')
+          .where('postId', '==', postId)
+          .where('userId', '==', userId)
+          .limit(1)
+          .get()
+
+        if (likeQuery.empty) {
+          throw new Error('Like not found')
+        }
+
+        // いいねを削除
+        const likeDoc = likeQuery.docs[0]
+        transaction.delete(likeDoc.ref)
+
+        // 投稿のいいね数を更新
+        const postRef = db.collection('v/1/posts').doc(postId)
+        transaction.update(postRef, {
+          likesCount: FieldValue.increment(-1),
+          updatedAt: FieldValue.serverTimestamp(),
+        })
       })
-    })
 
-    V2Logger.success(methodName, { postId, userId })
-    return { success: true }
-  } catch (error: any) {
-    V2Logger.error(methodName, error, request.data)
-    const appEx = ErrorHandler.convertToAppException(error, methodName)
-    throw ErrorHandler.convertToHttpsError(appEx)
-  }
-})
+      V2Logger.success(methodName, { postId, userId })
+      return { success: true }
+    } catch (error: any) {
+      V2Logger.error(methodName, error, request.data)
+      const appEx = ErrorHandler.convertToAppException(error, methodName)
+      throw ErrorHandler.convertToHttpsError(appEx)
+    }
+  },
+)

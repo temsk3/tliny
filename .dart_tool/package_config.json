@@ -591,9 +591,9 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///Users/keizo/fvm/versions/3.35.3/packages/flutter",
+      "rootUri": "file:///Users/keizo/fvm/versions/3.32.8/packages/flutter",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_cache_manager",
@@ -633,9 +633,9 @@
     },
     {
       "name": "flutter_localizations",
-      "rootUri": "file:///Users/keizo/fvm/versions/3.35.3/packages/flutter_localizations",
+      "rootUri": "file:///Users/keizo/fvm/versions/3.32.8/packages/flutter_localizations",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_multi_formatter",
@@ -669,15 +669,15 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///Users/keizo/fvm/versions/3.35.3/packages/flutter_test",
+      "rootUri": "file:///Users/keizo/fvm/versions/3.32.8/packages/flutter_test",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///Users/keizo/fvm/versions/3.35.3/packages/flutter_web_plugins",
+      "rootUri": "file:///Users/keizo/fvm/versions/3.32.8/packages/flutter_web_plugins",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "fluttertoast",
@@ -921,19 +921,19 @@
     },
     {
       "name": "leak_tracker",
-      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/leak_tracker-11.0.2",
+      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/leak_tracker-10.0.9",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "leak_tracker_flutter_testing",
-      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.10",
+      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.9",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "leak_tracker_testing",
-      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.2",
+      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -1092,12 +1092,6 @@
       "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/pdf_widget_wrapper-1.0.4",
       "packageUri": "lib/",
       "languageVersion": "2.18"
-    },
-    {
-      "name": "pedantic_mono",
-      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/pedantic_mono-1.30.3",
-      "packageUri": "lib/",
-      "languageVersion": "3.7"
     },
     {
       "name": "petitparser",
@@ -1293,9 +1287,9 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/keizo/fvm/versions/3.35.3/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Users/keizo/fvm/versions/3.32.8/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "source_gen",
@@ -1395,7 +1389,7 @@
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/test_api-0.7.6",
+      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/test_api-0.7.4",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -1509,9 +1503,9 @@
     },
     {
       "name": "vector_math",
-      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/vector_math-2.2.0",
+      "rootUri": "file:///Users/keizo/.pub-cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
-      "languageVersion": "3.1"
+      "languageVersion": "2.14"
     },
     {
       "name": "vm_service",
@@ -1575,8 +1569,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.9.2",
-  "flutterRoot": "file:///Users/keizo/fvm/versions/3.35.3",
-  "flutterVersion": "3.35.3",
+  "generatorVersion": "3.8.1",
+  "flutterRoot": "file:///Users/keizo/fvm/versions/3.32.8",
+  "flutterVersion": "3.32.8",
   "pubCache": "file:///Users/keizo/.pub-cache"
 }

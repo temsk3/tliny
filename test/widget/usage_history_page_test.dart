@@ -34,7 +34,7 @@ void main() {
         child: const UsageHistoryPage(),
         overrides: [
           usageHistoryViewModelProvider.overrideWith(
-            (ref) => Future.value(mockUsageHistories),
+            () => MockUsageHistoryViewModel(mockUsageHistories),
           ),
         ],
       );
@@ -61,7 +61,7 @@ void main() {
             child: const UsageHistoryPage(),
             overrides: [
               usageHistoryViewModelProvider.overrideWith(
-                (ref) => Future.value(<UsageHistory>[]),
+                () => MockUsageHistoryViewModel(<UsageHistory>[]),
               ),
             ],
           ),
@@ -82,10 +82,7 @@ void main() {
             child: const UsageHistoryPage(),
             overrides: [
               usageHistoryViewModelProvider.overrideWith(
-                (ref) => Future.delayed(
-                  const Duration(seconds: 1),
-                  () => mockUsageHistories,
-                ),
+                () => MockUsageHistoryViewModel(mockUsageHistories),
               ),
             ],
           ),
@@ -105,7 +102,7 @@ void main() {
             child: const UsageHistoryPage(),
             overrides: [
               usageHistoryViewModelProvider.overrideWith(
-                (ref) => Future.error(Exception('Test error')),
+                () => MockUsageHistoryViewModel.error(Exception('Test error')),
               ),
             ],
           ),

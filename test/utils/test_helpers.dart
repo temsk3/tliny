@@ -5,6 +5,8 @@ import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
+import 'package:tliny/src/data/model/usage_history_model.dart';
+import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 /// テスト用のAppLocalizationsモック
 class MockAppLocalizations extends AppLocalizations {
@@ -130,7 +132,7 @@ class TestHelpers {
 
   /// テスト用のAppLocalizationsを作成
   static MockAppLocalizations createMockL10n() {
-    return const MockAppLocalizations();
+    return MockAppLocalizations();
   }
 
   /// テスト用のProductを作成
@@ -241,4 +243,22 @@ class TestConstants {
   static const testPrice = 1000;
   static const testDescription = 'Test description';
   static const testImageUrl = 'https://example.com/image.jpg';
+}
+
+/// テスト用のUsageHistoryViewModelモック
+class MockUsageHistoryViewModel extends UsageHistoryViewModel {
+  final List<UsageHistory> _data;
+  final Exception? _error;
+
+  MockUsageHistoryViewModel(this._data) : _error = null;
+
+  MockUsageHistoryViewModel.error(this._error) : _data = [];
+
+  @override
+  Future<List<UsageHistory>> build() async {
+    if (_error != null) {
+      throw _error!;
+    }
+    return _data;
+  }
 }

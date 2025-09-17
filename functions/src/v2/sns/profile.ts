@@ -5,72 +5,74 @@ import { db } from '../../utils/firebase_utils'
 import { ErrorHandler } from '../../utils/error_handler'
 
 // プロファイル取得
-export const v2_sns_profile_getProfile = onCall<{ userId: string }>(async (request) => {
-  const methodName = 'v2_sns_profile_getProfile'
+export const v2_sns_profile_getProfile = onCall<{ userId: string }>(
+  async (request) => {
+    const methodName = 'v2_sns_profile_getProfile'
 
-  try {
-    V2Logger.start(methodName, request.data)
+    try {
+      V2Logger.start(methodName, request.data)
 
-    const { userId } = request.data
+      const { userId } = request.data
 
-    if (!userId) {
-      throw new Error('userId is required')
-    }
-
-    // プロファイル情報を取得
-    const profileDoc = await db
-      .collection('v/1/user_profiles')
-      .doc(userId)
-      .get()
-
-    if (!profileDoc.exists) {
-      // プロファイルが存在しない場合は基本情報で作成
-      const userDoc = await db.collection('v/1/users').doc(userId).get()
-      if (!userDoc.exists) {
-        throw new Error('User not found')
+      if (!userId) {
+        throw new Error('userId is required')
       }
 
-      const userData = userDoc.data()
-      const defaultProfile = {
-        userId,
-        displayName: userData?.name || 'Unknown User',
-        bio: '',
-        profileImageUrl: userData?.photoURL || null,
-        coverImageUrl: null,
-        followersCount: 0,
-        followingCount: 0,
-        postsCount: 0,
-        isPrivate: false,
-        createdAt: FieldValue.serverTimestamp(),
-        updatedAt: FieldValue.serverTimestamp(),
+      // プロファイル情報を取得
+      const profileDoc = await db
+        .collection('v/1/user_profiles')
+        .doc(userId)
+        .get()
+
+      if (!profileDoc.exists) {
+        // プロファイルが存在しない場合は基本情報で作成
+        const userDoc = await db.collection('v/1/users').doc(userId).get()
+        if (!userDoc.exists) {
+          throw new Error('User not found')
+        }
+
+        const userData = userDoc.data()
+        const defaultProfile = {
+          userId,
+          displayName: userData?.name || 'Unknown User',
+          bio: '',
+          profileImageUrl: userData?.photoURL || null,
+          coverImageUrl: null,
+          followersCount: 0,
+          followingCount: 0,
+          postsCount: 0,
+          isPrivate: false,
+          createdAt: FieldValue.serverTimestamp(),
+          updatedAt: FieldValue.serverTimestamp(),
+        }
+
+        await db.collection('v/1/user_profiles').doc(userId).set(defaultProfile)
+
+        V2Logger.success(methodName, { userId, created: true })
+        return {
+          profile: {
+            id: userId,
+            ...defaultProfile,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        }
       }
 
-      await db.collection('v/1/user_profiles').doc(userId).set(defaultProfile)
-
-      V2Logger.success(methodName, { userId, created: true })
-      return {
-        profile: {
-          id: userId,
-          ...defaultProfile,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
+      const profile = {
+        id: profileDoc.id,
+        ...profileDoc.data(),
       }
-    }
 
-    const profile = {
-      id: profileDoc.id,
-      ...profileDoc.data(),
+      V2Logger.success(methodName, { userId })
+      return { profile }
+    } catch (error: any) {
+      V2Logger.error(methodName, error, request.data)
+      const appEx = ErrorHandler.convertToAppException(error, methodName)
+      throw ErrorHandler.convertToHttpsError(appEx)
     }
-
-    V2Logger.success(methodName, { userId })
-    return { profile }
-  } catch (error: any) {
-    V2Logger.error(methodName, error, request.data)
-    const appEx = ErrorHandler.convertToAppException(error, methodName)
-    throw ErrorHandler.convertToHttpsError(appEx)
-  }
-})
+  },
+)
 
 // プロファイル更新
 export const v2_sns_profile_updateProfile = onCall<{
