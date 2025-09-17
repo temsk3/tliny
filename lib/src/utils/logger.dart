@@ -20,6 +20,6 @@ final logger = Logger(
     printEmojis: true,
 
     /// ログ出力にタイムスタンプを表示するかどうか
-    printTime: true,
+    dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
   ),
 );

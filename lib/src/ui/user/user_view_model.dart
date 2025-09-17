@@ -270,10 +270,6 @@ class UserViewModel extends _$UserViewModel {
         error: e,
         stackTrace: st,
       );
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
