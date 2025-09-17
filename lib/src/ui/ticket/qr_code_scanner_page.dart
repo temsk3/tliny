@@ -475,7 +475,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
                 heroTag: 'qr_scanner_fab',
                 onPressed: () async {
                   try {
-                    print('FloatingActionButton onPressed'); // 追加
+                    debugPrint('FloatingActionButton onPressed'); // 追加
                     isDialogShowing.value = true;
                     await mobileScannerController.stop();
                     bool? confirmed = false;
@@ -523,9 +523,9 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
                     if (confirmed == true) {
                       try {
-                        print('Updating database tickets...');
+                        debugPrint('Updating database tickets...');
                         await viewModel.updateDatabaseTickets(tickets);
-                        print('Tickets updated successfully.');
+                        debugPrint('Tickets updated successfully.');
                         await Future.delayed(const Duration(milliseconds: 5));
                         viewModel.resetUserId();
                         scannedTickets.value = {};

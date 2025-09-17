@@ -46,7 +46,7 @@ class TicketListViewModel extends _$TicketListViewModel {
   // 期限切れチケットの表示・非表示を切り替える
   void toggleExpiredTicketsVisibility() {
     showExpiredTickets = !showExpiredTickets;
-    print('toggleExpiredTicketsVisibility: $showExpiredTickets');
+    debugPrint('toggleExpiredTicketsVisibility: $showExpiredTickets');
     // 状態を更新してUIの再構築を促す
     state = AsyncValue.data({...selectedTicketIds});
   }
@@ -87,7 +87,7 @@ class TicketListViewModel extends _$TicketListViewModel {
     // チケットの有効期限が設定されている場合
     if (ticket.expirationTo != null) {
       final isExpired = ticket.expirationTo!.isBefore(now);
-      print(
+      debugPrint(
         'isTicketExpired (ticket.expirationTo): ${ticket.id} -> $isExpired (${ticket.expirationTo} vs $now)',
       );
       return isExpired;
@@ -100,23 +100,23 @@ class TicketListViewModel extends _$TicketListViewModel {
             ref.read(programStreamProvider(ticket.eventId!)).valueOrNull;
         if (event != null && event.eventTo != null) {
           final isExpired = event.eventTo!.isBefore(now);
-          print(
+          debugPrint(
             'isTicketExpired (event.eventTo): ${ticket.id} -> $isExpired (${event.eventTo} vs $now)',
           );
           return isExpired;
         } else {
-          print(
+          debugPrint(
             'isTicketExpired (no event data): ${ticket.id} -> false (event: $event)',
           );
         }
       } catch (e) {
-        print('isTicketExpired (error): ${ticket.id} -> false (error: $e)');
+        debugPrint('isTicketExpired (error): ${ticket.id} -> false (error: $e)');
         // エラーが発生した場合は期限切れでないとみなす
         return false;
       }
     }
 
-    print('isTicketExpired (default): ${ticket.id} -> false');
+    debugPrint('isTicketExpired (default): ${ticket.id} -> false');
     return false; // デフォルトでは期限切れでない
   }
 
@@ -128,7 +128,7 @@ class TicketListViewModel extends _$TicketListViewModel {
 
     final filteredTickets =
         tickets.where((ticket) => !isTicketExpired(ticket)).toList();
-    print(
+    debugPrint(
       'filterExpiredTickets: ${tickets.length} -> ${filteredTickets.length}',
     );
     return filteredTickets;
@@ -163,7 +163,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       }
     }
 
-    print(
+    debugPrint(
       'filterEventsWithNoValidTickets (expired hidden): ${groupedTickets.length} -> ${filteredMap.length}',
     );
     return filteredMap;

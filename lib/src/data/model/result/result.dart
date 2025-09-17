@@ -41,7 +41,7 @@ class Result<T> with _$Result<T> {
       success: (data) => data,
       failure: (e, st) {
         if (kDebugMode) {
-          print('$e\n$st');
+          debugPrint('Result error: $e\n$st');
         }
         return throw e;
       }, // => throw e,
