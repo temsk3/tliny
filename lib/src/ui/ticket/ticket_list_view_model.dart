@@ -186,11 +186,11 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('getTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -261,11 +261,11 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('Error updating ticket $value: $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -298,11 +298,11 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('generatePdfUuidsForTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -318,11 +318,11 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('printingTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -338,11 +338,11 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('usedTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 

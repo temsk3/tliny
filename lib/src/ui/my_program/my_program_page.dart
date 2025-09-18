@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../data/model/exception/app_exception.dart';
 import '../../data/model/my_program_model.dart';
-import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../ui/my_program/my_program_view_model.dart';
@@ -21,7 +20,7 @@ class MyProgramPage extends HookConsumerWidget {
     // テーマを取得
     // final theme = ref.watch(appThemeProvider);
     // ローカリゼーションを取得
-    final l10n = useL10n();
+    // final l10n = useL10n();
     // ルーターを取得
     // final appRoute = useRouter();
 

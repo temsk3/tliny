@@ -240,7 +240,7 @@ class InCartElevatedButton extends HookWidget {
         );
         // AsyncValueの状態を考慮して認証状態を判定
         final isAuthenticated = authState.hasValue && auth == true;
-        final isZeroOrFree = product.price == 0;
+        // final isZeroOrFree = product.price == 0;
         return StreamBuilder<bool>(
           stream: ref
               .read(userRepositoryProvider)

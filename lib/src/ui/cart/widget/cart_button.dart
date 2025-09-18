@@ -479,7 +479,7 @@ class PaymentButton extends HookWidget {
               actions: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    if (context.mounted) Navigator.of(context).pop();
                   },
                   child: Text(l10n.ok),
                 ),

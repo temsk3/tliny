@@ -269,7 +269,7 @@ class TicketListPage extends HookConsumerWidget {
 
     return ExpansionTile(
       leading: PictureView(
-        picture: event.pictureURL ?? [],
+        picture: event.pictureURL,
         index: 0,
         height: 45,
         width: 80,
@@ -375,7 +375,7 @@ class TicketListPage extends HookConsumerWidget {
       secondary: Stack(
         children: [
           PictureView(
-            picture: ticket.pictureURL ?? [],
+            picture: ticket.pictureURL,
             index: 0,
             height: 45,
             width: 80,

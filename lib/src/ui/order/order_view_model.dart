@@ -44,11 +44,10 @@ class OrderViewModel extends _$OrderViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readOrderDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
       );
-      rethrow;
     }
   }
 

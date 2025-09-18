@@ -29,6 +29,12 @@ import '../../ui/product/product_page.dart';
 import '../../ui/program/program_details_page.dart';
 import '../../ui/program/program_edit_page.dart';
 import '../../ui/program/program_page.dart';
+import '../../ui/secret_event/secret_event_page.dart';
+import '../../ui/sns/chat/sns_chat_page.dart';
+import '../../ui/sns/feed/sns_feed_page.dart';
+import '../../ui/sns/messages/sns_messages_page.dart';
+import '../../ui/sns/profile/profile_page.dart';
+import '../../ui/sns/search/search_page.dart';
 import '../../ui/terms/terms_page.dart';
 import '../../ui/ticket/qr_code_display_page.dart';
 import '../../ui/ticket/qr_code_scanner_page.dart';
@@ -40,12 +46,6 @@ import '../../ui/usage_history/history_page.dart';
 import '../../ui/user/owner_detail_page.dart';
 import '../../ui/user/user_edit_page.dart';
 import '../../ui/user/user_page.dart';
-import '../../ui/sns/feed/sns_feed_page.dart';
-import '../../ui/sns/messages/sns_messages_page.dart';
-import '../../ui/sns/chat/sns_chat_page.dart';
-import '../../ui/sns/profile/profile_page.dart';
-import '../../ui/sns/search/search_page.dart';
-import '../../ui/secret_event/secret_event_page.dart';
 
 part 'routes.g.dart';
 
@@ -193,9 +193,9 @@ class AppShellRoute extends StatefulShellRouteData {
   Widget builder(
     BuildContext context,
     GoRouterState state,
-    StatefulNavigationShell navigatorShell,
+    StatefulNavigationShell navigationShell,
   ) {
-    return HomePage(navigationShell: navigatorShell);
+    return HomePage(navigationShell: navigationShell);
   }
 }
 

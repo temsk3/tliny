@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -13,17 +13,13 @@ import 'base_repository.dart';
 part 'sns_repository.g.dart';
 
 @Riverpod(keepAlive: true)
-SnsRepository snsRepository(SnsRepositoryRef ref) {
-  return SnsRepository(
-    ref.watch(firebaseFunctionsProvider),
-    ref.watch(firebaseFirestoreProvider),
-  );
+SnsRepository snsRepository(Ref ref) {
+  return SnsRepository(ref.watch(firebaseFunctionsProvider));
 }
 
 class SnsRepository extends BaseRepository {
-  SnsRepository(this._func, this._db);
+  SnsRepository(this._func);
   final FirebaseFunctions _func;
-  final FirebaseFirestore _db;
 
   @override
   FirebaseFunctions getFunctions() => _func;

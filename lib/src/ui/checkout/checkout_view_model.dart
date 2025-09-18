@@ -54,11 +54,7 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('openUrl: error=$e, stackTrace=$st', time: DateTime.now());
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -473,7 +469,7 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
         throw const AuthenticationException(message: 'ユーザーが認証されていません');
       }
       final uid = user.uid;
-      final userName = user.displayName ?? '';
+      final userName = user.displayName;
       final now = DateTime.now();
 
       // 商品情報取得
@@ -484,7 +480,7 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       for (final cart in cartList) {
         final product = await productRepo.getProduct(cart.productId!);
         // 在庫減少
-        final newStock = (product.stock ?? 0) - cart.quantity;
+        final newStock = (product.stock) - cart.quantity;
         final updatedProduct = product.copyWith(stock: newStock);
         await productRepo.updateProduct(updatedProduct);
         updatedProducts.add(updatedProduct);
@@ -505,7 +501,7 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
             organizerId: product.organizerId,
             eventId: product.eventId,
             eventName: product.eventName,
-            expirationLink: product.expirationLink ?? true,
+            expirationLink: product.expirationLink ?? false,
           ),
         );
         for (var i = 0; i < cart.quantity; i++) {

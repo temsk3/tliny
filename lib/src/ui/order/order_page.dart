@@ -5,7 +5,6 @@ import 'package:tliny/src/data/repository/program_repository.dart';
 
 import '../../data/model/order_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
@@ -18,7 +17,6 @@ class OrderPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
     final state = ref.watch(orderViewModelProvider);
 
     return Scaffold(

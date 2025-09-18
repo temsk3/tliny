@@ -29,7 +29,7 @@ class OwnerDetailPage extends HookConsumerWidget {
     final ownerAsyncValue = ref.watch(publicUserStreamProvider(ownerId));
 
     // リポジトリを直接使用してイベント一覧を取得
-    final programRepository = ref.watch(programRepositoryProvider);
+    // final programRepository = ref.watch(programRepositoryProvider);
     final ownerProgramsAsyncValue = ref.watch(ownerProgramsProvider(ownerId));
 
     // デバッグ情報をログ出力

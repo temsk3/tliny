@@ -9,7 +9,6 @@ import '../model/ticket_model.dart';
 
 part 'ticket_repository.g.dart';
 
-const _defaultPath = 'v/1';
 const _collectionPath = 'v/1/users'; // 明示的にusersに固定
 const _ticketCollectionPath = 'v/1/tickets'; // 明示的に
 const _usageHistoryCollectionPath = 'use_of_tickets'; // 利用履歴はusers配下のみ

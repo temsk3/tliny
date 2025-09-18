@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
-import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/asyncvalue_widget.dart';
 import 'product_state.dart';
 import 'widget/product_card.dart';
@@ -16,7 +15,7 @@ class ProductListPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
-    // final l10n = useL10n();
+    // // final l10n = useL10n();
     // final appRoute = useRouter();
     // final state = ref.watch(
     //   productListStateProvider(ProductQueryParameter(program.id, genre)),

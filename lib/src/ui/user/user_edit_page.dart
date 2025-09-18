@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/error_handler.dart';
 import '../../ui/common/loading_screen.dart';
 import '../../ui/common/main_body.dart';
@@ -22,7 +21,7 @@ class UserEditPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
+    // final appMediaQuery = useMediaQuery();
     final state = ref.watch(userViewModelProvider);
     final viewModel = ref.watch(userViewModelProvider.notifier);
     final isLoading = ref.watch(globalLoadingControllerProvider);

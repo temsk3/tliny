@@ -5,7 +5,6 @@ import '../../ui/common/main_body.dart';
 import '../../ui/program/program_state.dart';
 import '../../ui/program/widget/program_button.dart';
 import '../common/asyncvalue_widget.dart';
-import 'program_view_model.dart';
 import 'widget/program_card.dart';
 
 // final logger = Logger();
@@ -16,22 +15,20 @@ class ProgramPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final theme = ref.watch(appThemeProvider);
-    // final l10n = useL10n();
+    // // final theme = ref.watch(appThemeProvider);
+    // // final l10n = useL10n();
     // final appRoute = useRouter();
     // final appMQ = useMediaQuery();
     final state = ref.watch(programsStateProvider);
     // final state = ref.watch(programViewModelProvider);
-    final viewModel = ref.watch(programViewModelProvider.notifier);
 
-    // final authState = ref.watch(authViewModelProvider);
-    // final uid = authState?.uid;
+    // // final authState = ref.watch(authViewModelProvider);
+    // // final uid = authState?.uid;
 
     return AsyncValueWidget(
       value: state,
       data: (data) {
-        final list =
-            data.where((program) => program.isActive == true).toList() ?? [];
+        final list = data.where((program) => program.isActive == true).toList();
         // final list = data.programList;
         return Scaffold(
           body: MainBodyWidget(

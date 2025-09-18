@@ -41,11 +41,10 @@ class ProductViewModel extends _$ProductViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readProductDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
       );
-      rethrow;
     }
   }
 

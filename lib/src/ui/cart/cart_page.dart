@@ -222,7 +222,6 @@ class CartPage extends HookConsumerWidget {
 
     // 「未分類」グループの場合
     if (value == '未分類') {
-      final ungroupedCarts = groupCarts;
       return RepaintBoundary(
         child: SizedBox(
           height: 60,

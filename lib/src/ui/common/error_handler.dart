@@ -372,7 +372,7 @@ class ErrorHandler {
         icon = Icons.error;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
@@ -387,7 +387,7 @@ class ErrorHandler {
           label: l10n.close,
           textColor: Colors.white,
           onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            if (context.mounted) ScaffoldMessenger.of(context).hideCurrentSnackBar();
           },
         ),
       ),
@@ -486,13 +486,15 @@ class ErrorHandler {
               if (onRetry != null)
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    if (context.mounted) Navigator.of(context).pop();
                     onRetry();
                   },
                   child: Text(l10n.retry),
                 ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  if (context.mounted) Navigator.of(context).pop();
+                },
                 child: Text(l10n.close),
               ),
             ],
@@ -505,6 +507,7 @@ class ErrorHandler {
     BuildContext context,
     String message,
   ) {
+    if (!context.mounted) return Future.value(SnackBarClosedReason.remove);
     final controller = ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -524,7 +527,7 @@ class ErrorHandler {
 
   /// 情報メッセージをスナックバーで表示
   static void showInfoSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
@@ -542,7 +545,7 @@ class ErrorHandler {
 
   /// 警告メッセージをスナックバーで表示
   static void showWarningSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [

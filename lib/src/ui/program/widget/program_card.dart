@@ -5,25 +5,24 @@ import '../../../data/model/program_model.dart';
 import '../../../settings/hooks/use_l10n.dart';
 import '../../../settings/routes/routes.dart';
 import '../../image/image_screen.dart';
-import '../program_view_model.dart';
 import 'program_button.dart';
 
 // final logger = Logger();
 
 class EventCard extends HookConsumerWidget {
-  EventCard({super.key, required this.program});
+  const EventCard({super.key, required this.program});
   // int index;
-  Program program;
+  final Program program;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final theme = ref.watch(appThemeProvider);
+    // // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    final viewModel = ref.watch(programViewModelProvider.notifier);
+    // final viewModel = ref.watch(programViewModelProvider.notifier);
 
-    // final authState = ref.watch(authViewModelProvider);
-    // final uid = authState?.uid;
+    // // final authState = ref.watch(authViewModelProvider);
+    // // final uid = authState?.uid;
 
     // final DateFormat dateFormatter =
     //     DateFormat.yMMMEd(Localizations.localeOf(context).toString());

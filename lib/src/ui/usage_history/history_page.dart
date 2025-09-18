@@ -21,7 +21,7 @@ class UsageHistoryPage extends HookConsumerWidget {
     final theme = Theme.of(context);
     final l10n = useL10n();
     final state = ref.watch(usageHistoryViewModelProvider);
-    final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
+    // final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
 
     return AsyncValueWidget(
       value: state,

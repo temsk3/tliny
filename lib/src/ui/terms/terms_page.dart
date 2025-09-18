@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../data/model/user_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/main_body.dart';
 import '../../ui/terms/terms_view_model.dart';
 import '../../utils/logger.dart';
@@ -22,7 +21,7 @@ class TermsPage extends HookConsumerWidget {
     FlutterNativeSplash.remove();
 
     final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
+    // final appMediaQuery = useMediaQuery();
     final state = ref.watch(termsViewModelProvider(uid));
 
     return AsyncValueWidget(

@@ -92,8 +92,7 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
   ) {
     // 検索結果のインデックスリストのNotifierを取得
     final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
-    // 検索結果のインデックスリストを取得
-    final searchIndexList = ref.watch(searchIndexListProvider);
+    // 検索結果のインデックスリストを取得（未使用のため取得は行わない）
 
     logger.d('_searchTextField: build', time: DateTime.now());
     try {
@@ -126,7 +125,9 @@ class SearchBar extends HookConsumerWidget implements PreferredSizeWidget {
                 );
                 try {
                   // 検索結果のインデックスリストをクリア
-                  searchIndexListNotifier.state = {};
+                  searchIndexListNotifier.state = <int>{};
+                  // 検索結果のインデックスリストをクリア
+                  searchIndexListNotifier.state = <int>{};
                   // データリストをループ処理
                   for (var i = 0; i < data.length; i++) {
                     // 各プログラムのデータをJSONに変換

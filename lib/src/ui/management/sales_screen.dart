@@ -29,9 +29,7 @@ class SalesScreen extends HookConsumerWidget {
     // 販売データを取得
     return AsyncValueWidget(
       value: ref.watch(managementStateProvider(eventId)),
-      data: (orderList) {
-        // null安全: orderListがnullなら空リストとして扱う
-        final safeOrderList = orderList ?? <Order>[];
+      data: (List<Order> orderList) {
         // 商品リスト
         final productList = <SnapshotProduct>[];
         // 商品種類リスト
@@ -43,7 +41,8 @@ class SalesScreen extends HookConsumerWidget {
         try {
           // 注文ステータスが「注文済み」の注文リストを取得
           final data =
-              safeOrderList
+              orderList
+                  .whereType<Order>()
                   .where((element) => element.status == StatusType.order)
                   .toList();
           // 注文リストをログ出力
@@ -258,7 +257,9 @@ class SalesScreen extends HookConsumerWidget {
                                 color: salesLevel.color.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: salesLevel.color.withValues(alpha: 0.3),
+                                  color: salesLevel.color.withValues(
+                                    alpha: 0.3,
+                                  ),
                                 ),
                               ),
                               child: Text(

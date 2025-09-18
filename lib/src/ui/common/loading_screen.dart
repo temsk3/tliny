@@ -90,13 +90,8 @@ class GlobalLoadingController extends _$GlobalLoadingController {
       );
       stopLoading();
       // 一般的な例外はGeneralExceptionに変換して再スロー
-      final appException = GeneralException(
-        message: '処理中にエラーが発生しました。',
-        code: 'GLOBAL_LOADING_ERROR',
-        stackTrace: st,
-      );
+      // エラーを処理
       rethrow;
-      appException;
     }
   }
 
@@ -149,13 +144,8 @@ class GlobalLoadingController extends _$GlobalLoadingController {
       );
       stopLoading();
       // 一般的な例外はGeneralExceptionに変換して再スロー
-      final appException = GeneralException(
-        message: '処理中にエラーが発生しました。',
-        code: 'GLOBAL_LOADING_ERROR',
-        stackTrace: st,
-      );
+      // エラーを処理
       rethrow;
-      appException;
     }
   }
 }
@@ -331,13 +321,7 @@ class IsLoadingController extends StateNotifier<bool> {
       );
       state = false;
       // 一般的な例外はGeneralExceptionに変換して再スロー
-      final appException = GeneralException(
-        message: '処理中にエラーが発生しました。',
-        code: 'IS_LOADING_ERROR',
-        stackTrace: st,
-      );
       rethrow;
-      appException;
     }
   }
 }

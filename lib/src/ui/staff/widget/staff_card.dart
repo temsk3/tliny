@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../data/model/staff_model.dart';
-import '../../../settings/hooks/use_l10n.dart';
-import '../../auth/auth_view_model.dart';
+// import '../../auth/auth_view_model.dart';
 
 // final logger = Logger();
 
 class StaffCard extends HookConsumerWidget {
-  StaffCard({super.key, required this.staff});
-  Staff staff;
+  const StaffCard({super.key, required this.staff, this.isSelected, this.iconList});
+  final Staff staff;
 
-  List<bool> isSelected = <bool>[true, false, false, false, false, false];
-  List<IconData> iconList = [
+  final List<bool>? isSelected;
+  final List<IconData>? iconList;
+
+  static const List<IconData> _defaultIconList = [
     Icons.ac_unit,
     Icons.call,
     Icons.cake,
@@ -25,18 +25,18 @@ class StaffCard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
+    // // final theme = ref.watch(appThemeProvider);
+    // final l10n = useL10n();
     // final appRoute = useRouter();
 
-    final authState = ref.watch(authViewModelProvider);
-    final uid = authState?.uid;
+    // final authState = ref.watch(authViewModelProvider);
+    // final uid = authState?.uid;
 
-    final dateFormatter = DateFormat.yMMMEd(
-      Localizations.localeOf(context).toString(),
-    );
+    // final dateFormatter = DateFormat.yMMMEd(
+    //   Localizations.localeOf(context).toString(),
+    // );
 
-    final isActive = useState(isSelected);
+    final isActive = useState(isSelected ?? [true, false, false, false, false, false]);
 
     Container iconContent() {
       return Container(
@@ -50,21 +50,23 @@ class StaffCard extends HookConsumerWidget {
             crossAxisCount: 3,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
-            children: List.generate(isSelected.length, (index) {
+            children: List.generate((isSelected ?? _defaultIconList).length, (index) {
+              final currentIconList = iconList ?? _defaultIconList;
+              final currentIsSelected = isSelected ?? [true, false, false, false, false, false];
               return InkWell(
                 onTap: () {
                   isActive.value[index] = !isActive.value[index];
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: isSelected[index] ? Colors.redAccent : Colors.white,
+                    color: currentIsSelected[index] ? Colors.redAccent : Colors.white,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: Colors.redAccent, width: 3),
                   ),
                   child: Icon(
-                    iconList[index],
+                    currentIconList[index],
                     size: 40,
-                    color: isSelected[index] ? Colors.white : Colors.redAccent,
+                    color: currentIsSelected[index] ? Colors.white : Colors.redAccent,
                   ),
                 ),
               );

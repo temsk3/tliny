@@ -27,7 +27,7 @@ class TopPage extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    // final appMediaQuery = useMediaQuery();
+    // // final appMediaQuery = useMediaQuery();
 
     final onSearchNotifier = ref.watch(onSearchProvider.notifier);
     final onSearch = ref.watch(onSearchProvider);
