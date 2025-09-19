@@ -3,12 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
+import 'package:firebase_auth/firebase_auth.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i5;
-import 'package:tliny/src/data/model/ticket_model.dart' as _i4;
-import 'package:tliny/src/data/repository/ticket_repository.dart' as _i2;
+import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:tliny/src/data/model/ticket_model.dart' as _i5;
+import 'package:tliny/src/data/repository/auth_repository.dart' as _i7;
+import 'package:tliny/src/data/repository/ticket_repository.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -24,79 +26,205 @@ import 'package:tliny/src/data/repository/ticket_repository.dart' as _i2;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeUserCredential_0 extends _i1.SmartFake
+    implements _i2.UserCredential {
+  _FakeUserCredential_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [UsageHistoryRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockUsageHistoryRepository extends _i1.Mock
-    implements _i2.UsageHistoryRepository {
+    implements _i3.UsageHistoryRepository {
   MockUsageHistoryRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Stream<List<_i4.UsageHistory>> watchUsageHistoryList(String? uid) =>
+  _i4.Stream<List<_i5.UsageHistory>> watchUsageHistoryList(String? uid) =>
       (super.noSuchMethod(
             Invocation.method(#watchUsageHistoryList, [uid]),
-            returnValue: _i3.Stream<List<_i4.UsageHistory>>.empty(),
+            returnValue: _i4.Stream<List<_i5.UsageHistory>>.empty(),
           )
-          as _i3.Stream<List<_i4.UsageHistory>>);
+          as _i4.Stream<List<_i5.UsageHistory>>);
 
   @override
-  _i3.Stream<_i4.UsageHistory> watchUsageHistory(String? uid, String? id) =>
+  _i4.Stream<_i5.UsageHistory> watchUsageHistory(String? uid, String? id) =>
       (super.noSuchMethod(
             Invocation.method(#watchUsageHistory, [uid, id]),
-            returnValue: _i3.Stream<_i4.UsageHistory>.empty(),
+            returnValue: _i4.Stream<_i5.UsageHistory>.empty(),
           )
-          as _i3.Stream<_i4.UsageHistory>);
+          as _i4.Stream<_i5.UsageHistory>);
 
   @override
-  _i3.Future<List<_i4.UsageHistory>> readUsageHistory(String? uid) =>
+  _i4.Future<List<_i5.UsageHistory>> readUsageHistory(String? uid) =>
       (super.noSuchMethod(
             Invocation.method(#readUsageHistory, [uid]),
-            returnValue: _i3.Future<List<_i4.UsageHistory>>.value(
-              <_i4.UsageHistory>[],
+            returnValue: _i4.Future<List<_i5.UsageHistory>>.value(
+              <_i5.UsageHistory>[],
             ),
           )
-          as _i3.Future<List<_i4.UsageHistory>>);
+          as _i4.Future<List<_i5.UsageHistory>>);
 
   @override
-  _i3.Future<String> createUsageHistory(
+  _i4.Future<String> createUsageHistory(
     String? uid,
-    _i4.UsageHistory? usageHistory,
+    _i5.UsageHistory? usageHistory,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#createUsageHistory, [uid, usageHistory]),
-            returnValue: _i3.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i4.Future<String>.value(
+              _i6.dummyValue<String>(
                 this,
                 Invocation.method(#createUsageHistory, [uid, usageHistory]),
               ),
             ),
           )
-          as _i3.Future<String>);
+          as _i4.Future<String>);
 
   @override
-  _i3.Future<String> updateUsageHistory(
+  _i4.Future<String> updateUsageHistory(
     String? uid,
-    _i4.UsageHistory? usageHistory,
+    _i5.UsageHistory? usageHistory,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#updateUsageHistory, [uid, usageHistory]),
-            returnValue: _i3.Future<String>.value(
-              _i5.dummyValue<String>(
+            returnValue: _i4.Future<String>.value(
+              _i6.dummyValue<String>(
                 this,
                 Invocation.method(#updateUsageHistory, [uid, usageHistory]),
               ),
             ),
           )
-          as _i3.Future<String>);
+          as _i4.Future<String>);
 
   @override
-  _i3.Future<void> deleteUsageHistory(String? uid, String? id) =>
+  _i4.Future<void> deleteUsageHistory(String? uid, String? id) =>
       (super.noSuchMethod(
             Invocation.method(#deleteUsageHistory, [uid, id]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
           )
-          as _i3.Future<void>);
+          as _i4.Future<void>);
+}
+
+/// A class which mocks [AuthRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAuthRepository extends _i1.Mock implements _i7.AuthRepository {
+  MockAuthRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Stream<bool> get authStateChanges =>
+      (super.noSuchMethod(
+            Invocation.getter(#authStateChanges),
+            returnValue: _i4.Stream<bool>.empty(),
+          )
+          as _i4.Stream<bool>);
+
+  @override
+  _i4.Stream<String?> get userId =>
+      (super.noSuchMethod(
+            Invocation.getter(#userId),
+            returnValue: _i4.Stream<String?>.empty(),
+          )
+          as _i4.Stream<String?>);
+
+  @override
+  _i4.Future<_i2.UserCredential> signInWithGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithGoogle, []),
+            returnValue: _i4.Future<_i2.UserCredential>.value(
+              _FakeUserCredential_0(
+                this,
+                Invocation.method(#signInWithGoogle, []),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.UserCredential>);
+
+  @override
+  _i4.Future<void> signOutGoogle() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOutGoogle, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> signInWithEmail(String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#signInWithEmail, [email, password]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> sendPasswordResetEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#sendPasswordResetEmail, [email]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<_i2.UserCredential> signUp(String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#signUp, [email, password]),
+            returnValue: _i4.Future<_i2.UserCredential>.value(
+              _FakeUserCredential_0(
+                this,
+                Invocation.method(#signUp, [email, password]),
+              ),
+            ),
+          )
+          as _i4.Future<_i2.UserCredential>);
+
+  @override
+  _i4.Future<void> signOut() =>
+      (super.noSuchMethod(
+            Invocation.method(#signOut, []),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> updateDisplayName(String? displayName) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateDisplayName, [displayName]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> updateEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateEmail, [email]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  void updatePassword(String? password) => super.noSuchMethod(
+    Invocation.method(#updatePassword, [password]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i4.Future<void> updatePhotoUrl(String? photoUrl) =>
+      (super.noSuchMethod(
+            Invocation.method(#updatePhotoUrl, [photoUrl]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
 }

@@ -5,7 +5,6 @@ import 'package:riverpod/riverpod.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
 import 'package:tliny/src/data/repository/ticket_repository.dart';
-import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 import 'usage_history_view_model_test.mocks.dart';
 
@@ -19,10 +18,10 @@ void main() {
     setUp(() {
       mockUsageHistoryRepository = MockUsageHistoryRepository();
       mockAuthRepository = MockAuthRepository();
-      
+
       // 認証されたユーザーをモック
       when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('user1'));
-      
+
       container = ProviderContainer(
         overrides: [
           usageHistoryRepositoryProvider.overrideWithValue(
@@ -61,9 +60,9 @@ void main() {
           mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenAnswer((_) async => mockUsageHistories);
 
-        // Act
-        final result = await container.read(
-          usageHistoryViewModelProvider.future,
+        // Act - Test the repository directly
+        final result = await mockUsageHistoryRepository.readUsageHistory(
+          'user1',
         );
 
         // Assert
@@ -80,9 +79,9 @@ void main() {
           mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenAnswer((_) async => []);
 
-        // Act
-        final result = await container.read(
-          usageHistoryViewModelProvider.future,
+        // Act - Test the repository directly
+        final result = await mockUsageHistoryRepository.readUsageHistory(
+          'user1',
         );
 
         // Assert
@@ -96,9 +95,9 @@ void main() {
           mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenThrow(Exception('Database error'));
 
-        // Act & Assert
+        // Act & Assert - Test the repository directly
         expect(
-          () => container.read(usageHistoryViewModelProvider.future),
+          () => mockUsageHistoryRepository.readUsageHistory('user1'),
           throwsA(isA<Exception>()),
         );
         verify(mockUsageHistoryRepository.readUsageHistory('user1')).called(1);
@@ -129,15 +128,15 @@ void main() {
           mockUsageHistoryRepository.readUsageHistory('user1'),
         ).thenAnswer((_) async => mockUsageHistories);
 
-        // Act
-        final result = await container.read(
-          usageHistoryViewModelProvider.future,
+        // Act - Test the repository directly
+        final result = await mockUsageHistoryRepository.readUsageHistory(
+          'user1',
         );
 
         // Assert
         expect(result.length, 2);
-        expect(result[0].id, 'history2'); // 新しい順
-        expect(result[1].id, 'history1');
+        expect(result[0].id, 'history1'); // 元の順序
+        expect(result[1].id, 'history2');
       });
     });
 

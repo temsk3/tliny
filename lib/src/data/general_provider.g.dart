@@ -8,7 +8,7 @@ part of 'general_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$firebaseAuthHash() => r'cb440927c3ab863427fd4b052a8ccba4c024c863';
+String _$firebaseAuthHash() => r'ed6ed2a0a8f6c3f2e090c3db36b8fb6332c1b83c';
 
 /// See also [firebaseAuth].
 @ProviderFor(firebaseAuth)
@@ -24,7 +24,7 @@ final firebaseAuthProvider = Provider<FirebaseAuth>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseAuthRef = ProviderRef<FirebaseAuth>;
-String _$firebaseFirestoreHash() => r'da44e0544482927855093596d84cb41842b27214';
+String _$firebaseFirestoreHash() => r'636c4324809f8add35c603de6409b11dd48963fc';
 
 /// See also [firebaseFirestore].
 @ProviderFor(firebaseFirestore)
@@ -42,7 +42,7 @@ final firebaseFirestoreProvider = Provider<FirebaseFirestore>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseFirestoreRef = ProviderRef<FirebaseFirestore>;
-String _$firebaseStorageHash() => r'8e9f5814f2e4871c92e546bca90dbeaf2f43edeb';
+String _$firebaseStorageHash() => r'acd6f02eb15f08de012cf40cb5138e51d3967f0d';
 
 /// See also [firebaseStorage].
 @ProviderFor(firebaseStorage)
@@ -60,7 +60,7 @@ final firebaseStorageProvider = Provider<FirebaseStorage>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FirebaseStorageRef = ProviderRef<FirebaseStorage>;
-String _$firebaseFunctionsHash() => r'67d08ed87fd5f8b0836352d1a1e7a5e34fd9be75';
+String _$firebaseFunctionsHash() => r'9c2bf85abf39e7f554acb983274a79ab4bb0f9c6';
 
 /// See also [firebaseFunctions].
 @ProviderFor(firebaseFunctions)

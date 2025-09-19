@@ -13,7 +13,9 @@ FirebaseAuth firebaseAuth(Ref ref) {
   // テスト環境ではFirebaseを無効化
   if (const bool.fromEnvironment('FLUTTER_TEST') ||
       (const String.fromEnvironment('TEST') == 'true')) {
-    throw UnimplementedError('FirebaseAuth is not available in test environment');
+    throw UnimplementedError(
+      'FirebaseAuth is not available in test environment',
+    );
   }
   return FirebaseAuth.instance;
 }
@@ -23,7 +25,9 @@ FirebaseFirestore firebaseFirestore(Ref ref) {
   // テスト環境ではFirebaseを無効化
   if (const bool.fromEnvironment('FLUTTER_TEST') ||
       (const String.fromEnvironment('TEST') == 'true')) {
-    throw UnimplementedError('FirebaseFirestore is not available in test environment');
+    throw UnimplementedError(
+      'FirebaseFirestore is not available in test environment',
+    );
   }
   return FirebaseFirestore.instance;
 }
@@ -33,7 +37,9 @@ FirebaseStorage firebaseStorage(Ref ref) {
   // テスト環境ではFirebaseを無効化
   if (const bool.fromEnvironment('FLUTTER_TEST') ||
       (const String.fromEnvironment('TEST') == 'true')) {
-    throw UnimplementedError('FirebaseStorage is not available in test environment');
+    throw UnimplementedError(
+      'FirebaseStorage is not available in test environment',
+    );
   }
   return FirebaseStorage.instance;
 }
@@ -43,7 +49,9 @@ FirebaseFunctions firebaseFunctions(Ref ref) {
   // テスト環境ではFirebaseを無効化
   if (const bool.fromEnvironment('FLUTTER_TEST') ||
       (const String.fromEnvironment('TEST') == 'true')) {
-    throw UnimplementedError('FirebaseFunctions is not available in test environment');
+    throw UnimplementedError(
+      'FirebaseFunctions is not available in test environment',
+    );
   }
   return FirebaseFunctions.instanceFor(
     app: Firebase.app(),
