@@ -18,21 +18,11 @@ class AppRouter extends _$AppRouter {
       _isInTest ? null : FirebaseAnalyticsObserver(analytics: analytics!);
 
   static bool get _isInTest {
-    if (kIsWeb) {
-      return const bool.fromEnvironment('FLUTTER_TEST') ||
-          (const String.fromEnvironment('TEST') == 'true');
-    } else {
-      // dart:ioを使用する場合は条件付きでimport
-      try {
-        // ignore: avoid_web_libraries_in_flutter
-        return const bool.fromEnvironment('FLUTTER_TEST') ||
-            (const String.fromEnvironment('TEST') == 'true') ||
-            (const String.fromEnvironment('FLUTTER_TEST') == 'true');
-      } on Exception {
-        return const bool.fromEnvironment('FLUTTER_TEST') ||
-            (const String.fromEnvironment('TEST') == 'true');
-      }
-    }
+    // テスト環境の検出を強化
+    return const bool.fromEnvironment('FLUTTER_TEST') ||
+        (const String.fromEnvironment('TEST') == 'true') ||
+        (const String.fromEnvironment('FLUTTER_TEST') == 'true') ||
+        kDebugMode; // デバッグモードでもFirebaseを無効化
   }
 
   @override
