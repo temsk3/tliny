@@ -285,37 +285,37 @@ void main() {
   group('convertAuthError', () {
     test('should convert invalid-email error', () {
       final result = convertAuthError('invalid-email');
-      expect(result, equals('メールアドレスを正しい形式で入力してください'));
+      expect(result, equals('メールアドレスの形式が正しくありません。正しいメールアドレスを入力してください。'));
     });
 
     test('should convert wrong-password error', () {
       final result = convertAuthError('wrong-password');
-      expect(result, equals('パスワードが間違っています'));
+      expect(result, equals('パスワードが間違っています。正しいパスワードを入力してください。'));
     });
 
     test('should convert user-not-found error', () {
       final result = convertAuthError('user-not-found');
-      expect(result, equals('ユーザーが見つかりません'));
+      expect(result, equals('このメールアドレスで登録されたユーザーが見つかりません。メールアドレスを確認するか、新規登録してください。'));
     });
 
     test('should convert weak-password error', () {
       final result = convertAuthError('weak-password');
-      expect(result, equals('パスワードは6文字以上で入力してください'));
+      expect(result, equals('パスワードが弱すぎます。6文字以上のパスワードを設定してください。'));
     });
 
     test('should convert user-disabled error', () {
       final result = convertAuthError('user-disabled');
-      expect(result, equals('ユーザーが無効です'));
+      expect(result, equals('このアカウントは無効になっています。管理者にお問い合わせください。'));
     });
 
     test('should convert email-already-in-use error', () {
       final result = convertAuthError('email-already-in-use');
-      expect(result, equals('このメールアドレスは既に登録されています'));
+      expect(result, equals('このメールアドレスは既に使用されています。別のメールアドレスを使用するか、ログインしてください。'));
     });
 
     test('should return default error for unknown error code', () {
       final result = convertAuthError('unknown-error');
-      expect(result, equals('不明なエラーです'));
+      expect(result, equals('認証エラーが発生しました。しばらく時間をおいてから再度お試しください。'));
     });
   });
 }

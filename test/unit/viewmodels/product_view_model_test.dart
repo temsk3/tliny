@@ -23,9 +23,11 @@ void main() {
       mockProductRepository = MockProductRepository();
       mockAuthRepository = MockAuthRepository();
       mockUser = MockUser();
-      when(
-        mockAuthRepository.userId,
-      ).thenAnswer((_) => Stream.value('test-user-id'));
+      
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
+      when(mockAuthRepository.getCurrentUser()).thenAnswer((_) async => mockUser);
+      
       container = ProviderContainer(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),

@@ -3,24 +3,32 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
 import 'package:tliny/src/data/repository/ticket_repository.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 import 'usage_history_view_model_test.mocks.dart';
 
-@GenerateMocks([UsageHistoryRepository])
+@GenerateMocks([UsageHistoryRepository, AuthRepository])
 void main() {
   group('UsageHistoryViewModel', () {
     late ProviderContainer container;
     late MockUsageHistoryRepository mockUsageHistoryRepository;
+    late MockAuthRepository mockAuthRepository;
 
     setUp(() {
       mockUsageHistoryRepository = MockUsageHistoryRepository();
+      mockAuthRepository = MockAuthRepository();
+      
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('user1'));
+      
       container = ProviderContainer(
         overrides: [
           usageHistoryRepositoryProvider.overrideWithValue(
             mockUsageHistoryRepository,
           ),
+          authRepositoryProvider.overrideWithValue(mockAuthRepository),
         ],
       );
     });

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,6 +8,10 @@ import 'package:tliny/src/app.dart';
 void main() {
   group('App Integration Tests', () {
     late ProviderContainer container;
+
+    setUpAll(() async {
+      // Firebase初期化をスキップ（テスト環境では不要）
+    });
 
     setUp(() {
       container = ProviderContainer();
