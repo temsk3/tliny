@@ -10,8 +10,10 @@ import 'package:firebase_auth/firebase_auth.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:tliny/src/data/model/product_model.dart' as _i2;
+import 'package:tliny/src/data/model/staff_model.dart' as _i10;
 import 'package:tliny/src/data/repository/auth_repository.dart' as _i8;
 import 'package:tliny/src/data/repository/product_repository.dart' as _i5;
+import 'package:tliny/src/data/repository/staff_repository.dart' as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -376,6 +378,86 @@ class MockAuthRepository extends _i1.Mock implements _i8.AuthRepository {
             returnValueForMissingStub: _i6.Future<void>.value(),
           )
           as _i6.Future<void>);
+}
+
+/// A class which mocks [StaffRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockStaffRepository extends _i1.Mock implements _i9.StaffRepository {
+  MockStaffRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Stream<List<_i10.Staff>> streamStaffs(String? eventId) =>
+      (super.noSuchMethod(
+            Invocation.method(#streamStaffs, [eventId]),
+            returnValue: _i6.Stream<List<_i10.Staff>>.empty(),
+          )
+          as _i6.Stream<List<_i10.Staff>>);
+
+  @override
+  _i6.Future<List<_i10.Staff>> readStaffs(String? eventId) =>
+      (super.noSuchMethod(
+            Invocation.method(#readStaffs, [eventId]),
+            returnValue: _i6.Future<List<_i10.Staff>>.value(<_i10.Staff>[]),
+          )
+          as _i6.Future<List<_i10.Staff>>);
+
+  @override
+  _i6.Future<String> createStaff(
+    String? eventId,
+    _i10.Staff? staff,
+    String? uid,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#createStaff, [eventId, staff, uid]),
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
+                this,
+                Invocation.method(#createStaff, [eventId, staff, uid]),
+              ),
+            ),
+          )
+          as _i6.Future<String>);
+
+  @override
+  _i6.Future<String> updateStaff(String? eventId, _i10.Staff? staff) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateStaff, [eventId, staff]),
+            returnValue: _i6.Future<String>.value(
+              _i7.dummyValue<String>(
+                this,
+                Invocation.method(#updateStaff, [eventId, staff]),
+              ),
+            ),
+          )
+          as _i6.Future<String>);
+
+  @override
+  _i6.Future<void> deleteStaff(String? eventId, String? staffId) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteStaff, [eventId, staffId]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<bool> checkExistenceStaff(String? eventId, String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#checkExistenceStaff, [eventId, uid]),
+            returnValue: _i6.Future<bool>.value(false),
+          )
+          as _i6.Future<bool>);
+
+  @override
+  _i6.Stream<bool> watchExistenceStaff(String? eventId, String? uid) =>
+      (super.noSuchMethod(
+            Invocation.method(#watchExistenceStaff, [eventId, uid]),
+            returnValue: _i6.Stream<bool>.empty(),
+          )
+          as _i6.Stream<bool>);
 }
 
 /// A class which mocks [User].

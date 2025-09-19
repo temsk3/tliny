@@ -7,31 +7,32 @@ import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
+import 'package:tliny/src/data/repository/staff_repository.dart';
 import 'package:tliny/src/ui/product/product_view_model.dart';
 
 import 'product_view_model_test.mocks.dart';
 
-@GenerateMocks([ProductRepository, AuthRepository, firebase_auth.User])
+@GenerateMocks([ProductRepository, AuthRepository, StaffRepository, firebase_auth.User])
 void main() {
   group('ProductViewModel Tests', () {
     late MockProductRepository mockProductRepository;
     late MockAuthRepository mockAuthRepository;
+    late MockStaffRepository mockStaffRepository;
     late ProviderContainer container;
     late MockUser mockUser;
 
     setUp(() {
       mockProductRepository = MockProductRepository();
       mockAuthRepository = MockAuthRepository();
+      mockStaffRepository = MockStaffRepository();
       mockUser = MockUser();
-      
-      // 認証されたユーザーをモック
-      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
-      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
       
       container = ProviderContainer(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          staffRepositoryProvider.overrideWithValue(mockStaffRepository),
+          userIdProvider.overrideWith((ref) => Stream.value('test-user-id')),
         ],
       );
     });
@@ -119,8 +120,11 @@ void main() {
         price: 1500,
       );
 
+      // 認証されたユーザーをモック
       when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
       when(mockUser.uid).thenReturn('test-user-id');
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
+      when(mockStaffRepository.checkExistenceStaff(any, any)).thenAnswer((_) async => true);
       when(
         mockProductRepository.createProduct(any),
       ).thenAnswer((_) async => 'new-product-id');
@@ -152,6 +156,11 @@ void main() {
         price: 2500,
       );
 
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
+      when(mockStaffRepository.checkExistenceStaff(any, any)).thenAnswer((_) async => true);
       when(
         mockProductRepository.updateProduct(testProduct),
       ).thenAnswer((_) async => 'product-1');
@@ -188,6 +197,14 @@ void main() {
     test('deleteProduct should delete product successfully', () async {
       final testProduct = Product.empty().copyWith(id: 'product-1');
 
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
+      when(mockStaffRepository.checkExistenceStaff(any, any)).thenAnswer((_) async => true);
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => [testProduct]);
       when(
         mockProductRepository.deleteProduct('product-1'),
       ).thenAnswer((_) async {});
@@ -203,6 +220,14 @@ void main() {
     test('deleteProduct should handle errors', () async {
       final testProduct = Product.empty().copyWith(id: 'product-1');
 
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
+      when(mockStaffRepository.checkExistenceStaff(any, any)).thenAnswer((_) async => true);
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => [testProduct]);
       when(
         mockProductRepository.deleteProduct('product-1'),
       ).thenThrow(Exception('Delete failed'));
@@ -229,8 +254,11 @@ void main() {
         price: 1500,
       );
 
+      // 認証されたユーザーをモック
       when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
       when(mockUser.uid).thenReturn('test-user-id');
+      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value('test-user-id'));
+      when(mockStaffRepository.checkExistenceStaff(any, any)).thenAnswer((_) async => true);
       when(
         mockProductRepository.createProduct(any),
       ).thenAnswer((_) async => 'new-product-id');
@@ -254,6 +282,10 @@ void main() {
           price: 2500,
         );
 
+        // 認証されたユーザーをモック
+        when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+        when(mockUser.uid).thenReturn('test-user-id');
+        when(mockStaffRepository.checkExistenceStaff(any, any)).thenAnswer((_) async => true);
         when(
           mockProductRepository.updateProduct(testProduct),
         ).thenAnswer((_) async => 'product-1');
