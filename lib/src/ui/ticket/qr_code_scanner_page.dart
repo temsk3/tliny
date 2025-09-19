@@ -478,6 +478,10 @@ class QRCodeScannerPage extends HookConsumerWidget {
                     debugPrint('FloatingActionButton onPressed'); // 追加
                     isDialogShowing.value = true;
                     await mobileScannerController.stop();
+
+                    // Check if widget is still mounted before using context
+                    if (!context.mounted) return;
+
                     bool? confirmed = false;
                     // 使用済みチケットを除外
                     final tickets =
@@ -500,6 +504,9 @@ class QRCodeScannerPage extends HookConsumerWidget {
                             ],
                           ),
                     );
+
+                    // Check if widget is still mounted before second dialog
+                    if (!context.mounted) return;
 
                     confirmed = await showDialog<bool>(
                       context: context,
@@ -527,6 +534,10 @@ class QRCodeScannerPage extends HookConsumerWidget {
                         await viewModel.updateDatabaseTickets(tickets);
                         debugPrint('Tickets updated successfully.');
                         await Future.delayed(const Duration(milliseconds: 5));
+
+                        // Check if widget is still mounted before updating UI
+                        if (!context.mounted) return;
+
                         viewModel.resetUserId();
                         scannedTickets.value = {};
                         errorHandler.showSuccessSnackBar(
@@ -537,6 +548,8 @@ class QRCodeScannerPage extends HookConsumerWidget {
                           'Failed to update tickets AppException: ${e.message}',
                           stackTrace: st,
                         );
+                        // Check if widget is still mounted before showing error
+                        if (!context.mounted) return;
                         errorHandler.showError(
                           e,
                           errorContext: l10n.ticketUpdateError,
@@ -546,6 +559,8 @@ class QRCodeScannerPage extends HookConsumerWidget {
                           'Failed to update tickets Exception: $e',
                           stackTrace: st,
                         );
+                        // Check if widget is still mounted before showing error
+                        if (!context.mounted) return;
                         final appException = GeneralException(
                           message: 'チケットの更新に失敗しました。',
                           stackTrace: st,
@@ -557,6 +572,8 @@ class QRCodeScannerPage extends HookConsumerWidget {
                       }
                     }
                   } catch (e) {
+                    // Check if widget is still mounted before showing error
+                    if (!context.mounted) return;
                     errorHandler.showError(
                       e,
                       errorContext: l10n.qrScannerOperationError,

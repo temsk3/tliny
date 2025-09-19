@@ -425,68 +425,72 @@ class PaymentButton extends HookWidget {
       }
 
       if (stockIssues.isNotEmpty) {
-        await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Row(
-                children: [
-                  const Icon(Icons.error, color: Colors.red),
-                  const SizedBox(width: 8),
-                  Text(l10n.insufficientStockTitle),
-                ],
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.insufficientStockDetails,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  ...stockIssues.map((issue) {
-                    final product = issue['product'] as Product;
-                    final currentQuantity = issue['currentQuantity'] as int;
-                    final availableStock = issue['availableStock'] as int;
-
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '・${product.name}',
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            l10n.quantityAdjustment(
-                              currentQuantity,
-                              availableStock,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }),
-                  const SizedBox(height: 8),
-                  Text(
-                    l10n.adjustCartAndRetry,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    if (context.mounted) Navigator.of(context).pop();
-                  },
-                  child: Text(l10n.ok),
+        if (context.mounted) {
+          await showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Row(
+                  children: [
+                    const Icon(Icons.error, color: Colors.red),
+                    const SizedBox(width: 8),
+                    Text(l10n.insufficientStockTitle),
+                  ],
                 ),
-              ],
-            );
-          },
-        );
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.insufficientStockDetails,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    ...stockIssues.map((issue) {
+                      final product = issue['product'] as Product;
+                      final currentQuantity = issue['currentQuantity'] as int;
+                      final availableStock = issue['availableStock'] as int;
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '・${product.name}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              l10n.quantityAdjustment(
+                                currentQuantity,
+                                availableStock,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: 8),
+                    Text(
+                      l10n.adjustCartAndRetry,
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      if (context.mounted) Navigator.of(context).pop();
+                    },
+                    child: Text(l10n.ok),
+                  ),
+                ],
+              );
+            },
+          );
+        }
       }
     } on AppException catch (e, st) {
       logger.e(

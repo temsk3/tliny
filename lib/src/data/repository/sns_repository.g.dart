@@ -8,7 +8,7 @@ part of 'sns_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$snsRepositoryHash() => r'3221e59f7806bf8b6fa5c3dcb8b87beaf708291f';
+String _$snsRepositoryHash() => r'cd2b9a6178651dbf5caea4aa124adce4080fa425';
 
 /// See also [snsRepository].
 @ProviderFor(snsRepository)

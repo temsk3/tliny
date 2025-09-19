@@ -307,7 +307,9 @@ class InCartElevatedButton extends HookWidget {
                             logger.d('showFluttertoast: end');
                             // SnackBarが閉じられた後にpop
                             logger.d('pop');
-                            RouterUtils.safePop(context);
+                            if (context.mounted) {
+                              RouterUtils.safePop(context);
+                            }
                           }
                         } on Exception catch (e, st) {
                           logger.e(
@@ -409,7 +411,9 @@ class DeleteProductElevatedButton extends HookWidget {
                       await ref
                           .watch(productViewModelProvider.notifier)
                           .deleteProduct(product.id.toString());
-                      context.pop();
+                      if (context.mounted) {
+                        context.pop();
+                      }
                     }
                   } catch (e) {
                     errorHandler.showError(e, errorContext: '商品削除');

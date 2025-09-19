@@ -394,12 +394,12 @@ class ProductRepository {
     }
   }
 
-  /// 文字列からDocumentReference<Product>を作成するメソッド
+  /// 文字列から`DocumentReference<Product>`を作成するメソッド
   DocumentReference<Product> getProductDocRef(String productId) {
     return _collectionRef.doc(productId);
   }
 
-  /// 完全なパスからDocumentReference<Product>を作成するメソッド
+  /// 完全なパスから`DocumentReference<Product>`を作成するメソッド
   DocumentReference<Product> getProductDocRefFromPath(String path) {
     return _db
         .doc(path)

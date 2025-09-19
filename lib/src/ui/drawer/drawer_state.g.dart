@@ -8,7 +8,7 @@ part of 'drawer_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getPackageInfoHash() => r'e3e00b0666d481d0eb67cb1b503b8b4c87c380aa';
+String _$getPackageInfoHash() => r'67d6f03cd2c138681113495028ce4199261bae0a';
 
 /// See also [getPackageInfo].
 @ProviderFor(getPackageInfo)
@@ -26,7 +26,7 @@ final getPackageInfoProvider = AutoDisposeFutureProvider<PackageInfo>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetPackageInfoRef = AutoDisposeFutureProviderRef<PackageInfo>;
-String _$userStreamStateHash() => r'c9336dea6f02f375b1c88dca031e15527375ebe8';
+String _$userStreamStateHash() => r'cc40adf3e2c73d8d377c993c79b31065a2ba2f7b';
 
 /// See also [userStreamState].
 @ProviderFor(userStreamState)

@@ -8,7 +8,7 @@ part of 'image_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tempImageHash() => r'1521eb9481b73b51dba215b16ca1cfcce878baa1';
+String _$tempImageHash() => r'e2678ea9fb90b5d700c986b196db37f69f81470d';
 
 /// See also [tempImage].
 @ProviderFor(tempImage)

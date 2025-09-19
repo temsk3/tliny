@@ -9,7 +9,7 @@ part of 'my_program_view_model.dart';
 // **************************************************************************
 
 String _$myProgramViewModelHash() =>
-    r'87fc06bc9c96eceb50edb4321423db9282eb1baf';
+    r'644190dc5a61a21c23115ad3e16e9f36c1de5572';
 
 /// See also [MyProgramViewModel].
 @ProviderFor(MyProgramViewModel)

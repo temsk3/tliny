@@ -8,7 +8,7 @@ part of 'ticket_list_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ticketsStateHash() => r'4f74be3d5b128802db214ba6d6f0dd4db40c0e6a';
+String _$ticketsStateHash() => r'a8c538971fcbc5dd266443d03ff4902ec7570163';
 
 /// See also [ticketsState].
 @ProviderFor(ticketsState)
@@ -28,7 +28,7 @@ final ticketsStateProvider =
 // ignore: unused_element
 typedef TicketsStateRef = AutoDisposeProviderRef<AsyncValue<List<Ticket>>>;
 String _$ticketListViewModelHash() =>
-    r'b998d15cd4f08d975f9acd83006b1553b6ea0e2c';
+    r'30d8a2eba2e1c917ff4c194c5b0cffc162535845';
 
 /// See also [TicketListViewModel].
 @ProviderFor(TicketListViewModel)

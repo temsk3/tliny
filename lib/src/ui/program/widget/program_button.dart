@@ -109,7 +109,9 @@ class DeleteProgramIconButton extends HookWidget {
                           .watch(programViewModelProvider.notifier)
                           .deleteProgram(program.id.toString());
                       // appRoute.popUntilRoot();
-                      RouterUtils.safePop(context);
+                      if (context.mounted) {
+                        RouterUtils.safePop(context);
+                      }
                     }
                   } catch (e) {
                     errorHandler.showError(e, errorContext: 'プログラム削除');

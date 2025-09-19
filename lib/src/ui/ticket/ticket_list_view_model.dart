@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,7 +15,7 @@ import '../common/loading_screen.dart';
 part 'ticket_list_view_model.g.dart';
 
 @riverpod
-AsyncValue<List<Ticket>> ticketsState(TicketsStateRef ref) {
+AsyncValue<List<Ticket>> ticketsState(Ref ref) {
   final uidAsyncValue = ref.watch(userIdProvider);
   return uidAsyncValue.when(
     data:
@@ -186,11 +187,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('getTickets: Exception - $e', stackTrace: st);
-      throw GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      
-      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -261,11 +258,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('Error updating ticket $value: $e', stackTrace: st);
-      throw GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      
-      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -298,11 +291,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('generatePdfUuidsForTickets: Exception - $e', stackTrace: st);
-      throw GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      
-      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -318,11 +307,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('printingTickets: Exception - $e', stackTrace: st);
-      throw GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      
-      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -338,11 +323,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('usedTickets: Exception - $e', stackTrace: st);
-      throw GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      
-      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 

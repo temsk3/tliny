@@ -53,7 +53,9 @@ class BaseFloatingActionButton extends HookWidget {
                     'BaseFloatingActionButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  ErrorHandler.showErrorSnackBar(context, e, l10n);
+                  if (context.mounted) {
+                    ErrorHandler.showErrorSnackBar(context, e, l10n);
+                  }
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;
@@ -110,7 +112,9 @@ class BaseIconButton extends HookWidget {
                     'BaseIconButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  ErrorHandler.showErrorSnackBar(context, e, l10n);
+                  if (context.mounted) {
+                    ErrorHandler.showErrorSnackBar(context, e, l10n);
+                  }
                 } finally {
                   // 処理終了時に false に設定
                   waiting.value = false;
@@ -157,7 +161,9 @@ class BaseElevatedButton extends HookWidget {
                     'BaseElevatedButton: error=$e, stackTrace=$st',
                     time: DateTime.now(),
                   );
-                  ErrorHandler.showErrorSnackBar(context, e, l10n);
+                  if (context.mounted) {
+                    ErrorHandler.showErrorSnackBar(context, e, l10n);
+                  }
                 } finally {
                   waiting.value = false;
                 }

@@ -77,15 +77,21 @@ class SignUpPage extends HookConsumerWidget {
                         emailController.text,
                         passwordController.text,
                       );
-                      context.go(AppRoutes.topPage);
+                      // Check if the widget is still mounted before using context
+                      if (context.mounted) {
+                        context.go(AppRoutes.topPage);
+                      }
                     } catch (e) {
                       logger.e('signUpButton: error=$e');
-                      ErrorHandler.showError(
-                        context,
-                        e,
-                        l10n,
-                        errorContext: 'サインアップ処理',
-                      );
+                      // Check if the widget is still mounted before using context
+                      if (context.mounted) {
+                        ErrorHandler.showError(
+                          context,
+                          e,
+                          l10n,
+                          errorContext: 'サインアップ処理',
+                        );
+                      }
                     }
                   },
                   child: Text(l10n.signUp),
