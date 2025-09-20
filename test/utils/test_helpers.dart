@@ -6,7 +6,6 @@ import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
-import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 /// テスト用のAppLocalizationsモック
 class MockAppLocalizations extends AppLocalizations {

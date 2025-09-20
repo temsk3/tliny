@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/ui/usage_history/history_page.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
-import '../utils/test_helpers.dart';
 import '../utils/firebase_test_setup.dart';
+import '../utils/test_helpers.dart';
+
+// Mock UsageHistoryViewModel for testing
+class MockUsageHistoryViewModel extends UsageHistoryViewModel {
+  final List<UsageHistory> _data;
+  final Exception? _error;
+
+  MockUsageHistoryViewModel(this._data) : _error = null;
+
+  MockUsageHistoryViewModel.error(this._error) : _data = [];
+
+  @override
+  Future<List<UsageHistory>> build() async {
+    if (_error != null) {
+      throw _error;
+    }
+    return _data;
+  }
+}
 
 void main() {
   group('UsageHistoryPage', () {

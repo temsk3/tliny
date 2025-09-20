@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 Future<void> setupFirebaseForTesting() async {
   // Ensure bindings are initialized
   TestWidgetsFlutterBinding.ensureInitialized();
-  
+
   // For widget tests, we don't initialize Firebase
   // Instead, we rely on mocking Firebase services through ProviderContainer overrides
 }
