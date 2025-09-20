@@ -133,32 +133,8 @@ class ProductCard extends HookConsumerWidget {
         //     height: 240,
         //   ),
         // ),
-        (product.stock == 0)
-            ? const Positioned(
-              top: 4,
-              child: Text(
-                '売り切れ',
-                // style: theme.textTheme.h60.bold(),
-                // .copyWith(color: theme.appColors.onPrimary),
-              ),
-            )
-            : isOpened
-            ? Positioned(
-              top: 4,
-              child: Text(
-                '在庫: ${product.stock}',
-                // style: theme.textTheme.h60.bold(),
-                // .copyWith(color: theme.appColors.onPrimary),
-              ),
-            )
-            : Positioned(
-              top: 4,
-              child: Text(
-                l10n.outOfTerm,
-                //  style: theme.textTheme.h60.bold(),
-                // .copyWith(color: theme.appColors.onPrimary),
-              ),
-            ),
+        // Stock information is now displayed in the main content area
+        // Removed Positioned overlay to avoid duplicate stock display
       ],
     );
   }

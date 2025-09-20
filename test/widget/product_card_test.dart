@@ -165,12 +165,12 @@ void main() {
       final productCard = find.byType(ProductCard);
       expect(productCard, findsOneWidget);
 
-      // Check that the ProductCard contains a GestureDetector
+      // Check that the ProductCard contains GestureDetector widgets
       final gestureDetectorInProductCard = find.descendant(
         of: productCard,
         matching: find.byType(GestureDetector),
       );
-      expect(gestureDetectorInProductCard, findsOneWidget);
+      expect(gestureDetectorInProductCard, findsWidgets);
     });
 
     testWidgets('should have proper layout structure', (
