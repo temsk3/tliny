@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
@@ -64,8 +65,25 @@ void main() {
     });
 
     Widget createTestWidget() {
+      final router = GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (context, state) => const UsageHistoryPage(),
+          ),
+          GoRoute(
+            path: '/usage-history/:id',
+            builder: (context, state) => const Scaffold(
+              body: Center(child: Text('Usage History Details')),
+            ),
+          ),
+        ],
+      );
+
       return TestHelpers.createTestWidget(
-        child: const UsageHistoryPage(),
+        child: MaterialApp.router(
+          routerConfig: router,
+        ),
         overrides: [
           usageHistoryViewModelProvider.overrideWith(
             () => MockUsageHistoryViewModel(mockUsageHistories),
