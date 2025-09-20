@@ -33,9 +33,10 @@ class ProductCard extends HookConsumerWidget {
     //     locale: Localizations.localeOf(context).toString());
 
     final now = DateTime.now();
-    final salesStart = program.salesStart!;
-    final salesEnd = program.salesEnd!;
-    final isOpened = salesStart.isBefore(now) && salesEnd.isAfter(now);
+    final salesStart = program.salesStart;
+    final salesEnd = program.salesEnd;
+    final isOpened = salesStart != null && salesEnd != null && 
+                    salesStart.isBefore(now) && salesEnd.isAfter(now);
     final stateIndicate = isOpened && product.stock != 0;
 
     // logger.d(program);
