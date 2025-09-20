@@ -72,6 +72,7 @@ class ProductCard extends HookConsumerWidget {
             elevation: 10,
             child: Column(
               //
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AspectRatio(
