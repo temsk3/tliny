@@ -1,7 +1,7 @@
+import 'dart:async';
+
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,9 +9,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/general_provider.dart';
+import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
+import 'package:tliny/src/data/repository/program_repository.dart';
 import 'package:tliny/src/data/repository/ticket_repository.dart';
+import 'package:tliny/src/ui/common/error_screen.dart';
+import 'package:tliny/src/ui/program/program_state.dart';
 import 'package:tliny/src/ui/usage_history/history_page.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
@@ -23,9 +27,48 @@ class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
 
 // Mock classes for repositories
-class MockUsageHistoryRepository extends Mock implements UsageHistoryRepository {}
+class MockUsageHistoryRepository extends Mock
+    implements UsageHistoryRepository {}
 
 class MockAuthRepository extends Mock implements AuthRepository {}
+
+class MockProgramRepository extends Mock implements ProgramRepository {
+  @override
+  Stream<List<Program>> watchEventList() {
+    return Stream.value([
+      Program(
+        id: 'event1',
+        organizerId: 'organizer1',
+        name: 'テストイベント1',
+        message: 'テストイベント1の説明',
+        salesStart: DateTime(2023, 12, 1),
+        salesEnd: DateTime(2024, 1, 30),
+        eventFrom: DateTime(2024, 1, 1),
+        eventTo: DateTime(2024, 1, 31),
+        place: 'テスト会場1',
+        isActive: true,
+        isPublish: true,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+      Program(
+        id: 'event2',
+        organizerId: 'organizer2',
+        name: 'テストイベント2',
+        message: 'テストイベント2の説明',
+        salesStart: DateTime(2024, 1, 1),
+        salesEnd: DateTime(2024, 2, 27),
+        eventFrom: DateTime(2024, 2, 1),
+        eventTo: DateTime(2024, 2, 28),
+        place: 'テスト会場2',
+        isActive: true,
+        isPublish: true,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+    ]);
+  }
+}
 
 // Mock UsageHistoryViewModel for testing
 class MockUsageHistoryViewModel extends UsageHistoryViewModel {
@@ -48,6 +91,7 @@ class MockUsageHistoryViewModel extends UsageHistoryViewModel {
 void main() {
   group('UsageHistoryPage', () {
     late List<UsageHistory> mockUsageHistories;
+    late List<Program> mockPrograms;
 
     setUpAll(() async {
       TestWidgetsFlutterBinding.ensureInitialized();
@@ -72,9 +116,42 @@ void main() {
           useTicket: ['ticket3'],
         ),
       ];
+
+      mockPrograms = [
+        Program(
+          id: 'event1',
+          organizerId: 'organizer1',
+          name: 'テストイベント1',
+          message: 'テストイベント1の説明',
+          salesStart: DateTime(2023, 12, 1),
+          salesEnd: DateTime(2024, 1, 30),
+          eventFrom: DateTime(2024, 1, 1),
+          eventTo: DateTime(2024, 1, 31),
+          place: 'テスト会場1',
+          isActive: true,
+          isPublish: true,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+        Program(
+          id: 'event2',
+          organizerId: 'organizer2',
+          name: 'テストイベント2',
+          message: 'テストイベント2の説明',
+          salesStart: DateTime(2024, 1, 1),
+          salesEnd: DateTime(2024, 2, 27),
+          eventFrom: DateTime(2024, 2, 1),
+          eventTo: DateTime(2024, 2, 28),
+          place: 'テスト会場2',
+          isActive: true,
+          isPublish: true,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+      ];
     });
 
-    Widget createTestWidget() {
+    Widget createTestWidget({List<Program>? programs}) {
       final router = GoRouter(
         routes: [
           GoRoute(
@@ -106,8 +183,16 @@ void main() {
           firebaseAuthProvider.overrideWithValue(MockFirebaseAuth()),
           firebaseStorageProvider.overrideWithValue(MockFirebaseStorage()),
           // Mock additional providers that UsageHistoryViewModel depends on
-          usageHistoryRepositoryProvider.overrideWithValue(MockUsageHistoryRepository()),
+          usageHistoryRepositoryProvider.overrideWithValue(
+            MockUsageHistoryRepository(),
+          ),
           authRepositoryProvider.overrideWithValue(MockAuthRepository()),
+          // Mock ProgramRepository to provide program data
+          programRepositoryProvider.overrideWithValue(MockProgramRepository()),
+          // Mock programsStateProvider to provide program data
+          programsStateProvider.overrideWith(
+            (ref) => Stream.value(programs ?? mockPrograms),
+          ),
         ],
       );
     }
@@ -183,8 +268,10 @@ void main() {
         // Act
         await tester.pumpAndSettle();
 
-        // Assert
-        expect(find.text('エラーが発生しました'), findsOneWidget);
+        // Assert - Check for error screen elements
+        expect(find.byType(ErrorScreen), findsOneWidget);
+        // The error message should be displayed in the ErrorScreen
+        expect(find.text('Exception: Test error'), findsOneWidget);
       });
     });
 
