@@ -1,6 +1,5 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,6 +13,7 @@ import '../utils/test_helpers.dart';
 
 // Mock classes for Firebase services
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
 
 // Mock UsageHistoryViewModel for testing
