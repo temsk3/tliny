@@ -35,8 +35,11 @@ class ProductCard extends HookConsumerWidget {
     final now = DateTime.now();
     final salesStart = program.salesStart;
     final salesEnd = program.salesEnd;
-    final isOpened = salesStart != null && salesEnd != null && 
-                    salesStart.isBefore(now) && salesEnd.isAfter(now);
+    final isOpened =
+        salesStart != null &&
+        salesEnd != null &&
+        salesStart.isBefore(now) &&
+        salesEnd.isAfter(now);
     final stateIndicate = isOpened && product.stock != 0;
 
     // logger.d(program);
@@ -44,7 +47,7 @@ class ProductCard extends HookConsumerWidget {
 
     return Stack(
       children: [
-        InkWell(
+        GestureDetector(
           onTap: () async {
             try {
               if (program.id != null && product.id != null) {
@@ -128,13 +131,20 @@ class ProductCard extends HookConsumerWidget {
             ? const Positioned(
               top: 4,
               child: Text(
-                'SOLD OUT',
+                '売り切れ',
                 // style: theme.textTheme.h60.bold(),
                 // .copyWith(color: theme.appColors.onPrimary),
               ),
             )
             : isOpened
-            ? const Positioned(child: Text(''))
+            ? Positioned(
+              top: 4,
+              child: Text(
+                '在庫: ${product.stock}',
+                // style: theme.textTheme.h60.bold(),
+                // .copyWith(color: theme.appColors.onPrimary),
+              ),
+            )
             : Positioned(
               top: 4,
               child: Text(

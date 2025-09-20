@@ -161,7 +161,16 @@ void main() {
     testWidgets('should be tappable', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byType(InkWell), findsOneWidget);
+      // Find GestureDetector widgets within the ProductCard specifically
+      final productCard = find.byType(ProductCard);
+      expect(productCard, findsOneWidget);
+      
+      // Check that the ProductCard contains a GestureDetector
+      final gestureDetectorInProductCard = find.descendant(
+        of: productCard,
+        matching: find.byType(GestureDetector),
+      );
+      expect(gestureDetectorInProductCard, findsOneWidget);
     });
 
     testWidgets('should have proper layout structure', (
