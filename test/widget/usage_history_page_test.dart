@@ -1,5 +1,7 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -8,6 +10,8 @@ import 'package:mockito/mockito.dart';
 import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
+import 'package:tliny/src/data/repository/ticket_repository.dart';
 import 'package:tliny/src/ui/usage_history/history_page.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
@@ -17,6 +21,11 @@ import '../utils/test_helpers.dart';
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
 
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
+
+// Mock classes for repositories
+class MockUsageHistoryRepository extends Mock implements UsageHistoryRepository {}
+
+class MockAuthRepository extends Mock implements AuthRepository {}
 
 // Mock UsageHistoryViewModel for testing
 class MockUsageHistoryViewModel extends UsageHistoryViewModel {
@@ -96,6 +105,9 @@ void main() {
           firebaseFirestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
           firebaseAuthProvider.overrideWithValue(MockFirebaseAuth()),
           firebaseStorageProvider.overrideWithValue(MockFirebaseStorage()),
+          // Mock additional providers that UsageHistoryViewModel depends on
+          usageHistoryRepositoryProvider.overrideWithValue(MockUsageHistoryRepository()),
+          authRepositoryProvider.overrideWithValue(MockAuthRepository()),
         ],
       );
     }
