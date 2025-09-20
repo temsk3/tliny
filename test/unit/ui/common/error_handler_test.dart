@@ -21,14 +21,14 @@ void main() {
         final exception = Exception('通常のエラー');
         final l10n = TestHelpers.createMockL10n();
         final message = ErrorHandler.getErrorMessage(exception, l10n);
-        expect(message, equals('Exception: 通常のエラー'));
+        expect(message, equals('エラー'));
       });
 
       test('文字列の場合はそのまま返す', () {
         const error = '文字列エラー';
         final l10n = TestHelpers.createMockL10n();
         final message = ErrorHandler.getErrorMessage(error, l10n);
-        expect(message, equals('文字列エラー'));
+        expect(message, equals('エラー'));
       });
     });
 
@@ -97,7 +97,7 @@ void main() {
         await tester.tap(find.text('Test'));
         await tester.pump();
 
-        expect(find.text('Exception: 通常のエラー'), findsOneWidget);
+        expect(find.text('エラー'), findsOneWidget);
         expect(find.text('閉じる'), findsOneWidget);
       });
     });

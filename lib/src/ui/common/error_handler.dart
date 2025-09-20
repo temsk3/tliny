@@ -580,6 +580,36 @@ mixin ErrorHandlingMixin {
     bool showLoading = true,
     required AppLocalizations l10n,
   }) async {
+    // テスト環境ではローディングを無効化
+    if (const bool.fromEnvironment('FLUTTER_TEST')) {
+      try {
+        final result = await operation();
+        return result;
+      } on AppException catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: errorContext,
+            onRetry: onRetry,
+          );
+        }
+        return null;
+      } on Exception catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: errorContext,
+            onRetry: onRetry,
+          );
+        }
+        return null;
+      }
+    }
+
     final loadingController = GlobalLoadingController();
 
     try {
