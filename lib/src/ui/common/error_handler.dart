@@ -579,6 +579,7 @@ mixin ErrorHandlingMixin {
     VoidCallback? onRetry,
     bool showLoading = true,
     required AppLocalizations l10n,
+    required WidgetRef ref,
   }) async {
     // テスト環境ではローディングを無効化
     if (const bool.fromEnvironment('FLUTTER_TEST')) {
@@ -610,7 +611,9 @@ mixin ErrorHandlingMixin {
       }
     }
 
-    final loadingController = GlobalLoadingController();
+    final loadingController = ref.read(
+      globalLoadingControllerProvider.notifier,
+    );
 
     try {
       if (showLoading) {
