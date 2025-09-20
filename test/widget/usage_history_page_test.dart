@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -187,6 +188,10 @@ void main() {
             MockUsageHistoryRepository(),
           ),
           authRepositoryProvider.overrideWithValue(MockAuthRepository()),
+          // Mock userIdProvider to provide user ID
+          userIdProvider.overrideWith(
+            (ref) => Stream.value('test-user-id'),
+          ),
           // Mock ProgramRepository to provide program data
           programRepositoryProvider.overrideWithValue(MockProgramRepository()),
           // Mock programsStateProvider to provide program data
@@ -326,25 +331,25 @@ void main() {
           await tester.pump(const Duration(milliseconds: 50));
           await tester.pumpAndSettle();
 
-           // Check if Card widgets are available
-           final cardFinder = find.byType(Card);
-           if (cardFinder.evaluate().isNotEmpty) {
-             // print(
-             //   'Found ${cardFinder.evaluate().length} Card widgets after ${i + 1} attempts',
-             // );
-             cardsFound = true;
-             break;
-           }
-         }
+          // Check if Card widgets are available
+          final cardFinder = find.byType(Card);
+          if (cardFinder.evaluate().isNotEmpty) {
+            // print(
+            //   'Found ${cardFinder.evaluate().length} Card widgets after ${i + 1} attempts',
+            // );
+            cardsFound = true;
+            break;
+          }
+        }
 
-         // Debug: Check what widgets are actually rendered
-         // print('Available widgets:');
-         // print('Cards: ${find.byType(Card).evaluate().length}');
-         // print(
-         //   'AnimatedContainers: ${find.byType(AnimatedContainer).evaluate().length}',
-         // );
-         // print('InkWells: ${find.byType(InkWell).evaluate().length}');
-         // print('Containers: ${find.byType(Container).evaluate().length}');
+        // Debug: Check what widgets are actually rendered
+        // print('Available widgets:');
+        // print('Cards: ${find.byType(Card).evaluate().length}');
+        // print(
+        //   'AnimatedContainers: ${find.byType(AnimatedContainer).evaluate().length}',
+        // );
+        // print('InkWells: ${find.byType(InkWell).evaluate().length}');
+        // print('Containers: ${find.byType(Container).evaluate().length}');
 
         // Assert that cards are found
         expect(
