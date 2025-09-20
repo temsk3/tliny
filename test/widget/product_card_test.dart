@@ -164,7 +164,7 @@ void main() {
       // Find GestureDetector widgets within the ProductCard specifically
       final productCard = find.byType(ProductCard);
       expect(productCard, findsOneWidget);
-      
+
       // Check that the ProductCard contains a GestureDetector
       final gestureDetectorInProductCard = find.descendant(
         of: productCard,

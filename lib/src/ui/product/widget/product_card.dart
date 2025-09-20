@@ -103,7 +103,13 @@ class ProductCard extends HookConsumerWidget {
                       ),
                       const SizedBox(height: 8.0),
                       Text(
-                        l10n.currency(product.price),
+                        '¥${product.price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                        // style: theme.textTheme.h40,
+                        // .copyWith(color: theme.appColors.onBackground),
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        product.stock == 0 ? '売り切れ' : '在庫: ${product.stock}',
                         // style: theme.textTheme.h40,
                         // .copyWith(color: theme.appColors.onBackground),
                       ),
