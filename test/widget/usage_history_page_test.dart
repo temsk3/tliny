@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/ui/usage_history/history_page.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 import '../utils/test_helpers.dart';
+import '../utils/firebase_test_setup.dart';
 
 void main() {
   group('UsageHistoryPage', () {
     late List<UsageHistory> mockUsageHistories;
+
+    setUpAll(() async {
+      await setupFirebaseForTesting();
+    });
 
     setUp(() {
       mockUsageHistories = [

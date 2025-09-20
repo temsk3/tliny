@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/src/app.dart';
 import 'package:tliny/src/data/general_provider.dart';
+import '../utils/firebase_test_setup.dart';
 
 // Mock classes for testing
 class MockFirebaseAuth extends Mock implements FirebaseAuth {}
@@ -21,8 +22,7 @@ void main() {
     late MockFirebaseStorage mockStorage;
 
     setUpAll(() async {
-      // Firebase初期化をスキップ（テスト環境では不要）
-      // テスト環境ではFirebaseAnalyticsが無効化される
+      await setupFirebaseForTesting();
     });
 
     setUp(() {

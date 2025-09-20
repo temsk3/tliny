@@ -244,7 +244,7 @@ class TestConstants {
 }
 
 /// テスト用のUsageHistoryViewModelモック
-class MockUsageHistoryViewModel extends UsageHistoryViewModel {
+class MockUsageHistoryViewModel {
   final List<UsageHistory> _data;
   final Exception? _error;
 
@@ -252,7 +252,6 @@ class MockUsageHistoryViewModel extends UsageHistoryViewModel {
 
   MockUsageHistoryViewModel.error(this._error) : _data = [];
 
-  @override
   Future<List<UsageHistory>> build() async {
     if (_error != null) {
       throw _error;
