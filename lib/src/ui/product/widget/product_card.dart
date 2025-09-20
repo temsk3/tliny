@@ -75,19 +75,8 @@ class ProductCard extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 12,
-                  // child: SizedBox.expand(
-                  //   child: product.pictureURL.isNotEmpty
-                  //       ? CachedNetworkImage(
-                  //           imageUrl: product.pictureURL[0],
-                  //           placeholder: (context, url) => const Center(
-                  //               child: CircularProgressIndicator()),
-                  //           errorWidget: (context, url, error) =>
-                  //               const Icon(Icons.error),
-                  //         )
-                  //       : Container(),
-                  // ),
+                SizedBox(
+                  height: 120,
                   child: PictureView(
                     picture: product.pictureURL,
                     index: 0,
@@ -96,33 +85,25 @@ class ProductCard extends HookConsumerWidget {
                     tap: false,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          // child: FittedBox(
-                          //   fit: BoxFit.fitWidth,
-                          child: Text(
-                            product.name.toString(),
-                            // style: theme.textTheme.h40.bold(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          // ),
-                        ),
-                        // const SizedBox(height: 8.0),
-                        Expanded(
-                          child: Text(
-                            l10n.currency(product.price),
-                            // style: theme.textTheme.h40,
-                            // .copyWith(color: theme.appColors.onBackground),
-                          ),
-                        ),
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        product.name.toString(),
+                        // style: theme.textTheme.h40.bold(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        l10n.currency(product.price),
+                        // style: theme.textTheme.h40,
+                        // .copyWith(color: theme.appColors.onBackground),
+                      ),
+                    ],
                   ),
                 ),
               ],
