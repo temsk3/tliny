@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/ui/usage_history/history_page.dart';
@@ -73,9 +74,10 @@ void main() {
           ),
           GoRoute(
             path: '/usage-history/:id',
-            builder: (context, state) => const Scaffold(
-              body: Center(child: Text('Usage History Details')),
-            ),
+            builder:
+                (context, state) => const Scaffold(
+                  body: Center(child: Text('Usage History Details')),
+                ),
           ),
         ],
       );
@@ -83,6 +85,8 @@ void main() {
       return TestHelpers.createTestWidget(
         child: MaterialApp.router(
           routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
         ),
         overrides: [
           usageHistoryViewModelProvider.overrideWith(
