@@ -50,11 +50,7 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readUsageHistoryDirectly: Exception - $e', stackTrace: st);
-      throw GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      
-      );
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
