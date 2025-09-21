@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:tliny/src/ui/common/asyncvalue_widget.dart';
 import 'package:tliny/src/ui/program/program_state.dart';
 
@@ -264,7 +265,10 @@ class SearchPage extends ConsumerWidget {
           Text(
             'Tap the search icon to find what you\'re looking for',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16, color: Colors.grey.withValues(alpha: 0.6)),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey.withValues(alpha: 0.6),
+            ),
           ),
         ],
       ),
