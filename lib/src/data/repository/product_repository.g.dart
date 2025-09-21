@@ -8,307 +8,230 @@ part of 'product_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productRepositoryHash() => r'93a29e114c0f2197ebcbb1c29ac3b96cb0c786de';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [productRepository].
 @ProviderFor(productRepository)
-final productRepositoryProvider = Provider<ProductRepository>.internal(
-  productRepository,
-  name: r'productRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$productRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const productRepositoryProvider = ProductRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ProductRepositoryRef = ProviderRef<ProductRepository>;
-String _$productsStreamHash() => r'08fe08fdfd972bff22f4f3afe02e5a125565997d';
-
-/// See also [productsStream].
-@ProviderFor(productsStream)
-final productsStreamProvider =
-    AutoDisposeStreamProvider<List<Product>>.internal(
-      productsStream,
-      name: r'productsStreamProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$productsStreamHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ProductsStreamRef = AutoDisposeStreamProviderRef<List<Product>>;
-String _$productDocStreamHash() => r'9f94bca57ae5fd3b1e880d3960de84216a464585';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [productDocStream].
-@ProviderFor(productDocStream)
-const productDocStreamProvider = ProductDocStreamFamily();
-
-/// See also [productDocStream].
-class ProductDocStreamFamily extends Family<AsyncValue<Product>> {
-  /// See also [productDocStream].
-  const ProductDocStreamFamily();
-
-  /// See also [productDocStream].
-  ProductDocStreamProvider call(DocumentReference<Product> productDocRef) {
-    return ProductDocStreamProvider(productDocRef);
-  }
-
-  @override
-  ProductDocStreamProvider getProviderOverride(
-    covariant ProductDocStreamProvider provider,
-  ) {
-    return call(provider.productDocRef);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'productDocStreamProvider';
-}
-
-/// See also [productDocStream].
-class ProductDocStreamProvider extends AutoDisposeStreamProvider<Product> {
-  /// See also [productDocStream].
-  ProductDocStreamProvider(DocumentReference<Product> productDocRef)
-    : this._internal(
-        (ref) => productDocStream(ref as ProductDocStreamRef, productDocRef),
-        from: productDocStreamProvider,
-        name: r'productDocStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productDocStreamHash,
-        dependencies: ProductDocStreamFamily._dependencies,
-        allTransitiveDependencies:
-            ProductDocStreamFamily._allTransitiveDependencies,
-        productDocRef: productDocRef,
+final class ProductRepositoryProvider
+    extends
+        $FunctionalProvider<
+          ProductRepository,
+          ProductRepository,
+          ProductRepository
+        >
+    with $Provider<ProductRepository> {
+  const ProductRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'productRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  ProductDocStreamProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.productDocRef,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$productRepositoryHash();
 
-  final DocumentReference<Product> productDocRef;
+  @$internal
+  @override
+  $ProviderElement<ProductRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    Stream<Product> Function(ProductDocStreamRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ProductDocStreamProvider._internal(
-        (ref) => create(ref as ProductDocStreamRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        productDocRef: productDocRef,
-      ),
-    );
+  ProductRepository create(Ref ref) {
+    return productRepository(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ProductRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ProductRepository>(value),
+    );
+  }
+}
+
+String _$productRepositoryHash() => r'93a29e114c0f2197ebcbb1c29ac3b96cb0c786de';
+
+@ProviderFor(productsStream)
+const productsStreamProvider = ProductsStreamProvider._();
+
+final class ProductsStreamProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Product>>,
+          List<Product>,
+          Stream<List<Product>>
+        >
+    with $FutureModifier<List<Product>>, $StreamProvider<List<Product>> {
+  const ProductsStreamProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'productsStreamProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
   @override
-  AutoDisposeStreamProviderElement<Product> createElement() {
-    return _ProductDocStreamProviderElement(this);
+  String debugGetCreateSourceHash() => _$productsStreamHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Product>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Product>> create(Ref ref) {
+    return productsStream(ref);
+  }
+}
+
+String _$productsStreamHash() => r'08fe08fdfd972bff22f4f3afe02e5a125565997d';
+
+@ProviderFor(productDocStream)
+const productDocStreamProvider = ProductDocStreamFamily._();
+
+final class ProductDocStreamProvider
+    extends $FunctionalProvider<AsyncValue<Product>, Product, Stream<Product>>
+    with $FutureModifier<Product>, $StreamProvider<Product> {
+  const ProductDocStreamProvider._({
+    required ProductDocStreamFamily super.from,
+    required DocumentReference<Product> super.argument,
+  }) : super(
+         retry: null,
+         name: r'productDocStreamProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$productDocStreamHash();
+
+  @override
+  String toString() {
+    return r'productDocStreamProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<Product> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Product> create(Ref ref) {
+    final argument = this.argument as DocumentReference<Product>;
+    return productDocStream(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ProductDocStreamProvider &&
-        other.productDocRef == productDocRef;
+    return other is ProductDocStreamProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, productDocRef.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ProductDocStreamRef on AutoDisposeStreamProviderRef<Product> {
-  /// The parameter `productDocRef` of this provider.
-  DocumentReference<Product> get productDocRef;
-}
+String _$productDocStreamHash() => r'9f94bca57ae5fd3b1e880d3960de84216a464585';
 
-class _ProductDocStreamProviderElement
-    extends AutoDisposeStreamProviderElement<Product>
-    with ProductDocStreamRef {
-  _ProductDocStreamProviderElement(super.provider);
+final class ProductDocStreamFamily extends $Family
+    with
+        $FunctionalFamilyOverride<Stream<Product>, DocumentReference<Product>> {
+  const ProductDocStreamFamily._()
+    : super(
+        retry: null,
+        name: r'productDocStreamProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  ProductDocStreamProvider call(DocumentReference<Product> productDocRef) =>
+      ProductDocStreamProvider._(argument: productDocRef, from: this);
 
   @override
-  DocumentReference<Product> get productDocRef =>
-      (origin as ProductDocStreamProvider).productDocRef;
+  String toString() => r'productDocStreamProvider';
+}
+
+@ProviderFor(productStream)
+const productStreamProvider = ProductStreamFamily._();
+
+final class ProductStreamProvider
+    extends $FunctionalProvider<AsyncValue<Product>, Product, Stream<Product>>
+    with $FutureModifier<Product>, $StreamProvider<Product> {
+  const ProductStreamProvider._({
+    required ProductStreamFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'productStreamProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$productStreamHash();
+
+  @override
+  String toString() {
+    return r'productStreamProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<Product> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<Product> create(Ref ref) {
+    final argument = this.argument as String;
+    return productStream(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ProductStreamProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
 String _$productStreamHash() => r'200afe35ff39ef405332646f24832f86a4b174e4';
 
-/// See also [productStream].
-@ProviderFor(productStream)
-const productStreamProvider = ProductStreamFamily();
-
-/// See also [productStream].
-class ProductStreamFamily extends Family<AsyncValue<Product>> {
-  /// See also [productStream].
-  const ProductStreamFamily();
-
-  /// See also [productStream].
-  ProductStreamProvider call(String productId) {
-    return ProductStreamProvider(productId);
-  }
-
-  @override
-  ProductStreamProvider getProviderOverride(
-    covariant ProductStreamProvider provider,
-  ) {
-    return call(provider.productId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'productStreamProvider';
-}
-
-/// See also [productStream].
-class ProductStreamProvider extends AutoDisposeStreamProvider<Product> {
-  /// See also [productStream].
-  ProductStreamProvider(String productId)
-    : this._internal(
-        (ref) => productStream(ref as ProductStreamRef, productId),
-        from: productStreamProvider,
+final class ProductStreamFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<Product>, String> {
+  const ProductStreamFamily._()
+    : super(
+        retry: null,
         name: r'productStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productStreamHash,
-        dependencies: ProductStreamFamily._dependencies,
-        allTransitiveDependencies:
-            ProductStreamFamily._allTransitiveDependencies,
-        productId: productId,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
       );
 
-  ProductStreamProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.productId,
-  }) : super.internal();
-
-  final String productId;
+  ProductStreamProvider call(String productId) =>
+      ProductStreamProvider._(argument: productId, from: this);
 
   @override
-  Override overrideWith(
-    Stream<Product> Function(ProductStreamRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: ProductStreamProvider._internal(
-        (ref) => create(ref as ProductStreamRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        productId: productId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<Product> createElement() {
-    return _ProductStreamProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is ProductStreamProvider && other.productId == productId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, productId.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
+  String toString() => r'productStreamProvider';
 }
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ProductStreamRef on AutoDisposeStreamProviderRef<Product> {
-  /// The parameter `productId` of this provider.
-  String get productId;
-}
-
-class _ProductStreamProviderElement
-    extends AutoDisposeStreamProviderElement<Product>
-    with ProductStreamRef {
-  _ProductStreamProviderElement(super.provider);
-
-  @override
-  String get productId => (origin as ProductStreamProvider).productId;
-}
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

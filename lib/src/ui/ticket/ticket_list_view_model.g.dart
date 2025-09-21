@@ -8,42 +8,98 @@ part of 'ticket_list_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(ticketsState)
+const ticketsStateProvider = TicketsStateProvider._();
+
+final class TicketsStateProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Ticket>>,
+          AsyncValue<List<Ticket>>,
+          AsyncValue<List<Ticket>>
+        >
+    with $Provider<AsyncValue<List<Ticket>>> {
+  const TicketsStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ticketsStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ticketsStateHash();
+
+  @$internal
+  @override
+  $ProviderElement<AsyncValue<List<Ticket>>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AsyncValue<List<Ticket>> create(Ref ref) {
+    return ticketsState(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<List<Ticket>> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<List<Ticket>>>(value),
+    );
+  }
+}
+
 String _$ticketsStateHash() => r'a8c538971fcbc5dd266443d03ff4902ec7570163';
 
-/// See also [ticketsState].
-@ProviderFor(ticketsState)
-final ticketsStateProvider =
-    AutoDisposeProvider<AsyncValue<List<Ticket>>>.internal(
-      ticketsState,
-      name: r'ticketsStateProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$ticketsStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(TicketListViewModel)
+const ticketListViewModelProvider = TicketListViewModelProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef TicketsStateRef = AutoDisposeProviderRef<AsyncValue<List<Ticket>>>;
+final class TicketListViewModelProvider
+    extends $AsyncNotifierProvider<TicketListViewModel, Set<String>> {
+  const TicketListViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ticketListViewModelProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ticketListViewModelHash();
+
+  @$internal
+  @override
+  TicketListViewModel create() => TicketListViewModel();
+}
+
 String _$ticketListViewModelHash() =>
     r'30d8a2eba2e1c917ff4c194c5b0cffc162535845';
 
-/// See also [TicketListViewModel].
-@ProviderFor(TicketListViewModel)
-final ticketListViewModelProvider =
-    AsyncNotifierProvider<TicketListViewModel, Set<String>>.internal(
-      TicketListViewModel.new,
-      name: r'ticketListViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$ticketListViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$TicketListViewModel = AsyncNotifier<Set<String>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$TicketListViewModel extends $AsyncNotifier<Set<String>> {
+  FutureOr<Set<String>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<Set<String>>, Set<String>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Set<String>>, Set<String>>,
+              AsyncValue<Set<String>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

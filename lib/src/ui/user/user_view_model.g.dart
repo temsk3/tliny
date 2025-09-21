@@ -8,22 +8,50 @@ part of 'user_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userViewModelHash() => r'ceb87fe111118f0f014876de90bd087e6a8441a3';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [UserViewModel].
 @ProviderFor(UserViewModel)
-final userViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<UserViewModel, User>.internal(
-      UserViewModel.new,
-      name: r'userViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$userViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const userViewModelProvider = UserViewModelProvider._();
 
-typedef _$UserViewModel = AutoDisposeAsyncNotifier<User>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class UserViewModelProvider
+    extends $AsyncNotifierProvider<UserViewModel, User> {
+  const UserViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userViewModelHash();
+
+  @$internal
+  @override
+  UserViewModel create() => UserViewModel();
+}
+
+String _$userViewModelHash() => r'd7f88db41210a930a0ca756aed7ce478c02d0d64';
+
+abstract class _$UserViewModel extends $AsyncNotifier<User> {
+  FutureOr<User> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<User>, User>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<User>, User>,
+              AsyncValue<User>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

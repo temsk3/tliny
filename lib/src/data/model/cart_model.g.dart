@@ -8,7 +8,7 @@ part of 'cart_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
+_Cart _$CartFromJson(Map<String, dynamic> json) => _Cart(
   id: json['id'] as String?,
   quantity: (json['quantity'] as num).toInt(),
   productDocRef: const DocumentReferenceNullStringConverter().fromJson(
@@ -24,15 +24,14 @@ _$CartImpl _$$CartImplFromJson(Map<String, dynamic> json) => _$CartImpl(
   ),
 );
 
-Map<String, dynamic> _$$CartImplToJson(_$CartImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'quantity': instance.quantity,
-      'productDocRef': const DocumentReferenceNullStringConverter().toJson(
-        instance.productDocRef,
-      ),
-      'productId': instance.productId,
-      'programId': instance.programId,
-      'createdAt': const TimestampConverter().toJson(instance.createdAt),
-      'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
-    };
+Map<String, dynamic> _$CartToJson(_Cart instance) => <String, dynamic>{
+  'id': instance.id,
+  'quantity': instance.quantity,
+  'productDocRef': const DocumentReferenceNullStringConverter().toJson(
+    instance.productDocRef,
+  ),
+  'productId': instance.productId,
+  'programId': instance.programId,
+  'createdAt': const TimestampConverter().toJson(instance.createdAt),
+  'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
+};

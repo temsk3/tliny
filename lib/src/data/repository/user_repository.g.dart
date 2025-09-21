@@ -8,422 +8,313 @@ part of 'user_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userRepositoryHash() => r'7b838d76413a4ed7caa642e36081918247857705';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [userRepository].
 @ProviderFor(userRepository)
-final userRepositoryProvider = Provider<UserRepository>.internal(
-  userRepository,
-  name: r'userRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$userRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const userRepositoryProvider = UserRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef UserRepositoryRef = ProviderRef<UserRepository>;
-String _$userStreamHash() => r'2cf4b17d65e881eb21b099203c985d8c3e341b81';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [userStream].
-@ProviderFor(userStream)
-const userStreamProvider = UserStreamFamily();
-
-/// See also [userStream].
-class UserStreamFamily extends Family<AsyncValue<User>> {
-  /// See also [userStream].
-  const UserStreamFamily();
-
-  /// See also [userStream].
-  UserStreamProvider call(String uid) {
-    return UserStreamProvider(uid);
-  }
-
-  @override
-  UserStreamProvider getProviderOverride(
-    covariant UserStreamProvider provider,
-  ) {
-    return call(provider.uid);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'userStreamProvider';
-}
-
-/// See also [userStream].
-class UserStreamProvider extends AutoDisposeStreamProvider<User> {
-  /// See also [userStream].
-  UserStreamProvider(String uid)
-    : this._internal(
-        (ref) => userStream(ref as UserStreamRef, uid),
-        from: userStreamProvider,
-        name: r'userStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$userStreamHash,
-        dependencies: UserStreamFamily._dependencies,
-        allTransitiveDependencies: UserStreamFamily._allTransitiveDependencies,
-        uid: uid,
+final class UserRepositoryProvider
+    extends $FunctionalProvider<UserRepository, UserRepository, UserRepository>
+    with $Provider<UserRepository> {
+  const UserRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  UserStreamProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$userRepositoryHash();
 
-  final String uid;
+  @$internal
+  @override
+  $ProviderElement<UserRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Override overrideWith(Stream<User> Function(UserStreamRef provider) create) {
-    return ProviderOverride(
-      origin: this,
-      override: UserStreamProvider._internal(
-        (ref) => create(ref as UserStreamRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-      ),
-    );
+  UserRepository create(Ref ref) {
+    return userRepository(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserRepository>(value),
+    );
+  }
+}
+
+String _$userRepositoryHash() => r'7b838d76413a4ed7caa642e36081918247857705';
+
+@ProviderFor(userStream)
+const userStreamProvider = UserStreamFamily._();
+
+final class UserStreamProvider
+    extends $FunctionalProvider<AsyncValue<User>, User, Stream<User>>
+    with $FutureModifier<User>, $StreamProvider<User> {
+  const UserStreamProvider._({
+    required UserStreamFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'userStreamProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeStreamProviderElement<User> createElement() {
-    return _UserStreamProviderElement(this);
+  String debugGetCreateSourceHash() => _$userStreamHash();
+
+  @override
+  String toString() {
+    return r'userStreamProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<User> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<User> create(Ref ref) {
+    final argument = this.argument as String;
+    return userStream(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is UserStreamProvider && other.uid == uid;
+    return other is UserStreamProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin UserStreamRef on AutoDisposeStreamProviderRef<User> {
-  /// The parameter `uid` of this provider.
-  String get uid;
-}
+String _$userStreamHash() => r'2cf4b17d65e881eb21b099203c985d8c3e341b81';
 
-class _UserStreamProviderElement extends AutoDisposeStreamProviderElement<User>
-    with UserStreamRef {
-  _UserStreamProviderElement(super.provider);
+final class UserStreamFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<User>, String> {
+  const UserStreamFamily._()
+    : super(
+        retry: null,
+        name: r'userStreamProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  UserStreamProvider call(String uid) =>
+      UserStreamProvider._(argument: uid, from: this);
 
   @override
-  String get uid => (origin as UserStreamProvider).uid;
+  String toString() => r'userStreamProvider';
+}
+
+@ProviderFor(publicUserRepository)
+const publicUserRepositoryProvider = PublicUserRepositoryProvider._();
+
+final class PublicUserRepositoryProvider
+    extends
+        $FunctionalProvider<
+          PublicUserRepository,
+          PublicUserRepository,
+          PublicUserRepository
+        >
+    with $Provider<PublicUserRepository> {
+  const PublicUserRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'publicUserRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$publicUserRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<PublicUserRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  PublicUserRepository create(Ref ref) {
+    return publicUserRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PublicUserRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PublicUserRepository>(value),
+    );
+  }
 }
 
 String _$publicUserRepositoryHash() =>
     r'506faab5f233a028a1d40fb4e2141c6b34535da3';
 
-/// See also [publicUserRepository].
-@ProviderFor(publicUserRepository)
-final publicUserRepositoryProvider = Provider<PublicUserRepository>.internal(
-  publicUserRepository,
-  name: r'publicUserRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$publicUserRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PublicUserRepositoryRef = ProviderRef<PublicUserRepository>;
-String _$publicUserStreamHash() => r'a4bebdc2b6382db7796a963ed4541007fe8aa8db';
-
-/// See also [publicUserStream].
 @ProviderFor(publicUserStream)
-const publicUserStreamProvider = PublicUserStreamFamily();
+const publicUserStreamProvider = PublicUserStreamFamily._();
 
-/// See also [publicUserStream].
-class PublicUserStreamFamily extends Family<AsyncValue<PublicUsers>> {
-  /// See also [publicUserStream].
-  const PublicUserStreamFamily();
+final class PublicUserStreamProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PublicUsers>,
+          PublicUsers,
+          Stream<PublicUsers>
+        >
+    with $FutureModifier<PublicUsers>, $StreamProvider<PublicUsers> {
+  const PublicUserStreamProvider._({
+    required PublicUserStreamFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'publicUserStreamProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [publicUserStream].
-  PublicUserStreamProvider call(String uid) {
-    return PublicUserStreamProvider(uid);
+  @override
+  String debugGetCreateSourceHash() => _$publicUserStreamHash();
+
+  @override
+  String toString() {
+    return r'publicUserStreamProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  PublicUserStreamProvider getProviderOverride(
-    covariant PublicUserStreamProvider provider,
-  ) {
-    return call(provider.uid);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  $StreamProviderElement<PublicUsers> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
 
   @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'publicUserStreamProvider';
-}
-
-/// See also [publicUserStream].
-class PublicUserStreamProvider extends AutoDisposeStreamProvider<PublicUsers> {
-  /// See also [publicUserStream].
-  PublicUserStreamProvider(String uid)
-    : this._internal(
-        (ref) => publicUserStream(ref as PublicUserStreamRef, uid),
-        from: publicUserStreamProvider,
-        name: r'publicUserStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$publicUserStreamHash,
-        dependencies: PublicUserStreamFamily._dependencies,
-        allTransitiveDependencies:
-            PublicUserStreamFamily._allTransitiveDependencies,
-        uid: uid,
-      );
-
-  PublicUserStreamProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-  }) : super.internal();
-
-  final String uid;
-
-  @override
-  Override overrideWith(
-    Stream<PublicUsers> Function(PublicUserStreamRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: PublicUserStreamProvider._internal(
-        (ref) => create(ref as PublicUserStreamRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<PublicUsers> createElement() {
-    return _PublicUserStreamProviderElement(this);
+  Stream<PublicUsers> create(Ref ref) {
+    final argument = this.argument as String;
+    return publicUserStream(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is PublicUserStreamProvider && other.uid == uid;
+    return other is PublicUserStreamProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin PublicUserStreamRef on AutoDisposeStreamProviderRef<PublicUsers> {
-  /// The parameter `uid` of this provider.
-  String get uid;
-}
+String _$publicUserStreamHash() => r'a4bebdc2b6382db7796a963ed4541007fe8aa8db';
 
-class _PublicUserStreamProviderElement
-    extends AutoDisposeStreamProviderElement<PublicUsers>
-    with PublicUserStreamRef {
-  _PublicUserStreamProviderElement(super.provider);
+final class PublicUserStreamFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<PublicUsers>, String> {
+  const PublicUserStreamFamily._()
+    : super(
+        retry: null,
+        name: r'publicUserStreamProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  PublicUserStreamProvider call(String uid) =>
+      PublicUserStreamProvider._(argument: uid, from: this);
 
   @override
-  String get uid => (origin as PublicUserStreamProvider).uid;
+  String toString() => r'publicUserStreamProvider';
+}
+
+@ProviderFor(publicUserFuture)
+const publicUserFutureProvider = PublicUserFutureFamily._();
+
+final class PublicUserFutureProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PublicUsers>,
+          PublicUsers,
+          FutureOr<PublicUsers>
+        >
+    with $FutureModifier<PublicUsers>, $FutureProvider<PublicUsers> {
+  const PublicUserFutureProvider._({
+    required PublicUserFutureFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'publicUserFutureProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$publicUserFutureHash();
+
+  @override
+  String toString() {
+    return r'publicUserFutureProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<PublicUsers> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<PublicUsers> create(Ref ref) {
+    final argument = this.argument as String;
+    return publicUserFuture(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PublicUserFutureProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
 }
 
 String _$publicUserFutureHash() => r'9138b3dce22b8a26edb47af9b5f0937e77d51623';
 
-/// See also [publicUserFuture].
-@ProviderFor(publicUserFuture)
-const publicUserFutureProvider = PublicUserFutureFamily();
-
-/// See also [publicUserFuture].
-class PublicUserFutureFamily extends Family<AsyncValue<PublicUsers>> {
-  /// See also [publicUserFuture].
-  const PublicUserFutureFamily();
-
-  /// See also [publicUserFuture].
-  PublicUserFutureProvider call(String uid) {
-    return PublicUserFutureProvider(uid);
-  }
-
-  @override
-  PublicUserFutureProvider getProviderOverride(
-    covariant PublicUserFutureProvider provider,
-  ) {
-    return call(provider.uid);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'publicUserFutureProvider';
-}
-
-/// See also [publicUserFuture].
-class PublicUserFutureProvider extends AutoDisposeFutureProvider<PublicUsers> {
-  /// See also [publicUserFuture].
-  PublicUserFutureProvider(String uid)
-    : this._internal(
-        (ref) => publicUserFuture(ref as PublicUserFutureRef, uid),
-        from: publicUserFutureProvider,
+final class PublicUserFutureFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<PublicUsers>, String> {
+  const PublicUserFutureFamily._()
+    : super(
+        retry: null,
         name: r'publicUserFutureProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$publicUserFutureHash,
-        dependencies: PublicUserFutureFamily._dependencies,
-        allTransitiveDependencies:
-            PublicUserFutureFamily._allTransitiveDependencies,
-        uid: uid,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
       );
 
-  PublicUserFutureProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-  }) : super.internal();
-
-  final String uid;
+  PublicUserFutureProvider call(String uid) =>
+      PublicUserFutureProvider._(argument: uid, from: this);
 
   @override
-  Override overrideWith(
-    FutureOr<PublicUsers> Function(PublicUserFutureRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: PublicUserFutureProvider._internal(
-        (ref) => create(ref as PublicUserFutureRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<PublicUsers> createElement() {
-    return _PublicUserFutureProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is PublicUserFutureProvider && other.uid == uid;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
+  String toString() => r'publicUserFutureProvider';
 }
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin PublicUserFutureRef on AutoDisposeFutureProviderRef<PublicUsers> {
-  /// The parameter `uid` of this provider.
-  String get uid;
-}
-
-class _PublicUserFutureProviderElement
-    extends AutoDisposeFutureProviderElement<PublicUsers>
-    with PublicUserFutureRef {
-  _PublicUserFutureProviderElement(super.provider);
-
-  @override
-  String get uid => (origin as PublicUserFutureProvider).uid;
-}
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

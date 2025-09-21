@@ -8,23 +8,47 @@ part of 'image_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$imageRepositoryHash() => r'd9d3ea7e121c29817ef5b725e27f3ba22a3d8c7b';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [imageRepository].
 @ProviderFor(imageRepository)
-final imageRepositoryProvider = Provider<ImageRepository>.internal(
-  imageRepository,
-  name: r'imageRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$imageRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const imageRepositoryProvider = ImageRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ImageRepositoryRef = ProviderRef<ImageRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ImageRepositoryProvider
+    extends
+        $FunctionalProvider<ImageRepository, ImageRepository, ImageRepository>
+    with $Provider<ImageRepository> {
+  const ImageRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'imageRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$imageRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ImageRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  ImageRepository create(Ref ref) {
+    return imageRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ImageRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ImageRepository>(value),
+    );
+  }
+}
+
+String _$imageRepositoryHash() => r'd9d3ea7e121c29817ef5b725e27f3ba22a3d8c7b';

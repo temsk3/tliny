@@ -8,7 +8,7 @@ part of 'staff_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$StaffImpl _$$StaffImplFromJson(Map<String, dynamic> json) => _$StaffImpl(
+_Staff _$StaffFromJson(Map<String, dynamic> json) => _Staff(
   id: json['id'] as String?,
   displayName: json['displayName'] as String?,
   name: json['name'] as String?,
@@ -23,18 +23,17 @@ _$StaffImpl _$$StaffImplFromJson(Map<String, dynamic> json) => _$StaffImpl(
   isActive: json['isActive'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$$StaffImplToJson(_$StaffImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'displayName': instance.displayName,
-      'name': instance.name,
-      'email': instance.email,
-      'isCreated': instance.isCreated,
-      'isRetrieve': instance.isRetrieve,
-      'isUpdated': instance.isUpdated,
-      'isDeleted': instance.isDeleted,
-      'createdAt': timestampFromDateValue(instance.createdAt),
-      'updatedAt': timestampFromDateValue(instance.updatedAt),
-      'deletedAt': timestampFromDateValue(instance.deletedAt),
-      'isActive': instance.isActive,
-    };
+Map<String, dynamic> _$StaffToJson(_Staff instance) => <String, dynamic>{
+  'id': instance.id,
+  'displayName': instance.displayName,
+  'name': instance.name,
+  'email': instance.email,
+  'isCreated': instance.isCreated,
+  'isRetrieve': instance.isRetrieve,
+  'isUpdated': instance.isUpdated,
+  'isDeleted': instance.isDeleted,
+  'createdAt': timestampFromDateValue(instance.createdAt),
+  'updatedAt': timestampFromDateValue(instance.updatedAt),
+  'deletedAt': timestampFromDateValue(instance.deletedAt),
+  'isActive': instance.isActive,
+};

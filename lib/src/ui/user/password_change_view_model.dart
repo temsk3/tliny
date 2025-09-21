@@ -59,7 +59,8 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
         logger.w('changePassword: ユーザー情報の再取得に失敗しました: $e');
       }
 
-      state = const AsyncValue.data(null);
+      // Refresh the state by calling build again
+      ref.invalidateSelf();
     } on FirebaseAuthException catch (e) {
       logger.e(
         'changePassword: FirebaseAuthException - ${e.code} - ${e.message}',
@@ -88,14 +89,9 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
         code: e.code,
         stackTrace: e.stackTrace,
       );
-      state = AsyncValue.error(
-        appException,
-        e.stackTrace ?? StackTrace.current,
-      );
       rethrow;
     } on AppException catch (e, st) {
       logger.e('changePassword: AppException - ${e.message}', stackTrace: st);
-      state = AsyncValue.error(e, st);
       rethrow;
     } catch (e, st) {
       logger.e('changePassword: Exception - $e', stackTrace: st);
@@ -103,13 +99,12 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
         message: e.toString(),
         stackTrace: st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
 
   /// パスワード変更の状態をリセット
   void resetState() {
-    state = const AsyncValue.data(null);
+    ref.invalidateSelf();
   }
 }

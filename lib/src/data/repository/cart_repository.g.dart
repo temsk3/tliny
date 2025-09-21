@@ -8,164 +8,120 @@ part of 'cart_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cartRepositoryHash() => r'dc5f40f430d8fdc57240a0529f3651cff5214961';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [cartRepository].
 @ProviderFor(cartRepository)
-final cartRepositoryProvider = Provider<CartRepository>.internal(
-  cartRepository,
-  name: r'cartRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$cartRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const cartRepositoryProvider = CartRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CartRepositoryRef = ProviderRef<CartRepository>;
-String _$cartStreamHash() => r'07a66d6a90ef5b68908868ffa45ef0240138f444';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// See also [cartStream].
-@ProviderFor(cartStream)
-const cartStreamProvider = CartStreamFamily();
-
-/// See also [cartStream].
-class CartStreamFamily extends Family<AsyncValue<List<Cart>>> {
-  /// See also [cartStream].
-  const CartStreamFamily();
-
-  /// See also [cartStream].
-  CartStreamProvider call(String uid) {
-    return CartStreamProvider(uid);
-  }
-
-  @override
-  CartStreamProvider getProviderOverride(
-    covariant CartStreamProvider provider,
-  ) {
-    return call(provider.uid);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'cartStreamProvider';
-}
-
-/// See also [cartStream].
-class CartStreamProvider extends AutoDisposeStreamProvider<List<Cart>> {
-  /// See also [cartStream].
-  CartStreamProvider(String uid)
-    : this._internal(
-        (ref) => cartStream(ref as CartStreamRef, uid),
-        from: cartStreamProvider,
-        name: r'cartStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$cartStreamHash,
-        dependencies: CartStreamFamily._dependencies,
-        allTransitiveDependencies: CartStreamFamily._allTransitiveDependencies,
-        uid: uid,
+final class CartRepositoryProvider
+    extends $FunctionalProvider<CartRepository, CartRepository, CartRepository>
+    with $Provider<CartRepository> {
+  const CartRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cartRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  CartStreamProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$cartRepositoryHash();
 
-  final String uid;
+  @$internal
+  @override
+  $ProviderElement<CartRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    Stream<List<Cart>> Function(CartStreamRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: CartStreamProvider._internal(
-        (ref) => create(ref as CartStreamRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-      ),
-    );
+  CartRepository create(Ref ref) {
+    return cartRepository(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CartRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CartRepository>(value),
+    );
+  }
+}
+
+String _$cartRepositoryHash() => r'dc5f40f430d8fdc57240a0529f3651cff5214961';
+
+@ProviderFor(cartStream)
+const cartStreamProvider = CartStreamFamily._();
+
+final class CartStreamProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Cart>>,
+          List<Cart>,
+          Stream<List<Cart>>
+        >
+    with $FutureModifier<List<Cart>>, $StreamProvider<List<Cart>> {
+  const CartStreamProvider._({
+    required CartStreamFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'cartStreamProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeStreamProviderElement<List<Cart>> createElement() {
-    return _CartStreamProviderElement(this);
+  String debugGetCreateSourceHash() => _$cartStreamHash();
+
+  @override
+  String toString() {
+    return r'cartStreamProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<Cart>> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<Cart>> create(Ref ref) {
+    final argument = this.argument as String;
+    return cartStream(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CartStreamProvider && other.uid == uid;
+    return other is CartStreamProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin CartStreamRef on AutoDisposeStreamProviderRef<List<Cart>> {
-  /// The parameter `uid` of this provider.
-  String get uid;
-}
+String _$cartStreamHash() => r'07a66d6a90ef5b68908868ffa45ef0240138f444';
 
-class _CartStreamProviderElement
-    extends AutoDisposeStreamProviderElement<List<Cart>>
-    with CartStreamRef {
-  _CartStreamProviderElement(super.provider);
+final class CartStreamFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<Cart>>, String> {
+  const CartStreamFamily._()
+    : super(
+        retry: null,
+        name: r'cartStreamProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  CartStreamProvider call(String uid) =>
+      CartStreamProvider._(argument: uid, from: this);
 
   @override
-  String get uid => (origin as CartStreamProvider).uid;
+  String toString() => r'cartStreamProvider';
 }
-
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

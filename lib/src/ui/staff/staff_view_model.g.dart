@@ -8,159 +8,95 @@ part of 'staff_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$staffViewModelHash() => r'9c9847cc176c63a6b1164e097fdcfb1d4b29005c';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$StaffViewModel
-    extends BuildlessAutoDisposeAsyncNotifier<List<Staff>> {
-  late final String programId;
-
-  FutureOr<List<Staff>> build(String programId);
-}
-
-/// See also [StaffViewModel].
 @ProviderFor(StaffViewModel)
-const staffViewModelProvider = StaffViewModelFamily();
+const staffViewModelProvider = StaffViewModelFamily._();
 
-/// See also [StaffViewModel].
-class StaffViewModelFamily extends Family<AsyncValue<List<Staff>>> {
-  /// See also [StaffViewModel].
-  const StaffViewModelFamily();
+final class StaffViewModelProvider
+    extends $AsyncNotifierProvider<StaffViewModel, List<Staff>> {
+  const StaffViewModelProvider._({
+    required StaffViewModelFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'staffViewModelProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [StaffViewModel].
-  StaffViewModelProvider call(String programId) {
-    return StaffViewModelProvider(programId);
+  @override
+  String debugGetCreateSourceHash() => _$staffViewModelHash();
+
+  @override
+  String toString() {
+    return r'staffViewModelProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  StaffViewModelProvider getProviderOverride(
-    covariant StaffViewModelProvider provider,
-  ) {
-    return call(provider.programId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'staffViewModelProvider';
-}
-
-/// See also [StaffViewModel].
-class StaffViewModelProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<StaffViewModel, List<Staff>> {
-  /// See also [StaffViewModel].
-  StaffViewModelProvider(String programId)
-    : this._internal(
-        () => StaffViewModel()..programId = programId,
-        from: staffViewModelProvider,
-        name: r'staffViewModelProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$staffViewModelHash,
-        dependencies: StaffViewModelFamily._dependencies,
-        allTransitiveDependencies:
-            StaffViewModelFamily._allTransitiveDependencies,
-        programId: programId,
-      );
-
-  StaffViewModelProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.programId,
-  }) : super.internal();
-
-  final String programId;
-
-  @override
-  FutureOr<List<Staff>> runNotifierBuild(covariant StaffViewModel notifier) {
-    return notifier.build(programId);
-  }
-
-  @override
-  Override overrideWith(StaffViewModel Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: StaffViewModelProvider._internal(
-        () => create()..programId = programId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        programId: programId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<StaffViewModel, List<Staff>>
-  createElement() {
-    return _StaffViewModelProviderElement(this);
-  }
+  StaffViewModel create() => StaffViewModel();
 
   @override
   bool operator ==(Object other) {
-    return other is StaffViewModelProvider && other.programId == programId;
+    return other is StaffViewModelProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, programId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin StaffViewModelRef on AutoDisposeAsyncNotifierProviderRef<List<Staff>> {
-  /// The parameter `programId` of this provider.
-  String get programId;
-}
+String _$staffViewModelHash() => r'9c9847cc176c63a6b1164e097fdcfb1d4b29005c';
 
-class _StaffViewModelProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<StaffViewModel, List<Staff>>
-    with StaffViewModelRef {
-  _StaffViewModelProviderElement(super.provider);
+final class StaffViewModelFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          StaffViewModel,
+          AsyncValue<List<Staff>>,
+          List<Staff>,
+          FutureOr<List<Staff>>,
+          String
+        > {
+  const StaffViewModelFamily._()
+    : super(
+        retry: null,
+        name: r'staffViewModelProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  StaffViewModelProvider call(String programId) =>
+      StaffViewModelProvider._(argument: programId, from: this);
 
   @override
-  String get programId => (origin as StaffViewModelProvider).programId;
+  String toString() => r'staffViewModelProvider';
 }
 
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$StaffViewModel extends $AsyncNotifier<List<Staff>> {
+  late final _$args = ref.$arg as String;
+  String get programId => _$args;
+
+  FutureOr<List<Staff>> build(String programId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<List<Staff>>, List<Staff>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Staff>>, List<Staff>>,
+              AsyncValue<List<Staff>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

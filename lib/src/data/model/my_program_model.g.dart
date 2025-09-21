@@ -8,16 +8,15 @@ part of 'my_program_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MyProgramImpl _$$MyProgramImplFromJson(Map<String, dynamic> json) =>
-    _$MyProgramImpl(
-      id: json['id'] as String?,
-      programId: json['programId'] as String?,
-      createdAt: dateFromTimestampValue(json['createdAt']),
-      updatedAt: dateFromTimestampValue(json['updatedAt']),
-      deletedAt: dateFromTimestampValue(json['deletedAt']),
-    );
+_MyProgram _$MyProgramFromJson(Map<String, dynamic> json) => _MyProgram(
+  id: json['id'] as String?,
+  programId: json['programId'] as String?,
+  createdAt: dateFromTimestampValue(json['createdAt']),
+  updatedAt: dateFromTimestampValue(json['updatedAt']),
+  deletedAt: dateFromTimestampValue(json['deletedAt']),
+);
 
-Map<String, dynamic> _$$MyProgramImplToJson(_$MyProgramImpl instance) =>
+Map<String, dynamic> _$MyProgramToJson(_MyProgram instance) =>
     <String, dynamic>{
       'id': instance.id,
       'programId': instance.programId,

@@ -8,9 +8,9 @@ part of 'ticket_qrcode_data_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TicketQRCodeDataModelImpl _$$TicketQRCodeDataModelImplFromJson(
+_TicketQRCodeDataModel _$TicketQRCodeDataModelFromJson(
   Map<String, dynamic> json,
-) => _$TicketQRCodeDataModelImpl(
+) => _TicketQRCodeDataModel(
   id: json['id'] as String?,
   codeData: json['codeData'] as String,
   isActive: json['isActive'] as bool? ?? true,
@@ -25,8 +25,8 @@ _$TicketQRCodeDataModelImpl _$$TicketQRCodeDataModelImplFromJson(
   ),
 );
 
-Map<String, dynamic> _$$TicketQRCodeDataModelImplToJson(
-  _$TicketQRCodeDataModelImpl instance,
+Map<String, dynamic> _$TicketQRCodeDataModelToJson(
+  _TicketQRCodeDataModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'codeData': instance.codeData,

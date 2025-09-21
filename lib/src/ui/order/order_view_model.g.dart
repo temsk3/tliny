@@ -8,22 +8,50 @@ part of 'order_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(OrderViewModel)
+const orderViewModelProvider = OrderViewModelProvider._();
+
+final class OrderViewModelProvider
+    extends $AsyncNotifierProvider<OrderViewModel, List<Order>> {
+  const OrderViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'orderViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$orderViewModelHash();
+
+  @$internal
+  @override
+  OrderViewModel create() => OrderViewModel();
+}
+
 String _$orderViewModelHash() => r'f7cccf4f9e87bc9110a509371e8787fdb9adc835';
 
-/// See also [OrderViewModel].
-@ProviderFor(OrderViewModel)
-final orderViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<OrderViewModel, List<Order>>.internal(
-      OrderViewModel.new,
-      name: r'orderViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$orderViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$OrderViewModel = AutoDisposeAsyncNotifier<List<Order>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$OrderViewModel extends $AsyncNotifier<List<Order>> {
+  FutureOr<List<Order>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<List<Order>>, List<Order>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Order>>, List<Order>>,
+              AsyncValue<List<Order>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

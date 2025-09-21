@@ -8,22 +8,50 @@ part of 'product_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$productViewModelHash() => r'5c064f3b2284f6248f8681d4255f2fef898fb6a9';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ProductViewModel].
 @ProviderFor(ProductViewModel)
-final productViewModelProvider =
-    AutoDisposeAsyncNotifierProvider<ProductViewModel, List<Product>>.internal(
-      ProductViewModel.new,
-      name: r'productViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$productViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const productViewModelProvider = ProductViewModelProvider._();
 
-typedef _$ProductViewModel = AutoDisposeAsyncNotifier<List<Product>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ProductViewModelProvider
+    extends $AsyncNotifierProvider<ProductViewModel, List<Product>> {
+  const ProductViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'productViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$productViewModelHash();
+
+  @$internal
+  @override
+  ProductViewModel create() => ProductViewModel();
+}
+
+String _$productViewModelHash() => r'abf69bd16b648a4a88cb75ca1d1f8ccf29fd3ddb';
+
+abstract class _$ProductViewModel extends $AsyncNotifier<List<Product>> {
+  FutureOr<List<Product>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<List<Product>>, List<Product>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<Product>>, List<Product>>,
+              AsyncValue<List<Product>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

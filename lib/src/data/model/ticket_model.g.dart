@@ -8,7 +8,7 @@ part of 'ticket_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TicketImpl _$$TicketImplFromJson(Map<String, dynamic> json) => _$TicketImpl(
+_Ticket _$TicketFromJson(Map<String, dynamic> json) => _Ticket(
   id: json['id'] as String?,
   paidUserId: json['paidUserId'] as String?,
   paidUserName: json['paidUserName'] as String?,
@@ -67,9 +67,7 @@ _$TicketImpl _$$TicketImplFromJson(Map<String, dynamic> json) => _$TicketImpl(
   ),
 );
 
-Map<String, dynamic> _$$TicketImplToJson(
-  _$TicketImpl instance,
-) => <String, dynamic>{
+Map<String, dynamic> _$TicketToJson(_Ticket instance) => <String, dynamic>{
   'id': instance.id,
   'paidUserId': instance.paidUserId,
   'paidUserName': instance.paidUserName,
@@ -109,22 +107,21 @@ Map<String, dynamic> _$$TicketImplToJson(
   'deletedAt': const TimestampConverter().toJson(instance.deletedAt),
 };
 
-_$AssignmentImpl _$$AssignmentImplFromJson(Map<String, dynamic> json) =>
-    _$AssignmentImpl(
-      from: json['from'] as String?,
-      to: json['to'] as String?,
-      assignmentDate: dateFromTimestampValue(json['assignmentDate']),
-    );
+_Assignment _$AssignmentFromJson(Map<String, dynamic> json) => _Assignment(
+  from: json['from'] as String?,
+  to: json['to'] as String?,
+  assignmentDate: dateFromTimestampValue(json['assignmentDate']),
+);
 
-Map<String, dynamic> _$$AssignmentImplToJson(_$AssignmentImpl instance) =>
+Map<String, dynamic> _$AssignmentToJson(_Assignment instance) =>
     <String, dynamic>{
       'from': instance.from,
       'to': instance.to,
       'assignmentDate': timestampFromDateValue(instance.assignmentDate),
     };
 
-_$UsageHistoryImpl _$$UsageHistoryImplFromJson(Map<String, dynamic> json) =>
-    _$UsageHistoryImpl(
+_UsageHistory _$UsageHistoryFromJson(Map<String, dynamic> json) =>
+    _UsageHistory(
       id: json['id'] as String?,
       dateOfUse: dateFromTimestampValue(json['dateOfUse']),
       eventId: json['eventId'] as String?,
@@ -138,7 +135,7 @@ _$UsageHistoryImpl _$$UsageHistoryImplFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$$UsageHistoryImplToJson(_$UsageHistoryImpl instance) =>
+Map<String, dynamic> _$UsageHistoryToJson(_UsageHistory instance) =>
     <String, dynamic>{
       'id': instance.id,
       'dateOfUse': timestampFromDateValue(instance.dateOfUse),

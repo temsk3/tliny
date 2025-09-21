@@ -8,7 +8,7 @@ part of 'order_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
+_Order _$OrderFromJson(Map<String, dynamic> json) => _Order(
   id: json['id'] as String?,
   status: $enumDecodeNullable(_$StatusTypeEnumMap, json['status']),
   paymentIntentId: json['paymentIntentId'] as String?,
@@ -25,21 +25,20 @@ _$OrderImpl _$$OrderImplFromJson(Map<String, dynamic> json) => _$OrderImpl(
   deletedAt: dateFromTimestampValue(json['deletedAt']),
 );
 
-Map<String, dynamic> _$$OrderImplToJson(_$OrderImpl instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'status': _$StatusTypeEnumMap[instance.status],
-      'paymentIntentId': instance.paymentIntentId,
-      'checkoutSessionId': instance.checkoutSessionId,
-      'userId': instance.userId,
-      'eventId': instance.eventId,
-      'purchaseTime': timestampFromDateValue(instance.purchaseTime),
-      'snapshotProducts':
-          instance.snapshotProducts?.map((e) => e.toJson()).toList(),
-      'createdAt': timestampFromDateValue(instance.createdAt),
-      'updatedAt': timestampFromDateValue(instance.updatedAt),
-      'deletedAt': timestampFromDateValue(instance.deletedAt),
-    };
+Map<String, dynamic> _$OrderToJson(_Order instance) => <String, dynamic>{
+  'id': instance.id,
+  'status': _$StatusTypeEnumMap[instance.status],
+  'paymentIntentId': instance.paymentIntentId,
+  'checkoutSessionId': instance.checkoutSessionId,
+  'userId': instance.userId,
+  'eventId': instance.eventId,
+  'purchaseTime': timestampFromDateValue(instance.purchaseTime),
+  'snapshotProducts':
+      instance.snapshotProducts?.map((e) => e.toJson()).toList(),
+  'createdAt': timestampFromDateValue(instance.createdAt),
+  'updatedAt': timestampFromDateValue(instance.updatedAt),
+  'deletedAt': timestampFromDateValue(instance.deletedAt),
+};
 
 const _$StatusTypeEnumMap = {
   StatusType.pre: 'pre',
@@ -47,61 +46,61 @@ const _$StatusTypeEnumMap = {
   StatusType.cancel: 'cancel',
 };
 
-_$SnapshotProductImpl _$$SnapshotProductImplFromJson(
-  Map<String, dynamic> json,
-) => _$SnapshotProductImpl(
-  productDocRef: documentReference(
-    json['productDocRef'] as DocumentReference<Map<String, dynamic>>?,
-  ),
-  quantity: (json['quantity'] as num?)?.toInt(),
-  userId: json['userId'] as String?,
-  userName: json['userName'] as String?,
-  productId: json['productId'] as String?,
-  exchangeNumber: (json['exchangeNumber'] as num?)?.toInt(),
-  code: json['code'] as String?,
-  name: json['name'] as String?,
-  desc: json['desc'] as String?,
-  price: (json['price'] as num?)?.toInt(),
-  pictureURL:
-      (json['pictureURL'] as List<dynamic>?)?.map((e) => e as String).toList(),
-  expirationFrom: dateFromTimestampValue(json['expirationFrom']),
-  expirationTo: dateFromTimestampValue(json['expirationTo']),
-  register: json['register'] as String?,
-  organizerDocRef: documentReference(
-    json['organizerDocRef'] as DocumentReference<Map<String, dynamic>>?,
-  ),
-  organizerId: json['organizerId'] as String?,
-  eventDocRef: documentReference(
-    json['eventDocRef'] as DocumentReference<Map<String, dynamic>>?,
-  ),
-  eventId: json['eventId'] as String?,
-  eventName: json['eventName'] as String?,
-  expirationLink: json['expirationLink'] as bool? ?? true,
-  priceId: json['priceId'] as String?,
-);
+_SnapshotProduct _$SnapshotProductFromJson(Map<String, dynamic> json) =>
+    _SnapshotProduct(
+      productDocRef: documentReference(
+        json['productDocRef'] as DocumentReference<Map<String, dynamic>>?,
+      ),
+      quantity: (json['quantity'] as num?)?.toInt(),
+      userId: json['userId'] as String?,
+      userName: json['userName'] as String?,
+      productId: json['productId'] as String?,
+      exchangeNumber: (json['exchangeNumber'] as num?)?.toInt(),
+      code: json['code'] as String?,
+      name: json['name'] as String?,
+      desc: json['desc'] as String?,
+      price: (json['price'] as num?)?.toInt(),
+      pictureURL:
+          (json['pictureURL'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList(),
+      expirationFrom: dateFromTimestampValue(json['expirationFrom']),
+      expirationTo: dateFromTimestampValue(json['expirationTo']),
+      register: json['register'] as String?,
+      organizerDocRef: documentReference(
+        json['organizerDocRef'] as DocumentReference<Map<String, dynamic>>?,
+      ),
+      organizerId: json['organizerId'] as String?,
+      eventDocRef: documentReference(
+        json['eventDocRef'] as DocumentReference<Map<String, dynamic>>?,
+      ),
+      eventId: json['eventId'] as String?,
+      eventName: json['eventName'] as String?,
+      expirationLink: json['expirationLink'] as bool? ?? true,
+      priceId: json['priceId'] as String?,
+    );
 
-Map<String, dynamic> _$$SnapshotProductImplToJson(
-  _$SnapshotProductImpl instance,
-) => <String, dynamic>{
-  'productDocRef': documentReference(instance.productDocRef),
-  'quantity': instance.quantity,
-  'userId': instance.userId,
-  'userName': instance.userName,
-  'productId': instance.productId,
-  'exchangeNumber': instance.exchangeNumber,
-  'code': instance.code,
-  'name': instance.name,
-  'desc': instance.desc,
-  'price': instance.price,
-  'pictureURL': instance.pictureURL,
-  'expirationFrom': timestampFromDateValue(instance.expirationFrom),
-  'expirationTo': timestampFromDateValue(instance.expirationTo),
-  'register': instance.register,
-  'organizerDocRef': documentReference(instance.organizerDocRef),
-  'organizerId': instance.organizerId,
-  'eventDocRef': documentReference(instance.eventDocRef),
-  'eventId': instance.eventId,
-  'eventName': instance.eventName,
-  'expirationLink': instance.expirationLink,
-  'priceId': instance.priceId,
-};
+Map<String, dynamic> _$SnapshotProductToJson(_SnapshotProduct instance) =>
+    <String, dynamic>{
+      'productDocRef': documentReference(instance.productDocRef),
+      'quantity': instance.quantity,
+      'userId': instance.userId,
+      'userName': instance.userName,
+      'productId': instance.productId,
+      'exchangeNumber': instance.exchangeNumber,
+      'code': instance.code,
+      'name': instance.name,
+      'desc': instance.desc,
+      'price': instance.price,
+      'pictureURL': instance.pictureURL,
+      'expirationFrom': timestampFromDateValue(instance.expirationFrom),
+      'expirationTo': timestampFromDateValue(instance.expirationTo),
+      'register': instance.register,
+      'organizerDocRef': documentReference(instance.organizerDocRef),
+      'organizerId': instance.organizerId,
+      'eventDocRef': documentReference(instance.eventDocRef),
+      'eventId': instance.eventId,
+      'eventName': instance.eventName,
+      'expirationLink': instance.expirationLink,
+      'priceId': instance.priceId,
+    };

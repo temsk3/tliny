@@ -8,22 +8,58 @@ part of 'search_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(SearchViewModel)
+const searchViewModelProvider = SearchViewModelProvider._();
+
+final class SearchViewModelProvider
+    extends $NotifierProvider<SearchViewModel, SearchState> {
+  const SearchViewModelProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'searchViewModelProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$searchViewModelHash();
+
+  @$internal
+  @override
+  SearchViewModel create() => SearchViewModel();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SearchState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SearchState>(value),
+    );
+  }
+}
+
 String _$searchViewModelHash() => r'1c1dcbe339dbd19c9ad99440abea800a459b5fe5';
 
-/// See also [SearchViewModel].
-@ProviderFor(SearchViewModel)
-final searchViewModelProvider =
-    AutoDisposeNotifierProvider<SearchViewModel, SearchState>.internal(
-      SearchViewModel.new,
-      name: r'searchViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$searchViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$SearchViewModel = AutoDisposeNotifier<SearchState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$SearchViewModel extends $Notifier<SearchState> {
+  SearchState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<SearchState, SearchState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<SearchState, SearchState>,
+              SearchState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
