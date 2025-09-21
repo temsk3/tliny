@@ -16,10 +16,9 @@ _Order _$OrderFromJson(Map<String, dynamic> json) => _Order(
   userId: json['userId'] as String?,
   eventId: json['eventId'] as String?,
   purchaseTime: dateFromTimestampValue(json['purchaseTime']),
-  snapshotProducts:
-      (json['snapshotProducts'] as List<dynamic>?)
-          ?.map((e) => SnapshotProduct.fromJson(e as Map<String, dynamic>))
-          .toList(),
+  snapshotProducts: (json['snapshotProducts'] as List<dynamic>?)
+      ?.map((e) => SnapshotProduct.fromJson(e as Map<String, dynamic>))
+      .toList(),
   createdAt: dateFromTimestampValue(json['createdAt']),
   updatedAt: dateFromTimestampValue(json['updatedAt']),
   deletedAt: dateFromTimestampValue(json['deletedAt']),
@@ -33,8 +32,9 @@ Map<String, dynamic> _$OrderToJson(_Order instance) => <String, dynamic>{
   'userId': instance.userId,
   'eventId': instance.eventId,
   'purchaseTime': timestampFromDateValue(instance.purchaseTime),
-  'snapshotProducts':
-      instance.snapshotProducts?.map((e) => e.toJson()).toList(),
+  'snapshotProducts': instance.snapshotProducts
+      ?.map((e) => e.toJson())
+      .toList(),
   'createdAt': timestampFromDateValue(instance.createdAt),
   'updatedAt': timestampFromDateValue(instance.updatedAt),
   'deletedAt': timestampFromDateValue(instance.deletedAt),
@@ -60,10 +60,9 @@ _SnapshotProduct _$SnapshotProductFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       desc: json['desc'] as String?,
       price: (json['price'] as num?)?.toInt(),
-      pictureURL:
-          (json['pictureURL'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList(),
+      pictureURL: (json['pictureURL'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       expirationFrom: dateFromTimestampValue(json['expirationFrom']),
       expirationTo: dateFromTimestampValue(json['expirationTo']),
       register: json['register'] as String?,

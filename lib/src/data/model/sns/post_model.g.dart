@@ -14,8 +14,9 @@ _Post _$PostFromJson(Map<String, dynamic> json) => _Post(
   userName: json['userName'] as String,
   userPhotoUrl: json['userPhotoUrl'] as String?,
   content: json['content'] as String,
-  imageUrls:
-      (json['imageUrls'] as List<dynamic>?)?.map((e) => e as String).toList(),
+  imageUrls: (json['imageUrls'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
   eventId: json['eventId'] as String?,
   productId: json['productId'] as String?,
   type: $enumDecodeNullable(_$PostTypeEnumMap, json['type']),

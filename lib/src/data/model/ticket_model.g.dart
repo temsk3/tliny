@@ -17,10 +17,9 @@ _Ticket _$TicketFromJson(Map<String, dynamic> json) => _Ticket(
   ),
   ownerId: json['ownerId'] as String?,
   ownerName: json['ownerName'] as String?,
-  assignment:
-      (json['assignment'] as List<dynamic>?)
-          ?.map((e) => Assignment.fromJson(e as Map<String, dynamic>))
-          .toList(),
+  assignment: (json['assignment'] as List<dynamic>?)
+      ?.map((e) => Assignment.fromJson(e as Map<String, dynamic>))
+      .toList(),
   isActive: json['isActive'] as bool? ?? true,
   isPrinting: json['isPrinting'] as bool? ?? false,
   isUsed: json['isUsed'] as bool? ?? false,
@@ -126,10 +125,9 @@ _UsageHistory _$UsageHistoryFromJson(Map<String, dynamic> json) =>
       dateOfUse: dateFromTimestampValue(json['dateOfUse']),
       eventId: json['eventId'] as String?,
       receptionistId: json['receptionistId'] as String?,
-      useTicket:
-          (json['useTicket'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList(),
+      useTicket: (json['useTicket'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       createdAt: dateFromTimestampValue(json['createdAt']),
       updatedAt: dateFromTimestampValue(json['updatedAt']),
       deletedAt: dateFromTimestampValue(json['deletedAt']),

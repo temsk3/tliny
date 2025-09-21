@@ -1637,7 +1637,7 @@
       "name": "tliny",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.7"
+      "languageVersion": "3.8"
     }
   ],
   "generator": "pub",

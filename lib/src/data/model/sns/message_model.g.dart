@@ -20,10 +20,9 @@ _DirectMessage _$DirectMessageFromJson(Map<String, dynamic> json) =>
       receiverPhotoUrl: json['receiverPhotoUrl'] as String?,
       content: json['content'] as String,
       type: $enumDecodeNullable(_$MessageTypeEnumMap, json['type']),
-      attachmentUrls:
-          (json['attachmentUrls'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList(),
+      attachmentUrls: (json['attachmentUrls'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       isRead: json['isRead'] as bool?,
       readAt: dateFromTimestampValue(json['readAt']),
       createdAt: dateFromTimestampValue(json['createdAt']),
@@ -62,18 +61,15 @@ const _$MessageTypeEnumMap = {
 _Conversation _$ConversationFromJson(Map<String, dynamic> json) =>
     _Conversation(
       id: json['id'] as String?,
-      participantIds:
-          (json['participantIds'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      participantNames:
-          (json['participantNames'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
-      participantPhotoUrls:
-          (json['participantPhotoUrls'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList(),
+      participantIds: (json['participantIds'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      participantNames: (json['participantNames'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      participantPhotoUrls: (json['participantPhotoUrls'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       lastMessageContent: json['lastMessageContent'] as String?,
       lastMessageSenderId: json['lastMessageSenderId'] as String?,
       lastMessageAt: dateFromTimestampValue(json['lastMessageAt']),

@@ -32,14 +32,12 @@ _Program _$ProgramFromJson(Map<String, dynamic> json) => _Program(
   isSecret: json['isSecret'] as bool? ?? false,
   secretUrl: json['secretUrl'] as String?,
   staffCode: json['staffCode'] as String?,
-  staff:
-      (json['staff'] as List<dynamic>?)
-          ?.map((e) => Staff.fromJson(e as Map<String, dynamic>))
-          .toList(),
-  product:
-      (json['product'] as List<dynamic>?)
-          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
-          .toList(),
+  staff: (json['staff'] as List<dynamic>?)
+      ?.map((e) => Staff.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  product: (json['product'] as List<dynamic>?)
+      ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$ProgramToJson(_Program instance) => <String, dynamic>{
