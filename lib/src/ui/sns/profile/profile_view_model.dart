@@ -25,7 +25,7 @@ class ProfileViewModel extends _$ProfileViewModel {
     String userId, {
     bool refresh = false,
   }) async {
-    if (_isLoading) return state.valueOrNull ?? const ProfileState();
+    if (_isLoading) return state.value ?? const ProfileState();
 
     try {
       _isLoading = true;
@@ -78,7 +78,7 @@ class ProfileViewModel extends _$ProfileViewModel {
   Future<void> loadMorePosts(String userId) async {
     if (_isLoading || !_hasMorePosts) return;
 
-    final currentState = state.valueOrNull;
+    final currentState = state.value;
     if (currentState == null) return;
 
     try {
@@ -110,7 +110,7 @@ class ProfileViewModel extends _$ProfileViewModel {
   }
 
   Future<void> toggleFollow(String userId) async {
-    final currentState = state.valueOrNull;
+    final currentState = state.value;
     if (currentState == null || currentState.isOwnProfile) return;
 
     try {
@@ -151,7 +151,7 @@ class ProfileViewModel extends _$ProfileViewModel {
     String? coverImageUrl,
     bool? isPrivate,
   }) async {
-    final currentState = state.valueOrNull;
+    final currentState = state.value;
     if (currentState == null || !currentState.isOwnProfile) return;
 
     try {

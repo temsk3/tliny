@@ -21,7 +21,7 @@ class SnsMessagesViewModel extends _$SnsMessagesViewModel {
   }
 
   Future<List<Conversation>> loadConversations({bool refresh = false}) async {
-    if (_isLoading) return state.valueOrNull ?? [];
+    if (_isLoading) return state.value ?? [];
 
     try {
       _isLoading = true;

@@ -99,7 +99,7 @@ class TicketListViewModel extends _$TicketListViewModel {
     if (ticket.eventId != null) {
       try {
         final event =
-            ref.read(programStreamProvider(ticket.eventId!)).valueOrNull;
+            ref.read(programStreamProvider(ticket.eventId!)).value;
         if (event != null && event.eventTo != null) {
           final isExpired = event.eventTo!.isBefore(now);
           debugPrint(
@@ -333,7 +333,7 @@ class TicketListViewModel extends _$TicketListViewModel {
 
   Program? getEvent(String eventId) {
     try {
-      return ref.read(programStreamProvider(eventId)).valueOrNull;
+      return ref.read(programStreamProvider(eventId)).value;
     } catch (e) {
       return null;
     }

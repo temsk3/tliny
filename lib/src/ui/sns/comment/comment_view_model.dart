@@ -24,7 +24,7 @@ class CommentViewModel extends _$CommentViewModel {
     String postId, {
     bool refresh = false,
   }) async {
-    if (_isLoading) return state.valueOrNull ?? [];
+    if (_isLoading) return state.value ?? [];
 
     try {
       _isLoading = true;
@@ -61,7 +61,7 @@ class CommentViewModel extends _$CommentViewModel {
   Future<void> loadMoreComments(String postId) async {
     if (_isLoading || !_hasMore) return;
 
-    final currentComments = state.valueOrNull ?? [];
+    final currentComments = state.value ?? [];
     if (currentComments.isEmpty) return;
 
     try {
@@ -104,7 +104,7 @@ class CommentViewModel extends _$CommentViewModel {
       );
 
       // 新しいコメントを既存のリストの先頭に追加（最新順）
-      final currentComments = state.valueOrNull ?? [];
+      final currentComments = state.value ?? [];
       final updatedComments = [newComment, ...currentComments];
       state = AsyncValue.data(updatedComments);
 
@@ -121,7 +121,7 @@ class CommentViewModel extends _$CommentViewModel {
       await snsRepository.deleteComment(commentId);
 
       // コメントをリストから削除
-      final currentComments = state.valueOrNull ?? [];
+      final currentComments = state.value ?? [];
       final updatedComments =
           currentComments.where((PostComment c) => c.id != commentId).toList();
       state = AsyncValue.data(updatedComments);

@@ -27,7 +27,7 @@ class SnsChatViewModel extends _$SnsChatViewModel {
   }
 
   Future<List<DirectMessage>> loadMessages({bool refresh = false}) async {
-    if (_isLoading || _conversationId == null) return state.valueOrNull ?? [];
+    if (_isLoading || _conversationId == null) return state.value ?? [];
 
     try {
       _isLoading = true;
@@ -89,7 +89,7 @@ class SnsChatViewModel extends _$SnsChatViewModel {
       );
 
       // 新しいメッセージを既存のリストに追加
-      final currentMessages = state.valueOrNull ?? [];
+      final currentMessages = state.value ?? [];
       final updatedMessages = [...currentMessages, newMessage];
       state = AsyncValue.data(updatedMessages);
 

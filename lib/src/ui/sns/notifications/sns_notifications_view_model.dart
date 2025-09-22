@@ -23,7 +23,7 @@ class SnsNotificationsViewModel extends _$SnsNotificationsViewModel {
   Future<List<AppNotification>> loadNotifications({
     bool refresh = false,
   }) async {
-    if (_isLoading) return state.valueOrNull ?? [];
+    if (_isLoading) return state.value ?? [];
 
     try {
       _isLoading = true;
@@ -68,7 +68,7 @@ class SnsNotificationsViewModel extends _$SnsNotificationsViewModel {
       await snsRepository.markNotificationAsRead(notificationId);
 
       // 既読状態を反映
-      final currentNotifications = state.valueOrNull ?? [];
+      final currentNotifications = state.value ?? [];
       final updatedNotifications =
           currentNotifications.map((notification) {
             if (notification.id == notificationId) {
