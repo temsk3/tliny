@@ -10,8 +10,7 @@ import '../../utils/logger.dart';
 part 'cart_state.g.dart';
 
 /// カートの状態を管理する StreamProvider
-final AutoDisposeStreamProvider<List<Cart>> cartStateProvider =
-    StreamProvider.autoDispose((ref) {
+final cartStateProvider = StreamProvider.autoDispose<List<Cart>>((ref) {
       logger.d('cartStateProvider: start', time: DateTime.now());
       try {
         final uidAsyncValue = ref.watch(userIdProvider);
@@ -32,8 +31,7 @@ final AutoDisposeStreamProvider<List<Cart>> cartStateProvider =
     });
 
 /// 商品価格のキャッシュを管理するプロバイダー
-final AutoDisposeFutureProviderFamily<Map<String, int>, List<String>>
-productPriceCacheProvider = FutureProvider.autoDispose.family<
+final productPriceCacheProvider = FutureProvider.autoDispose.family<
   Map<String, int>,
   List<String>
 >((ref, productIds) async {
@@ -245,5 +243,15 @@ class TotalAmountNotifier extends _$TotalAmountNotifier {
     _cachedHash = null;
     _isInitialized = false;
     _isUpdating = false;
+  }
+}
+
+/// カート合計金額を管理するプロバイダー
+@riverpod
+class TotalAmountNotifierProvider extends _$TotalAmountNotifierProvider {
+  @override
+  int build(List<Cart> carts) {
+    final notifier = TotalAmountNotifier();
+    return notifier.calculateTotal(ref, carts);
   }
 }

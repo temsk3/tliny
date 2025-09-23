@@ -36,9 +36,6 @@ class AuthRepository {
   // GoogleSignInの設定を修正
   final _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],
-    // iOSプラットフォームでの問題を解決するための設定
-    clientId:
-        '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
   );
 
   /// 認証状態の変化を監視するストリーム
