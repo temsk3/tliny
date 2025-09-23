@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,11 +17,9 @@ part 'ticket_list_view_model.g.dart';
 AsyncValue<List<Ticket>> ticketsState(Ref ref) {
   final uidAsyncValue = ref.watch(userIdProvider);
   return uidAsyncValue.when(
-    data:
-        (userId) =>
-            userId != null
-                ? ref.watch(ticketsStreamProvider(userId))
-                : const AsyncValue.data([]),
+    data: (userId) => userId != null
+        ? ref.watch(ticketsStreamProvider(userId))
+        : const AsyncValue.data([]),
     loading: () => const AsyncValue.loading(),
     error: AsyncValue.error,
   );
@@ -98,8 +95,7 @@ class TicketListViewModel extends _$TicketListViewModel {
     // イベントの開催期間で判定する場合
     if (ticket.eventId != null) {
       try {
-        final event =
-            ref.read(programStreamProvider(ticket.eventId!)).value;
+        final event = ref.read(programStreamProvider(ticket.eventId!)).value;
         if (event != null && event.eventTo != null) {
           final isExpired = event.eventTo!.isBefore(now);
           debugPrint(
@@ -130,8 +126,9 @@ class TicketListViewModel extends _$TicketListViewModel {
       return tickets; // 全て表示
     }
 
-    final filteredTickets =
-        tickets.where((ticket) => !isTicketExpired(ticket)).toList();
+    final filteredTickets = tickets
+        .where((ticket) => !isTicketExpired(ticket))
+        .toList();
     debugPrint(
       'filterExpiredTickets: ${tickets.length} -> ${filteredTickets.length}',
     );

@@ -85,8 +85,9 @@ class ProfileViewModel extends _$ProfileViewModel {
       _isLoading = true;
 
       final snsRepository = ref.read(snsRepositoryProvider);
-      final lastPostId =
-          currentState.posts.isNotEmpty ? currentState.posts.last.id : null;
+      final lastPostId = currentState.posts.isNotEmpty
+          ? currentState.posts.last.id
+          : null;
 
       final newPosts = await snsRepository.getUserPosts(
         userId,
@@ -124,10 +125,9 @@ class ProfileViewModel extends _$ProfileViewModel {
 
       // フォロー状態を更新
       final updatedProfile = currentState.profile?.copyWith(
-        followersCount:
-            currentState.isFollowing
-                ? (currentState.profile?.followersCount ?? 1) - 1
-                : (currentState.profile?.followersCount ?? 0) + 1,
+        followersCount: currentState.isFollowing
+            ? (currentState.profile?.followersCount ?? 1) - 1
+            : (currentState.profile?.followersCount ?? 0) + 1,
       );
 
       final updatedState = currentState.copyWith(

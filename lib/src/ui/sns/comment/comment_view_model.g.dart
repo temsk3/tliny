@@ -52,7 +52,7 @@ final class CommentViewModelProvider
   }
 }
 
-String _$commentViewModelHash() => r'5c711e307a1ea167d4bc1a08c133ca026e874bf3';
+String _$commentViewModelHash() => r'1b4bafdc87feed5f7c757f8250ee2f9276261dab';
 
 final class CommentViewModelFamily extends $Family
     with

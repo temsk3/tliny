@@ -69,16 +69,12 @@ class SnsNotificationsViewModel extends _$SnsNotificationsViewModel {
 
       // 既読状態を反映
       final currentNotifications = state.value ?? [];
-      final updatedNotifications =
-          currentNotifications.map((notification) {
-            if (notification.id == notificationId) {
-              return notification.copyWith(
-                isRead: true,
-                readAt: DateTime.now(),
-              );
-            }
-            return notification;
-          }).toList();
+      final updatedNotifications = currentNotifications.map((notification) {
+        if (notification.id == notificationId) {
+          return notification.copyWith(isRead: true, readAt: DateTime.now());
+        }
+        return notification;
+      }).toList();
 
       state = AsyncValue.data(updatedNotifications);
       logger.d('markAsRead success: $notificationId');

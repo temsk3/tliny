@@ -122,8 +122,9 @@ class CommentViewModel extends _$CommentViewModel {
 
       // コメントをリストから削除
       final currentComments = state.value ?? [];
-      final updatedComments =
-          currentComments.where((PostComment c) => c.id != commentId).toList();
+      final updatedComments = currentComments
+          .where((PostComment c) => c.id != commentId)
+          .toList();
       state = AsyncValue.data(updatedComments);
 
       logger.d('deleteComment success: $commentId');

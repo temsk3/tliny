@@ -1,24 +1,18 @@
-// ignore_for_file: invalid_annotation_target
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../utils/json_converter.dart';
-
-part 'cart_model.freezed.dart';
 part 'cart_model.g.dart';
+part 'cart_model.freezed.dart';
 
-//
 @freezed
 class Cart with _$Cart {
   const factory Cart({
     String? id,
     required int quantity,
-    @DocumentReferenceNullStringConverter() String? productDocRef,
-    required String? productId,
-    required String? programId,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? updatedAt,
+    String? productDocRef,
+    String? productId,
+    String? programId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) = _Cart;
 
   const Cart._();

@@ -40,7 +40,7 @@ final class SnsNotificationsViewModelProvider
 }
 
 String _$snsNotificationsViewModelHash() =>
-    r'c258b11e73c70d6ceeea1b9fe1ee8a7918f63ed5';
+    r'5ea59a5eeacfdcb7969aead25850798f2513c738';
 
 abstract class _$SnsNotificationsViewModel
     extends $AsyncNotifier<List<AppNotification>> {

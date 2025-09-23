@@ -52,7 +52,7 @@ final class SnsChatViewModelProvider
   }
 }
 
-String _$snsChatViewModelHash() => r'ce12dccf9b2dc991ad4f0b8707b7248e68a85edc';
+String _$snsChatViewModelHash() => r'66b8a415cf7da8e7a23929b37f953d072a6d2201';
 
 final class SnsChatViewModelFamily extends $Family
     with

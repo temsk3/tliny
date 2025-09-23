@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Cart {
 
- String? get id; int get quantity;@DocumentReferenceNullStringConverter() String? get productDocRef; String? get productId; String? get programId;@TimestampConverter() DateTime? get createdAt;@TimestampConverter() DateTime? get updatedAt;
+ String? get id; int get quantity; String? get productDocRef; String? get productId; String? get programId; DateTime? get createdAt; DateTime? get updatedAt;
 /// Create a copy of Cart
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $CartCopyWith<$Res>  {
   factory $CartCopyWith(Cart value, $Res Function(Cart) _then) = _$CartCopyWithImpl;
 @useResult
 $Res call({
- String? id, int quantity,@DocumentReferenceNullStringConverter() String? productDocRef, String? productId, String? programId,@TimestampConverter() DateTime? createdAt,@TimestampConverter() DateTime? updatedAt
+ String? id, int quantity, String? productDocRef, String? productId, String? programId, DateTime? createdAt, DateTime? updatedAt
 });
 
 
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  int quantity, @DocumentReferenceNullStringConverter()  String? productDocRef,  String? productId,  String? programId, @TimestampConverter()  DateTime? createdAt, @TimestampConverter()  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  int quantity,  String? productDocRef,  String? productId,  String? programId,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Cart() when $default != null:
 return $default(_that.id,_that.quantity,_that.productDocRef,_that.productId,_that.programId,_that.createdAt,_that.updatedAt);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.quantity,_that.productDocRef,_that.productId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  int quantity, @DocumentReferenceNullStringConverter()  String? productDocRef,  String? productId,  String? programId, @TimestampConverter()  DateTime? createdAt, @TimestampConverter()  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  int quantity,  String? productDocRef,  String? productId,  String? programId,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Cart():
 return $default(_that.id,_that.quantity,_that.productDocRef,_that.productId,_that.programId,_that.createdAt,_that.updatedAt);case _:
@@ -200,7 +200,7 @@ return $default(_that.id,_that.quantity,_that.productDocRef,_that.productId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  int quantity, @DocumentReferenceNullStringConverter()  String? productDocRef,  String? productId,  String? programId, @TimestampConverter()  DateTime? createdAt, @TimestampConverter()  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  int quantity,  String? productDocRef,  String? productId,  String? programId,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Cart() when $default != null:
 return $default(_that.id,_that.quantity,_that.productDocRef,_that.productId,_that.programId,_that.createdAt,_that.updatedAt);case _:
@@ -215,16 +215,16 @@ return $default(_that.id,_that.quantity,_that.productDocRef,_that.productId,_tha
 @JsonSerializable()
 
 class _Cart extends Cart {
-  const _Cart({this.id, required this.quantity, @DocumentReferenceNullStringConverter() this.productDocRef, required this.productId, required this.programId, @TimestampConverter() this.createdAt, @TimestampConverter() this.updatedAt}): super._();
+  const _Cart({this.id, required this.quantity, this.productDocRef, this.productId, this.programId, this.createdAt, this.updatedAt}): super._();
   factory _Cart.fromJson(Map<String, dynamic> json) => _$CartFromJson(json);
 
 @override final  String? id;
 @override final  int quantity;
-@override@DocumentReferenceNullStringConverter() final  String? productDocRef;
+@override final  String? productDocRef;
 @override final  String? productId;
 @override final  String? programId;
-@override@TimestampConverter() final  DateTime? createdAt;
-@override@TimestampConverter() final  DateTime? updatedAt;
+@override final  DateTime? createdAt;
+@override final  DateTime? updatedAt;
 
 /// Create a copy of Cart
 /// with the given fields replaced by the non-null parameter values.
@@ -259,7 +259,7 @@ abstract mixin class _$CartCopyWith<$Res> implements $CartCopyWith<$Res> {
   factory _$CartCopyWith(_Cart value, $Res Function(_Cart) _then) = __$CartCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, int quantity,@DocumentReferenceNullStringConverter() String? productDocRef, String? productId, String? programId,@TimestampConverter() DateTime? createdAt,@TimestampConverter() DateTime? updatedAt
+ String? id, int quantity, String? productDocRef, String? productId, String? programId, DateTime? createdAt, DateTime? updatedAt
 });
 
 
