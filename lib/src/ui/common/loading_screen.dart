@@ -285,8 +285,7 @@ class WidgetWithLoading extends ConsumerWidget {
 
 /// 既存の互換性のためのプロバイダー（非推奨）
 @Deprecated('Use globalLoadingControllerProvider instead')
-final AutoDisposeStateNotifierProvider<IsLoadingController, bool>
-isLoadingProvider =
+final isLoadingProvider =
     StateNotifierProvider.autoDispose<IsLoadingController, bool>(
       (ref) => IsLoadingController(),
     );

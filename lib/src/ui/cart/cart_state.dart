@@ -11,60 +11,61 @@ part 'cart_state.g.dart';
 
 /// カートの状態を管理する StreamProvider
 final cartStateProvider = StreamProvider.autoDispose<List<Cart>>((ref) {
-      logger.d('cartStateProvider: start', time: DateTime.now());
-      try {
-        final uidAsyncValue = ref.watch(userIdProvider);
-        final uid = uidAsyncValue.value;
-        if (uid != null) {
-          logger.d('cartStateProvider: uid=$uid', time: DateTime.now());
-          return ref.watch(cartRepositoryProvider).watchCart(uid);
-        }
-        logger.d('cartStateProvider: uid is null', time: DateTime.now());
-        return Stream.value([]);
-      } on Exception catch (e, st) {
-        logger.e(
-          'cartStateProvider: error=$e, stackTrace=$st',
-          time: DateTime.now(),
-        );
-        rethrow;
-      }
-    });
+  logger.d('cartStateProvider: start', time: DateTime.now());
+  try {
+    final uidAsyncValue = ref.watch(userIdProvider);
+    final uid = uidAsyncValue.value;
+    if (uid != null) {
+      logger.d('cartStateProvider: uid=$uid', time: DateTime.now());
+      return ref.watch(cartRepositoryProvider).watchCart(uid);
+    }
+    logger.d('cartStateProvider: uid is null', time: DateTime.now());
+    return Stream.value([]);
+  } on Exception catch (e, st) {
+    logger.e(
+      'cartStateProvider: error=$e, stackTrace=$st',
+      time: DateTime.now(),
+    );
+    rethrow;
+  }
+});
 
 /// 商品価格のキャッシュを管理するプロバイダー
-final productPriceCacheProvider = FutureProvider.autoDispose.family<
-  Map<String, int>,
-  List<String>
->((ref, productIds) async {
-  logger.d(
-    'productPriceCacheProvider: start, productIds.length=${productIds.length}',
-    time: DateTime.now(),
-  );
+final productPriceCacheProvider = FutureProvider.autoDispose
+    .family<Map<String, int>, List<String>>((ref, productIds) async {
+      logger.d(
+        'productPriceCacheProvider: start, productIds.length=${productIds.length}',
+        time: DateTime.now(),
+      );
 
-  if (productIds.isEmpty) {
-    return {};
-  }
+      if (productIds.isEmpty) {
+        return {};
+      }
 
-  final priceCache = <String, int>{};
+      final priceCache = <String, int>{};
 
-  for (final productId in productIds) {
-    try {
-      final product = await ref
-          .read(productRepositoryProvider)
-          .getProductOnce(productId);
-      priceCache[productId] = product?.price ?? 0;
-    } on Exception catch (e, st) {
-      logger.e('productPriceCacheProvider: product取得エラー - $e', stackTrace: st);
-      priceCache[productId] = 0;
-    }
-  }
+      for (final productId in productIds) {
+        try {
+          final product = await ref
+              .read(productRepositoryProvider)
+              .getProductOnce(productId);
+          priceCache[productId] = product?.price ?? 0;
+        } on Exception catch (e, st) {
+          logger.e(
+            'productPriceCacheProvider: product取得エラー - $e',
+            stackTrace: st,
+          );
+          priceCache[productId] = 0;
+        }
+      }
 
-  logger.d(
-    'productPriceCacheProvider: cache size=${priceCache.length}',
-    time: DateTime.now(),
-  );
+      logger.d(
+        'productPriceCacheProvider: cache size=${priceCache.length}',
+        time: DateTime.now(),
+      );
 
-  return priceCache;
-});
+      return priceCache;
+    });
 
 /// リストのハッシュ値を計算する
 int _calculateListHash(List<Cart> list) {
@@ -247,11 +248,33 @@ class TotalAmountNotifier extends _$TotalAmountNotifier {
 }
 
 /// カート合計金額を管理するプロバイダー
-@riverpod
-class TotalAmountNotifierProvider extends _$TotalAmountNotifierProvider {
-  @override
-  int build(List<Cart> carts) {
-    final notifier = TotalAmountNotifier();
-    return notifier.calculateTotal(ref, carts);
+final totalAmountNotifierProvider = Provider.autoDispose.family<int, List<Cart>>((ref, carts) {
+  // 商品IDリストを作成
+  final productIds = carts
+      .where((cart) => cart.productDocRef != null && cart.productDocRef!.isNotEmpty)
+      .map((cart) => cart.productDocRef!.split('/').last)
+      .toList();
+
+  if (productIds.isEmpty) {
+    return 0;
   }
-}
+
+  // 価格キャッシュを取得
+  final priceCacheAsync = ref.watch(productPriceCacheProvider(productIds));
+  final priceCache = priceCacheAsync.maybeWhen(
+    data: (cache) => cache,
+    orElse: () => <String, int>{},
+  );
+
+  // 合計金額を計算
+  var totalAmount = 0;
+  for (final cart in carts) {
+    if (cart.productDocRef != null && cart.productDocRef!.isNotEmpty) {
+      final productId = cart.productDocRef!.split('/').last;
+      final productPrice = priceCache[productId] ?? 0;
+      totalAmount += productPrice * cart.quantity;
+    }
+  }
+
+  return totalAmount;
+});

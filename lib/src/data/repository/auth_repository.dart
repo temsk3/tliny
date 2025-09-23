@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -30,13 +29,13 @@ Stream<String?> userId(Ref ref) {
 }
 
 class AuthRepository {
-  AuthRepository(this._auth);
+  AuthRepository(this._auth) {
+    _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
+  }
   final FirebaseAuth _auth;
 
   // GoogleSignInの設定を修正
-  final _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-  );
+  late final GoogleSignIn _googleSignIn;
 
   /// 認証状態の変化を監視するストリーム
   Stream<bool> get authStateChanges =>
@@ -69,11 +68,10 @@ class AuthRepository {
     while (retryCount < maxRetries) {
       try {
         // Cloud Functionsが作成するパスに合わせて修正
-        final userDoc =
-            await FirebaseFirestore.instance
-                .collection('v/1/users')
-                .doc(uid)
-                .get();
+        final userDoc = await FirebaseFirestore.instance
+            .collection('v/1/users')
+            .doc(uid)
+            .get();
 
         if (userDoc.exists) {
           logger.i('_waitForUserDataCreation: ユーザーデータ作成完了');
