@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'stripe_model.freezed.dart';
-// part 'stripe_model.g.dart';
+part 'stripe_model.freezed.dart';
+part 'stripe_model.g.dart';
 
 //
 @freezed
@@ -16,7 +16,6 @@ class LineItem with _$LineItem {
 }
 
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class PriceData with _$PriceData {
   factory PriceData({
     required int unitAmount,
@@ -29,7 +28,6 @@ class PriceData with _$PriceData {
 }
 
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class ProductData with _$ProductData {
   factory ProductData({
     required String name,
@@ -43,9 +41,8 @@ class ProductData with _$ProductData {
 }
 
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class MetaData with _$MetaData {
-  factory MetaData({required String productId}) = _MetaData;
+  factory MetaData({@JsonKey(name: 'product_id') required String productId}) = _MetaData;
 
   factory MetaData.fromJson(Map<String, dynamic> json) =>
       _$MetaDataFromJson(json);

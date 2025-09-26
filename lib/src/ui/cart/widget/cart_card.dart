@@ -390,7 +390,7 @@ class CartCard extends HookConsumerWidget {
 }
 
 // 商品データを取得するStreamProvider（リアルタイム更新対応）
-final AutoDisposeStreamProviderFamily<Product?, String> _productStreamProvider =
+final _productStreamProvider =
     StreamProvider.autoDispose.family<Product?, String>((
       ref,
       productId,

@@ -107,7 +107,7 @@ class MockAppLocalizations extends AppLocalizations {
 class TestHelpers {
   /// テスト用のProviderContainerを作成
   static ProviderContainer createTestContainer({
-    List<Override> overrides = const [],
+    List<ProviderOverride> overrides = const [],
   }) {
     return ProviderContainer(overrides: overrides);
   }
@@ -115,7 +115,7 @@ class TestHelpers {
   /// テスト用のWidgetを作成（L10nプロバイダー付き）
   static Widget createTestWidget({
     required Widget child,
-    List<Override> overrides = const [],
+    List<ProviderOverride> overrides = const [],
   }) {
     return ProviderScope(
       overrides: overrides,

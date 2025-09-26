@@ -47,8 +47,8 @@ Stream<List<Program>> myProgramListState(Ref ref) {
 //       ref.watch(programRepositoryProvider).streamEvent(programId),
 // );
 
-final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
-    StreamProvider.autoDispose((ref) {
+final addProgramButtonStateProvider =
+    StreamProvider.autoDispose<bool>((ref) {
       final uidAsyncValue = ref.watch(userIdProvider);
       final uid = uidAsyncValue.value;
 
@@ -61,8 +61,7 @@ final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
       return Stream<bool>.value(true);
     });
 
-final AutoDisposeStreamProviderFamily<bool, Program>
-editProgramButtonStateProvider = StreamProvider.family
+final editProgramButtonStateProvider = StreamProvider.family
     .autoDispose<bool, Program>((ref, program) {
       final uidAsyncValue = ref.watch(userIdProvider);
       final uid = uidAsyncValue.value;
@@ -72,8 +71,7 @@ editProgramButtonStateProvider = StreamProvider.family
       return Stream<bool>.value(false);
     });
 
-final AutoDisposeStreamProviderFamily<bool, Program>
-addStaffButtonStateProvider = StreamProvider.family.autoDispose<bool, Program>((
+final addStaffButtonStateProvider = StreamProvider.family.autoDispose<bool, Program>((
   ref,
   program,
 ) {

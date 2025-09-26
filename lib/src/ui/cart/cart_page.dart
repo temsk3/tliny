@@ -377,7 +377,7 @@ class CartPage extends HookConsumerWidget {
                     child: Consumer(
                       builder: (context, ref, _) {
                         final total = ref.watch(
-                          totalAmountNotifierProvider(programCarts),
+                          totalAmountProvider(programCarts),
                         );
                         return Column(
                           mainAxisSize: MainAxisSize.min,

@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'stripe_customer_params.freezed.dart';
-// part 'stripe_customer_params.g.dart';
+part 'stripe_customer_params.freezed.dart';
+part 'stripe_customer_params.g.dart';
 
 ////////////////////////////////////////////////////////////////
 // Customer
@@ -25,7 +25,6 @@ class CustomerParams with _$CustomerParams {
 
 // Customer Shipping
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class ShippingParams with _$ShippingParams {
   const factory ShippingParams({
     required AddressParams? address,
@@ -39,7 +38,6 @@ class ShippingParams with _$ShippingParams {
 
 // Customer Address
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class AddressParams with _$AddressParams {
   const factory AddressParams({
     required String? city,

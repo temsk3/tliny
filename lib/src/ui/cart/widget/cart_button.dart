@@ -149,7 +149,7 @@ class AllPaymentButton extends HookWidget {
             authState.hasValue && (authState.value ?? false);
 
         return AsyncValueButtonWidget(
-          value: ref.watch(totalAmountNotifierProvider(list)),
+          value: ref.watch(totalAmountProvider(list)),
           data: (value) {
             return ElevatedButton(
               onPressed: isAuthenticated ? () {} : null,
@@ -202,7 +202,7 @@ class PaymentButton extends HookWidget {
         builder: (context, ref, child) {
           // 新しいAsyncNotifierProviderを使用
           final totalAmountAsync = ref.watch(
-            totalAmountNotifierProvider(newList),
+            totalAmountProvider(newList),
           );
 
           return totalAmountAsync.when(

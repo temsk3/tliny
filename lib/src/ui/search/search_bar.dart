@@ -12,8 +12,8 @@ final List<Map<String, dynamic>> program = [
   {'name': 'jkl;:', 'disc': 'm,./_'},
 ];
 
-final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
-final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
+final onSearchProvider = StateProvider<bool>((ref) => false);
+final searchIndexListProvider = StateProvider<Set<int>>(
   (ref) => <int>{},
 );
 

@@ -14,8 +14,8 @@ import 'widgets/program_search_card.dart';
 
 // final logger = Logger();
 
-final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
-final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
+final onSearchProvider = StateProvider<bool>((ref) => false);
+final searchIndexListProvider = StateProvider<Set<int>>(
   (ref) => <int>{},
 );
 

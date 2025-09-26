@@ -2,8 +2,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'stripe_enum.dart';
 
-// part 'stripe_account_params.freezed.dart';
-// part 'stripe_account_params.g.dart';
+part 'stripe_account_params.freezed.dart';
+part 'stripe_account_params.g.dart';
 
 ////////////////////////////////////////////////////////////////
 // Account
@@ -29,7 +29,6 @@ class AccountParams with _$AccountParams {
 
 // Account Capabilities
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class CapabilitiesParams with _$CapabilitiesParams {
   const factory CapabilitiesParams({
     @JsonKey(name: 'bank_transfer_payments')
@@ -46,7 +45,6 @@ class CapabilitiesParams with _$CapabilitiesParams {
 
 // Account Requested
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class RequestedParams with _$RequestedParams {
   const factory RequestedParams({required bool? required}) = _RequestedParams;
 
@@ -56,7 +54,6 @@ class RequestedParams with _$RequestedParams {
 
 // Account BusinessProfile
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class BusinessProfileParams with _$BusinessProfileParams {
   const factory BusinessProfileParams({
     required String? mcc,
@@ -70,7 +67,6 @@ class BusinessProfileParams with _$BusinessProfileParams {
 
 // Account TosAcceptance
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class TosAcceptanceParams with _$TosAcceptanceParams {
   const factory TosAcceptanceParams({
     required String? ip,
@@ -83,7 +79,6 @@ class TosAcceptanceParams with _$TosAcceptanceParams {
 
 // Account Individual 個人のみ
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class IndividualParams with _$IndividualParams {
   const factory IndividualParams({
     @JsonKey(name: 'first_name_kana') required String? firstNameKana,
@@ -103,7 +98,6 @@ class IndividualParams with _$IndividualParams {
 
 // Account Company
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class CompanyParams with _$CompanyParams {
   const factory CompanyParams({
     required String? name, // 法人の場合必須 //ローマ字または英語表記
@@ -121,7 +115,6 @@ class CompanyParams with _$CompanyParams {
 
 // Account Representative
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class RepresentativeParams with _$RepresentativeParams {
   const factory RepresentativeParams({
     @JsonKey(name: 'first_name_kana') required String? firstNameKana,
@@ -141,7 +134,6 @@ class RepresentativeParams with _$RepresentativeParams {
 
 // Account Dob
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class DobParams with _$DobParams {
   const factory DobParams({
     required String? day,
@@ -155,7 +147,6 @@ class DobParams with _$DobParams {
 
 // Account AddressKana
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class AddressKanaParams with _$AddressKanaParams {
   const factory AddressKanaParams({
     required String? line1,
@@ -171,7 +162,6 @@ class AddressKanaParams with _$AddressKanaParams {
 
 // Account AddressKanji
 @freezed
-@JsonSerializable(fieldRename: FieldRename.snake)
 class AddressKanjiParams with _$AddressKanjiParams {
   const factory AddressKanjiParams({
     required String? line1,

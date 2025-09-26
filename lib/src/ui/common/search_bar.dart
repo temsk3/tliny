@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod/riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -9,9 +10,9 @@ import '../../utils/logger.dart';
 import '../common/error_handler.dart';
 
 // 検索状態を管理する StateProvider
-final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
+final onSearchProvider = StateProvider<bool>((ref) => false);
 // 検索結果のインデックスリストを管理する StateProvider
-final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
+final searchIndexListProvider = StateProvider<Set<int>>(
   (ref) => <int>{},
 );
 

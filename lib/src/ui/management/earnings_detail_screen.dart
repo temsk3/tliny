@@ -35,7 +35,7 @@ class EarningsDetailScreen extends HookConsumerWidget {
         // ログインユーザーのIDが取得できた場合
         if (userId != null) {
           // イベント情報を取得
-          final event = ref.watch(ProgramStreamProvider(eventId)).value;
+          final event = ref.watch(programStreamProvider(eventId)).value;
           // イベント情報が取得できた場合
           if (event != null) {
             // イベント主催者とログインユーザーが異なる場合
