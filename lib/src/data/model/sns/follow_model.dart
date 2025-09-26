@@ -11,11 +11,11 @@ part 'follow_model.g.dart';
 class Follow with _$Follow {
   const factory Follow({
     String? id,
-    required String followerId,
-    required String followerName,
+    String? followerId,
+    String? followerName,
     String? followerPhotoUrl,
-    required String followingId,
-    required String followingName,
+    String? followingId,
+    String? followingName,
     String? followingPhotoUrl,
     FollowStatus? status,
     @timestampKey DateTime? createdAt,
@@ -30,7 +30,7 @@ class Follow with _$Follow {
 class UserProfile with _$UserProfile {
   const factory UserProfile({
     String? id,
-    required String userId,
+    String? userId,
     String? displayName,
     String? bio,
     String? profileImageUrl,

@@ -217,7 +217,7 @@ return $default(_that.id,_that.photoUrl,_that.displayName,_that.name,_that.email
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.id, this.photoUrl, this.displayName, required this.name, required this.email, required this.phoneNumber, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): super._();
+  const _User({this.id, this.photoUrl, this.displayName, this.name, this.email, this.phoneNumber, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override final  String? id;

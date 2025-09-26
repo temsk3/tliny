@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Follow {
 
- String? get id; String get followerId; String get followerName; String? get followerPhotoUrl; String get followingId; String get followingName; String? get followingPhotoUrl; FollowStatus? get status;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
+ String? get id; String? get followerId; String? get followerName; String? get followerPhotoUrl; String? get followingId; String? get followingName; String? get followingPhotoUrl; FollowStatus? get status;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
 /// Create a copy of Follow
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FollowCopyWith<$Res>  {
   factory $FollowCopyWith(Follow value, $Res Function(Follow) _then) = _$FollowCopyWithImpl;
 @useResult
 $Res call({
- String? id, String followerId, String followerName, String? followerPhotoUrl, String followingId, String followingName, String? followingPhotoUrl, FollowStatus? status,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? followerId, String? followerName, String? followerPhotoUrl, String? followingId, String? followingName, String? followingPhotoUrl, FollowStatus? status,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -65,15 +65,15 @@ class _$FollowCopyWithImpl<$Res>
 
 /// Create a copy of Follow
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? followerId = null,Object? followerName = null,Object? followerPhotoUrl = freezed,Object? followingId = null,Object? followingName = null,Object? followingPhotoUrl = freezed,Object? status = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? followerId = freezed,Object? followerName = freezed,Object? followerPhotoUrl = freezed,Object? followingId = freezed,Object? followingName = freezed,Object? followingPhotoUrl = freezed,Object? status = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,followerId: null == followerId ? _self.followerId : followerId // ignore: cast_nullable_to_non_nullable
-as String,followerName: null == followerName ? _self.followerName : followerName // ignore: cast_nullable_to_non_nullable
-as String,followerPhotoUrl: freezed == followerPhotoUrl ? _self.followerPhotoUrl : followerPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,followingId: null == followingId ? _self.followingId : followingId // ignore: cast_nullable_to_non_nullable
-as String,followingName: null == followingName ? _self.followingName : followingName // ignore: cast_nullable_to_non_nullable
-as String,followingPhotoUrl: freezed == followingPhotoUrl ? _self.followingPhotoUrl : followingPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,followerId: freezed == followerId ? _self.followerId : followerId // ignore: cast_nullable_to_non_nullable
+as String?,followerName: freezed == followerName ? _self.followerName : followerName // ignore: cast_nullable_to_non_nullable
+as String?,followerPhotoUrl: freezed == followerPhotoUrl ? _self.followerPhotoUrl : followerPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,followingId: freezed == followingId ? _self.followingId : followingId // ignore: cast_nullable_to_non_nullable
+as String?,followingName: freezed == followingName ? _self.followingName : followingName // ignore: cast_nullable_to_non_nullable
+as String?,followingPhotoUrl: freezed == followingPhotoUrl ? _self.followingPhotoUrl : followingPhotoUrl // ignore: cast_nullable_to_non_nullable
 as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as FollowStatus?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -163,7 +163,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String followerId,  String followerName,  String? followerPhotoUrl,  String followingId,  String followingName,  String? followingPhotoUrl,  FollowStatus? status, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? followerId,  String? followerName,  String? followerPhotoUrl,  String? followingId,  String? followingName,  String? followingPhotoUrl,  FollowStatus? status, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Follow() when $default != null:
 return $default(_that.id,_that.followerId,_that.followerName,_that.followerPhotoUrl,_that.followingId,_that.followingName,_that.followingPhotoUrl,_that.status,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -184,7 +184,7 @@ return $default(_that.id,_that.followerId,_that.followerName,_that.followerPhoto
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String followerId,  String followerName,  String? followerPhotoUrl,  String followingId,  String followingName,  String? followingPhotoUrl,  FollowStatus? status, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? followerId,  String? followerName,  String? followerPhotoUrl,  String? followingId,  String? followingName,  String? followingPhotoUrl,  FollowStatus? status, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Follow():
 return $default(_that.id,_that.followerId,_that.followerName,_that.followerPhotoUrl,_that.followingId,_that.followingName,_that.followingPhotoUrl,_that.status,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -204,7 +204,7 @@ return $default(_that.id,_that.followerId,_that.followerName,_that.followerPhoto
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String followerId,  String followerName,  String? followerPhotoUrl,  String followingId,  String followingName,  String? followingPhotoUrl,  FollowStatus? status, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? followerId,  String? followerName,  String? followerPhotoUrl,  String? followingId,  String? followingName,  String? followingPhotoUrl,  FollowStatus? status, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Follow() when $default != null:
 return $default(_that.id,_that.followerId,_that.followerName,_that.followerPhotoUrl,_that.followingId,_that.followingName,_that.followingPhotoUrl,_that.status,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -219,15 +219,15 @@ return $default(_that.id,_that.followerId,_that.followerName,_that.followerPhoto
 @JsonSerializable()
 
 class _Follow implements Follow {
-  const _Follow({this.id, required this.followerId, required this.followerName, this.followerPhotoUrl, required this.followingId, required this.followingName, this.followingPhotoUrl, this.status, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt});
+  const _Follow({this.id, this.followerId, this.followerName, this.followerPhotoUrl, this.followingId, this.followingName, this.followingPhotoUrl, this.status, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt});
   factory _Follow.fromJson(Map<String, dynamic> json) => _$FollowFromJson(json);
 
 @override final  String? id;
-@override final  String followerId;
-@override final  String followerName;
+@override final  String? followerId;
+@override final  String? followerName;
 @override final  String? followerPhotoUrl;
-@override final  String followingId;
-@override final  String followingName;
+@override final  String? followingId;
+@override final  String? followingName;
 @override final  String? followingPhotoUrl;
 @override final  FollowStatus? status;
 @override@timestampKey final  DateTime? createdAt;
@@ -267,7 +267,7 @@ abstract mixin class _$FollowCopyWith<$Res> implements $FollowCopyWith<$Res> {
   factory _$FollowCopyWith(_Follow value, $Res Function(_Follow) _then) = __$FollowCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String followerId, String followerName, String? followerPhotoUrl, String followingId, String followingName, String? followingPhotoUrl, FollowStatus? status,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? followerId, String? followerName, String? followerPhotoUrl, String? followingId, String? followingName, String? followingPhotoUrl, FollowStatus? status,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -284,15 +284,15 @@ class __$FollowCopyWithImpl<$Res>
 
 /// Create a copy of Follow
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? followerId = null,Object? followerName = null,Object? followerPhotoUrl = freezed,Object? followingId = null,Object? followingName = null,Object? followingPhotoUrl = freezed,Object? status = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? followerId = freezed,Object? followerName = freezed,Object? followerPhotoUrl = freezed,Object? followingId = freezed,Object? followingName = freezed,Object? followingPhotoUrl = freezed,Object? status = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_Follow(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,followerId: null == followerId ? _self.followerId : followerId // ignore: cast_nullable_to_non_nullable
-as String,followerName: null == followerName ? _self.followerName : followerName // ignore: cast_nullable_to_non_nullable
-as String,followerPhotoUrl: freezed == followerPhotoUrl ? _self.followerPhotoUrl : followerPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,followingId: null == followingId ? _self.followingId : followingId // ignore: cast_nullable_to_non_nullable
-as String,followingName: null == followingName ? _self.followingName : followingName // ignore: cast_nullable_to_non_nullable
-as String,followingPhotoUrl: freezed == followingPhotoUrl ? _self.followingPhotoUrl : followingPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,followerId: freezed == followerId ? _self.followerId : followerId // ignore: cast_nullable_to_non_nullable
+as String?,followerName: freezed == followerName ? _self.followerName : followerName // ignore: cast_nullable_to_non_nullable
+as String?,followerPhotoUrl: freezed == followerPhotoUrl ? _self.followerPhotoUrl : followerPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,followingId: freezed == followingId ? _self.followingId : followingId // ignore: cast_nullable_to_non_nullable
+as String?,followingName: freezed == followingName ? _self.followingName : followingName // ignore: cast_nullable_to_non_nullable
+as String?,followingPhotoUrl: freezed == followingPhotoUrl ? _self.followingPhotoUrl : followingPhotoUrl // ignore: cast_nullable_to_non_nullable
 as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as FollowStatus?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -308,7 +308,7 @@ as DateTime?,
 /// @nodoc
 mixin _$UserProfile {
 
- String? get id; String get userId; String? get displayName; String? get bio; String? get profileImageUrl; String? get coverImageUrl; int? get followersCount; int? get followingCount; int? get postsCount; bool? get isPrivate;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
+ String? get id; String? get userId; String? get displayName; String? get bio; String? get profileImageUrl; String? get coverImageUrl; int? get followersCount; int? get followingCount; int? get postsCount; bool? get isPrivate;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -341,7 +341,7 @@ abstract mixin class $UserProfileCopyWith<$Res>  {
   factory $UserProfileCopyWith(UserProfile value, $Res Function(UserProfile) _then) = _$UserProfileCopyWithImpl;
 @useResult
 $Res call({
- String? id, String userId, String? displayName, String? bio, String? profileImageUrl, String? coverImageUrl, int? followersCount, int? followingCount, int? postsCount, bool? isPrivate,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? userId, String? displayName, String? bio, String? profileImageUrl, String? coverImageUrl, int? followersCount, int? followingCount, int? postsCount, bool? isPrivate,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -358,11 +358,11 @@ class _$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = null,Object? displayName = freezed,Object? bio = freezed,Object? profileImageUrl = freezed,Object? coverImageUrl = freezed,Object? followersCount = freezed,Object? followingCount = freezed,Object? postsCount = freezed,Object? isPrivate = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = freezed,Object? displayName = freezed,Object? bio = freezed,Object? profileImageUrl = freezed,Object? coverImageUrl = freezed,Object? followersCount = freezed,Object? followingCount = freezed,Object? postsCount = freezed,Object? isPrivate = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,coverImageUrl: freezed == coverImageUrl ? _self.coverImageUrl : coverImageUrl // ignore: cast_nullable_to_non_nullable
@@ -458,7 +458,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String userId,  String? displayName,  String? bio,  String? profileImageUrl,  String? coverImageUrl,  int? followersCount,  int? followingCount,  int? postsCount,  bool? isPrivate, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? userId,  String? displayName,  String? bio,  String? profileImageUrl,  String? coverImageUrl,  int? followersCount,  int? followingCount,  int? postsCount,  bool? isPrivate, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
 return $default(_that.id,_that.userId,_that.displayName,_that.bio,_that.profileImageUrl,_that.coverImageUrl,_that.followersCount,_that.followingCount,_that.postsCount,_that.isPrivate,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -479,7 +479,7 @@ return $default(_that.id,_that.userId,_that.displayName,_that.bio,_that.profileI
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String userId,  String? displayName,  String? bio,  String? profileImageUrl,  String? coverImageUrl,  int? followersCount,  int? followingCount,  int? postsCount,  bool? isPrivate, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? userId,  String? displayName,  String? bio,  String? profileImageUrl,  String? coverImageUrl,  int? followersCount,  int? followingCount,  int? postsCount,  bool? isPrivate, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile():
 return $default(_that.id,_that.userId,_that.displayName,_that.bio,_that.profileImageUrl,_that.coverImageUrl,_that.followersCount,_that.followingCount,_that.postsCount,_that.isPrivate,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -499,7 +499,7 @@ return $default(_that.id,_that.userId,_that.displayName,_that.bio,_that.profileI
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String userId,  String? displayName,  String? bio,  String? profileImageUrl,  String? coverImageUrl,  int? followersCount,  int? followingCount,  int? postsCount,  bool? isPrivate, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? userId,  String? displayName,  String? bio,  String? profileImageUrl,  String? coverImageUrl,  int? followersCount,  int? followingCount,  int? postsCount,  bool? isPrivate, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _UserProfile() when $default != null:
 return $default(_that.id,_that.userId,_that.displayName,_that.bio,_that.profileImageUrl,_that.coverImageUrl,_that.followersCount,_that.followingCount,_that.postsCount,_that.isPrivate,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -514,11 +514,11 @@ return $default(_that.id,_that.userId,_that.displayName,_that.bio,_that.profileI
 @JsonSerializable()
 
 class _UserProfile implements UserProfile {
-  const _UserProfile({this.id, required this.userId, this.displayName, this.bio, this.profileImageUrl, this.coverImageUrl, this.followersCount, this.followingCount, this.postsCount, this.isPrivate, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt});
+  const _UserProfile({this.id, this.userId, this.displayName, this.bio, this.profileImageUrl, this.coverImageUrl, this.followersCount, this.followingCount, this.postsCount, this.isPrivate, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt});
   factory _UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 
 @override final  String? id;
-@override final  String userId;
+@override final  String? userId;
 @override final  String? displayName;
 @override final  String? bio;
 @override final  String? profileImageUrl;
@@ -564,7 +564,7 @@ abstract mixin class _$UserProfileCopyWith<$Res> implements $UserProfileCopyWith
   factory _$UserProfileCopyWith(_UserProfile value, $Res Function(_UserProfile) _then) = __$UserProfileCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String userId, String? displayName, String? bio, String? profileImageUrl, String? coverImageUrl, int? followersCount, int? followingCount, int? postsCount, bool? isPrivate,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? userId, String? displayName, String? bio, String? profileImageUrl, String? coverImageUrl, int? followersCount, int? followingCount, int? postsCount, bool? isPrivate,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -581,11 +581,11 @@ class __$UserProfileCopyWithImpl<$Res>
 
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = null,Object? displayName = freezed,Object? bio = freezed,Object? profileImageUrl = freezed,Object? coverImageUrl = freezed,Object? followersCount = freezed,Object? followingCount = freezed,Object? postsCount = freezed,Object? isPrivate = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = freezed,Object? displayName = freezed,Object? bio = freezed,Object? profileImageUrl = freezed,Object? coverImageUrl = freezed,Object? followersCount = freezed,Object? followingCount = freezed,Object? postsCount = freezed,Object? isPrivate = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_UserProfile(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
+as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,profileImageUrl: freezed == profileImageUrl ? _self.profileImageUrl : profileImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,coverImageUrl: freezed == coverImageUrl ? _self.coverImageUrl : coverImageUrl // ignore: cast_nullable_to_non_nullable

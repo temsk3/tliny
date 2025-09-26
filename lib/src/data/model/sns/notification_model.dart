@@ -11,9 +11,9 @@ part 'notification_model.g.dart';
 class AppNotification with _$AppNotification {
   const factory AppNotification({
     String? id,
-    required String userId,
-    required String title,
-    required String message,
+    String? userId,
+    String? title,
+    String? message,
     NotificationType? type,
     String? actionUserId,
     String? actionUserName,
@@ -36,12 +36,12 @@ class AppNotification with _$AppNotification {
 class ShareActivity with _$ShareActivity {
   const factory ShareActivity({
     String? id,
-    required String userId,
-    required String userName,
+    String? userId,
+    String? userName,
     String? userPhotoUrl,
-    required String contentId,
-    required String contentType,
-    required SharePlatform platform,
+    String? contentId,
+    String? contentType,
+    SharePlatform? platform,
     String? sharedUrl,
     @timestampKey DateTime? createdAt,
   }) = _ShareActivity;

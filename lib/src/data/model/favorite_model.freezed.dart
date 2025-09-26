@@ -213,7 +213,7 @@ return $default(_that.id,_that.programId,_that.createdAt,_that.updatedAt,_that.d
 @JsonSerializable()
 
 class _Favorite extends Favorite {
-  const _Favorite({this.id, required this.programId, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): super._();
+  const _Favorite({this.id, this.programId, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): super._();
   factory _Favorite.fromJson(Map<String, dynamic> json) => _$FavoriteFromJson(json);
 
 @override final  String? id;

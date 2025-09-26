@@ -10,11 +10,11 @@ part of 'follow_model.dart';
 
 _Follow _$FollowFromJson(Map<String, dynamic> json) => _Follow(
   id: json['id'] as String?,
-  followerId: json['followerId'] as String,
-  followerName: json['followerName'] as String,
+  followerId: json['followerId'] as String?,
+  followerName: json['followerName'] as String?,
   followerPhotoUrl: json['followerPhotoUrl'] as String?,
-  followingId: json['followingId'] as String,
-  followingName: json['followingName'] as String,
+  followingId: json['followingId'] as String?,
+  followingName: json['followingName'] as String?,
   followingPhotoUrl: json['followingPhotoUrl'] as String?,
   status: $enumDecodeNullable(_$FollowStatusEnumMap, json['status']),
   createdAt: dateFromTimestampValue(json['createdAt']),
@@ -44,7 +44,7 @@ const _$FollowStatusEnumMap = {
 
 _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
   id: json['id'] as String?,
-  userId: json['userId'] as String,
+  userId: json['userId'] as String?,
   displayName: json['displayName'] as String?,
   bio: json['bio'] as String?,
   profileImageUrl: json['profileImageUrl'] as String?,

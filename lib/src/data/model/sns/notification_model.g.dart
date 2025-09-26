@@ -11,9 +11,9 @@ part of 'notification_model.dart';
 _AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) =>
     _AppNotification(
       id: json['id'] as String?,
-      userId: json['userId'] as String,
-      title: json['title'] as String,
-      message: json['message'] as String,
+      userId: json['userId'] as String?,
+      title: json['title'] as String?,
+      message: json['message'] as String?,
       type: $enumDecodeNullable(_$NotificationTypeEnumMap, json['type']),
       actionUserId: json['actionUserId'] as String?,
       actionUserName: json['actionUserName'] as String?,
@@ -63,12 +63,12 @@ const _$NotificationTypeEnumMap = {
 _ShareActivity _$ShareActivityFromJson(Map<String, dynamic> json) =>
     _ShareActivity(
       id: json['id'] as String?,
-      userId: json['userId'] as String,
-      userName: json['userName'] as String,
+      userId: json['userId'] as String?,
+      userName: json['userName'] as String?,
       userPhotoUrl: json['userPhotoUrl'] as String?,
-      contentId: json['contentId'] as String,
-      contentType: json['contentType'] as String,
-      platform: $enumDecode(_$SharePlatformEnumMap, json['platform']),
+      contentId: json['contentId'] as String?,
+      contentType: json['contentType'] as String?,
+      platform: $enumDecodeNullable(_$SharePlatformEnumMap, json['platform']),
       sharedUrl: json['sharedUrl'] as String?,
       createdAt: dateFromTimestampValue(json['createdAt']),
     );
@@ -81,7 +81,7 @@ Map<String, dynamic> _$ShareActivityToJson(_ShareActivity instance) =>
       'userPhotoUrl': instance.userPhotoUrl,
       'contentId': instance.contentId,
       'contentType': instance.contentType,
-      'platform': _$SharePlatformEnumMap[instance.platform]!,
+      'platform': _$SharePlatformEnumMap[instance.platform],
       'sharedUrl': instance.sharedUrl,
       'createdAt': timestampFromDateValue(instance.createdAt),
     };

@@ -149,3 +149,66 @@ abstract class _$GlobalLoadingController extends $Notifier<bool> {
     element.handleValue(ref, created);
   }
 }
+
+/// 既存の互換性のためのプロバイダー（非推奨）
+
+@ProviderFor(IsLoadingController)
+@Deprecated('Use globalLoadingControllerProvider instead')
+const isLoadingControllerProvider = IsLoadingControllerProvider._();
+
+/// 既存の互換性のためのプロバイダー（非推奨）
+@Deprecated('Use globalLoadingControllerProvider instead')
+final class IsLoadingControllerProvider
+    extends $NotifierProvider<IsLoadingController, bool> {
+  /// 既存の互換性のためのプロバイダー（非推奨）
+  const IsLoadingControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'isLoadingControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$isLoadingControllerHash();
+
+  @$internal
+  @override
+  IsLoadingController create() => IsLoadingController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$isLoadingControllerHash() =>
+    r'5fc01a00d80f51e4b90b53620305cadaae8b957c';
+
+/// 既存の互換性のためのプロバイダー（非推奨）
+
+@Deprecated('Use globalLoadingControllerProvider instead')
+abstract class _$IsLoadingController extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

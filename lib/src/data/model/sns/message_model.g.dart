@@ -11,14 +11,14 @@ part of 'message_model.dart';
 _DirectMessage _$DirectMessageFromJson(Map<String, dynamic> json) =>
     _DirectMessage(
       id: json['id'] as String?,
-      conversationId: json['conversationId'] as String,
-      senderId: json['senderId'] as String,
-      senderName: json['senderName'] as String,
+      conversationId: json['conversationId'] as String?,
+      senderId: json['senderId'] as String?,
+      senderName: json['senderName'] as String?,
       senderPhotoUrl: json['senderPhotoUrl'] as String?,
-      receiverId: json['receiverId'] as String,
-      receiverName: json['receiverName'] as String,
+      receiverId: json['receiverId'] as String?,
+      receiverName: json['receiverName'] as String?,
       receiverPhotoUrl: json['receiverPhotoUrl'] as String?,
-      content: json['content'] as String,
+      content: json['content'] as String?,
       type: $enumDecodeNullable(_$MessageTypeEnumMap, json['type']),
       attachmentUrls: (json['attachmentUrls'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -61,11 +61,11 @@ const _$MessageTypeEnumMap = {
 _Conversation _$ConversationFromJson(Map<String, dynamic> json) =>
     _Conversation(
       id: json['id'] as String?,
-      participantIds: (json['participantIds'] as List<dynamic>)
-          .map((e) => e as String)
+      participantIds: (json['participantIds'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      participantNames: (json['participantNames'] as List<dynamic>)
-          .map((e) => e as String)
+      participantNames: (json['participantNames'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
       participantPhotoUrls: (json['participantPhotoUrls'] as List<dynamic>?)
           ?.map((e) => e as String)

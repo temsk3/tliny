@@ -285,44 +285,11 @@ class WidgetWithLoading extends ConsumerWidget {
 
 /// 既存の互換性のためのプロバイダー（非推奨）
 @Deprecated('Use globalLoadingControllerProvider instead')
-final AutoDisposeStateNotifierProvider<IsLoadingController, bool>
-isLoadingProvider =
-    StateNotifierProvider.autoDispose<IsLoadingController, bool>(
-      (ref) => IsLoadingController(),
-    );
+@riverpod
+class IsLoadingController extends _$IsLoadingController {
+  const IsLoadingController();
 
-/// 既存の互換性のためのコントローラー（非推奨）
-@Deprecated('Use GlobalLoadingController instead')
-class IsLoadingController extends StateNotifier<bool> {
-  IsLoadingController() : super(false);
-
-  Future<T> guardFuture<T>(Future<T> Function() future) async {
-    logger.d('IsLoadingController: guardFuture start', time: DateTime.now());
-    try {
-      state = true;
-      final result = await future();
-      state = false;
-      return result;
-    } on AppException catch (e, st) {
-      logger.e(
-        'IsLoadingController: guardFuture AppException - ${e.message}',
-        time: DateTime.now(),
-        error: e,
-        stackTrace: st,
-      );
-      state = false;
-      // AppExceptionは適切に処理されているため、再スローする
-      rethrow;
-    } on Exception catch (e, st) {
-      logger.e(
-        'IsLoadingController: guardFuture Exception - $e',
-        time: DateTime.now(),
-        error: e,
-        stackTrace: st,
-      );
-      state = false;
-      // 一般的な例外はGeneralExceptionに変換して再スロー
-      rethrow;
-    }
-  }
+  @override
+  bool build() => false;
 }
+

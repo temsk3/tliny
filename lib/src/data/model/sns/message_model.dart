@@ -11,14 +11,14 @@ part 'message_model.g.dart';
 class DirectMessage with _$DirectMessage {
   const factory DirectMessage({
     String? id,
-    required String conversationId,
-    required String senderId,
-    required String senderName,
+    String? conversationId,
+    String? senderId,
+    String? senderName,
     String? senderPhotoUrl,
-    required String receiverId,
-    required String receiverName,
+    String? receiverId,
+    String? receiverName,
     String? receiverPhotoUrl,
-    required String content,
+    String? content,
     MessageType? type,
     List<String>? attachmentUrls,
     bool? isRead,
@@ -36,8 +36,8 @@ class DirectMessage with _$DirectMessage {
 class Conversation with _$Conversation {
   const factory Conversation({
     String? id,
-    required List<String> participantIds,
-    required List<String> participantNames,
+    List<String>? participantIds,
+    List<String>? participantNames,
     List<String>? participantPhotoUrls,
     String? lastMessageContent,
     String? lastMessageSenderId,

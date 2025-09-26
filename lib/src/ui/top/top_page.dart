@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'top_page.g.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../data/model/program_model.dart';
@@ -12,12 +13,15 @@ import '../program/program_state.dart';
 import 'program_screen.dart';
 import 'widgets/program_search_card.dart';
 
+part 'top_page.g.dart';
+
 // final logger = Logger();
 
-final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
-final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
-  (ref) => <int>{},
-);
+@riverpod
+bool onSearch(Ref ref) => false;
+
+@riverpod
+Set<int> searchIndexList(Ref ref) => <int>{};
 
 // @RoutePage()
 class TopPage extends HookConsumerWidget {
@@ -179,3 +183,4 @@ class TopPage extends HookConsumerWidget {
   //   );
   // }
 }
+

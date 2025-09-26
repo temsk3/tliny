@@ -47,36 +47,32 @@ Stream<List<Program>> myProgramListState(Ref ref) {
 //       ref.watch(programRepositoryProvider).streamEvent(programId),
 // );
 
-final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
-    StreamProvider.autoDispose((ref) {
-      final uidAsyncValue = ref.watch(userIdProvider);
-      final uid = uidAsyncValue.value;
+@riverpod
+Stream<bool> addProgramButtonState(Ref ref) {
+  final uidAsyncValue = ref.watch(userIdProvider);
+  final uid = uidAsyncValue.value;
 
-      // 認証されていない場合は作成不可
-      if (uid == null) {
-        return Stream<bool>.value(false);
-      }
+  // 認証されていない場合は作成不可
+  if (uid == null) {
+    return Stream<bool>.value(false);
+  }
 
-      // Stripe登録状況に関係なく、認証済みユーザーなら作成可能
-      return Stream<bool>.value(true);
-    });
+  // Stripe登録状況に関係なく、認証済みユーザーなら作成可能
+  return Stream<bool>.value(true);
+}
 
-final AutoDisposeStreamProviderFamily<bool, Program>
-editProgramButtonStateProvider = StreamProvider.family
-    .autoDispose<bool, Program>((ref, program) {
-      final uidAsyncValue = ref.watch(userIdProvider);
-      final uid = uidAsyncValue.value;
-      if (uid == program.organizerId) {
-        return Stream<bool>.value(true);
-      }
-      return Stream<bool>.value(false);
-    });
+@riverpod
+Stream<bool> editProgramButtonState(Ref ref, Program program) {
+  final uidAsyncValue = ref.watch(userIdProvider);
+  final uid = uidAsyncValue.value;
+  if (uid == program.organizerId) {
+    return Stream<bool>.value(true);
+  }
+  return Stream<bool>.value(false);
+}
 
-final AutoDisposeStreamProviderFamily<bool, Program>
-addStaffButtonStateProvider = StreamProvider.family.autoDispose<bool, Program>((
-  ref,
-  program,
-) {
+@riverpod
+Stream<bool> addStaffButtonState(Ref ref, Program program) {
   final uidAsyncValue = ref.watch(userIdProvider);
   final uid = uidAsyncValue.value;
   if (uid != null) {
@@ -92,4 +88,4 @@ addStaffButtonStateProvider = StreamProvider.family.autoDispose<bool, Program>((
     }
   }
   return Stream<bool>.value(false);
-});
+}

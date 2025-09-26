@@ -43,7 +43,7 @@ class AddProgramFloatingActionButton extends HookWidget {
         return AsyncValueWidget(
           value: ref.watch(addProgramButtonStateProvider),
           data: (visible) {
-            if (visible) {
+            if (visible ?? false) {
               return BaseFloatingActionButton(
                 heroTag: heroTag ?? 'add_program_fab',
                 onPressed: () async {
@@ -89,7 +89,7 @@ class DeleteProgramIconButton extends HookWidget {
           value: ref.watch(editProgramButtonStateProvider(program)),
           data: (visible) {
             return Visibility(
-              visible: visible,
+              visible: visible ?? false,
               child: BaseIconButton(
                 icon: const Icon(Icons.delete),
                 tooltip: l10n.delete,
@@ -185,7 +185,7 @@ class AddStaffIconButton extends HookWidget {
           ), //ref.watch(editProgramButtonStateProvider(program)
           data: (visible) {
             return Visibility(
-              visible: visible,
+              visible: visible ?? false,
               child: BaseIconButton(
                 icon: const Icon(Icons.person_add_alt, size: 16),
                 tooltip: 'staff request',
@@ -252,7 +252,7 @@ class AddStaffIconButton extends HookWidget {
 //         return AsyncValueWidget(
 //           value: ref.watch(addProgramButtonStateProvider),
 //           data: (visible) {
-//             if (visible) {
+//             if (visible ?? false) {
 //               return Expanded(
 //                 child: BaseFloatingActionButton(
 //                   onPressed: onPressed,

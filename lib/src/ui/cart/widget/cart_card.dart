@@ -47,7 +47,7 @@ class CartCard extends HookConsumerWidget {
     // 商品データを取得（リアルタイム更新対応）
     final state =
         productId != null
-            ? ref.watch(_productStreamProvider(productId))
+            ? ref.watch(productStreamProvider(productId))
             : const AsyncValue<Product?>.data(null);
 
     // カートの ViewModel を取得
@@ -390,10 +390,6 @@ class CartCard extends HookConsumerWidget {
 }
 
 // 商品データを取得するStreamProvider（リアルタイム更新対応）
-final AutoDisposeStreamProviderFamily<Product?, String> _productStreamProvider =
-    StreamProvider.autoDispose.family<Product?, String>((
-      ref,
-      productId,
-    ) async* {
-      yield* ref.watch(productRepositoryProvider).watchProduct(productId);
-    });
+Stream<Product?> productStream(Ref ref, String productId) {
+  return ref.watch(productRepositoryProvider).watchProduct(productId);
+}

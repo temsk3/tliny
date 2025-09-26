@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppNotification {
 
- String? get id; String get userId; String get title; String get message; NotificationType? get type; String? get actionUserId; String? get actionUserName; String? get actionUserPhotoUrl; String? get targetId; String? get targetType; Map<String, dynamic>? get metadata; bool? get isRead;@timestampKey DateTime? get readAt;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
+ String? get id; String? get userId; String? get title; String? get message; NotificationType? get type; String? get actionUserId; String? get actionUserName; String? get actionUserPhotoUrl; String? get targetId; String? get targetType; Map<String, dynamic>? get metadata; bool? get isRead;@timestampKey DateTime? get readAt;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $AppNotificationCopyWith<$Res>  {
   factory $AppNotificationCopyWith(AppNotification value, $Res Function(AppNotification) _then) = _$AppNotificationCopyWithImpl;
 @useResult
 $Res call({
- String? id, String userId, String title, String message, NotificationType? type, String? actionUserId, String? actionUserName, String? actionUserPhotoUrl, String? targetId, String? targetType, Map<String, dynamic>? metadata, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? userId, String? title, String? message, NotificationType? type, String? actionUserId, String? actionUserName, String? actionUserPhotoUrl, String? targetId, String? targetType, Map<String, dynamic>? metadata, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -65,13 +65,13 @@ class _$AppNotificationCopyWithImpl<$Res>
 
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = null,Object? title = null,Object? message = null,Object? type = freezed,Object? actionUserId = freezed,Object? actionUserName = freezed,Object? actionUserPhotoUrl = freezed,Object? targetId = freezed,Object? targetType = freezed,Object? metadata = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = freezed,Object? title = freezed,Object? message = freezed,Object? type = freezed,Object? actionUserId = freezed,Object? actionUserName = freezed,Object? actionUserPhotoUrl = freezed,Object? targetId = freezed,Object? targetType = freezed,Object? metadata = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as NotificationType?,actionUserId: freezed == actionUserId ? _self.actionUserId : actionUserId // ignore: cast_nullable_to_non_nullable
 as String?,actionUserName: freezed == actionUserName ? _self.actionUserName : actionUserName // ignore: cast_nullable_to_non_nullable
 as String?,actionUserPhotoUrl: freezed == actionUserPhotoUrl ? _self.actionUserPhotoUrl : actionUserPhotoUrl // ignore: cast_nullable_to_non_nullable
@@ -168,7 +168,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String userId,  String title,  String message,  NotificationType? type,  String? actionUserId,  String? actionUserName,  String? actionUserPhotoUrl,  String? targetId,  String? targetType,  Map<String, dynamic>? metadata,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? userId,  String? title,  String? message,  NotificationType? type,  String? actionUserId,  String? actionUserName,  String? actionUserPhotoUrl,  String? targetId,  String? targetType,  Map<String, dynamic>? metadata,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppNotification() when $default != null:
 return $default(_that.id,_that.userId,_that.title,_that.message,_that.type,_that.actionUserId,_that.actionUserName,_that.actionUserPhotoUrl,_that.targetId,_that.targetType,_that.metadata,_that.isRead,_that.readAt,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -189,7 +189,7 @@ return $default(_that.id,_that.userId,_that.title,_that.message,_that.type,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String userId,  String title,  String message,  NotificationType? type,  String? actionUserId,  String? actionUserName,  String? actionUserPhotoUrl,  String? targetId,  String? targetType,  Map<String, dynamic>? metadata,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? userId,  String? title,  String? message,  NotificationType? type,  String? actionUserId,  String? actionUserName,  String? actionUserPhotoUrl,  String? targetId,  String? targetType,  Map<String, dynamic>? metadata,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _AppNotification():
 return $default(_that.id,_that.userId,_that.title,_that.message,_that.type,_that.actionUserId,_that.actionUserName,_that.actionUserPhotoUrl,_that.targetId,_that.targetType,_that.metadata,_that.isRead,_that.readAt,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -209,7 +209,7 @@ return $default(_that.id,_that.userId,_that.title,_that.message,_that.type,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String userId,  String title,  String message,  NotificationType? type,  String? actionUserId,  String? actionUserName,  String? actionUserPhotoUrl,  String? targetId,  String? targetType,  Map<String, dynamic>? metadata,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? userId,  String? title,  String? message,  NotificationType? type,  String? actionUserId,  String? actionUserName,  String? actionUserPhotoUrl,  String? targetId,  String? targetType,  Map<String, dynamic>? metadata,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AppNotification() when $default != null:
 return $default(_that.id,_that.userId,_that.title,_that.message,_that.type,_that.actionUserId,_that.actionUserName,_that.actionUserPhotoUrl,_that.targetId,_that.targetType,_that.metadata,_that.isRead,_that.readAt,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -224,13 +224,13 @@ return $default(_that.id,_that.userId,_that.title,_that.message,_that.type,_that
 @JsonSerializable()
 
 class _AppNotification implements AppNotification {
-  const _AppNotification({this.id, required this.userId, required this.title, required this.message, this.type, this.actionUserId, this.actionUserName, this.actionUserPhotoUrl, this.targetId, this.targetType, final  Map<String, dynamic>? metadata, this.isRead, @timestampKey this.readAt, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): _metadata = metadata;
+  const _AppNotification({this.id, this.userId, this.title, this.message, this.type, this.actionUserId, this.actionUserName, this.actionUserPhotoUrl, this.targetId, this.targetType, final  Map<String, dynamic>? metadata, this.isRead, @timestampKey this.readAt, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): _metadata = metadata;
   factory _AppNotification.fromJson(Map<String, dynamic> json) => _$AppNotificationFromJson(json);
 
 @override final  String? id;
-@override final  String userId;
-@override final  String title;
-@override final  String message;
+@override final  String? userId;
+@override final  String? title;
+@override final  String? message;
 @override final  NotificationType? type;
 @override final  String? actionUserId;
 @override final  String? actionUserName;
@@ -285,7 +285,7 @@ abstract mixin class _$AppNotificationCopyWith<$Res> implements $AppNotification
   factory _$AppNotificationCopyWith(_AppNotification value, $Res Function(_AppNotification) _then) = __$AppNotificationCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String userId, String title, String message, NotificationType? type, String? actionUserId, String? actionUserName, String? actionUserPhotoUrl, String? targetId, String? targetType, Map<String, dynamic>? metadata, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? userId, String? title, String? message, NotificationType? type, String? actionUserId, String? actionUserName, String? actionUserPhotoUrl, String? targetId, String? targetType, Map<String, dynamic>? metadata, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -302,13 +302,13 @@ class __$AppNotificationCopyWithImpl<$Res>
 
 /// Create a copy of AppNotification
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = null,Object? title = null,Object? message = null,Object? type = freezed,Object? actionUserId = freezed,Object? actionUserName = freezed,Object? actionUserPhotoUrl = freezed,Object? targetId = freezed,Object? targetType = freezed,Object? metadata = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = freezed,Object? title = freezed,Object? message = freezed,Object? type = freezed,Object? actionUserId = freezed,Object? actionUserName = freezed,Object? actionUserPhotoUrl = freezed,Object? targetId = freezed,Object? targetType = freezed,Object? metadata = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_AppNotification(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as NotificationType?,actionUserId: freezed == actionUserId ? _self.actionUserId : actionUserId // ignore: cast_nullable_to_non_nullable
 as String?,actionUserName: freezed == actionUserName ? _self.actionUserName : actionUserName // ignore: cast_nullable_to_non_nullable
 as String?,actionUserPhotoUrl: freezed == actionUserPhotoUrl ? _self.actionUserPhotoUrl : actionUserPhotoUrl // ignore: cast_nullable_to_non_nullable
@@ -331,7 +331,7 @@ as DateTime?,
 /// @nodoc
 mixin _$ShareActivity {
 
- String? get id; String get userId; String get userName; String? get userPhotoUrl; String get contentId; String get contentType; SharePlatform get platform; String? get sharedUrl;@timestampKey DateTime? get createdAt;
+ String? get id; String? get userId; String? get userName; String? get userPhotoUrl; String? get contentId; String? get contentType; SharePlatform? get platform; String? get sharedUrl;@timestampKey DateTime? get createdAt;
 /// Create a copy of ShareActivity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -364,7 +364,7 @@ abstract mixin class $ShareActivityCopyWith<$Res>  {
   factory $ShareActivityCopyWith(ShareActivity value, $Res Function(ShareActivity) _then) = _$ShareActivityCopyWithImpl;
 @useResult
 $Res call({
- String? id, String userId, String userName, String? userPhotoUrl, String contentId, String contentType, SharePlatform platform, String? sharedUrl,@timestampKey DateTime? createdAt
+ String? id, String? userId, String? userName, String? userPhotoUrl, String? contentId, String? contentType, SharePlatform? platform, String? sharedUrl,@timestampKey DateTime? createdAt
 });
 
 
@@ -381,16 +381,16 @@ class _$ShareActivityCopyWithImpl<$Res>
 
 /// Create a copy of ShareActivity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = null,Object? userName = null,Object? userPhotoUrl = freezed,Object? contentId = null,Object? contentType = null,Object? platform = null,Object? sharedUrl = freezed,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = freezed,Object? userName = freezed,Object? userPhotoUrl = freezed,Object? contentId = freezed,Object? contentType = freezed,Object? platform = freezed,Object? sharedUrl = freezed,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
-as String,userPhotoUrl: freezed == userPhotoUrl ? _self.userPhotoUrl : userPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,contentId: null == contentId ? _self.contentId : contentId // ignore: cast_nullable_to_non_nullable
-as String,contentType: null == contentType ? _self.contentType : contentType // ignore: cast_nullable_to_non_nullable
-as String,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
-as SharePlatform,sharedUrl: freezed == sharedUrl ? _self.sharedUrl : sharedUrl // ignore: cast_nullable_to_non_nullable
+as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,userName: freezed == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
+as String?,userPhotoUrl: freezed == userPhotoUrl ? _self.userPhotoUrl : userPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,contentId: freezed == contentId ? _self.contentId : contentId // ignore: cast_nullable_to_non_nullable
+as String?,contentType: freezed == contentType ? _self.contentType : contentType // ignore: cast_nullable_to_non_nullable
+as String?,platform: freezed == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
+as SharePlatform?,sharedUrl: freezed == sharedUrl ? _self.sharedUrl : sharedUrl // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
@@ -477,7 +477,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String userId,  String userName,  String? userPhotoUrl,  String contentId,  String contentType,  SharePlatform platform,  String? sharedUrl, @timestampKey  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? userId,  String? userName,  String? userPhotoUrl,  String? contentId,  String? contentType,  SharePlatform? platform,  String? sharedUrl, @timestampKey  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShareActivity() when $default != null:
 return $default(_that.id,_that.userId,_that.userName,_that.userPhotoUrl,_that.contentId,_that.contentType,_that.platform,_that.sharedUrl,_that.createdAt);case _:
@@ -498,7 +498,7 @@ return $default(_that.id,_that.userId,_that.userName,_that.userPhotoUrl,_that.co
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String userId,  String userName,  String? userPhotoUrl,  String contentId,  String contentType,  SharePlatform platform,  String? sharedUrl, @timestampKey  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? userId,  String? userName,  String? userPhotoUrl,  String? contentId,  String? contentType,  SharePlatform? platform,  String? sharedUrl, @timestampKey  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _ShareActivity():
 return $default(_that.id,_that.userId,_that.userName,_that.userPhotoUrl,_that.contentId,_that.contentType,_that.platform,_that.sharedUrl,_that.createdAt);case _:
@@ -518,7 +518,7 @@ return $default(_that.id,_that.userId,_that.userName,_that.userPhotoUrl,_that.co
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String userId,  String userName,  String? userPhotoUrl,  String contentId,  String contentType,  SharePlatform platform,  String? sharedUrl, @timestampKey  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? userId,  String? userName,  String? userPhotoUrl,  String? contentId,  String? contentType,  SharePlatform? platform,  String? sharedUrl, @timestampKey  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ShareActivity() when $default != null:
 return $default(_that.id,_that.userId,_that.userName,_that.userPhotoUrl,_that.contentId,_that.contentType,_that.platform,_that.sharedUrl,_that.createdAt);case _:
@@ -533,16 +533,16 @@ return $default(_that.id,_that.userId,_that.userName,_that.userPhotoUrl,_that.co
 @JsonSerializable()
 
 class _ShareActivity implements ShareActivity {
-  const _ShareActivity({this.id, required this.userId, required this.userName, this.userPhotoUrl, required this.contentId, required this.contentType, required this.platform, this.sharedUrl, @timestampKey this.createdAt});
+  const _ShareActivity({this.id, this.userId, this.userName, this.userPhotoUrl, this.contentId, this.contentType, this.platform, this.sharedUrl, @timestampKey this.createdAt});
   factory _ShareActivity.fromJson(Map<String, dynamic> json) => _$ShareActivityFromJson(json);
 
 @override final  String? id;
-@override final  String userId;
-@override final  String userName;
+@override final  String? userId;
+@override final  String? userName;
 @override final  String? userPhotoUrl;
-@override final  String contentId;
-@override final  String contentType;
-@override final  SharePlatform platform;
+@override final  String? contentId;
+@override final  String? contentType;
+@override final  SharePlatform? platform;
 @override final  String? sharedUrl;
 @override@timestampKey final  DateTime? createdAt;
 
@@ -579,7 +579,7 @@ abstract mixin class _$ShareActivityCopyWith<$Res> implements $ShareActivityCopy
   factory _$ShareActivityCopyWith(_ShareActivity value, $Res Function(_ShareActivity) _then) = __$ShareActivityCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String userId, String userName, String? userPhotoUrl, String contentId, String contentType, SharePlatform platform, String? sharedUrl,@timestampKey DateTime? createdAt
+ String? id, String? userId, String? userName, String? userPhotoUrl, String? contentId, String? contentType, SharePlatform? platform, String? sharedUrl,@timestampKey DateTime? createdAt
 });
 
 
@@ -596,16 +596,16 @@ class __$ShareActivityCopyWithImpl<$Res>
 
 /// Create a copy of ShareActivity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = null,Object? userName = null,Object? userPhotoUrl = freezed,Object? contentId = null,Object? contentType = null,Object? platform = null,Object? sharedUrl = freezed,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = freezed,Object? userName = freezed,Object? userPhotoUrl = freezed,Object? contentId = freezed,Object? contentType = freezed,Object? platform = freezed,Object? sharedUrl = freezed,Object? createdAt = freezed,}) {
   return _then(_ShareActivity(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,userName: null == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
-as String,userPhotoUrl: freezed == userPhotoUrl ? _self.userPhotoUrl : userPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,contentId: null == contentId ? _self.contentId : contentId // ignore: cast_nullable_to_non_nullable
-as String,contentType: null == contentType ? _self.contentType : contentType // ignore: cast_nullable_to_non_nullable
-as String,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
-as SharePlatform,sharedUrl: freezed == sharedUrl ? _self.sharedUrl : sharedUrl // ignore: cast_nullable_to_non_nullable
+as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,userName: freezed == userName ? _self.userName : userName // ignore: cast_nullable_to_non_nullable
+as String?,userPhotoUrl: freezed == userPhotoUrl ? _self.userPhotoUrl : userPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,contentId: freezed == contentId ? _self.contentId : contentId // ignore: cast_nullable_to_non_nullable
+as String?,contentType: freezed == contentType ? _self.contentType : contentType // ignore: cast_nullable_to_non_nullable
+as String?,platform: freezed == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
+as SharePlatform?,sharedUrl: freezed == sharedUrl ? _self.sharedUrl : sharedUrl // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));

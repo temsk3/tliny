@@ -36,7 +36,7 @@ final class SnsMessagesViewModelProvider
 }
 
 String _$snsMessagesViewModelHash() =>
-    r'af573e88715cd9c1459142922bf49d8705a285e7';
+    r'23341fd3bed06ce8c6c0770e386dd306eac440a0';
 
 abstract class _$SnsMessagesViewModel
     extends $AsyncNotifier<List<Conversation>> {

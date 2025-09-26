@@ -12,7 +12,7 @@ part 'favorite_model.g.dart';
 class Favorite with _$Favorite {
   const factory Favorite({
     String? id,
-    required String? programId,
+    String? programId,
     @timestampKey DateTime? createdAt,
     @timestampKey DateTime? updatedAt,
     @timestampKey DateTime? deletedAt,

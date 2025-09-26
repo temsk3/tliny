@@ -83,7 +83,7 @@ final class TicketListViewModelProvider
 }
 
 String _$ticketListViewModelHash() =>
-    r'30d8a2eba2e1c917ff4c194c5b0cffc162535845';
+    r'742d624f67b10473d7d3c5217996cf2748bf2959';
 
 abstract class _$TicketListViewModel extends $AsyncNotifier<Set<String>> {
   FutureOr<Set<String>> build();

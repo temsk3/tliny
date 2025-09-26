@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'stripe_customer_params.freezed.dart';
-// part 'stripe_customer_params.g.dart';
+part 'stripe_customer_params.freezed.dart';
+part 'stripe_customer_params.g.dart';
 
 ////////////////////////////////////////////////////////////////
 // Customer
@@ -28,9 +28,9 @@ class CustomerParams with _$CustomerParams {
 @JsonSerializable(fieldRename: FieldRename.snake)
 class ShippingParams with _$ShippingParams {
   const factory ShippingParams({
-    required AddressParams? address,
-    required String? name,
-    required String? phone,
+    AddressParams? address,
+    String? name,
+    String? phone,
   }) = _ShippingParams;
 
   factory ShippingParams.fromJson(Map<String, dynamic> json) =>
@@ -42,12 +42,12 @@ class ShippingParams with _$ShippingParams {
 @JsonSerializable(fieldRename: FieldRename.snake)
 class AddressParams with _$AddressParams {
   const factory AddressParams({
-    required String? city,
-    required String? country,
-    required String? line1,
-    required String? line2,
-    @JsonKey(name: 'postal_code') required String? postalCode,
-    required String? state,
+    String? city,
+    String? country,
+    String? line1,
+    String? line2,
+    String? postalCode,
+    String? state,
   }) = _AddressParams;
 
   factory AddressParams.fromJson(Map<String, dynamic> json) =>

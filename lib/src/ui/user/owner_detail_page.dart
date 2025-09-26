@@ -12,12 +12,10 @@ import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 
 // オーナーのイベント一覧を取得するプロバイダー
-final AutoDisposeStreamProviderFamily<List<Program>, String>
-ownerProgramsProvider = StreamProvider.autoDispose
-    .family<List<Program>, String>((ref, ownerId) {
-      final programRepository = ref.watch(programRepositoryProvider);
-      return programRepository.watchEventsByOrganizer(ownerId);
-    });
+Stream<List<Program>> ownerPrograms(Ref ref, String ownerId) {
+  final programRepository = ref.watch(programRepositoryProvider);
+  return programRepository.watchEventsByOrganizer(ownerId);
+}
 
 class OwnerDetailPage extends HookConsumerWidget {
   const OwnerDetailPage({super.key, required this.ownerId});

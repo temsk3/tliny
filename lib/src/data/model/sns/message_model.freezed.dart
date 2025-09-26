@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DirectMessage {
 
- String? get id; String get conversationId; String get senderId; String get senderName; String? get senderPhotoUrl; String get receiverId; String get receiverName; String? get receiverPhotoUrl; String get content; MessageType? get type; List<String>? get attachmentUrls; bool? get isRead;@timestampKey DateTime? get readAt;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
+ String? get id; String? get conversationId; String? get senderId; String? get senderName; String? get senderPhotoUrl; String? get receiverId; String? get receiverName; String? get receiverPhotoUrl; String? get content; MessageType? get type; List<String>? get attachmentUrls; bool? get isRead;@timestampKey DateTime? get readAt;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
 /// Create a copy of DirectMessage
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $DirectMessageCopyWith<$Res>  {
   factory $DirectMessageCopyWith(DirectMessage value, $Res Function(DirectMessage) _then) = _$DirectMessageCopyWithImpl;
 @useResult
 $Res call({
- String? id, String conversationId, String senderId, String senderName, String? senderPhotoUrl, String receiverId, String receiverName, String? receiverPhotoUrl, String content, MessageType? type, List<String>? attachmentUrls, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? conversationId, String? senderId, String? senderName, String? senderPhotoUrl, String? receiverId, String? receiverName, String? receiverPhotoUrl, String? content, MessageType? type, List<String>? attachmentUrls, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -65,18 +65,18 @@ class _$DirectMessageCopyWithImpl<$Res>
 
 /// Create a copy of DirectMessage
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? conversationId = null,Object? senderId = null,Object? senderName = null,Object? senderPhotoUrl = freezed,Object? receiverId = null,Object? receiverName = null,Object? receiverPhotoUrl = freezed,Object? content = null,Object? type = freezed,Object? attachmentUrls = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? conversationId = freezed,Object? senderId = freezed,Object? senderName = freezed,Object? senderPhotoUrl = freezed,Object? receiverId = freezed,Object? receiverName = freezed,Object? receiverPhotoUrl = freezed,Object? content = freezed,Object? type = freezed,Object? attachmentUrls = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,conversationId: null == conversationId ? _self.conversationId : conversationId // ignore: cast_nullable_to_non_nullable
-as String,senderId: null == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
-as String,senderName: null == senderName ? _self.senderName : senderName // ignore: cast_nullable_to_non_nullable
-as String,senderPhotoUrl: freezed == senderPhotoUrl ? _self.senderPhotoUrl : senderPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,receiverId: null == receiverId ? _self.receiverId : receiverId // ignore: cast_nullable_to_non_nullable
-as String,receiverName: null == receiverName ? _self.receiverName : receiverName // ignore: cast_nullable_to_non_nullable
-as String,receiverPhotoUrl: freezed == receiverPhotoUrl ? _self.receiverPhotoUrl : receiverPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,conversationId: freezed == conversationId ? _self.conversationId : conversationId // ignore: cast_nullable_to_non_nullable
+as String?,senderId: freezed == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
+as String?,senderName: freezed == senderName ? _self.senderName : senderName // ignore: cast_nullable_to_non_nullable
+as String?,senderPhotoUrl: freezed == senderPhotoUrl ? _self.senderPhotoUrl : senderPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,receiverId: freezed == receiverId ? _self.receiverId : receiverId // ignore: cast_nullable_to_non_nullable
+as String?,receiverName: freezed == receiverName ? _self.receiverName : receiverName // ignore: cast_nullable_to_non_nullable
+as String?,receiverPhotoUrl: freezed == receiverPhotoUrl ? _self.receiverPhotoUrl : receiverPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as MessageType?,attachmentUrls: freezed == attachmentUrls ? _self.attachmentUrls : attachmentUrls // ignore: cast_nullable_to_non_nullable
 as List<String>?,isRead: freezed == isRead ? _self.isRead : isRead // ignore: cast_nullable_to_non_nullable
 as bool?,readAt: freezed == readAt ? _self.readAt : readAt // ignore: cast_nullable_to_non_nullable
@@ -168,7 +168,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String conversationId,  String senderId,  String senderName,  String? senderPhotoUrl,  String receiverId,  String receiverName,  String? receiverPhotoUrl,  String content,  MessageType? type,  List<String>? attachmentUrls,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? conversationId,  String? senderId,  String? senderName,  String? senderPhotoUrl,  String? receiverId,  String? receiverName,  String? receiverPhotoUrl,  String? content,  MessageType? type,  List<String>? attachmentUrls,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DirectMessage() when $default != null:
 return $default(_that.id,_that.conversationId,_that.senderId,_that.senderName,_that.senderPhotoUrl,_that.receiverId,_that.receiverName,_that.receiverPhotoUrl,_that.content,_that.type,_that.attachmentUrls,_that.isRead,_that.readAt,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -189,7 +189,7 @@ return $default(_that.id,_that.conversationId,_that.senderId,_that.senderName,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String conversationId,  String senderId,  String senderName,  String? senderPhotoUrl,  String receiverId,  String receiverName,  String? receiverPhotoUrl,  String content,  MessageType? type,  List<String>? attachmentUrls,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? conversationId,  String? senderId,  String? senderName,  String? senderPhotoUrl,  String? receiverId,  String? receiverName,  String? receiverPhotoUrl,  String? content,  MessageType? type,  List<String>? attachmentUrls,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _DirectMessage():
 return $default(_that.id,_that.conversationId,_that.senderId,_that.senderName,_that.senderPhotoUrl,_that.receiverId,_that.receiverName,_that.receiverPhotoUrl,_that.content,_that.type,_that.attachmentUrls,_that.isRead,_that.readAt,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -209,7 +209,7 @@ return $default(_that.id,_that.conversationId,_that.senderId,_that.senderName,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String conversationId,  String senderId,  String senderName,  String? senderPhotoUrl,  String receiverId,  String receiverName,  String? receiverPhotoUrl,  String content,  MessageType? type,  List<String>? attachmentUrls,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? conversationId,  String? senderId,  String? senderName,  String? senderPhotoUrl,  String? receiverId,  String? receiverName,  String? receiverPhotoUrl,  String? content,  MessageType? type,  List<String>? attachmentUrls,  bool? isRead, @timestampKey  DateTime? readAt, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _DirectMessage() when $default != null:
 return $default(_that.id,_that.conversationId,_that.senderId,_that.senderName,_that.senderPhotoUrl,_that.receiverId,_that.receiverName,_that.receiverPhotoUrl,_that.content,_that.type,_that.attachmentUrls,_that.isRead,_that.readAt,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -224,18 +224,18 @@ return $default(_that.id,_that.conversationId,_that.senderId,_that.senderName,_t
 @JsonSerializable()
 
 class _DirectMessage implements DirectMessage {
-  const _DirectMessage({this.id, required this.conversationId, required this.senderId, required this.senderName, this.senderPhotoUrl, required this.receiverId, required this.receiverName, this.receiverPhotoUrl, required this.content, this.type, final  List<String>? attachmentUrls, this.isRead, @timestampKey this.readAt, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): _attachmentUrls = attachmentUrls;
+  const _DirectMessage({this.id, this.conversationId, this.senderId, this.senderName, this.senderPhotoUrl, this.receiverId, this.receiverName, this.receiverPhotoUrl, this.content, this.type, final  List<String>? attachmentUrls, this.isRead, @timestampKey this.readAt, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): _attachmentUrls = attachmentUrls;
   factory _DirectMessage.fromJson(Map<String, dynamic> json) => _$DirectMessageFromJson(json);
 
 @override final  String? id;
-@override final  String conversationId;
-@override final  String senderId;
-@override final  String senderName;
+@override final  String? conversationId;
+@override final  String? senderId;
+@override final  String? senderName;
 @override final  String? senderPhotoUrl;
-@override final  String receiverId;
-@override final  String receiverName;
+@override final  String? receiverId;
+@override final  String? receiverName;
 @override final  String? receiverPhotoUrl;
-@override final  String content;
+@override final  String? content;
 @override final  MessageType? type;
  final  List<String>? _attachmentUrls;
 @override List<String>? get attachmentUrls {
@@ -285,7 +285,7 @@ abstract mixin class _$DirectMessageCopyWith<$Res> implements $DirectMessageCopy
   factory _$DirectMessageCopyWith(_DirectMessage value, $Res Function(_DirectMessage) _then) = __$DirectMessageCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String conversationId, String senderId, String senderName, String? senderPhotoUrl, String receiverId, String receiverName, String? receiverPhotoUrl, String content, MessageType? type, List<String>? attachmentUrls, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, String? conversationId, String? senderId, String? senderName, String? senderPhotoUrl, String? receiverId, String? receiverName, String? receiverPhotoUrl, String? content, MessageType? type, List<String>? attachmentUrls, bool? isRead,@timestampKey DateTime? readAt,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -302,18 +302,18 @@ class __$DirectMessageCopyWithImpl<$Res>
 
 /// Create a copy of DirectMessage
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? conversationId = null,Object? senderId = null,Object? senderName = null,Object? senderPhotoUrl = freezed,Object? receiverId = null,Object? receiverName = null,Object? receiverPhotoUrl = freezed,Object? content = null,Object? type = freezed,Object? attachmentUrls = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? conversationId = freezed,Object? senderId = freezed,Object? senderName = freezed,Object? senderPhotoUrl = freezed,Object? receiverId = freezed,Object? receiverName = freezed,Object? receiverPhotoUrl = freezed,Object? content = freezed,Object? type = freezed,Object? attachmentUrls = freezed,Object? isRead = freezed,Object? readAt = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_DirectMessage(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,conversationId: null == conversationId ? _self.conversationId : conversationId // ignore: cast_nullable_to_non_nullable
-as String,senderId: null == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
-as String,senderName: null == senderName ? _self.senderName : senderName // ignore: cast_nullable_to_non_nullable
-as String,senderPhotoUrl: freezed == senderPhotoUrl ? _self.senderPhotoUrl : senderPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,receiverId: null == receiverId ? _self.receiverId : receiverId // ignore: cast_nullable_to_non_nullable
-as String,receiverName: null == receiverName ? _self.receiverName : receiverName // ignore: cast_nullable_to_non_nullable
-as String,receiverPhotoUrl: freezed == receiverPhotoUrl ? _self.receiverPhotoUrl : receiverPhotoUrl // ignore: cast_nullable_to_non_nullable
-as String?,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,conversationId: freezed == conversationId ? _self.conversationId : conversationId // ignore: cast_nullable_to_non_nullable
+as String?,senderId: freezed == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
+as String?,senderName: freezed == senderName ? _self.senderName : senderName // ignore: cast_nullable_to_non_nullable
+as String?,senderPhotoUrl: freezed == senderPhotoUrl ? _self.senderPhotoUrl : senderPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,receiverId: freezed == receiverId ? _self.receiverId : receiverId // ignore: cast_nullable_to_non_nullable
+as String?,receiverName: freezed == receiverName ? _self.receiverName : receiverName // ignore: cast_nullable_to_non_nullable
+as String?,receiverPhotoUrl: freezed == receiverPhotoUrl ? _self.receiverPhotoUrl : receiverPhotoUrl // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as MessageType?,attachmentUrls: freezed == attachmentUrls ? _self._attachmentUrls : attachmentUrls // ignore: cast_nullable_to_non_nullable
 as List<String>?,isRead: freezed == isRead ? _self.isRead : isRead // ignore: cast_nullable_to_non_nullable
 as bool?,readAt: freezed == readAt ? _self.readAt : readAt // ignore: cast_nullable_to_non_nullable
@@ -331,7 +331,7 @@ as DateTime?,
 /// @nodoc
 mixin _$Conversation {
 
- String? get id; List<String> get participantIds; List<String> get participantNames; List<String>? get participantPhotoUrls; String? get lastMessageContent; String? get lastMessageSenderId;@timestampKey DateTime? get lastMessageAt; Map<String, int>? get unreadCounts;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
+ String? get id; List<String>? get participantIds; List<String>? get participantNames; List<String>? get participantPhotoUrls; String? get lastMessageContent; String? get lastMessageSenderId;@timestampKey DateTime? get lastMessageAt; Map<String, int>? get unreadCounts;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
 /// Create a copy of Conversation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -364,7 +364,7 @@ abstract mixin class $ConversationCopyWith<$Res>  {
   factory $ConversationCopyWith(Conversation value, $Res Function(Conversation) _then) = _$ConversationCopyWithImpl;
 @useResult
 $Res call({
- String? id, List<String> participantIds, List<String> participantNames, List<String>? participantPhotoUrls, String? lastMessageContent, String? lastMessageSenderId,@timestampKey DateTime? lastMessageAt, Map<String, int>? unreadCounts,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, List<String>? participantIds, List<String>? participantNames, List<String>? participantPhotoUrls, String? lastMessageContent, String? lastMessageSenderId,@timestampKey DateTime? lastMessageAt, Map<String, int>? unreadCounts,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -381,12 +381,12 @@ class _$ConversationCopyWithImpl<$Res>
 
 /// Create a copy of Conversation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? participantIds = null,Object? participantNames = null,Object? participantPhotoUrls = freezed,Object? lastMessageContent = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageAt = freezed,Object? unreadCounts = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? participantIds = freezed,Object? participantNames = freezed,Object? participantPhotoUrls = freezed,Object? lastMessageContent = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageAt = freezed,Object? unreadCounts = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,participantIds: null == participantIds ? _self.participantIds : participantIds // ignore: cast_nullable_to_non_nullable
-as List<String>,participantNames: null == participantNames ? _self.participantNames : participantNames // ignore: cast_nullable_to_non_nullable
-as List<String>,participantPhotoUrls: freezed == participantPhotoUrls ? _self.participantPhotoUrls : participantPhotoUrls // ignore: cast_nullable_to_non_nullable
+as String?,participantIds: freezed == participantIds ? _self.participantIds : participantIds // ignore: cast_nullable_to_non_nullable
+as List<String>?,participantNames: freezed == participantNames ? _self.participantNames : participantNames // ignore: cast_nullable_to_non_nullable
+as List<String>?,participantPhotoUrls: freezed == participantPhotoUrls ? _self.participantPhotoUrls : participantPhotoUrls // ignore: cast_nullable_to_non_nullable
 as List<String>?,lastMessageContent: freezed == lastMessageContent ? _self.lastMessageContent : lastMessageContent // ignore: cast_nullable_to_non_nullable
 as String?,lastMessageSenderId: freezed == lastMessageSenderId ? _self.lastMessageSenderId : lastMessageSenderId // ignore: cast_nullable_to_non_nullable
 as String?,lastMessageAt: freezed == lastMessageAt ? _self.lastMessageAt : lastMessageAt // ignore: cast_nullable_to_non_nullable
@@ -479,7 +479,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  List<String> participantIds,  List<String> participantNames,  List<String>? participantPhotoUrls,  String? lastMessageContent,  String? lastMessageSenderId, @timestampKey  DateTime? lastMessageAt,  Map<String, int>? unreadCounts, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  List<String>? participantIds,  List<String>? participantNames,  List<String>? participantPhotoUrls,  String? lastMessageContent,  String? lastMessageSenderId, @timestampKey  DateTime? lastMessageAt,  Map<String, int>? unreadCounts, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Conversation() when $default != null:
 return $default(_that.id,_that.participantIds,_that.participantNames,_that.participantPhotoUrls,_that.lastMessageContent,_that.lastMessageSenderId,_that.lastMessageAt,_that.unreadCounts,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -500,7 +500,7 @@ return $default(_that.id,_that.participantIds,_that.participantNames,_that.parti
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  List<String> participantIds,  List<String> participantNames,  List<String>? participantPhotoUrls,  String? lastMessageContent,  String? lastMessageSenderId, @timestampKey  DateTime? lastMessageAt,  Map<String, int>? unreadCounts, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  List<String>? participantIds,  List<String>? participantNames,  List<String>? participantPhotoUrls,  String? lastMessageContent,  String? lastMessageSenderId, @timestampKey  DateTime? lastMessageAt,  Map<String, int>? unreadCounts, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Conversation():
 return $default(_that.id,_that.participantIds,_that.participantNames,_that.participantPhotoUrls,_that.lastMessageContent,_that.lastMessageSenderId,_that.lastMessageAt,_that.unreadCounts,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -520,7 +520,7 @@ return $default(_that.id,_that.participantIds,_that.participantNames,_that.parti
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  List<String> participantIds,  List<String> participantNames,  List<String>? participantPhotoUrls,  String? lastMessageContent,  String? lastMessageSenderId, @timestampKey  DateTime? lastMessageAt,  Map<String, int>? unreadCounts, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  List<String>? participantIds,  List<String>? participantNames,  List<String>? participantPhotoUrls,  String? lastMessageContent,  String? lastMessageSenderId, @timestampKey  DateTime? lastMessageAt,  Map<String, int>? unreadCounts, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Conversation() when $default != null:
 return $default(_that.id,_that.participantIds,_that.participantNames,_that.participantPhotoUrls,_that.lastMessageContent,_that.lastMessageSenderId,_that.lastMessageAt,_that.unreadCounts,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
@@ -535,22 +535,26 @@ return $default(_that.id,_that.participantIds,_that.participantNames,_that.parti
 @JsonSerializable()
 
 class _Conversation implements Conversation {
-  const _Conversation({this.id, required final  List<String> participantIds, required final  List<String> participantNames, final  List<String>? participantPhotoUrls, this.lastMessageContent, this.lastMessageSenderId, @timestampKey this.lastMessageAt, final  Map<String, int>? unreadCounts, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): _participantIds = participantIds,_participantNames = participantNames,_participantPhotoUrls = participantPhotoUrls,_unreadCounts = unreadCounts;
+  const _Conversation({this.id, final  List<String>? participantIds, final  List<String>? participantNames, final  List<String>? participantPhotoUrls, this.lastMessageContent, this.lastMessageSenderId, @timestampKey this.lastMessageAt, final  Map<String, int>? unreadCounts, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): _participantIds = participantIds,_participantNames = participantNames,_participantPhotoUrls = participantPhotoUrls,_unreadCounts = unreadCounts;
   factory _Conversation.fromJson(Map<String, dynamic> json) => _$ConversationFromJson(json);
 
 @override final  String? id;
- final  List<String> _participantIds;
-@override List<String> get participantIds {
+ final  List<String>? _participantIds;
+@override List<String>? get participantIds {
+  final value = _participantIds;
+  if (value == null) return null;
   if (_participantIds is EqualUnmodifiableListView) return _participantIds;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_participantIds);
+  return EqualUnmodifiableListView(value);
 }
 
- final  List<String> _participantNames;
-@override List<String> get participantNames {
+ final  List<String>? _participantNames;
+@override List<String>? get participantNames {
+  final value = _participantNames;
+  if (value == null) return null;
   if (_participantNames is EqualUnmodifiableListView) return _participantNames;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_participantNames);
+  return EqualUnmodifiableListView(value);
 }
 
  final  List<String>? _participantPhotoUrls;
@@ -611,7 +615,7 @@ abstract mixin class _$ConversationCopyWith<$Res> implements $ConversationCopyWi
   factory _$ConversationCopyWith(_Conversation value, $Res Function(_Conversation) _then) = __$ConversationCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, List<String> participantIds, List<String> participantNames, List<String>? participantPhotoUrls, String? lastMessageContent, String? lastMessageSenderId,@timestampKey DateTime? lastMessageAt, Map<String, int>? unreadCounts,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
+ String? id, List<String>? participantIds, List<String>? participantNames, List<String>? participantPhotoUrls, String? lastMessageContent, String? lastMessageSenderId,@timestampKey DateTime? lastMessageAt, Map<String, int>? unreadCounts,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
 });
 
 
@@ -628,12 +632,12 @@ class __$ConversationCopyWithImpl<$Res>
 
 /// Create a copy of Conversation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? participantIds = null,Object? participantNames = null,Object? participantPhotoUrls = freezed,Object? lastMessageContent = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageAt = freezed,Object? unreadCounts = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? participantIds = freezed,Object? participantNames = freezed,Object? participantPhotoUrls = freezed,Object? lastMessageContent = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageAt = freezed,Object? unreadCounts = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
   return _then(_Conversation(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,participantIds: null == participantIds ? _self._participantIds : participantIds // ignore: cast_nullable_to_non_nullable
-as List<String>,participantNames: null == participantNames ? _self._participantNames : participantNames // ignore: cast_nullable_to_non_nullable
-as List<String>,participantPhotoUrls: freezed == participantPhotoUrls ? _self._participantPhotoUrls : participantPhotoUrls // ignore: cast_nullable_to_non_nullable
+as String?,participantIds: freezed == participantIds ? _self._participantIds : participantIds // ignore: cast_nullable_to_non_nullable
+as List<String>?,participantNames: freezed == participantNames ? _self._participantNames : participantNames // ignore: cast_nullable_to_non_nullable
+as List<String>?,participantPhotoUrls: freezed == participantPhotoUrls ? _self._participantPhotoUrls : participantPhotoUrls // ignore: cast_nullable_to_non_nullable
 as List<String>?,lastMessageContent: freezed == lastMessageContent ? _self.lastMessageContent : lastMessageContent // ignore: cast_nullable_to_non_nullable
 as String?,lastMessageSenderId: freezed == lastMessageSenderId ? _self.lastMessageSenderId : lastMessageSenderId // ignore: cast_nullable_to_non_nullable
 as String?,lastMessageAt: freezed == lastMessageAt ? _self.lastMessageAt : lastMessageAt // ignore: cast_nullable_to_non_nullable

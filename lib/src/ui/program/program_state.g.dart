@@ -198,3 +198,178 @@ final class MyProgramListStateProvider
 
 String _$myProgramListStateHash() =>
     r'39901ee3093ccc77e32af291a9400a595ddc2993';
+
+@ProviderFor(addProgramButtonState)
+const addProgramButtonStateProvider = AddProgramButtonStateProvider._();
+
+final class AddProgramButtonStateProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  const AddProgramButtonStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'addProgramButtonStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$addProgramButtonStateHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return addProgramButtonState(ref);
+  }
+}
+
+String _$addProgramButtonStateHash() =>
+    r'7ded6e8a58b446fae458a0c93bfe8d3240921de2';
+
+@ProviderFor(editProgramButtonState)
+const editProgramButtonStateProvider = EditProgramButtonStateFamily._();
+
+final class EditProgramButtonStateProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  const EditProgramButtonStateProvider._({
+    required EditProgramButtonStateFamily super.from,
+    required Program super.argument,
+  }) : super(
+         retry: null,
+         name: r'editProgramButtonStateProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$editProgramButtonStateHash();
+
+  @override
+  String toString() {
+    return r'editProgramButtonStateProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    final argument = this.argument as Program;
+    return editProgramButtonState(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is EditProgramButtonStateProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$editProgramButtonStateHash() =>
+    r'4d88246e0bceed4aa603f1bd21997a23297c71fe';
+
+final class EditProgramButtonStateFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<bool>, Program> {
+  const EditProgramButtonStateFamily._()
+    : super(
+        retry: null,
+        name: r'editProgramButtonStateProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  EditProgramButtonStateProvider call(Program program) =>
+      EditProgramButtonStateProvider._(argument: program, from: this);
+
+  @override
+  String toString() => r'editProgramButtonStateProvider';
+}
+
+@ProviderFor(addStaffButtonState)
+const addStaffButtonStateProvider = AddStaffButtonStateFamily._();
+
+final class AddStaffButtonStateProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  const AddStaffButtonStateProvider._({
+    required AddStaffButtonStateFamily super.from,
+    required Program super.argument,
+  }) : super(
+         retry: null,
+         name: r'addStaffButtonStateProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$addStaffButtonStateHash();
+
+  @override
+  String toString() {
+    return r'addStaffButtonStateProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    final argument = this.argument as Program;
+    return addStaffButtonState(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AddStaffButtonStateProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$addStaffButtonStateHash() =>
+    r'2c120d23537646af39ad68978c96486a147c8328';
+
+final class AddStaffButtonStateFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<bool>, Program> {
+  const AddStaffButtonStateFamily._()
+    : super(
+        retry: null,
+        name: r'addStaffButtonStateProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  AddStaffButtonStateProvider call(Program program) =>
+      AddStaffButtonStateProvider._(argument: program, from: this);
+
+  @override
+  String toString() => r'addStaffButtonStateProvider';
+}

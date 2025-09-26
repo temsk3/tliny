@@ -10,33 +10,30 @@ import '../../utils/logger.dart';
 part 'cart_state.g.dart';
 
 /// カートの状態を管理する StreamProvider
-final AutoDisposeStreamProvider<List<Cart>> cartStateProvider =
-    StreamProvider.autoDispose((ref) {
-      logger.d('cartStateProvider: start', time: DateTime.now());
-      try {
-        final uidAsyncValue = ref.watch(userIdProvider);
-        final uid = uidAsyncValue.value;
-        if (uid != null) {
-          logger.d('cartStateProvider: uid=$uid', time: DateTime.now());
-          return ref.watch(cartRepositoryProvider).watchCart(uid);
-        }
-        logger.d('cartStateProvider: uid is null', time: DateTime.now());
-        return Stream.value([]);
-      } on Exception catch (e, st) {
-        logger.e(
-          'cartStateProvider: error=$e, stackTrace=$st',
-          time: DateTime.now(),
-        );
-        rethrow;
-      }
-    });
+@riverpod
+Stream<List<Cart>> cartState(Ref ref) {
+  logger.d('cartStateProvider: start', time: DateTime.now());
+  try {
+    final uidAsyncValue = ref.watch(userIdProvider);
+    final uid = uidAsyncValue.value;
+    if (uid != null) {
+      logger.d('cartStateProvider: uid=$uid', time: DateTime.now());
+      return ref.watch(cartRepositoryProvider).watchCart(uid);
+    }
+    logger.d('cartStateProvider: uid is null', time: DateTime.now());
+    return Stream.value([]);
+  } on Exception catch (e, st) {
+    logger.e(
+      'cartStateProvider: error=$e, stackTrace=$st',
+      time: DateTime.now(),
+    );
+    rethrow;
+  }
+}
 
 /// 商品価格のキャッシュを管理するプロバイダー
-final AutoDisposeFutureProviderFamily<Map<String, int>, List<String>>
-productPriceCacheProvider = FutureProvider.autoDispose.family<
-  Map<String, int>,
-  List<String>
->((ref, productIds) async {
+@riverpod
+Future<Map<String, int>> productPriceCache(Ref ref, List<String> productIds) async {
   logger.d(
     'productPriceCacheProvider: start, productIds.length=${productIds.length}',
     time: DateTime.now(),
@@ -53,7 +50,7 @@ productPriceCacheProvider = FutureProvider.autoDispose.family<
       final product = await ref
           .read(productRepositoryProvider)
           .getProductOnce(productId);
-      priceCache[productId] = product?.price ?? 0;
+      priceCache[productId] = (product?.price ?? 0).toInt();
     } on Exception catch (e, st) {
       logger.e('productPriceCacheProvider: product取得エラー - $e', stackTrace: st);
       priceCache[productId] = 0;
@@ -66,7 +63,7 @@ productPriceCacheProvider = FutureProvider.autoDispose.family<
   );
 
   return priceCache;
-});
+}
 
 /// リストのハッシュ値を計算する
 int _calculateListHash(List<Cart> list) {
@@ -150,7 +147,7 @@ class TotalAmountNotifier extends _$TotalAmountNotifier {
         if (cart.productDocRef != null && cart.productDocRef!.isNotEmpty) {
           final productId = cart.productDocRef!.split('/').last;
           final productPrice = priceCache[productId] ?? 0;
-          totalAmount += productPrice * cart.quantity;
+          totalAmount += (productPrice as int) * cart.quantity;
         }
       }
 
@@ -207,7 +204,7 @@ class TotalAmountNotifier extends _$TotalAmountNotifier {
         if (cart.productDocRef != null && cart.productDocRef!.isNotEmpty) {
           final productId = cart.productDocRef!.split('/').last;
           final productPrice = priceCache[productId] ?? 0;
-          totalAmount += productPrice * cart.quantity;
+          totalAmount += (productPrice as int) * cart.quantity;
         }
       }
 
