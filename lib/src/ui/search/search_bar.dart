@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tliny/src/ui/common/asyncvalue_widget.dart';
 import 'package:tliny/src/ui/program/program_state.dart';
 
 import '../common/main_body.dart';
+
+part 'search_bar.g.dart';
 
 final List<Map<String, dynamic>> program = [
   {'name': 'qwerty', 'disc': 'asdfgh'},
@@ -12,19 +14,32 @@ final List<Map<String, dynamic>> program = [
   {'name': 'jkl;:', 'disc': 'm,./_'},
 ];
 
-final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
-final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
-  (ref) => <int>{},
-);
+@riverpod
+class OnSearch extends _$OnSearch {
+  @override
+  bool build() => false;
+
+  void toggle() => state = !state;
+  void setTrue() => state = true;
+  void setFalse() => state = false;
+}
+
+@riverpod
+class SearchIndexList extends _$SearchIndexList {
+  @override
+  Set<int> build() => <int>{};
+
+  void clear() => state = <int>{};
+  void add(int index) => state = {...state, index};
+  void set(Set<int> newState) => state = newState;
+}
 
 class SearchPage extends ConsumerWidget {
   const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final onSearchNotifier = ref.watch(onSearchProvider.notifier);
     final onSearch = ref.watch(onSearchProvider);
-    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
 
     return AsyncValueWidget(
       value: ref.watch(programsStateProvider),
@@ -35,49 +50,47 @@ class SearchPage extends ConsumerWidget {
             backgroundColor: Colors.transparent,
             title: AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
-              child:
-                  onSearch
-                      ? _searchTextField(ref)
-                      : const Text(
-                        'Search',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
-                        ),
+              child: onSearch
+                  ? _searchTextField(ref)
+                  : const Text(
+                      'Search',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
                       ),
+                    ),
             ),
             actions: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child:
-                    onSearch
-                        ? IconButton(
-                          key: const ValueKey('clear'),
-                          onPressed: () {
-                            onSearchNotifier.state = false;
-                          },
-                          icon: const Icon(Icons.clear),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.grey.withValues(alpha: 0.1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        )
-                        : IconButton(
-                          key: const ValueKey('search'),
-                          onPressed: () {
-                            onSearchNotifier.state = true;
-                            searchIndexListNotifier.state = {};
-                          },
-                          icon: const Icon(Icons.search),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.grey.withValues(alpha: 0.1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                child: onSearch
+                    ? IconButton(
+                        key: const ValueKey('clear'),
+                        onPressed: () {
+                          ref.read(onSearchProvider.notifier).setFalse();
+                        },
+                        icon: const Icon(Icons.clear),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.grey.withValues(alpha: 0.1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
                           ),
                         ),
+                      )
+                    : IconButton(
+                        key: const ValueKey('search'),
+                        onPressed: () {
+                          ref.read(onSearchProvider.notifier).setTrue();
+                          ref.read(searchIndexListProvider.notifier).clear();
+                        },
+                        icon: const Icon(Icons.search),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.grey.withValues(alpha: 0.1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),
@@ -93,8 +106,6 @@ class SearchPage extends ConsumerWidget {
   }
 
   Widget _searchTextField(WidgetRef ref) {
-    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
-
     return Container(
       height: 48,
       decoration: BoxDecoration(
@@ -112,13 +123,13 @@ class SearchPage extends ConsumerWidget {
         ),
         style: const TextStyle(fontSize: 16),
         onChanged: (String text) {
-          searchIndexListNotifier.state = {};
+          ref.read(searchIndexListProvider.notifier).clear();
           for (var i = 0; i < program.length; i++) {
             final map = program[i];
             for (final key in map.keys) {
               final value = map[key];
               if (value.toString().toLowerCase().contains(text.toLowerCase())) {
-                searchIndexListNotifier.state.add(i);
+                ref.read(searchIndexListProvider.notifier).add(i);
               }
             }
           }

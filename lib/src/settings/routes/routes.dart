@@ -204,7 +204,7 @@ class AppShellRoute extends StatefulShellRouteData {
 // @TypedGoRoute<AccountPageRoute>(path: AppRoutes.accountPage, routes: [
 //   TypedGoRoute<AccountDetailPageRoute>(path: AppRoutes.accountDetailPage)
 // ])
-// class AccountPageRoute extends GoRouteData with $AccountPageRoute {
+// class AccountPageRoute extends GoRouteData {
 //   const AccountPageRoute();
 //   @override
 //   Page<void> buildPage(BuildContext context, GoRouterState state) =>
@@ -217,36 +217,36 @@ class AppShellRoute extends StatefulShellRouteData {
 
 // ネストしたルートがある場合は、`@TypedGoRouteのroutes`に記載
 
-class TopRoute extends GoRouteData with $TopRoute {
+class TopRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const TopPage();
 }
 
-class MyProgramRoute extends GoRouteData with $MyProgramRoute {
+class MyProgramRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const MyProgramPage();
 }
 
-class CartRoute extends GoRouteData with $CartRoute {
+class CartRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const CartPage();
 }
 
-class TicketRoute extends GoRouteData with $TicketRoute {
+class TicketRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const TicketListPage();
 }
 
-class SnsRoute extends GoRouteData with $SnsRoute {
+class SnsRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const SnsFeedPage();
 }
 
 @TypedGoRoute<SnsMessagesRoute>(path: AppRoutes.snsMessagesPage)
-class SnsMessagesRoute extends GoRouteData with $SnsMessagesRoute {
+class SnsMessagesRoute extends GoRouteData {
   const SnsMessagesRoute();
 
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
@@ -257,7 +257,7 @@ class SnsMessagesRoute extends GoRouteData with $SnsMessagesRoute {
 }
 
 @TypedGoRoute<SnsChatRoute>(path: AppRoutes.snsChatPage)
-class SnsChatRoute extends GoRouteData with $SnsChatRoute {
+class SnsChatRoute extends GoRouteData {
   const SnsChatRoute({
     required this.conversationId,
     required this.otherUserId,
@@ -282,7 +282,7 @@ class SnsChatRoute extends GoRouteData with $SnsChatRoute {
 }
 
 @TypedGoRoute<SnsProfileRoute>(path: AppRoutes.snsProfilePage)
-class SnsProfileRoute extends GoRouteData with $SnsProfileRoute {
+class SnsProfileRoute extends GoRouteData {
   const SnsProfileRoute({required this.userId});
 
   final String userId;
@@ -295,7 +295,7 @@ class SnsProfileRoute extends GoRouteData with $SnsProfileRoute {
 }
 
 @TypedGoRoute<SnsSearchRoute>(path: AppRoutes.snsSearchPage)
-class SnsSearchRoute extends GoRouteData with $SnsSearchRoute {
+class SnsSearchRoute extends GoRouteData {
   const SnsSearchRoute();
 
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
@@ -310,7 +310,7 @@ class SnsSearchRoute extends GoRouteData with $SnsSearchRoute {
   //   TypedGoRoute<SignUpRoute>(path: AppRoutes.signUpPage),
   // ],
 )
-class SignInRoute extends GoRouteData with $SignInRoute {
+class SignInRoute extends GoRouteData {
   const SignInRoute();
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
   @override
@@ -318,13 +318,13 @@ class SignInRoute extends GoRouteData with $SignInRoute {
 }
 
 @TypedGoRoute<SignUpRoute>(path: AppRoutes.signUpPage)
-class SignUpRoute extends GoRouteData with $SignUpRoute {
+class SignUpRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => const SignUpPage();
 }
 
 @TypedGoRoute<CheckoutSuccessRoute>(path: AppRoutes.checkoutSuccessPage)
-class CheckoutSuccessRoute extends GoRouteData with $CheckoutSuccessRoute {
+class CheckoutSuccessRoute extends GoRouteData {
   const CheckoutSuccessRoute();
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
@@ -336,7 +336,7 @@ class CheckoutSuccessRoute extends GoRouteData with $CheckoutSuccessRoute {
 }
 
 @TypedGoRoute<CheckoutCancelRoute>(path: AppRoutes.checkoutCancelPage)
-class CheckoutCancelRoute extends GoRouteData with $CheckoutCancelRoute {
+class CheckoutCancelRoute extends GoRouteData {
   const CheckoutCancelRoute();
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
 
@@ -348,7 +348,7 @@ class CheckoutCancelRoute extends GoRouteData with $CheckoutCancelRoute {
 }
 
 @TypedGoRoute<SecretEventRoute>(path: '/secret/:secretUrl')
-class SecretEventRoute extends GoRouteData with $SecretEventRoute {
+class SecretEventRoute extends GoRouteData {
   const SecretEventRoute({required this.secretUrl});
 
   final String secretUrl;
@@ -364,7 +364,7 @@ class SecretEventRoute extends GoRouteData with $SecretEventRoute {
   path: AppRoutes.eventPage,
   routes: [TypedGoRoute<ProgramDetailRoute>(path: AppRoutes.eventDetailPage)],
 )
-class ProgramRoute extends GoRouteData with $ProgramRoute {
+class ProgramRoute extends GoRouteData {
   const ProgramRoute();
 
   @override
@@ -373,7 +373,7 @@ class ProgramRoute extends GoRouteData with $ProgramRoute {
 }
 
 @immutable
-class ProgramDetailRoute extends GoRouteData with $ProgramDetailRoute {
+class ProgramDetailRoute extends GoRouteData {
   const ProgramDetailRoute({required this.$extra});
   final Program $extra;
 
@@ -383,7 +383,7 @@ class ProgramDetailRoute extends GoRouteData with $ProgramDetailRoute {
 }
 
 @TypedGoRoute<ProgramEditRoute>(path: AppRoutes.eventEditPage)
-class ProgramEditRoute extends GoRouteData with $ProgramEditRoute {
+class ProgramEditRoute extends GoRouteData {
   const ProgramEditRoute({required this.$extra});
   final Program $extra;
 
@@ -395,7 +395,7 @@ class ProgramEditRoute extends GoRouteData with $ProgramEditRoute {
 }
 
 @TypedGoRoute<ProductRoute>(path: AppRoutes.productPage)
-class ProductRoute extends GoRouteData with $ProductRoute {
+class ProductRoute extends GoRouteData {
   const ProductRoute({required this.$extra});
   final Program $extra;
 
@@ -405,7 +405,7 @@ class ProductRoute extends GoRouteData with $ProductRoute {
 }
 
 @TypedGoRoute<ProductListTab>(path: AppRoutes.productListTab)
-class ProductListTab extends GoRouteData with $ProductListTab {
+class ProductListTab extends GoRouteData {
   const ProductListTab({required this.$extra});
   final (Program, GenreType?) $extra;
 
@@ -417,7 +417,7 @@ class ProductListTab extends GoRouteData with $ProductListTab {
 }
 
 @TypedGoRoute<ProductDetailsRoute>(path: AppRoutes.productDetailPage)
-class ProductDetailsRoute extends GoRouteData with $ProductDetailsRoute {
+class ProductDetailsRoute extends GoRouteData {
   const ProductDetailsRoute({required this.programId, required this.productId});
   final String programId;
   final String productId;
@@ -431,28 +431,19 @@ class ProductDetailsRoute extends GoRouteData with $ProductDetailsRoute {
         final productAsync = ref.watch(productStreamProvider(productId));
 
         return programAsync.when(
-          data:
-              (program) => productAsync.when(
-                data:
-                    (product) =>
-                        ProductDetailsPage(program: program, product: product),
-                loading:
-                    () => const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    ),
-                error:
-                    (error, stack) => Scaffold(
-                      body: Center(child: Text('商品の読み込みに失敗しました: $error')),
-                    ),
-              ),
-          loading:
-              () => const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              ),
-          error:
-              (error, stack) => Scaffold(
-                body: Center(child: Text('プログラムの読み込みに失敗しました: $error')),
-              ),
+          data: (program) => productAsync.when(
+            data: (product) =>
+                ProductDetailsPage(program: program, product: product),
+            loading: () => const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
+            error: (error, stack) =>
+                Scaffold(body: Center(child: Text('商品の読み込みに失敗しました: $error'))),
+          ),
+          loading: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+          error: (error, stack) =>
+              Scaffold(body: Center(child: Text('プログラムの読み込みに失敗しました: $error'))),
         );
       },
     );
@@ -460,7 +451,7 @@ class ProductDetailsRoute extends GoRouteData with $ProductDetailsRoute {
 }
 
 @TypedGoRoute<ProductEditRoute>(path: AppRoutes.productEditPage)
-class ProductEditRoute extends GoRouteData with $ProductEditRoute {
+class ProductEditRoute extends GoRouteData {
   const ProductEditRoute({required this.$extra});
   final (Program, Product) $extra;
 
@@ -472,7 +463,7 @@ class ProductEditRoute extends GoRouteData with $ProductEditRoute {
 }
 
 @TypedGoRoute<QRCodeScannerRoute>(path: AppRoutes.scanPage)
-class QRCodeScannerRoute extends GoRouteData with $QRCodeScannerRoute {
+class QRCodeScannerRoute extends GoRouteData {
   const QRCodeScannerRoute({required this.currentEventID});
   final String currentEventID;
 
@@ -484,7 +475,7 @@ class QRCodeScannerRoute extends GoRouteData with $QRCodeScannerRoute {
 }
 
 @TypedGoRoute<QRCodeDisplayRoute>(path: AppRoutes.qRCodeDisplayPage)
-class QRCodeDisplayRoute extends GoRouteData with $QRCodeDisplayRoute {
+class QRCodeDisplayRoute extends GoRouteData {
   const QRCodeDisplayRoute({required this.uuid});
   final String uuid;
 
@@ -496,7 +487,7 @@ class QRCodeDisplayRoute extends GoRouteData with $QRCodeDisplayRoute {
 }
 
 @TypedGoRoute<TicketPdfRoute>(path: AppRoutes.ticketPrintPage)
-class TicketPdfRoute extends GoRouteData with $TicketPdfRoute {
+class TicketPdfRoute extends GoRouteData {
   const TicketPdfRoute();
 
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
@@ -514,7 +505,7 @@ class TicketPdfRoute extends GoRouteData with $TicketPdfRoute {
     ),
   ],
 )
-class UsageHistoryRoute extends GoRouteData with $UsageHistoryRoute {
+class UsageHistoryRoute extends GoRouteData {
   const UsageHistoryRoute();
 
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
@@ -526,7 +517,7 @@ class UsageHistoryRoute extends GoRouteData with $UsageHistoryRoute {
 
 @immutable
 class UsageHistoryDetailsRoute extends GoRouteData
-    with $UsageHistoryDetailsRoute {
+ {
   const UsageHistoryDetailsRoute({required this.$extra});
   final List<String> $extra;
 
@@ -536,7 +527,7 @@ class UsageHistoryDetailsRoute extends GoRouteData
 }
 
 @TypedGoRoute<OrderRoute>(path: AppRoutes.orderPage)
-class OrderRoute extends GoRouteData with $OrderRoute {
+class OrderRoute extends GoRouteData {
   const OrderRoute();
 
   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
@@ -549,7 +540,7 @@ class OrderRoute extends GoRouteData with $OrderRoute {
   path: AppRoutes.userPage,
   routes: [TypedGoRoute<UserEditRoute>(path: AppRoutes.userEditPage)],
 )
-class UserRoute extends GoRouteData with $UserRoute {
+class UserRoute extends GoRouteData {
   const UserRoute();
 
   @override
@@ -557,7 +548,7 @@ class UserRoute extends GoRouteData with $UserRoute {
 }
 
 @immutable
-class UserEditRoute extends GoRouteData with $UserEditRoute {
+class UserEditRoute extends GoRouteData {
   const UserEditRoute({required this.uid});
   final String uid;
 
@@ -579,7 +570,7 @@ class UserEditRoute extends GoRouteData with $UserEditRoute {
     TypedGoRoute<StockTab>(path: AppRoutes.stockTab),
   ],
 )
-class ManagementRoute extends GoRouteData with $ManagementRoute {
+class ManagementRoute extends GoRouteData {
   const ManagementRoute({required this.eventId});
   final String eventId;
 
@@ -591,7 +582,7 @@ class ManagementRoute extends GoRouteData with $ManagementRoute {
 }
 
 @immutable
-class EarningsTab extends GoRouteData with $EarningsTab {
+class EarningsTab extends GoRouteData {
   const EarningsTab({required this.eventId});
   final String eventId;
 
@@ -601,7 +592,7 @@ class EarningsTab extends GoRouteData with $EarningsTab {
 }
 
 @immutable
-class EarningsDetailRoute extends GoRouteData with $EarningsDetailRoute {
+class EarningsDetailRoute extends GoRouteData {
   const EarningsDetailRoute({
     required this.eventId,
     required this.productId,
@@ -621,7 +612,7 @@ class EarningsDetailRoute extends GoRouteData with $EarningsDetailRoute {
 }
 
 @immutable
-class SalesTab extends GoRouteData with $SalesTab {
+class SalesTab extends GoRouteData {
   const SalesTab({required this.eventId});
   final String eventId;
 
@@ -631,7 +622,7 @@ class SalesTab extends GoRouteData with $SalesTab {
 }
 
 @immutable
-class StockTab extends GoRouteData with $StockTab {
+class StockTab extends GoRouteData {
   const StockTab({required this.eventId});
   final String eventId;
 
@@ -641,7 +632,7 @@ class StockTab extends GoRouteData with $StockTab {
 }
 
 @TypedGoRoute<TermsRoute>(path: AppRoutes.termsPage)
-class TermsRoute extends GoRouteData with $TermsRoute {
+class TermsRoute extends GoRouteData {
   const TermsRoute({required this.uid});
   final String uid;
 
@@ -659,7 +650,7 @@ class TermsRoute extends GoRouteData with $TermsRoute {
 }
 
 @TypedGoRoute<OwnerDetailRoute>(path: AppRoutes.ownerDetailPage)
-class OwnerDetailRoute extends GoRouteData with $OwnerDetailRoute {
+class OwnerDetailRoute extends GoRouteData {
   const OwnerDetailRoute({required this.ownerId});
   final String ownerId;
 
@@ -671,7 +662,7 @@ class OwnerDetailRoute extends GoRouteData with $OwnerDetailRoute {
 }
 
 // @TypedGoRoute<TestTicketCreatorRoute>(path: AppRoutes.testTicketCreatorPage)
-// class TestTicketCreatorRoute extends GoRouteData with $TestTicketCreatorRoute {
+// class TestTicketCreatorRoute extends GoRouteData {
 //   const TestTicketCreatorRoute();
 
 //   static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;

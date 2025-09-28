@@ -102,7 +102,7 @@ class EmailChangeViewModel extends _$EmailChangeViewModel {
           errorMessage = 'メールアドレス変更に失敗しました: ${e.message}';
       }
 
-      final appException = AuthenticationException(
+      AuthenticationException(
         message: errorMessage,
         code: e.code,
         stackTrace: e.stackTrace,
@@ -113,10 +113,7 @@ class EmailChangeViewModel extends _$EmailChangeViewModel {
       rethrow;
     } catch (e, st) {
       logger.e('changeEmail: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
+      GeneralException(message: e.toString(), stackTrace: st);
       rethrow;
     }
   }

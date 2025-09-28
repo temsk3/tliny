@@ -8,8 +8,8 @@ part of 'message_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_DirectMessage _$DirectMessageFromJson(Map<String, dynamic> json) =>
-    _DirectMessage(
+_$DirectMessageImpl _$$DirectMessageImplFromJson(Map<String, dynamic> json) =>
+    _$DirectMessageImpl(
       id: json['id'] as String?,
       conversationId: json['conversationId'] as String,
       senderId: json['senderId'] as String,
@@ -30,7 +30,7 @@ _DirectMessage _$DirectMessageFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$DirectMessageToJson(_DirectMessage instance) =>
+Map<String, dynamic> _$$DirectMessageImplToJson(_$DirectMessageImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'conversationId': instance.conversationId,
@@ -58,8 +58,8 @@ const _$MessageTypeEnumMap = {
   MessageType.productShare: 'product_share',
 };
 
-_Conversation _$ConversationFromJson(Map<String, dynamic> json) =>
-    _Conversation(
+_$ConversationImpl _$$ConversationImplFromJson(Map<String, dynamic> json) =>
+    _$ConversationImpl(
       id: json['id'] as String?,
       participantIds: (json['participantIds'] as List<dynamic>)
           .map((e) => e as String)
@@ -81,7 +81,7 @@ _Conversation _$ConversationFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$ConversationToJson(_Conversation instance) =>
+Map<String, dynamic> _$$ConversationImplToJson(_$ConversationImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'participantIds': instance.participantIds,

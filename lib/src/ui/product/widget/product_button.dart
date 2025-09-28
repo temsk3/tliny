@@ -158,7 +158,7 @@ class GenreDropdownButton extends HookWidget {
                   ),
                 )
                 .toList(),
-        value: value,
+        initialValue: value,
         validator: (value) {
           if (value == null) {
             return 'Please select';

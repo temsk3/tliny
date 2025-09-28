@@ -8,437 +8,629 @@ part of 'ticket_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(ticketRepository)
-const ticketRepositoryProvider = TicketRepositoryProvider._();
-
-final class TicketRepositoryProvider
-    extends
-        $FunctionalProvider<
-          TicketRepository,
-          TicketRepository,
-          TicketRepository
-        >
-    with $Provider<TicketRepository> {
-  const TicketRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'ticketRepositoryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$ticketRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<TicketRepository> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  TicketRepository create(Ref ref) {
-    return ticketRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(TicketRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<TicketRepository>(value),
-    );
-  }
-}
-
 String _$ticketRepositoryHash() => r'e69d8f9efb6fbb3f6efdc35edf45a6100348a945';
 
-@ProviderFor(allTicketStream)
-const allTicketStreamProvider = AllTicketStreamProvider._();
+/// See also [ticketRepository].
+@ProviderFor(ticketRepository)
+final ticketRepositoryProvider = Provider<TicketRepository>.internal(
+  ticketRepository,
+  name: r'ticketRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$ticketRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-final class AllTicketStreamProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Ticket>>,
-          List<Ticket>,
-          Stream<List<Ticket>>
-        >
-    with $FutureModifier<List<Ticket>>, $StreamProvider<List<Ticket>> {
-  const AllTicketStreamProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'allTicketStreamProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$allTicketStreamHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<List<Ticket>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<Ticket>> create(Ref ref) {
-    return allTicketStream(ref);
-  }
-}
-
+typedef TicketRepositoryRef = ProviderRef<TicketRepository>;
 String _$allTicketStreamHash() => r'6cd33a8e6239bd79380a2a6075d4380241f46a46';
 
-@ProviderFor(ticketsStream)
-const ticketsStreamProvider = TicketsStreamFamily._();
+/// See also [allTicketStream].
+@ProviderFor(allTicketStream)
+final allTicketStreamProvider =
+    AutoDisposeStreamProvider<List<Ticket>>.internal(
+  allTicketStream,
+  name: r'allTicketStreamProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$allTicketStreamHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-final class TicketsStreamProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Ticket>>,
-          List<Ticket>,
-          Stream<List<Ticket>>
-        >
-    with $FutureModifier<List<Ticket>>, $StreamProvider<List<Ticket>> {
-  const TicketsStreamProvider._({
-    required TicketsStreamFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'ticketsStreamProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$ticketsStreamHash();
-
-  @override
-  String toString() {
-    return r'ticketsStreamProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $StreamProviderElement<List<Ticket>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<Ticket>> create(Ref ref) {
-    final argument = this.argument as String;
-    return ticketsStream(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is TicketsStreamProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
+typedef AllTicketStreamRef = AutoDisposeStreamProviderRef<List<Ticket>>;
 String _$ticketsStreamHash() => r'320c7a59f4e104495f5847f887f88581c4067596';
 
-final class TicketsStreamFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<List<Ticket>>, String> {
-  const TicketsStreamFamily._()
-    : super(
-        retry: null,
-        name: r'ticketsStreamProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-  TicketsStreamProvider call(String uid) =>
-      TicketsStreamProvider._(argument: uid, from: this);
-
-  @override
-  String toString() => r'ticketsStreamProvider';
-}
-
-@ProviderFor(ticketStream)
-const ticketStreamProvider = TicketStreamFamily._();
-
-final class TicketStreamProvider
-    extends $FunctionalProvider<AsyncValue<Ticket>, Ticket, Stream<Ticket>>
-    with $FutureModifier<Ticket>, $StreamProvider<Ticket> {
-  const TicketStreamProvider._({
-    required TicketStreamFamily super.from,
-    required (String, String) super.argument,
-  }) : super(
-         retry: null,
-         name: r'ticketStreamProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$ticketStreamHash();
-
-  @override
-  String toString() {
-    return r'ticketStreamProvider'
-        ''
-        '$argument';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
-  @override
-  $StreamProviderElement<Ticket> $createElement($ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [ticketsStream].
+@ProviderFor(ticketsStream)
+const ticketsStreamProvider = TicketsStreamFamily();
+
+/// See also [ticketsStream].
+class TicketsStreamFamily extends Family<AsyncValue<List<Ticket>>> {
+  /// See also [ticketsStream].
+  const TicketsStreamFamily();
+
+  /// See also [ticketsStream].
+  TicketsStreamProvider call(
+    String uid,
+  ) {
+    return TicketsStreamProvider(
+      uid,
+    );
+  }
 
   @override
-  Stream<Ticket> create(Ref ref) {
-    final argument = this.argument as (String, String);
-    return ticketStream(ref, argument.$1, argument.$2);
+  TicketsStreamProvider getProviderOverride(
+    covariant TicketsStreamProvider provider,
+  ) {
+    return call(
+      provider.uid,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'ticketsStreamProvider';
+}
+
+/// See also [ticketsStream].
+class TicketsStreamProvider extends AutoDisposeStreamProvider<List<Ticket>> {
+  /// See also [ticketsStream].
+  TicketsStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => ticketsStream(
+            ref as TicketsStreamRef,
+            uid,
+          ),
+          from: ticketsStreamProvider,
+          name: r'ticketsStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ticketsStreamHash,
+          dependencies: TicketsStreamFamily._dependencies,
+          allTransitiveDependencies:
+              TicketsStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
+
+  TicketsStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uid,
+  }) : super.internal();
+
+  final String uid;
+
+  @override
+  Override overrideWith(
+    Stream<List<Ticket>> Function(TicketsStreamRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TicketsStreamProvider._internal(
+        (ref) => create(ref as TicketsStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uid: uid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<Ticket>> createElement() {
+    return _TicketsStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TicketStreamProvider && other.argument == argument;
+    return other is TicketsStreamProvider && other.uid == uid;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uid.hashCode);
+
+    return _SystemHash.finish(hash);
   }
+}
+
+mixin TicketsStreamRef on AutoDisposeStreamProviderRef<List<Ticket>> {
+  /// The parameter `uid` of this provider.
+  String get uid;
+}
+
+class _TicketsStreamProviderElement
+    extends AutoDisposeStreamProviderElement<List<Ticket>>
+    with TicketsStreamRef {
+  _TicketsStreamProviderElement(super.provider);
+
+  @override
+  String get uid => (origin as TicketsStreamProvider).uid;
 }
 
 String _$ticketStreamHash() => r'14bf168141c8144533d728108ab52ff73815cf22';
 
-final class TicketStreamFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<Ticket>, (String, String)> {
-  const TicketStreamFamily._()
-    : super(
-        retry: null,
-        name: r'ticketStreamProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// See also [ticketStream].
+@ProviderFor(ticketStream)
+const ticketStreamProvider = TicketStreamFamily();
 
-  TicketStreamProvider call(String uid, String ticketId) =>
-      TicketStreamProvider._(argument: (uid, ticketId), from: this);
+/// See also [ticketStream].
+class TicketStreamFamily extends Family<AsyncValue<Ticket>> {
+  /// See also [ticketStream].
+  const TicketStreamFamily();
 
-  @override
-  String toString() => r'ticketStreamProvider';
-}
-
-@ProviderFor(usageHistoryRepository)
-const usageHistoryRepositoryProvider = UsageHistoryRepositoryProvider._();
-
-final class UsageHistoryRepositoryProvider
-    extends
-        $FunctionalProvider<
-          UsageHistoryRepository,
-          UsageHistoryRepository,
-          UsageHistoryRepository
-        >
-    with $Provider<UsageHistoryRepository> {
-  const UsageHistoryRepositoryProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'usageHistoryRepositoryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$usageHistoryRepositoryHash();
-
-  @$internal
-  @override
-  $ProviderElement<UsageHistoryRepository> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
-
-  @override
-  UsageHistoryRepository create(Ref ref) {
-    return usageHistoryRepository(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UsageHistoryRepository value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<UsageHistoryRepository>(value),
+  /// See also [ticketStream].
+  TicketStreamProvider call(
+    String uid,
+    String ticketId,
+  ) {
+    return TicketStreamProvider(
+      uid,
+      ticketId,
     );
   }
+
+  @override
+  TicketStreamProvider getProviderOverride(
+    covariant TicketStreamProvider provider,
+  ) {
+    return call(
+      provider.uid,
+      provider.ticketId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'ticketStreamProvider';
+}
+
+/// See also [ticketStream].
+class TicketStreamProvider extends AutoDisposeStreamProvider<Ticket> {
+  /// See also [ticketStream].
+  TicketStreamProvider(
+    String uid,
+    String ticketId,
+  ) : this._internal(
+          (ref) => ticketStream(
+            ref as TicketStreamRef,
+            uid,
+            ticketId,
+          ),
+          from: ticketStreamProvider,
+          name: r'ticketStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ticketStreamHash,
+          dependencies: TicketStreamFamily._dependencies,
+          allTransitiveDependencies:
+              TicketStreamFamily._allTransitiveDependencies,
+          uid: uid,
+          ticketId: ticketId,
+        );
+
+  TicketStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uid,
+    required this.ticketId,
+  }) : super.internal();
+
+  final String uid;
+  final String ticketId;
+
+  @override
+  Override overrideWith(
+    Stream<Ticket> Function(TicketStreamRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TicketStreamProvider._internal(
+        (ref) => create(ref as TicketStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uid: uid,
+        ticketId: ticketId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<Ticket> createElement() {
+    return _TicketStreamProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TicketStreamProvider &&
+        other.uid == uid &&
+        other.ticketId == ticketId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uid.hashCode);
+    hash = _SystemHash.combine(hash, ticketId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TicketStreamRef on AutoDisposeStreamProviderRef<Ticket> {
+  /// The parameter `uid` of this provider.
+  String get uid;
+
+  /// The parameter `ticketId` of this provider.
+  String get ticketId;
+}
+
+class _TicketStreamProviderElement
+    extends AutoDisposeStreamProviderElement<Ticket> with TicketStreamRef {
+  _TicketStreamProviderElement(super.provider);
+
+  @override
+  String get uid => (origin as TicketStreamProvider).uid;
+  @override
+  String get ticketId => (origin as TicketStreamProvider).ticketId;
 }
 
 String _$usageHistoryRepositoryHash() =>
     r'f2f1dccbfd3e1a688511c0b9788cabce16a37a6b';
 
-@ProviderFor(usageHistoryListStream)
-const usageHistoryListStreamProvider = UsageHistoryListStreamFamily._();
+/// See also [usageHistoryRepository].
+@ProviderFor(usageHistoryRepository)
+final usageHistoryRepositoryProvider =
+    Provider<UsageHistoryRepository>.internal(
+  usageHistoryRepository,
+  name: r'usageHistoryRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$usageHistoryRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-final class UsageHistoryListStreamProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<UsageHistory>>,
-          List<UsageHistory>,
-          Stream<List<UsageHistory>>
-        >
-    with
-        $FutureModifier<List<UsageHistory>>,
-        $StreamProvider<List<UsageHistory>> {
-  const UsageHistoryListStreamProvider._({
-    required UsageHistoryListStreamFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'usageHistoryListStreamProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$usageHistoryListStreamHash();
-
-  @override
-  String toString() {
-    return r'usageHistoryListStreamProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $StreamProviderElement<List<UsageHistory>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<UsageHistory>> create(Ref ref) {
-    final argument = this.argument as String;
-    return usageHistoryListStream(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is UsageHistoryListStreamProvider &&
-        other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
+typedef UsageHistoryRepositoryRef = ProviderRef<UsageHistoryRepository>;
 String _$usageHistoryListStreamHash() =>
     r'bf5da019fb6055c7b32b06d5945120b68bd17d3b';
 
-final class UsageHistoryListStreamFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<List<UsageHistory>>, String> {
-  const UsageHistoryListStreamFamily._()
-    : super(
-        retry: null,
-        name: r'usageHistoryListStreamProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// See also [usageHistoryListStream].
+@ProviderFor(usageHistoryListStream)
+const usageHistoryListStreamProvider = UsageHistoryListStreamFamily();
 
-  UsageHistoryListStreamProvider call(String uid) =>
-      UsageHistoryListStreamProvider._(argument: uid, from: this);
+/// See also [usageHistoryListStream].
+class UsageHistoryListStreamFamily
+    extends Family<AsyncValue<List<UsageHistory>>> {
+  /// See also [usageHistoryListStream].
+  const UsageHistoryListStreamFamily();
 
-  @override
-  String toString() => r'usageHistoryListStreamProvider';
-}
-
-@ProviderFor(usageHistoryStream)
-const usageHistoryStreamProvider = UsageHistoryStreamFamily._();
-
-final class UsageHistoryStreamProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<UsageHistory>,
-          UsageHistory,
-          Stream<UsageHistory>
-        >
-    with $FutureModifier<UsageHistory>, $StreamProvider<UsageHistory> {
-  const UsageHistoryStreamProvider._({
-    required UsageHistoryStreamFamily super.from,
-    required (String, String) super.argument,
-  }) : super(
-         retry: null,
-         name: r'usageHistoryStreamProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$usageHistoryStreamHash();
-
-  @override
-  String toString() {
-    return r'usageHistoryStreamProvider'
-        ''
-        '$argument';
+  /// See also [usageHistoryListStream].
+  UsageHistoryListStreamProvider call(
+    String uid,
+  ) {
+    return UsageHistoryListStreamProvider(
+      uid,
+    );
   }
 
-  @$internal
   @override
-  $StreamProviderElement<UsageHistory> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
+  UsageHistoryListStreamProvider getProviderOverride(
+    covariant UsageHistoryListStreamProvider provider,
+  ) {
+    return call(
+      provider.uid,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
 
   @override
-  Stream<UsageHistory> create(Ref ref) {
-    final argument = this.argument as (String, String);
-    return usageHistoryStream(ref, argument.$1, argument.$2);
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'usageHistoryListStreamProvider';
+}
+
+/// See also [usageHistoryListStream].
+class UsageHistoryListStreamProvider
+    extends AutoDisposeStreamProvider<List<UsageHistory>> {
+  /// See also [usageHistoryListStream].
+  UsageHistoryListStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => usageHistoryListStream(
+            ref as UsageHistoryListStreamRef,
+            uid,
+          ),
+          from: usageHistoryListStreamProvider,
+          name: r'usageHistoryListStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$usageHistoryListStreamHash,
+          dependencies: UsageHistoryListStreamFamily._dependencies,
+          allTransitiveDependencies:
+              UsageHistoryListStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
+
+  UsageHistoryListStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uid,
+  }) : super.internal();
+
+  final String uid;
+
+  @override
+  Override overrideWith(
+    Stream<List<UsageHistory>> Function(UsageHistoryListStreamRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UsageHistoryListStreamProvider._internal(
+        (ref) => create(ref as UsageHistoryListStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uid: uid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<UsageHistory>> createElement() {
+    return _UsageHistoryListStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is UsageHistoryStreamProvider && other.argument == argument;
+    return other is UsageHistoryListStreamProvider && other.uid == uid;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uid.hashCode);
+
+    return _SystemHash.finish(hash);
   }
+}
+
+mixin UsageHistoryListStreamRef
+    on AutoDisposeStreamProviderRef<List<UsageHistory>> {
+  /// The parameter `uid` of this provider.
+  String get uid;
+}
+
+class _UsageHistoryListStreamProviderElement
+    extends AutoDisposeStreamProviderElement<List<UsageHistory>>
+    with UsageHistoryListStreamRef {
+  _UsageHistoryListStreamProviderElement(super.provider);
+
+  @override
+  String get uid => (origin as UsageHistoryListStreamProvider).uid;
 }
 
 String _$usageHistoryStreamHash() =>
     r'c2a7744b605ff8fc998a37f24a78b6d552cc890c';
 
-final class UsageHistoryStreamFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<UsageHistory>, (String, String)> {
-  const UsageHistoryStreamFamily._()
-    : super(
-        retry: null,
-        name: r'usageHistoryStreamProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// See also [usageHistoryStream].
+@ProviderFor(usageHistoryStream)
+const usageHistoryStreamProvider = UsageHistoryStreamFamily();
 
-  UsageHistoryStreamProvider call(String uid, String id) =>
-      UsageHistoryStreamProvider._(argument: (uid, id), from: this);
+/// See also [usageHistoryStream].
+class UsageHistoryStreamFamily extends Family<AsyncValue<UsageHistory>> {
+  /// See also [usageHistoryStream].
+  const UsageHistoryStreamFamily();
+
+  /// See also [usageHistoryStream].
+  UsageHistoryStreamProvider call(
+    String uid,
+    String id,
+  ) {
+    return UsageHistoryStreamProvider(
+      uid,
+      id,
+    );
+  }
 
   @override
-  String toString() => r'usageHistoryStreamProvider';
+  UsageHistoryStreamProvider getProviderOverride(
+    covariant UsageHistoryStreamProvider provider,
+  ) {
+    return call(
+      provider.uid,
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'usageHistoryStreamProvider';
 }
+
+/// See also [usageHistoryStream].
+class UsageHistoryStreamProvider
+    extends AutoDisposeStreamProvider<UsageHistory> {
+  /// See also [usageHistoryStream].
+  UsageHistoryStreamProvider(
+    String uid,
+    String id,
+  ) : this._internal(
+          (ref) => usageHistoryStream(
+            ref as UsageHistoryStreamRef,
+            uid,
+            id,
+          ),
+          from: usageHistoryStreamProvider,
+          name: r'usageHistoryStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$usageHistoryStreamHash,
+          dependencies: UsageHistoryStreamFamily._dependencies,
+          allTransitiveDependencies:
+              UsageHistoryStreamFamily._allTransitiveDependencies,
+          uid: uid,
+          id: id,
+        );
+
+  UsageHistoryStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uid,
+    required this.id,
+  }) : super.internal();
+
+  final String uid;
+  final String id;
+
+  @override
+  Override overrideWith(
+    Stream<UsageHistory> Function(UsageHistoryStreamRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UsageHistoryStreamProvider._internal(
+        (ref) => create(ref as UsageHistoryStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uid: uid,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<UsageHistory> createElement() {
+    return _UsageHistoryStreamProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UsageHistoryStreamProvider &&
+        other.uid == uid &&
+        other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uid.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin UsageHistoryStreamRef on AutoDisposeStreamProviderRef<UsageHistory> {
+  /// The parameter `uid` of this provider.
+  String get uid;
+
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _UsageHistoryStreamProviderElement
+    extends AutoDisposeStreamProviderElement<UsageHistory>
+    with UsageHistoryStreamRef {
+  _UsageHistoryStreamProviderElement(super.provider);
+
+  @override
+  String get uid => (origin as UsageHistoryStreamProvider).uid;
+  @override
+  String get id => (origin as UsageHistoryStreamProvider).id;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

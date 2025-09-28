@@ -8,96 +8,170 @@ part of 'comment_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$commentViewModelHash() => r'1b4bafdc87feed5f7c757f8250ee2f9276261dab';
 
-@ProviderFor(CommentViewModel)
-const commentViewModelProvider = CommentViewModelFamily._();
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-final class CommentViewModelProvider
-    extends $AsyncNotifierProvider<CommentViewModel, List<PostComment>> {
-  const CommentViewModelProvider._({
-    required CommentViewModelFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'commentViewModelProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$commentViewModelHash();
-
-  @override
-  String toString() {
-    return r'commentViewModelProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+abstract class _$CommentViewModel
+    extends BuildlessAutoDisposeAsyncNotifier<List<PostComment>> {
+  late final String postId;
+
+  FutureOr<List<PostComment>> build(
+    String postId,
+  );
+}
+
+/// See also [CommentViewModel].
+@ProviderFor(CommentViewModel)
+const commentViewModelProvider = CommentViewModelFamily();
+
+/// See also [CommentViewModel].
+class CommentViewModelFamily extends Family<AsyncValue<List<PostComment>>> {
+  /// See also [CommentViewModel].
+  const CommentViewModelFamily();
+
+  /// See also [CommentViewModel].
+  CommentViewModelProvider call(
+    String postId,
+  ) {
+    return CommentViewModelProvider(
+      postId,
+    );
+  }
+
   @override
-  CommentViewModel create() => CommentViewModel();
+  CommentViewModelProvider getProviderOverride(
+    covariant CommentViewModelProvider provider,
+  ) {
+    return call(
+      provider.postId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'commentViewModelProvider';
+}
+
+/// See also [CommentViewModel].
+class CommentViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    CommentViewModel, List<PostComment>> {
+  /// See also [CommentViewModel].
+  CommentViewModelProvider(
+    String postId,
+  ) : this._internal(
+          () => CommentViewModel()..postId = postId,
+          from: commentViewModelProvider,
+          name: r'commentViewModelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$commentViewModelHash,
+          dependencies: CommentViewModelFamily._dependencies,
+          allTransitiveDependencies:
+              CommentViewModelFamily._allTransitiveDependencies,
+          postId: postId,
+        );
+
+  CommentViewModelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.postId,
+  }) : super.internal();
+
+  final String postId;
+
+  @override
+  FutureOr<List<PostComment>> runNotifierBuild(
+    covariant CommentViewModel notifier,
+  ) {
+    return notifier.build(
+      postId,
+    );
+  }
+
+  @override
+  Override overrideWith(CommentViewModel Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: CommentViewModelProvider._internal(
+        () => create()..postId = postId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        postId: postId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<CommentViewModel, List<PostComment>>
+      createElement() {
+    return _CommentViewModelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is CommentViewModelProvider && other.argument == argument;
+    return other is CommentViewModelProvider && other.postId == postId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, postId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
-String _$commentViewModelHash() => r'1b4bafdc87feed5f7c757f8250ee2f9276261dab';
-
-final class CommentViewModelFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          CommentViewModel,
-          AsyncValue<List<PostComment>>,
-          List<PostComment>,
-          FutureOr<List<PostComment>>,
-          String
-        > {
-  const CommentViewModelFamily._()
-    : super(
-        retry: null,
-        name: r'commentViewModelProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  CommentViewModelProvider call(String postId) =>
-      CommentViewModelProvider._(argument: postId, from: this);
-
-  @override
-  String toString() => r'commentViewModelProvider';
+mixin CommentViewModelRef
+    on AutoDisposeAsyncNotifierProviderRef<List<PostComment>> {
+  /// The parameter `postId` of this provider.
+  String get postId;
 }
 
-abstract class _$CommentViewModel extends $AsyncNotifier<List<PostComment>> {
-  late final _$args = ref.$arg as String;
-  String get postId => _$args;
+class _CommentViewModelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<CommentViewModel,
+        List<PostComment>> with CommentViewModelRef {
+  _CommentViewModelProviderElement(super.provider);
 
-  FutureOr<List<PostComment>> build(String postId);
-  @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref =
-        this.ref as $Ref<AsyncValue<List<PostComment>>, List<PostComment>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<PostComment>>, List<PostComment>>,
-              AsyncValue<List<PostComment>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
+  String get postId => (origin as CommentViewModelProvider).postId;
 }
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

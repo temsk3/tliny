@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -25,18 +25,16 @@ class ProgramRepository {
   late final CollectionReference<Program> _collectionRef = _db
       .collection(_collectionPath)
       .withConverter<Program>(
-        fromFirestore:
-            (snapshot, _) =>
-                Program.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-        toFirestore:
-            (model, _) => {
-              ...model.toJson()..remove('id'),
-              if (model.createdAt == null)
-                'createdAt': FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-              if (model.isActive == false)
-                'deletedAt': FieldValue.serverTimestamp(),
-            },
+        fromFirestore: (snapshot, _) =>
+            Program.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+        toFirestore: (model, _) => {
+          ...model.toJson()..remove('id'),
+          if (model.createdAt == null)
+            'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+          if (model.isActive == false)
+            'deletedAt': FieldValue.serverTimestamp(),
+        },
       );
 
   // イベント一覧を取得するストリーム（シークレットイベントは除外）
@@ -132,8 +130,9 @@ class ProgramRepository {
   Future<List<Program>> readEvents() async {
     logger.d('readEvents');
     try {
-      final querySnapshot =
-          await _collectionRef.where('isSecret', isEqualTo: false).get();
+      final querySnapshot = await _collectionRef
+          .where('isSecret', isEqualTo: false)
+          .get();
       logger.d('readEvents: querySnapshot=$querySnapshot');
       return querySnapshot.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
@@ -219,12 +218,11 @@ class ProgramRepository {
   Future<Program?> getEventBySecretUrl(String secretUrl) async {
     logger.d('getEventBySecretUrl: secretUrl=$secretUrl');
     try {
-      final querySnapshot =
-          await _collectionRef
-              .where('secretUrl', isEqualTo: secretUrl)
-              .where('isSecret', isEqualTo: true)
-              .limit(1)
-              .get();
+      final querySnapshot = await _collectionRef
+          .where('secretUrl', isEqualTo: secretUrl)
+          .where('isSecret', isEqualTo: true)
+          .limit(1)
+          .get();
 
       if (querySnapshot.docs.isNotEmpty) {
         logger.d('getEventBySecretUrl: シークレットイベントを取得しました');

@@ -75,10 +75,7 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('readUsageHistory: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
+      GeneralException(message: e.toString(), stackTrace: st);
       rethrow;
     }
   }
@@ -101,7 +98,7 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
       );
       try {
         final loading = ref.read(globalLoadingControllerProvider.notifier);
-        final historyId = await loading.guardFuture(() async {
+        await loading.guardFuture(() async {
           return usageHistoryRepository.createUsageHistory(uid, data);
         });
         // Refresh the state by calling build again
@@ -114,10 +111,7 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
         rethrow;
       } on Exception catch (e, st) {
         logger.e('addUsageHistory: Exception - $e', stackTrace: st);
-        final appException = GeneralException(
-          message: e.toString(),
-          stackTrace: st,
-        );
+        GeneralException(message: e.toString(), stackTrace: st);
         rethrow;
       }
     }
@@ -131,7 +125,7 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
     if (uid != null) {
       try {
         final loading = ref.read(globalLoadingControllerProvider.notifier);
-        final id = await loading.guardFuture(() async {
+        await loading.guardFuture(() async {
           return usageHistoryRepository.updateUsageHistory(uid, data);
         });
         // Refresh the state by calling build again
@@ -144,10 +138,7 @@ class UsageHistoryViewModel extends _$UsageHistoryViewModel {
         rethrow;
       } on Exception catch (e, st) {
         logger.e('updateUsageHistory: Exception - $e', stackTrace: st);
-        final appException = GeneralException(
-          message: e.toString(),
-          stackTrace: st,
-        );
+        GeneralException(message: e.toString(), stackTrace: st);
         rethrow;
       }
     }

@@ -8,96 +8,172 @@ part of 'sns_chat_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$snsChatViewModelHash() => r'66b8a415cf7da8e7a23929b37f953d072a6d2201';
 
-@ProviderFor(SnsChatViewModel)
-const snsChatViewModelProvider = SnsChatViewModelFamily._();
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-final class SnsChatViewModelProvider
-    extends $AsyncNotifierProvider<SnsChatViewModel, List<DirectMessage>> {
-  const SnsChatViewModelProvider._({
-    required SnsChatViewModelFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'snsChatViewModelProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$snsChatViewModelHash();
-
-  @override
-  String toString() {
-    return r'snsChatViewModelProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+abstract class _$SnsChatViewModel
+    extends BuildlessAutoDisposeAsyncNotifier<List<DirectMessage>> {
+  late final String conversationId;
+
+  FutureOr<List<DirectMessage>> build(
+    String conversationId,
+  );
+}
+
+/// See also [SnsChatViewModel].
+@ProviderFor(SnsChatViewModel)
+const snsChatViewModelProvider = SnsChatViewModelFamily();
+
+/// See also [SnsChatViewModel].
+class SnsChatViewModelFamily extends Family<AsyncValue<List<DirectMessage>>> {
+  /// See also [SnsChatViewModel].
+  const SnsChatViewModelFamily();
+
+  /// See also [SnsChatViewModel].
+  SnsChatViewModelProvider call(
+    String conversationId,
+  ) {
+    return SnsChatViewModelProvider(
+      conversationId,
+    );
+  }
+
   @override
-  SnsChatViewModel create() => SnsChatViewModel();
+  SnsChatViewModelProvider getProviderOverride(
+    covariant SnsChatViewModelProvider provider,
+  ) {
+    return call(
+      provider.conversationId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'snsChatViewModelProvider';
+}
+
+/// See also [SnsChatViewModel].
+class SnsChatViewModelProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    SnsChatViewModel, List<DirectMessage>> {
+  /// See also [SnsChatViewModel].
+  SnsChatViewModelProvider(
+    String conversationId,
+  ) : this._internal(
+          () => SnsChatViewModel()..conversationId = conversationId,
+          from: snsChatViewModelProvider,
+          name: r'snsChatViewModelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$snsChatViewModelHash,
+          dependencies: SnsChatViewModelFamily._dependencies,
+          allTransitiveDependencies:
+              SnsChatViewModelFamily._allTransitiveDependencies,
+          conversationId: conversationId,
+        );
+
+  SnsChatViewModelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.conversationId,
+  }) : super.internal();
+
+  final String conversationId;
+
+  @override
+  FutureOr<List<DirectMessage>> runNotifierBuild(
+    covariant SnsChatViewModel notifier,
+  ) {
+    return notifier.build(
+      conversationId,
+    );
+  }
+
+  @override
+  Override overrideWith(SnsChatViewModel Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: SnsChatViewModelProvider._internal(
+        () => create()..conversationId = conversationId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        conversationId: conversationId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<SnsChatViewModel, List<DirectMessage>>
+      createElement() {
+    return _SnsChatViewModelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is SnsChatViewModelProvider && other.argument == argument;
+    return other is SnsChatViewModelProvider &&
+        other.conversationId == conversationId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, conversationId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
-String _$snsChatViewModelHash() => r'66b8a415cf7da8e7a23929b37f953d072a6d2201';
-
-final class SnsChatViewModelFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          SnsChatViewModel,
-          AsyncValue<List<DirectMessage>>,
-          List<DirectMessage>,
-          FutureOr<List<DirectMessage>>,
-          String
-        > {
-  const SnsChatViewModelFamily._()
-    : super(
-        retry: null,
-        name: r'snsChatViewModelProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  SnsChatViewModelProvider call(String conversationId) =>
-      SnsChatViewModelProvider._(argument: conversationId, from: this);
-
-  @override
-  String toString() => r'snsChatViewModelProvider';
+mixin SnsChatViewModelRef
+    on AutoDisposeAsyncNotifierProviderRef<List<DirectMessage>> {
+  /// The parameter `conversationId` of this provider.
+  String get conversationId;
 }
 
-abstract class _$SnsChatViewModel extends $AsyncNotifier<List<DirectMessage>> {
-  late final _$args = ref.$arg as String;
-  String get conversationId => _$args;
+class _SnsChatViewModelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<SnsChatViewModel,
+        List<DirectMessage>> with SnsChatViewModelRef {
+  _SnsChatViewModelProviderElement(super.provider);
 
-  FutureOr<List<DirectMessage>> build(String conversationId);
-  @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref =
-        this.ref as $Ref<AsyncValue<List<DirectMessage>>, List<DirectMessage>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<DirectMessage>>, List<DirectMessage>>,
-              AsyncValue<List<DirectMessage>>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
+  String get conversationId =>
+      (origin as SnsChatViewModelProvider).conversationId;
 }
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

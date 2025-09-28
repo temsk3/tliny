@@ -8,15 +8,14 @@ part of 'document_reference_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_DocRefModel _$DocRefModelFromJson(Map<String, dynamic> json) => _DocRefModel(
-  const DocumentReferenceNullStringConverter().fromJson(
-    json['docRef'] as DocumentReference<Object?>?,
-  ),
-);
+_$DocRefModelImpl _$$DocRefModelImplFromJson(Map<String, dynamic> json) =>
+    _$DocRefModelImpl(
+      const DocumentReferenceNullStringConverter()
+          .fromJson(json['docRef'] as DocumentReference<Object?>?),
+    );
 
-Map<String, dynamic> _$DocRefModelToJson(_DocRefModel instance) =>
+Map<String, dynamic> _$$DocRefModelImplToJson(_$DocRefModelImpl instance) =>
     <String, dynamic>{
-      'docRef': const DocumentReferenceNullStringConverter().toJson(
-        instance.docRef,
-      ),
+      'docRef':
+          const DocumentReferenceNullStringConverter().toJson(instance.docRef),
     };

@@ -8,44 +8,19 @@ part of 'order_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(ordersState)
-const ordersStateProvider = OrdersStateProvider._();
-
-final class OrdersStateProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Order>>,
-          List<Order>,
-          Stream<List<Order>>
-        >
-    with $FutureModifier<List<Order>>, $StreamProvider<List<Order>> {
-  const OrdersStateProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'ordersStateProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$ordersStateHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<List<Order>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<Order>> create(Ref ref) {
-    return ordersState(ref);
-  }
-}
-
 String _$ordersStateHash() => r'190a8f2a8b87686e1cb8be5c6bc7a043f415a91e';
+
+/// See also [ordersState].
+@ProviderFor(ordersState)
+final ordersStateProvider = AutoDisposeStreamProvider<List<Order>>.internal(
+  ordersState,
+  name: r'ordersStateProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$ordersStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef OrdersStateRef = AutoDisposeStreamProviderRef<List<Order>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

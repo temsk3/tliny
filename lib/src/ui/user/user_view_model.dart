@@ -87,7 +87,7 @@ class UserViewModel extends _$UserViewModel {
     logger.d('addUser');
     try {
       final loading = ref.read(globalLoadingControllerProvider.notifier);
-      final id = await loading.guardFuture(() async {
+      await loading.guardFuture(() async {
         return userRepository.createUser(data);
       });
       // Refresh the state by calling build again
@@ -106,7 +106,7 @@ class UserViewModel extends _$UserViewModel {
     logger.d('updateUser');
     try {
       final loading = ref.read(globalLoadingControllerProvider.notifier);
-      final id = await loading.guardFuture(() async {
+      await loading.guardFuture(() async {
         return userRepository.updateUser(data);
       });
       await updateProfile(data);

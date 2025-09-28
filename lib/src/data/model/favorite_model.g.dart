@@ -8,18 +8,20 @@ part of 'favorite_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Favorite _$FavoriteFromJson(Map<String, dynamic> json) => _Favorite(
-  id: json['id'] as String?,
-  programId: json['programId'] as String?,
-  createdAt: dateFromTimestampValue(json['createdAt']),
-  updatedAt: dateFromTimestampValue(json['updatedAt']),
-  deletedAt: dateFromTimestampValue(json['deletedAt']),
-);
+_$FavoriteImpl _$$FavoriteImplFromJson(Map<String, dynamic> json) =>
+    _$FavoriteImpl(
+      id: json['id'] as String?,
+      programId: json['programId'] as String?,
+      createdAt: dateFromTimestampValue(json['createdAt']),
+      updatedAt: dateFromTimestampValue(json['updatedAt']),
+      deletedAt: dateFromTimestampValue(json['deletedAt']),
+    );
 
-Map<String, dynamic> _$FavoriteToJson(_Favorite instance) => <String, dynamic>{
-  'id': instance.id,
-  'programId': instance.programId,
-  'createdAt': timestampFromDateValue(instance.createdAt),
-  'updatedAt': timestampFromDateValue(instance.updatedAt),
-  'deletedAt': timestampFromDateValue(instance.deletedAt),
-};
+Map<String, dynamic> _$$FavoriteImplToJson(_$FavoriteImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'programId': instance.programId,
+      'createdAt': timestampFromDateValue(instance.createdAt),
+      'updatedAt': timestampFromDateValue(instance.updatedAt),
+      'deletedAt': timestampFromDateValue(instance.deletedAt),
+    };

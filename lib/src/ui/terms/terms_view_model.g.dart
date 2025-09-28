@@ -8,95 +8,169 @@ part of 'terms_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
+String _$termsViewModelHash() => r'9b0a379bef096a4ac82ebaa97f905ef596e2ecf4';
 
-@ProviderFor(TermsViewModel)
-const termsViewModelProvider = TermsViewModelFamily._();
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-final class TermsViewModelProvider
-    extends $AsyncNotifierProvider<TermsViewModel, User> {
-  const TermsViewModelProvider._({
-    required TermsViewModelFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'termsViewModelProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$termsViewModelHash();
-
-  @override
-  String toString() {
-    return r'termsViewModelProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+abstract class _$TermsViewModel
+    extends BuildlessAutoDisposeAsyncNotifier<User> {
+  late final String uid;
+
+  FutureOr<User> build(
+    String uid,
+  );
+}
+
+/// See also [TermsViewModel].
+@ProviderFor(TermsViewModel)
+const termsViewModelProvider = TermsViewModelFamily();
+
+/// See also [TermsViewModel].
+class TermsViewModelFamily extends Family<AsyncValue<User>> {
+  /// See also [TermsViewModel].
+  const TermsViewModelFamily();
+
+  /// See also [TermsViewModel].
+  TermsViewModelProvider call(
+    String uid,
+  ) {
+    return TermsViewModelProvider(
+      uid,
+    );
+  }
+
   @override
-  TermsViewModel create() => TermsViewModel();
+  TermsViewModelProvider getProviderOverride(
+    covariant TermsViewModelProvider provider,
+  ) {
+    return call(
+      provider.uid,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'termsViewModelProvider';
+}
+
+/// See also [TermsViewModel].
+class TermsViewModelProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<TermsViewModel, User> {
+  /// See also [TermsViewModel].
+  TermsViewModelProvider(
+    String uid,
+  ) : this._internal(
+          () => TermsViewModel()..uid = uid,
+          from: termsViewModelProvider,
+          name: r'termsViewModelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$termsViewModelHash,
+          dependencies: TermsViewModelFamily._dependencies,
+          allTransitiveDependencies:
+              TermsViewModelFamily._allTransitiveDependencies,
+          uid: uid,
+        );
+
+  TermsViewModelProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.uid,
+  }) : super.internal();
+
+  final String uid;
+
+  @override
+  FutureOr<User> runNotifierBuild(
+    covariant TermsViewModel notifier,
+  ) {
+    return notifier.build(
+      uid,
+    );
+  }
+
+  @override
+  Override overrideWith(TermsViewModel Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: TermsViewModelProvider._internal(
+        () => create()..uid = uid,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        uid: uid,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<TermsViewModel, User>
+      createElement() {
+    return _TermsViewModelProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
-    return other is TermsViewModelProvider && other.argument == argument;
+    return other is TermsViewModelProvider && other.uid == uid;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, uid.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
-String _$termsViewModelHash() => r'9b0a379bef096a4ac82ebaa97f905ef596e2ecf4';
-
-final class TermsViewModelFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          TermsViewModel,
-          AsyncValue<User>,
-          User,
-          FutureOr<User>,
-          String
-        > {
-  const TermsViewModelFamily._()
-    : super(
-        retry: null,
-        name: r'termsViewModelProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  TermsViewModelProvider call(String uid) =>
-      TermsViewModelProvider._(argument: uid, from: this);
-
-  @override
-  String toString() => r'termsViewModelProvider';
+mixin TermsViewModelRef on AutoDisposeAsyncNotifierProviderRef<User> {
+  /// The parameter `uid` of this provider.
+  String get uid;
 }
 
-abstract class _$TermsViewModel extends $AsyncNotifier<User> {
-  late final _$args = ref.$arg as String;
-  String get uid => _$args;
+class _TermsViewModelProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<TermsViewModel, User>
+    with TermsViewModelRef {
+  _TermsViewModelProviderElement(super.provider);
 
-  FutureOr<User> build(String uid);
-  @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build(_$args);
-    final ref = this.ref as $Ref<AsyncValue<User>, User>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<User>, User>,
-              AsyncValue<User>,
-              Object?,
-              Object?
-            >;
-    element.handleValue(ref, created);
-  }
+  String get uid => (origin as TermsViewModelProvider).uid;
 }
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

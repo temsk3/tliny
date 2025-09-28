@@ -1,5 +1,5 @@
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -74,10 +74,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final followersData = response?['followers'] as List<dynamic>? ?? [];
-      final followers =
-          followersData
-              .map((data) => Follow.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final followers = followersData
+          .map((data) => Follow.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d(
         'getFollowers success - userId: $userId, count: ${followers.length}',
@@ -105,10 +104,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final followingData = response?['following'] as List<dynamic>? ?? [];
-      final following =
-          followingData
-              .map((data) => Follow.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final following = followingData
+          .map((data) => Follow.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d(
         'getFollowing success - userId: $userId, count: ${following.length}',
@@ -170,10 +168,9 @@ class SnsRepository extends BaseRepository {
           }, context: 'getFeed');
 
       final postsData = response?['posts'] as List<dynamic>? ?? [];
-      final posts =
-          postsData
-              .map((data) => Post.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final posts = postsData
+          .map((data) => Post.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d('getFeed success - count: ${posts.length}');
       return posts;
@@ -268,12 +265,9 @@ class SnsRepository extends BaseRepository {
 
       final conversationsData =
           response?['conversations'] as List<dynamic>? ?? [];
-      final conversations =
-          conversationsData
-              .map(
-                (data) => Conversation.fromJson(data as Map<String, dynamic>),
-              )
-              .toList();
+      final conversations = conversationsData
+          .map((data) => Conversation.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d('getConversations success - count: ${conversations.length}');
       return conversations;
@@ -307,12 +301,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final messagesData = response?['messages'] as List<dynamic>? ?? [];
-      final messages =
-          messagesData
-              .map(
-                (data) => DirectMessage.fromJson(data as Map<String, dynamic>),
-              )
-              .toList();
+      final messages = messagesData
+          .map((data) => DirectMessage.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d('getMessages success - count: ${messages.length}');
       return messages;
@@ -346,13 +337,9 @@ class SnsRepository extends BaseRepository {
 
       final notificationsData =
           response?['notifications'] as List<dynamic>? ?? [];
-      final notifications =
-          notificationsData
-              .map(
-                (data) =>
-                    AppNotification.fromJson(data as Map<String, dynamic>),
-              )
-              .toList();
+      final notifications = notificationsData
+          .map((data) => AppNotification.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d('getNotifications success - count: ${notifications.length}');
       return notifications;
@@ -508,10 +495,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final postsData = response?['posts'] as List<dynamic>? ?? [];
-      final posts =
-          postsData
-              .map((data) => Post.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final posts = postsData
+          .map((data) => Post.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d(
         'getUserPosts success - userId: $userId, count: ${posts.length}',
@@ -576,10 +562,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final usersData = response?['users'] as List<dynamic>? ?? [];
-      final users =
-          usersData
-              .map((data) => UserProfile.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final users = usersData
+          .map((data) => UserProfile.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d('searchUsers success - query: $query, count: ${users.length}');
       return users;
@@ -613,10 +598,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final postsData = response?['posts'] as List<dynamic>? ?? [];
-      final posts =
-          postsData
-              .map((data) => Post.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final posts = postsData
+          .map((data) => Post.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d('searchPosts success - query: $query, count: ${posts.length}');
       return posts;
@@ -680,10 +664,9 @@ class SnsRepository extends BaseRepository {
       );
 
       final commentsData = response?['comments'] as List<dynamic>? ?? [];
-      final comments =
-          commentsData
-              .map((data) => PostComment.fromJson(data as Map<String, dynamic>))
-              .toList();
+      final comments = commentsData
+          .map((data) => PostComment.fromJson(data as Map<String, dynamic>))
+          .toList();
 
       logger.d(
         'getComments success - postId: $postId, count: ${comments.length}',

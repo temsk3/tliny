@@ -8,77 +8,35 @@ part of 'drawer_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(getPackageInfo)
-const getPackageInfoProvider = GetPackageInfoProvider._();
-
-final class GetPackageInfoProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<PackageInfo>,
-          PackageInfo,
-          FutureOr<PackageInfo>
-        >
-    with $FutureModifier<PackageInfo>, $FutureProvider<PackageInfo> {
-  const GetPackageInfoProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'getPackageInfoProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$getPackageInfoHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<PackageInfo> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<PackageInfo> create(Ref ref) {
-    return getPackageInfo(ref);
-  }
-}
-
 String _$getPackageInfoHash() => r'67d6f03cd2c138681113495028ce4199261bae0a';
 
-@ProviderFor(userStreamState)
-const userStreamStateProvider = UserStreamStateProvider._();
+/// See also [getPackageInfo].
+@ProviderFor(getPackageInfo)
+final getPackageInfoProvider = AutoDisposeFutureProvider<PackageInfo>.internal(
+  getPackageInfo,
+  name: r'getPackageInfoProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getPackageInfoHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-final class UserStreamStateProvider
-    extends $FunctionalProvider<AsyncValue<User?>, User?, Stream<User?>>
-    with $FutureModifier<User?>, $StreamProvider<User?> {
-  const UserStreamStateProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'userStreamStateProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$userStreamStateHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<User?> $createElement($ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
-
-  @override
-  Stream<User?> create(Ref ref) {
-    return userStreamState(ref);
-  }
-}
-
+typedef GetPackageInfoRef = AutoDisposeFutureProviderRef<PackageInfo>;
 String _$userStreamStateHash() => r'cc40adf3e2c73d8d377c993c79b31065a2ba2f7b';
+
+/// See also [userStreamState].
+@ProviderFor(userStreamState)
+final userStreamStateProvider = AutoDisposeStreamProvider<User?>.internal(
+  userStreamState,
+  name: r'userStreamStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userStreamStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserStreamStateRef = AutoDisposeStreamProviderRef<User?>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

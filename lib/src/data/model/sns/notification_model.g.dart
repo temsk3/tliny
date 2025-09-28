@@ -8,8 +8,9 @@ part of 'notification_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) =>
-    _AppNotification(
+_$AppNotificationImpl _$$AppNotificationImplFromJson(
+        Map<String, dynamic> json) =>
+    _$AppNotificationImpl(
       id: json['id'] as String?,
       userId: json['userId'] as String,
       title: json['title'] as String,
@@ -28,7 +29,8 @@ _AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$AppNotificationToJson(_AppNotification instance) =>
+Map<String, dynamic> _$$AppNotificationImplToJson(
+        _$AppNotificationImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
@@ -60,8 +62,8 @@ const _$NotificationTypeEnumMap = {
   NotificationType.paymentFailed: 'payment_failed',
 };
 
-_ShareActivity _$ShareActivityFromJson(Map<String, dynamic> json) =>
-    _ShareActivity(
+_$ShareActivityImpl _$$ShareActivityImplFromJson(Map<String, dynamic> json) =>
+    _$ShareActivityImpl(
       id: json['id'] as String?,
       userId: json['userId'] as String,
       userName: json['userName'] as String,
@@ -73,7 +75,7 @@ _ShareActivity _$ShareActivityFromJson(Map<String, dynamic> json) =>
       createdAt: dateFromTimestampValue(json['createdAt']),
     );
 
-Map<String, dynamic> _$ShareActivityToJson(_ShareActivity instance) =>
+Map<String, dynamic> _$$ShareActivityImplToJson(_$ShareActivityImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,

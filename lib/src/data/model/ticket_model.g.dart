@@ -8,119 +8,109 @@ part of 'ticket_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Ticket _$TicketFromJson(Map<String, dynamic> json) => _Ticket(
-  id: json['id'] as String?,
-  paidUserId: json['paidUserId'] as String?,
-  paidUserName: json['paidUserName'] as String?,
-  purchaseTime: const TimestampConverter().fromJson(
-    json['purchaseTime'] as Timestamp?,
-  ),
-  ownerId: json['ownerId'] as String?,
-  ownerName: json['ownerName'] as String?,
-  assignment: (json['assignment'] as List<dynamic>?)
-      ?.map((e) => Assignment.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  isActive: json['isActive'] as bool? ?? true,
-  isPrinting: json['isPrinting'] as bool? ?? false,
-  isUsed: json['isUsed'] as bool? ?? false,
-  uuid: json['uuid'] as String?,
-  pdfUuid: json['pdfUuid'] as String?,
-  productDocRef: const DocumentReferenceNullStringConverter().fromJson(
-    json['productDocRef'] as DocumentReference<Object?>?,
-  ),
-  productId: json['productId'] as String?,
-  code: json['code'] as String?,
-  name: json['name'] as String?,
-  desc: json['desc'] as String?,
-  price: (json['price'] as num?)?.toInt(),
-  pictureURL:
-      (json['pictureURL'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList() ??
-      const [],
-  expirationFrom: const TimestampConverter().fromJson(
-    json['expirationFrom'] as Timestamp?,
-  ),
-  expirationTo: const TimestampConverter().fromJson(
-    json['expirationTo'] as Timestamp?,
-  ),
-  register: json['register'] as String?,
-  registerName: json['registerName'] as String?,
-  organizerDocRef: const DocumentReferenceNullStringConverter().fromJson(
-    json['organizerDocRef'] as DocumentReference<Object?>?,
-  ),
-  organizerId: json['organizerId'] as String?,
-  eventDocRef: const DocumentReferenceNullStringConverter().fromJson(
-    json['eventDocRef'] as DocumentReference<Object?>?,
-  ),
-  eventId: json['eventId'] as String?,
-  eventName: json['eventName'] as String?,
-  createdAt: const TimestampConverter().fromJson(
-    json['createdAt'] as Timestamp?,
-  ),
-  updatedAt: const TimestampConverter().fromJson(
-    json['updatedAt'] as Timestamp?,
-  ),
-  deletedAt: const TimestampConverter().fromJson(
-    json['deletedAt'] as Timestamp?,
-  ),
-);
+_$TicketImpl _$$TicketImplFromJson(Map<String, dynamic> json) => _$TicketImpl(
+      id: json['id'] as String?,
+      paidUserId: json['paidUserId'] as String?,
+      paidUserName: json['paidUserName'] as String?,
+      purchaseTime: const TimestampConverter()
+          .fromJson(json['purchaseTime'] as Timestamp?),
+      ownerId: json['ownerId'] as String?,
+      ownerName: json['ownerName'] as String?,
+      assignment: (json['assignment'] as List<dynamic>?)
+          ?.map((e) => Assignment.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      isActive: json['isActive'] as bool? ?? true,
+      isPrinting: json['isPrinting'] as bool? ?? false,
+      isUsed: json['isUsed'] as bool? ?? false,
+      uuid: json['uuid'] as String?,
+      pdfUuid: json['pdfUuid'] as String?,
+      productDocRef: const DocumentReferenceNullStringConverter()
+          .fromJson(json['productDocRef'] as DocumentReference<Object?>?),
+      productId: json['productId'] as String?,
+      code: json['code'] as String?,
+      name: json['name'] as String?,
+      desc: json['desc'] as String?,
+      price: (json['price'] as num?)?.toInt(),
+      pictureURL: (json['pictureURL'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      expirationFrom: const TimestampConverter()
+          .fromJson(json['expirationFrom'] as Timestamp?),
+      expirationTo: const TimestampConverter()
+          .fromJson(json['expirationTo'] as Timestamp?),
+      register: json['register'] as String?,
+      registerName: json['registerName'] as String?,
+      organizerDocRef: const DocumentReferenceNullStringConverter()
+          .fromJson(json['organizerDocRef'] as DocumentReference<Object?>?),
+      organizerId: json['organizerId'] as String?,
+      eventDocRef: const DocumentReferenceNullStringConverter()
+          .fromJson(json['eventDocRef'] as DocumentReference<Object?>?),
+      eventId: json['eventId'] as String?,
+      eventName: json['eventName'] as String?,
+      createdAt:
+          const TimestampConverter().fromJson(json['createdAt'] as Timestamp?),
+      updatedAt:
+          const TimestampConverter().fromJson(json['updatedAt'] as Timestamp?),
+      deletedAt:
+          const TimestampConverter().fromJson(json['deletedAt'] as Timestamp?),
+    );
 
-Map<String, dynamic> _$TicketToJson(_Ticket instance) => <String, dynamic>{
-  'id': instance.id,
-  'paidUserId': instance.paidUserId,
-  'paidUserName': instance.paidUserName,
-  'purchaseTime': const TimestampConverter().toJson(instance.purchaseTime),
-  'ownerId': instance.ownerId,
-  'ownerName': instance.ownerName,
-  'assignment': instance.assignment,
-  'isActive': instance.isActive,
-  'isPrinting': instance.isPrinting,
-  'isUsed': instance.isUsed,
-  'uuid': instance.uuid,
-  'pdfUuid': instance.pdfUuid,
-  'productDocRef': const DocumentReferenceNullStringConverter().toJson(
-    instance.productDocRef,
-  ),
-  'productId': instance.productId,
-  'code': instance.code,
-  'name': instance.name,
-  'desc': instance.desc,
-  'price': instance.price,
-  'pictureURL': instance.pictureURL,
-  'expirationFrom': const TimestampConverter().toJson(instance.expirationFrom),
-  'expirationTo': const TimestampConverter().toJson(instance.expirationTo),
-  'register': instance.register,
-  'registerName': instance.registerName,
-  'organizerDocRef': const DocumentReferenceNullStringConverter().toJson(
-    instance.organizerDocRef,
-  ),
-  'organizerId': instance.organizerId,
-  'eventDocRef': const DocumentReferenceNullStringConverter().toJson(
-    instance.eventDocRef,
-  ),
-  'eventId': instance.eventId,
-  'eventName': instance.eventName,
-  'createdAt': const TimestampConverter().toJson(instance.createdAt),
-  'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
-  'deletedAt': const TimestampConverter().toJson(instance.deletedAt),
-};
+Map<String, dynamic> _$$TicketImplToJson(_$TicketImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'paidUserId': instance.paidUserId,
+      'paidUserName': instance.paidUserName,
+      'purchaseTime': const TimestampConverter().toJson(instance.purchaseTime),
+      'ownerId': instance.ownerId,
+      'ownerName': instance.ownerName,
+      'assignment': instance.assignment,
+      'isActive': instance.isActive,
+      'isPrinting': instance.isPrinting,
+      'isUsed': instance.isUsed,
+      'uuid': instance.uuid,
+      'pdfUuid': instance.pdfUuid,
+      'productDocRef': const DocumentReferenceNullStringConverter()
+          .toJson(instance.productDocRef),
+      'productId': instance.productId,
+      'code': instance.code,
+      'name': instance.name,
+      'desc': instance.desc,
+      'price': instance.price,
+      'pictureURL': instance.pictureURL,
+      'expirationFrom':
+          const TimestampConverter().toJson(instance.expirationFrom),
+      'expirationTo': const TimestampConverter().toJson(instance.expirationTo),
+      'register': instance.register,
+      'registerName': instance.registerName,
+      'organizerDocRef': const DocumentReferenceNullStringConverter()
+          .toJson(instance.organizerDocRef),
+      'organizerId': instance.organizerId,
+      'eventDocRef': const DocumentReferenceNullStringConverter()
+          .toJson(instance.eventDocRef),
+      'eventId': instance.eventId,
+      'eventName': instance.eventName,
+      'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'updatedAt': const TimestampConverter().toJson(instance.updatedAt),
+      'deletedAt': const TimestampConverter().toJson(instance.deletedAt),
+    };
 
-_Assignment _$AssignmentFromJson(Map<String, dynamic> json) => _Assignment(
-  from: json['from'] as String?,
-  to: json['to'] as String?,
-  assignmentDate: dateFromTimestampValue(json['assignmentDate']),
-);
+_$AssignmentImpl _$$AssignmentImplFromJson(Map<String, dynamic> json) =>
+    _$AssignmentImpl(
+      from: json['from'] as String?,
+      to: json['to'] as String?,
+      assignmentDate: dateFromTimestampValue(json['assignmentDate']),
+    );
 
-Map<String, dynamic> _$AssignmentToJson(_Assignment instance) =>
+Map<String, dynamic> _$$AssignmentImplToJson(_$AssignmentImpl instance) =>
     <String, dynamic>{
       'from': instance.from,
       'to': instance.to,
       'assignmentDate': timestampFromDateValue(instance.assignmentDate),
     };
 
-_UsageHistory _$UsageHistoryFromJson(Map<String, dynamic> json) =>
-    _UsageHistory(
+_$UsageHistoryImpl _$$UsageHistoryImplFromJson(Map<String, dynamic> json) =>
+    _$UsageHistoryImpl(
       id: json['id'] as String?,
       dateOfUse: dateFromTimestampValue(json['dateOfUse']),
       eventId: json['eventId'] as String?,
@@ -133,7 +123,7 @@ _UsageHistory _$UsageHistoryFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
     );
 
-Map<String, dynamic> _$UsageHistoryToJson(_UsageHistory instance) =>
+Map<String, dynamic> _$$UsageHistoryImplToJson(_$UsageHistoryImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'dateOfUse': timestampFromDateValue(instance.dateOfUse),

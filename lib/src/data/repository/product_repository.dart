@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -35,15 +35,14 @@ class ProductRepository {
           }
           return Product.fromJson(data).copyWith(id: snapshot.id);
         },
-        toFirestore:
-            (model, _) => {
-              ...model.toJson()..remove('id'),
-              if (model.createdAt == null)
-                'createdAt': FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-              if (model.isActive == false)
-                'deletedAt': FieldValue.serverTimestamp(),
-            },
+        toFirestore: (model, _) => {
+          ...model.toJson()..remove('id'),
+          if (model.createdAt == null)
+            'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+          if (model.isActive == false)
+            'deletedAt': FieldValue.serverTimestamp(),
+        },
       );
 
   /// ジャンル指定で商品一覧を取得するストリーム
@@ -54,11 +53,10 @@ class ProductRepository {
       if (genre == null) {
         snapshot = _collectionRef.orderBy('name').snapshots();
       } else {
-        snapshot =
-            _collectionRef
-                .where('genre', isEqualTo: EnumToString.convertToString(genre))
-                .orderBy('name')
-                .snapshots();
+        snapshot = _collectionRef
+            .where('genre', isEqualTo: EnumToString.convertToString(genre))
+            .orderBy('name')
+            .snapshots();
       }
       return snapshot.map((snapshot) {
         logger.i('streamProducts: 商品一覧を取得しました count=${snapshot.docs.length}');
@@ -112,11 +110,10 @@ class ProductRepository {
   Future<List<Product>> programProducts(String programId) async {
     logger.i('programProducts: プログラム商品一覧を取得します programId=$programId');
     try {
-      final querySnapshot =
-          await _collectionRef
-              .where('eventId', isEqualTo: programId)
-              .orderBy('name')
-              .get();
+      final querySnapshot = await _collectionRef
+          .where('eventId', isEqualTo: programId)
+          .orderBy('name')
+          .get();
       logger.i(
         'programProducts: プログラム商品一覧を取得しました count=${querySnapshot.docs.length}',
       );
@@ -413,15 +410,14 @@ class ProductRepository {
             }
             return Product.fromJson(data).copyWith(id: snapshot.id);
           },
-          toFirestore:
-              (model, _) => {
-                ...model.toJson()..remove('id'),
-                if (model.createdAt == null)
-                  'createdAt': FieldValue.serverTimestamp(),
-                'updatedAt': FieldValue.serverTimestamp(),
-                if (model.isActive == false)
-                  'deletedAt': FieldValue.serverTimestamp(),
-              },
+          toFirestore: (model, _) => {
+            ...model.toJson()..remove('id'),
+            if (model.createdAt == null)
+              'createdAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+            if (model.isActive == false)
+              'deletedAt': FieldValue.serverTimestamp(),
+          },
         );
   }
 

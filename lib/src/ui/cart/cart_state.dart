@@ -1,4 +1,3 @@
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/cart_model.dart';
@@ -248,33 +247,37 @@ class TotalAmountNotifier extends _$TotalAmountNotifier {
 }
 
 /// カート合計金額を管理するプロバイダー
-final totalAmountNotifierProvider = Provider.autoDispose.family<int, List<Cart>>((ref, carts) {
-  // 商品IDリストを作成
-  final productIds = carts
-      .where((cart) => cart.productDocRef != null && cart.productDocRef!.isNotEmpty)
-      .map((cart) => cart.productDocRef!.split('/').last)
-      .toList();
+final totalAmountNotifierProvider2 = Provider.autoDispose
+    .family<int, List<Cart>>((ref, carts) {
+      // 商品IDリストを作成
+      final productIds = carts
+          .where(
+            (cart) =>
+                cart.productDocRef != null && cart.productDocRef!.isNotEmpty,
+          )
+          .map((cart) => cart.productDocRef!.split('/').last)
+          .toList();
 
-  if (productIds.isEmpty) {
-    return 0;
-  }
+      if (productIds.isEmpty) {
+        return 0;
+      }
 
-  // 価格キャッシュを取得
-  final priceCacheAsync = ref.watch(productPriceCacheProvider(productIds));
-  final priceCache = priceCacheAsync.maybeWhen(
-    data: (cache) => cache,
-    orElse: () => <String, int>{},
-  );
+      // 価格キャッシュを取得
+      final priceCacheAsync = ref.watch(productPriceCacheProvider(productIds));
+      final priceCache = priceCacheAsync.maybeWhen(
+        data: (cache) => cache,
+        orElse: () => <String, int>{},
+      );
 
-  // 合計金額を計算
-  var totalAmount = 0;
-  for (final cart in carts) {
-    if (cart.productDocRef != null && cart.productDocRef!.isNotEmpty) {
-      final productId = cart.productDocRef!.split('/').last;
-      final productPrice = priceCache[productId] ?? 0;
-      totalAmount += productPrice * cart.quantity;
-    }
-  }
+      // 合計金額を計算
+      var totalAmount = 0;
+      for (final cart in carts) {
+        if (cart.productDocRef != null && cart.productDocRef!.isNotEmpty) {
+          final productId = cart.productDocRef!.split('/').last;
+          final productPrice = priceCache[productId] ?? 0;
+          totalAmount += productPrice * cart.quantity;
+        }
+      }
 
-  return totalAmount;
-});
+      return totalAmount;
+    });

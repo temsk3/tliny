@@ -8,196 +8,302 @@ part of 'management_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(managementState)
-const managementStateProvider = ManagementStateFamily._();
-
-final class ManagementStateProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Order>>,
-          List<Order>,
-          Stream<List<Order>>
-        >
-    with $FutureModifier<List<Order>>, $StreamProvider<List<Order>> {
-  const ManagementStateProvider._({
-    required ManagementStateFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'managementStateProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$managementStateHash();
-
-  @override
-  String toString() {
-    return r'managementStateProvider'
-        ''
-        '($argument)';
-  }
-
-  @$internal
-  @override
-  $StreamProviderElement<List<Order>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
-
-  @override
-  Stream<List<Order>> create(Ref ref) {
-    final argument = this.argument as String;
-    return managementState(ref, argument);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is ManagementStateProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
 String _$managementStateHash() => r'a4931116516a3d1fd16a5ccb5a67ea9676b42981';
 
-final class ManagementStateFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<List<Order>>, String> {
-  const ManagementStateFamily._()
-    : super(
-        retry: null,
-        name: r'managementStateProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
 
-  ManagementStateProvider call(String eventId) =>
-      ManagementStateProvider._(argument: eventId, from: this);
-
-  @override
-  String toString() => r'managementStateProvider';
-}
-
-@ProviderFor(productsManagementState)
-const productsManagementStateProvider = ProductsManagementStateFamily._();
-
-final class ProductsManagementStateProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Product>>,
-          List<Product>,
-          Stream<List<Product>>
-        >
-    with $FutureModifier<List<Product>>, $StreamProvider<List<Product>> {
-  const ProductsManagementStateProvider._({
-    required ProductsManagementStateFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'productsManagementStateProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$productsManagementStateHash();
-
-  @override
-  String toString() {
-    return r'productsManagementStateProvider'
-        ''
-        '($argument)';
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
   }
 
-  @$internal
-  @override
-  $StreamProviderElement<List<Product>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [managementState].
+@ProviderFor(managementState)
+const managementStateProvider = ManagementStateFamily();
+
+/// See also [managementState].
+class ManagementStateFamily extends Family<AsyncValue<List<Order>>> {
+  /// See also [managementState].
+  const ManagementStateFamily();
+
+  /// See also [managementState].
+  ManagementStateProvider call(
+    String eventId,
+  ) {
+    return ManagementStateProvider(
+      eventId,
+    );
+  }
 
   @override
-  Stream<List<Product>> create(Ref ref) {
-    final argument = this.argument as String;
-    return productsManagementState(ref, argument);
+  ManagementStateProvider getProviderOverride(
+    covariant ManagementStateProvider provider,
+  ) {
+    return call(
+      provider.eventId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'managementStateProvider';
+}
+
+/// See also [managementState].
+class ManagementStateProvider extends AutoDisposeStreamProvider<List<Order>> {
+  /// See also [managementState].
+  ManagementStateProvider(
+    String eventId,
+  ) : this._internal(
+          (ref) => managementState(
+            ref as ManagementStateRef,
+            eventId,
+          ),
+          from: managementStateProvider,
+          name: r'managementStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$managementStateHash,
+          dependencies: ManagementStateFamily._dependencies,
+          allTransitiveDependencies:
+              ManagementStateFamily._allTransitiveDependencies,
+          eventId: eventId,
+        );
+
+  ManagementStateProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.eventId,
+  }) : super.internal();
+
+  final String eventId;
+
+  @override
+  Override overrideWith(
+    Stream<List<Order>> Function(ManagementStateRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ManagementStateProvider._internal(
+        (ref) => create(ref as ManagementStateRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        eventId: eventId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<List<Order>> createElement() {
+    return _ManagementStateProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ProductsManagementStateProvider &&
-        other.argument == argument;
+    return other is ManagementStateProvider && other.eventId == eventId;
   }
 
   @override
   int get hashCode {
-    return argument.hashCode;
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, eventId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
+}
+
+mixin ManagementStateRef on AutoDisposeStreamProviderRef<List<Order>> {
+  /// The parameter `eventId` of this provider.
+  String get eventId;
+}
+
+class _ManagementStateProviderElement
+    extends AutoDisposeStreamProviderElement<List<Order>>
+    with ManagementStateRef {
+  _ManagementStateProviderElement(super.provider);
+
+  @override
+  String get eventId => (origin as ManagementStateProvider).eventId;
 }
 
 String _$productsManagementStateHash() =>
     r'2cac642211350595b0edb0285895fc782ec9ef73';
 
-final class ProductsManagementStateFamily extends $Family
-    with $FunctionalFamilyOverride<Stream<List<Product>>, String> {
-  const ProductsManagementStateFamily._()
-    : super(
-        retry: null,
-        name: r'productsManagementStateProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
+/// See also [productsManagementState].
+@ProviderFor(productsManagementState)
+const productsManagementStateProvider = ProductsManagementStateFamily();
 
-  ProductsManagementStateProvider call(String eventId) =>
-      ProductsManagementStateProvider._(argument: eventId, from: this);
+/// See also [productsManagementState].
+class ProductsManagementStateFamily extends Family<AsyncValue<List<Product>>> {
+  /// See also [productsManagementState].
+  const ProductsManagementStateFamily();
+
+  /// See also [productsManagementState].
+  ProductsManagementStateProvider call(
+    String eventId,
+  ) {
+    return ProductsManagementStateProvider(
+      eventId,
+    );
+  }
 
   @override
-  String toString() => r'productsManagementStateProvider';
+  ProductsManagementStateProvider getProviderOverride(
+    covariant ProductsManagementStateProvider provider,
+  ) {
+    return call(
+      provider.eventId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'productsManagementStateProvider';
 }
 
-@ProviderFor(allTicketState)
-const allTicketStateProvider = AllTicketStateProvider._();
+/// See also [productsManagementState].
+class ProductsManagementStateProvider
+    extends AutoDisposeStreamProvider<List<Product>> {
+  /// See also [productsManagementState].
+  ProductsManagementStateProvider(
+    String eventId,
+  ) : this._internal(
+          (ref) => productsManagementState(
+            ref as ProductsManagementStateRef,
+            eventId,
+          ),
+          from: productsManagementStateProvider,
+          name: r'productsManagementStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productsManagementStateHash,
+          dependencies: ProductsManagementStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProductsManagementStateFamily._allTransitiveDependencies,
+          eventId: eventId,
+        );
 
-final class AllTicketStateProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Ticket>>,
-          List<Ticket>,
-          Stream<List<Ticket>>
-        >
-    with $FutureModifier<List<Ticket>>, $StreamProvider<List<Ticket>> {
-  const AllTicketStateProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'allTicketStateProvider',
-        isAutoDispose: true,
+  ProductsManagementStateProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.eventId,
+  }) : super.internal();
+
+  final String eventId;
+
+  @override
+  Override overrideWith(
+    Stream<List<Product>> Function(ProductsManagementStateRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: ProductsManagementStateProvider._internal(
+        (ref) => create(ref as ProductsManagementStateRef),
+        from: from,
+        name: null,
         dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        eventId: eventId,
+      ),
+    );
+  }
 
   @override
-  String debugGetCreateSourceHash() => _$allTicketStateHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<List<Ticket>> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
+  AutoDisposeStreamProviderElement<List<Product>> createElement() {
+    return _ProductsManagementStateProviderElement(this);
+  }
 
   @override
-  Stream<List<Ticket>> create(Ref ref) {
-    return allTicketState(ref);
+  bool operator ==(Object other) {
+    return other is ProductsManagementStateProvider && other.eventId == eventId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, eventId.hashCode);
+
+    return _SystemHash.finish(hash);
   }
 }
 
+mixin ProductsManagementStateRef
+    on AutoDisposeStreamProviderRef<List<Product>> {
+  /// The parameter `eventId` of this provider.
+  String get eventId;
+}
+
+class _ProductsManagementStateProviderElement
+    extends AutoDisposeStreamProviderElement<List<Product>>
+    with ProductsManagementStateRef {
+  _ProductsManagementStateProviderElement(super.provider);
+
+  @override
+  String get eventId => (origin as ProductsManagementStateProvider).eventId;
+}
+
 String _$allTicketStateHash() => r'70d949bdae1d80c6a258002e058c8541c4395ff7';
+
+/// See also [allTicketState].
+@ProviderFor(allTicketState)
+final allTicketStateProvider = AutoDisposeStreamProvider<List<Ticket>>.internal(
+  allTicketState,
+  name: r'allTicketStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$allTicketStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef AllTicketStateRef = AutoDisposeStreamProviderRef<List<Ticket>>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -148,13 +148,12 @@ class StripeRepository extends BaseRepository {
   ) async {
     logger.d('getSettlement: uid=$uid, sessionId=$sessionId');
     try {
-      final docRef =
-          await _db
-              .collection('v/1/users') // パスを統一
-              .doc(uid)
-              .collection('settlement')
-              .doc(sessionId)
-              .get();
+      final docRef = await _db
+          .collection('v/1/users') // パスを統一
+          .doc(uid)
+          .collection('settlement')
+          .doc(sessionId)
+          .get();
 
       if (!docRef.exists) {
         throw Exception(

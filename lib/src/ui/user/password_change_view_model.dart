@@ -84,7 +84,7 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
           errorMessage = 'パスワード変更に失敗しました: ${e.message}';
       }
 
-      final appException = AuthenticationException(
+      AuthenticationException(
         message: errorMessage,
         code: e.code,
         stackTrace: e.stackTrace,
@@ -95,10 +95,7 @@ class PasswordChangeViewModel extends _$PasswordChangeViewModel {
       rethrow;
     } catch (e, st) {
       logger.e('changePassword: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
+      GeneralException(message: e.toString(), stackTrace: st);
       rethrow;
     }
   }

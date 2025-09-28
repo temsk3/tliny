@@ -34,9 +34,8 @@ analyzer:
     invalid_annotation_target: ignore
     lines_longer_than_80_chars: ignore
   exclude:
-    - '**/*.g.dart'
-    - '**/*.freezed.dart'
-    - '**/*.gr.dart'
+    - 'build/**'
+    - 'lib/generated/**'
     - 'build/**'
     - 'lib/generated/**'
   # plugins:

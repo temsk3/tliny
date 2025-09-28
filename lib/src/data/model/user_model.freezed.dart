@@ -1,5 +1,5 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,571 +9,575 @@ part of 'user_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
-// dart format off
 T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+
+User _$UserFromJson(Map<String, dynamic> json) {
+  return _User.fromJson(json);
+}
 
 /// @nodoc
 mixin _$User {
+  String? get id => throw _privateConstructorUsedError;
+  String? get photoUrl => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get deletedAt => throw _privateConstructorUsedError;
 
- String? get id; String? get photoUrl; String? get displayName; String? get name; String? get email; String? get phoneNumber;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
-/// Create a copy of User
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$identity);
-
-  /// Serializes this User to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.id, id) || other.id == id)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,photoUrl,displayName,name,email,phoneNumber,createdAt,updatedAt,deletedAt);
-
-@override
-String toString() {
-  return 'User(id: $id, photoUrl: $photoUrl, displayName: $displayName, name: $name, email: $email, phoneNumber: $phoneNumber, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
-}
-
-
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $UserCopyWith<$Res>  {
-  factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
-@useResult
-$Res call({
- String? id, String? photoUrl, String? displayName, String? name, String? email, String? phoneNumber,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
-});
-
-
-
-
+abstract class $UserCopyWith<$Res> {
+  factory $UserCopyWith(User value, $Res Function(User) then) =
+      _$UserCopyWithImpl<$Res, User>;
+  @useResult
+  $Res call(
+      {String? id,
+      String? photoUrl,
+      String? displayName,
+      String? name,
+      String? email,
+      String? phoneNumber,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
+
 /// @nodoc
-class _$UserCopyWithImpl<$Res>
+class _$UserCopyWithImpl<$Res, $Val extends User>
     implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._self, this._then);
+  _$UserCopyWithImpl(this._value, this._then);
 
-  final User _self;
-  final $Res Function(User) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
-/// Create a copy of User
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? photoUrl = freezed,Object? displayName = freezed,Object? name = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
-  return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
-as String?,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
-  ));
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? photoUrl = freezed,
+    Object? displayName = freezed,
+    Object? name = freezed,
+    Object? email = freezed,
+    Object? phoneNumber = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
+  }
 }
 
+/// @nodoc
+abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
+  factory _$$UserImplCopyWith(
+          _$UserImpl value, $Res Function(_$UserImpl) then) =
+      __$$UserImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? id,
+      String? photoUrl,
+      String? displayName,
+      String? name,
+      String? email,
+      String? phoneNumber,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
+/// @nodoc
+class __$$UserImplCopyWithImpl<$Res>
+    extends _$UserCopyWithImpl<$Res, _$UserImpl>
+    implements _$$UserImplCopyWith<$Res> {
+  __$$UserImplCopyWithImpl(_$UserImpl _value, $Res Function(_$UserImpl) _then)
+      : super(_value, _then);
 
-/// Adds pattern-matching-related methods to [User].
-extension UserPatterns on User {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _User value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _User() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _User value)  $default,){
-final _that = this;
-switch (_that) {
-case _User():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _User value)?  $default,){
-final _that = this;
-switch (_that) {
-case _User() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? photoUrl,  String? displayName,  String? name,  String? email,  String? phoneNumber, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _User() when $default != null:
-return $default(_that.id,_that.photoUrl,_that.displayName,_that.name,_that.email,_that.phoneNumber,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? photoUrl,  String? displayName,  String? name,  String? email,  String? phoneNumber, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
-switch (_that) {
-case _User():
-return $default(_that.id,_that.photoUrl,_that.displayName,_that.name,_that.email,_that.phoneNumber,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? photoUrl,  String? displayName,  String? name,  String? email,  String? phoneNumber, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
-switch (_that) {
-case _User() when $default != null:
-return $default(_that.id,_that.photoUrl,_that.displayName,_that.name,_that.email,_that.phoneNumber,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
-  return null;
-
-}
-}
-
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? photoUrl = freezed,
+    Object? displayName = freezed,
+    Object? name = freezed,
+    Object? email = freezed,
+    Object? phoneNumber = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
+  }) {
+    return _then(_$UserImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photoUrl: freezed == photoUrl
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
+class _$UserImpl extends _User {
+  const _$UserImpl(
+      {this.id,
+      this.photoUrl,
+      this.displayName,
+      required this.name,
+      required this.email,
+      required this.phoneNumber,
+      @timestampKey this.createdAt,
+      @timestampKey this.updatedAt,
+      @timestampKey this.deletedAt})
+      : super._();
 
-class _User extends User {
-  const _User({this.id, this.photoUrl, this.displayName, required this.name, required this.email, required this.phoneNumber, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt}): super._();
-  factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserImplFromJson(json);
 
-@override final  String? id;
-@override final  String? photoUrl;
-@override final  String? displayName;
-@override final  String? name;
-@override final  String? email;
-@override final  String? phoneNumber;
-@override@timestampKey final  DateTime? createdAt;
-@override@timestampKey final  DateTime? updatedAt;
-@override@timestampKey final  DateTime? deletedAt;
+  @override
+  final String? id;
+  @override
+  final String? photoUrl;
+  @override
+  final String? displayName;
+  @override
+  final String? name;
+  @override
+  final String? email;
+  @override
+  final String? phoneNumber;
+  @override
+  @timestampKey
+  final DateTime? createdAt;
+  @override
+  @timestampKey
+  final DateTime? updatedAt;
+  @override
+  @timestampKey
+  final DateTime? deletedAt;
 
-/// Create a copy of User
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$UserCopyWith<_User> get copyWith => __$UserCopyWithImpl<_User>(this, _$identity);
+  @override
+  String toString() {
+    return 'User(id: $id, photoUrl: $photoUrl, displayName: $displayName, name: $name, email: $email, phoneNumber: $phoneNumber, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+  }
 
-@override
-Map<String, dynamic> toJson() {
-  return _$UserToJson(this, );
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UserImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.deletedAt, deletedAt) ||
+                other.deletedAt == deletedAt));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, photoUrl, displayName, name,
+      email, phoneNumber, createdAt, updatedAt, deletedAt);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      __$$UserImplCopyWithImpl<_$UserImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$UserImplToJson(
+      this,
+    );
+  }
 }
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.id, id) || other.id == id)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
+abstract class _User extends User {
+  const factory _User(
+      {final String? id,
+      final String? photoUrl,
+      final String? displayName,
+      required final String? name,
+      required final String? email,
+      required final String? phoneNumber,
+      @timestampKey final DateTime? createdAt,
+      @timestampKey final DateTime? updatedAt,
+      @timestampKey final DateTime? deletedAt}) = _$UserImpl;
+  const _User._() : super._();
+
+  factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get photoUrl;
+  @override
+  String? get displayName;
+  @override
+  String? get name;
+  @override
+  String? get email;
+  @override
+  String? get phoneNumber;
+  @override
+  @timestampKey
+  DateTime? get createdAt;
+  @override
+  @timestampKey
+  DateTime? get updatedAt;
+  @override
+  @timestampKey
+  DateTime? get deletedAt;
+  @override
+  @JsonKey(ignore: true)
+  _$$UserImplCopyWith<_$UserImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,photoUrl,displayName,name,email,phoneNumber,createdAt,updatedAt,deletedAt);
-
-@override
-String toString() {
-  return 'User(id: $id, photoUrl: $photoUrl, displayName: $displayName, name: $name, email: $email, phoneNumber: $phoneNumber, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+PublicUsers _$PublicUsersFromJson(Map<String, dynamic> json) {
+  return _PublicUsers.fromJson(json);
 }
-
-
-}
-
-/// @nodoc
-abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
-@override @useResult
-$Res call({
- String? id, String? photoUrl, String? displayName, String? name, String? email, String? phoneNumber,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
-});
-
-
-
-
-}
-/// @nodoc
-class __$UserCopyWithImpl<$Res>
-    implements _$UserCopyWith<$Res> {
-  __$UserCopyWithImpl(this._self, this._then);
-
-  final _User _self;
-  final $Res Function(_User) _then;
-
-/// Create a copy of User
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? photoUrl = freezed,Object? displayName = freezed,Object? name = freezed,Object? email = freezed,Object? phoneNumber = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
-  return _then(_User(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
-as String?,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,phoneNumber: freezed == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
-  ));
-}
-
-
-}
-
 
 /// @nodoc
 mixin _$PublicUsers {
+  String? get id => throw _privateConstructorUsedError;
+  String? get displayName => throw _privateConstructorUsedError;
+  String? get profileImageURL => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  @timestampKey
+  DateTime? get deletedAt => throw _privateConstructorUsedError;
 
- String? get id; String? get displayName; String? get profileImageURL;@timestampKey DateTime? get createdAt;@timestampKey DateTime? get updatedAt;@timestampKey DateTime? get deletedAt;
-/// Create a copy of PublicUsers
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$PublicUsersCopyWith<PublicUsers> get copyWith => _$PublicUsersCopyWithImpl<PublicUsers>(this as PublicUsers, _$identity);
-
-  /// Serializes this PublicUsers to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PublicUsers&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.profileImageURL, profileImageURL) || other.profileImageURL == profileImageURL)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,displayName,profileImageURL,createdAt,updatedAt,deletedAt);
-
-@override
-String toString() {
-  return 'PublicUsers(id: $id, displayName: $displayName, profileImageURL: $profileImageURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
-}
-
-
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PublicUsersCopyWith<PublicUsers> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract mixin class $PublicUsersCopyWith<$Res>  {
-  factory $PublicUsersCopyWith(PublicUsers value, $Res Function(PublicUsers) _then) = _$PublicUsersCopyWithImpl;
-@useResult
-$Res call({
- String? id, String? displayName, String? profileImageURL,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
-});
-
-
-
-
+abstract class $PublicUsersCopyWith<$Res> {
+  factory $PublicUsersCopyWith(
+          PublicUsers value, $Res Function(PublicUsers) then) =
+      _$PublicUsersCopyWithImpl<$Res, PublicUsers>;
+  @useResult
+  $Res call(
+      {String? id,
+      String? displayName,
+      String? profileImageURL,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
+
 /// @nodoc
-class _$PublicUsersCopyWithImpl<$Res>
+class _$PublicUsersCopyWithImpl<$Res, $Val extends PublicUsers>
     implements $PublicUsersCopyWith<$Res> {
-  _$PublicUsersCopyWithImpl(this._self, this._then);
+  _$PublicUsersCopyWithImpl(this._value, this._then);
 
-  final PublicUsers _self;
-  final $Res Function(PublicUsers) _then;
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
-/// Create a copy of PublicUsers
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? displayName = freezed,Object? profileImageURL = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
-  return _then(_self.copyWith(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String?,profileImageURL: freezed == profileImageURL ? _self.profileImageURL : profileImageURL // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
-  ));
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? displayName = freezed,
+    Object? profileImageURL = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profileImageURL: freezed == profileImageURL
+          ? _value.profileImageURL
+          : profileImageURL // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
+  }
 }
 
+/// @nodoc
+abstract class _$$PublicUsersImplCopyWith<$Res>
+    implements $PublicUsersCopyWith<$Res> {
+  factory _$$PublicUsersImplCopyWith(
+          _$PublicUsersImpl value, $Res Function(_$PublicUsersImpl) then) =
+      __$$PublicUsersImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? id,
+      String? displayName,
+      String? profileImageURL,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
+/// @nodoc
+class __$$PublicUsersImplCopyWithImpl<$Res>
+    extends _$PublicUsersCopyWithImpl<$Res, _$PublicUsersImpl>
+    implements _$$PublicUsersImplCopyWith<$Res> {
+  __$$PublicUsersImplCopyWithImpl(
+      _$PublicUsersImpl _value, $Res Function(_$PublicUsersImpl) _then)
+      : super(_value, _then);
 
-/// Adds pattern-matching-related methods to [PublicUsers].
-extension PublicUsersPatterns on PublicUsers {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PublicUsers value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _PublicUsers() when $default != null:
-return $default(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PublicUsers value)  $default,){
-final _that = this;
-switch (_that) {
-case _PublicUsers():
-return $default(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PublicUsers value)?  $default,){
-final _that = this;
-switch (_that) {
-case _PublicUsers() when $default != null:
-return $default(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? displayName,  String? profileImageURL, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _PublicUsers() when $default != null:
-return $default(_that.id,_that.displayName,_that.profileImageURL,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? displayName,  String? profileImageURL, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)  $default,) {final _that = this;
-switch (_that) {
-case _PublicUsers():
-return $default(_that.id,_that.displayName,_that.profileImageURL,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
-  throw StateError('Unexpected subclass');
-
-}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? displayName,  String? profileImageURL, @timestampKey  DateTime? createdAt, @timestampKey  DateTime? updatedAt, @timestampKey  DateTime? deletedAt)?  $default,) {final _that = this;
-switch (_that) {
-case _PublicUsers() when $default != null:
-return $default(_that.id,_that.displayName,_that.profileImageURL,_that.createdAt,_that.updatedAt,_that.deletedAt);case _:
-  return null;
-
-}
-}
-
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? displayName = freezed,
+    Object? profileImageURL = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? deletedAt = freezed,
+  }) {
+    return _then(_$PublicUsersImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      displayName: freezed == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      profileImageURL: freezed == profileImageURL
+          ? _value.profileImageURL
+          : profileImageURL // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
+class _$PublicUsersImpl implements _PublicUsers {
+  _$PublicUsersImpl(
+      {this.id,
+      this.displayName,
+      this.profileImageURL,
+      @timestampKey this.createdAt,
+      @timestampKey this.updatedAt,
+      @timestampKey this.deletedAt});
 
-class _PublicUsers implements PublicUsers {
-   _PublicUsers({this.id, this.displayName, this.profileImageURL, @timestampKey this.createdAt, @timestampKey this.updatedAt, @timestampKey this.deletedAt});
-  factory _PublicUsers.fromJson(Map<String, dynamic> json) => _$PublicUsersFromJson(json);
+  factory _$PublicUsersImpl.fromJson(Map<String, dynamic> json) =>
+      _$$PublicUsersImplFromJson(json);
 
-@override final  String? id;
-@override final  String? displayName;
-@override final  String? profileImageURL;
-@override@timestampKey final  DateTime? createdAt;
-@override@timestampKey final  DateTime? updatedAt;
-@override@timestampKey final  DateTime? deletedAt;
+  @override
+  final String? id;
+  @override
+  final String? displayName;
+  @override
+  final String? profileImageURL;
+  @override
+  @timestampKey
+  final DateTime? createdAt;
+  @override
+  @timestampKey
+  final DateTime? updatedAt;
+  @override
+  @timestampKey
+  final DateTime? deletedAt;
 
-/// Create a copy of PublicUsers
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$PublicUsersCopyWith<_PublicUsers> get copyWith => __$PublicUsersCopyWithImpl<_PublicUsers>(this, _$identity);
+  @override
+  String toString() {
+    return 'PublicUsers(id: $id, displayName: $displayName, profileImageURL: $profileImageURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
+  }
 
-@override
-Map<String, dynamic> toJson() {
-  return _$PublicUsersToJson(this, );
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PublicUsersImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.profileImageURL, profileImageURL) ||
+                other.profileImageURL == profileImageURL) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.deletedAt, deletedAt) ||
+                other.deletedAt == deletedAt));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, displayName, profileImageURL,
+      createdAt, updatedAt, deletedAt);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PublicUsersImplCopyWith<_$PublicUsersImpl> get copyWith =>
+      __$$PublicUsersImplCopyWithImpl<_$PublicUsersImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PublicUsersImplToJson(
+      this,
+    );
+  }
 }
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PublicUsers&&(identical(other.id, id) || other.id == id)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.profileImageURL, profileImageURL) || other.profileImageURL == profileImageURL)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt));
+abstract class _PublicUsers implements PublicUsers {
+  factory _PublicUsers(
+      {final String? id,
+      final String? displayName,
+      final String? profileImageURL,
+      @timestampKey final DateTime? createdAt,
+      @timestampKey final DateTime? updatedAt,
+      @timestampKey final DateTime? deletedAt}) = _$PublicUsersImpl;
+
+  factory _PublicUsers.fromJson(Map<String, dynamic> json) =
+      _$PublicUsersImpl.fromJson;
+
+  @override
+  String? get id;
+  @override
+  String? get displayName;
+  @override
+  String? get profileImageURL;
+  @override
+  @timestampKey
+  DateTime? get createdAt;
+  @override
+  @timestampKey
+  DateTime? get updatedAt;
+  @override
+  @timestampKey
+  DateTime? get deletedAt;
+  @override
+  @JsonKey(ignore: true)
+  _$$PublicUsersImplCopyWith<_$PublicUsersImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,displayName,profileImageURL,createdAt,updatedAt,deletedAt);
-
-@override
-String toString() {
-  return 'PublicUsers(id: $id, displayName: $displayName, profileImageURL: $profileImageURL, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class _$PublicUsersCopyWith<$Res> implements $PublicUsersCopyWith<$Res> {
-  factory _$PublicUsersCopyWith(_PublicUsers value, $Res Function(_PublicUsers) _then) = __$PublicUsersCopyWithImpl;
-@override @useResult
-$Res call({
- String? id, String? displayName, String? profileImageURL,@timestampKey DateTime? createdAt,@timestampKey DateTime? updatedAt,@timestampKey DateTime? deletedAt
-});
-
-
-
-
-}
-/// @nodoc
-class __$PublicUsersCopyWithImpl<$Res>
-    implements _$PublicUsersCopyWith<$Res> {
-  __$PublicUsersCopyWithImpl(this._self, this._then);
-
-  final _PublicUsers _self;
-  final $Res Function(_PublicUsers) _then;
-
-/// Create a copy of PublicUsers
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? displayName = freezed,Object? profileImageURL = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? deletedAt = freezed,}) {
-  return _then(_PublicUsers(
-id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
-as String?,profileImageURL: freezed == profileImageURL ? _self.profileImageURL : profileImageURL // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
-  ));
-}
-
-
-}
-
-// dart format on
