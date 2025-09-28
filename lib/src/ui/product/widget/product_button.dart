@@ -37,16 +37,14 @@ class AddProductFloatingActionButton extends HookWidget {
       builder: (context, ref, _) {
         return AsyncValueButtonWidget(
           value: ref.watch(addProductButtonStateProvider(program)),
-          data:
-              (visible) =>
-                  visible
-                      ? BaseFloatingActionButton(
-                        heroTag: 'add_product_fab_${program.id}',
-                        onPressed: onPressed,
-                        l10n: l10n,
-                        child: child ?? const Icon(Icons.add),
-                      )
-                      : Container(),
+          data: (visible) => visible
+              ? BaseFloatingActionButton(
+                  heroTag: 'add_product_fab_${program.id}',
+                  onPressed: onPressed,
+                  l10n: l10n,
+                  child: child ?? const Icon(Icons.add),
+                )
+              : Container(),
         );
       },
     );
@@ -149,15 +147,14 @@ class GenreDropdownButton extends HookWidget {
       child: DropdownButtonFormField<GenreType>(
         alignment: Alignment.center,
         focusNode: focusNode,
-        items:
-            GenreType.values
-                .map(
-                  (GenreType genre) => DropdownMenuItem<GenreType>(
-                    value: genre,
-                    child: Text(genre.name),
-                  ),
-                )
-                .toList(),
+        items: GenreType.values
+            .map(
+              (GenreType genre) => DropdownMenuItem<GenreType>(
+                value: genre,
+                child: Text(genre.name),
+              ),
+            )
+            .toList(),
         initialValue: value,
         validator: (value) {
           if (value == null) {
@@ -274,8 +271,8 @@ class InCartElevatedButton extends HookWidget {
                       child: Text(
                         product.stock > 0
                             ? (isAuthenticated
-                                ? l10n.addToCart
-                                : l10n.pleaseLogin)
+                                  ? l10n.addToCart
+                                  : l10n.pleaseLogin)
                             : l10n.outOfStock,
                       ),
                     ),
@@ -290,38 +287,37 @@ class InCartElevatedButton extends HookWidget {
             }
             return BaseElevatedButton(
               l10n: l10n,
-              onPressed:
-                  isButtonEnabled
-                      ? () async {
-                        try {
-                          const result = true;
-                          if (result) {
-                            logger.d('inCart');
-                            await ref
-                                .watch(cartViewModelProvider.notifier)
-                                .cart(quantity, product.id!, program.id!);
-                            logger.d('showFluttertoast: start');
-                            errorHandler.showSuccessSnackBar(
-                              '${product.name!} ${l10n.addedToCart}',
-                            );
-                            logger.d('showFluttertoast: end');
-                            // SnackBarが閉じられた後にpop
-                            logger.d('pop');
-                            if (context.mounted) {
-                              RouterUtils.safePop(context);
-                            }
-                          }
-                        } on Exception catch (e, st) {
-                          logger.e(
-                            'Error',
-                            time: DateTime.now(),
-                            error: e,
-                            stackTrace: st,
+              onPressed: isButtonEnabled
+                  ? () async {
+                      try {
+                        const result = true;
+                        if (result) {
+                          logger.d('inCart');
+                          await ref
+                              .watch(cartViewModelProvider.notifier)
+                              .cart(quantity, product.id!, program.id!);
+                          logger.d('showFluttertoast: start');
+                          errorHandler.showSuccessSnackBar(
+                            '${product.name!} ${l10n.addedToCart}',
                           );
-                          errorHandler.showError(e, errorContext: 'カート追加');
+                          logger.d('showFluttertoast: end');
+                          // SnackBarが閉じられた後にpop
+                          logger.d('pop');
+                          if (context.mounted) {
+                            RouterUtils.safePop(context);
+                          }
                         }
+                      } on Exception catch (e, st) {
+                        logger.e(
+                          'Error',
+                          time: DateTime.now(),
+                          error: e,
+                          stackTrace: st,
+                        );
+                        errorHandler.showError(e, errorContext: 'カート追加');
                       }
-                      : null,
+                    }
+                  : null,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
