@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/exception/app_exception.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
-import 'package:tliny/test/utils/firebase_test_setup.dart';
+import '../../utils/firebase_test_setup.dart';
 
 import 'auth_repository_test.mocks.dart';
 
