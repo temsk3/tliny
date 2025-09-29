@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Firebase test setup utility
@@ -8,9 +7,7 @@ Future<void> setupFirebaseForTesting() async {
   // Ensure bindings are initialized
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase for testing
-  setupFirebaseCoreMocks();
-  
+  // Initialize Firebase for testing with mock options
   await Firebase.initializeApp(
     options: const FirebaseOptions(
       apiKey: 'fake-api-key',
