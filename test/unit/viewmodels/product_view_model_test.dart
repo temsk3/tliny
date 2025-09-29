@@ -10,6 +10,7 @@ import 'package:tliny/src/data/repository/auth_repository.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
 import 'package:tliny/src/data/repository/staff_repository.dart';
 import 'package:tliny/src/ui/product/product_view_model.dart';
+import 'package:tliny/test/utils/firebase_test_setup.dart';
 
 import 'product_view_model_test.mocks.dart';
 
@@ -26,6 +27,10 @@ void main() {
     late MockStaffRepository mockStaffRepository;
     late ProviderContainer container;
     late MockUser mockUser;
+
+    setUpAll(() async {
+      await setupFirebaseForTesting();
+    });
 
     setUp(() {
       mockProductRepository = MockProductRepository();
