@@ -29,7 +29,7 @@ void main() {
     late MockUser mockUser;
 
     setUpAll(() async {
-      await setupFirebaseForTesting();
+      // Firebase setup is not needed for unit tests with mocked dependencies
     });
 
     setUp(() {
