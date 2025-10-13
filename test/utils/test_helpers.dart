@@ -147,7 +147,6 @@ class TestHelpers {
       firebaseFirestoreProvider.overrideWithValue(fakeFirestore),
       firebaseAuthProvider.overrideWithValue(mockAuth),
       firebaseStorageProvider.overrideWithValue(mockStorage),
-      userStateProvider.overrideWith((ref) => Stream.value(null)),
       userIdProvider.overrideWith((ref) => Stream.value(null)),
     ];
 
