@@ -1,11 +1,17 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mockito/mockito.dart';
 import 'package:tliny/l10n/app_localizations.dart';
+import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
 
 /// テスト用のAppLocalizationsモック
 class MockAppLocalizations extends AppLocalizations {
@@ -103,6 +109,21 @@ class MockAppLocalizations extends AppLocalizations {
   }
 }
 
+// Mock classes for testing
+class MockFirebaseAuth extends Mock implements firebase_auth.FirebaseAuth {
+  @override
+  Stream<firebase_auth.User?> authStateChanges() => super.noSuchMethod(
+    Invocation.method(#authStateChanges, []),
+    returnValue: Stream<firebase_auth.User?>.value(null),
+  );
+
+  @override
+  firebase_auth.User? get currentUser =>
+      super.noSuchMethod(Invocation.getter(#currentUser), returnValue: null);
+}
+
+class MockFirebaseStorage extends Mock implements FirebaseStorage {}
+
 /// テスト用のヘルパー関数群
 class TestHelpers {
   /// テスト用のProviderContainerを作成
@@ -117,10 +138,24 @@ class TestHelpers {
     required Widget child,
     List<Override> overrides = const [],
   }) {
+    // Firebase関連のプロバイダーをオーバーライド
+    final fakeFirestore = FakeFirebaseFirestore();
+    final mockAuth = MockFirebaseAuth();
+    final mockStorage = MockFirebaseStorage();
+
+    final defaultOverrides = [
+      firebaseFirestoreProvider.overrideWithValue(fakeFirestore),
+      firebaseAuthProvider.overrideWithValue(mockAuth),
+      firebaseStorageProvider.overrideWithValue(mockStorage),
+      userStateProvider.overrideWith((ref) => Stream.value(null)),
+      userIdProvider.overrideWith((ref) => Stream.value(null)),
+    ];
+
     return ProviderScope(
-      overrides: overrides,
+      overrides: [...defaultOverrides, ...overrides],
       child: MaterialApp(
         home: child,
+        locale: const Locale('ja'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
       ),
