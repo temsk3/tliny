@@ -58,7 +58,7 @@ void main() {
       return ProviderScope(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
-          productsStateProvider.overrideWith((ref, programId, genre) {
+          productsStateProvider(testProgram.id!, null).overrideWith((ref) {
             return Stream.value(testProducts);
           }),
         ],
@@ -74,7 +74,7 @@ void main() {
       return ProviderScope(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
-          productsStateProvider.overrideWith((ref, programId, genre) {
+          productsStateProvider(testProgram.id!, genre).overrideWith((ref) {
             return Stream.value(testProducts);
           }),
         ],
