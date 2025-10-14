@@ -75,6 +75,7 @@ void main() {
         ],
         child: MaterialApp(
           localizationsDelegates: const [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
@@ -83,6 +84,7 @@ void main() {
           home: Localizations(
             locale: const Locale('ja', ''),
             delegates: const [
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
@@ -103,6 +105,7 @@ void main() {
         ],
         child: MaterialApp(
           localizationsDelegates: const [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
@@ -111,6 +114,7 @@ void main() {
           home: Localizations(
             locale: const Locale('ja', ''),
             delegates: const [
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
