@@ -267,17 +267,28 @@ void main() {
     testWidgets('should handle program with null id', (
       WidgetTester tester,
     ) async {
-      testProgram = testProgram.copyWith(id: null);
+      // Create a program with null id
+      final nullIdProgram = Program.empty().copyWith(
+        name: 'Test Program',
+        id: null,
+      );
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(testProducts));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: ProductListPage(program: nullIdProgram),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should handle null program id gracefully
-      expect(find.byType(GridView), findsOneWidget);
+      expect(find.text('プログラムIDが設定されていません'), findsOneWidget);
     });
 
     testWidgets('should handle program with null id safely', (
@@ -308,7 +319,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Should handle null program id gracefully
-      expect(find.byType(GridView), findsOneWidget);
+      expect(find.text('プログラムIDが設定されていません'), findsOneWidget);
     });
   });
 }
