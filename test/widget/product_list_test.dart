@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
@@ -14,23 +13,15 @@ import 'package:tliny/src/ui/product/widget/product_card.dart';
 
 import 'product_list_test.mocks.dart';
 
-@GenerateMocks([ProductRepository, AppLocalizations])
+@GenerateMocks([ProductRepository])
 void main() {
   group('ProductList Widget Tests', () {
     late MockProductRepository mockProductRepository;
-    late MockAppLocalizations mockAppLocalizations;
     late Program testProgram;
     late List<Product> testProducts;
 
     setUp(() {
       mockProductRepository = MockProductRepository();
-      mockAppLocalizations = MockAppLocalizations();
-      
-      // Mock AppLocalizations methods that are used in ProductCard
-      when(mockAppLocalizations.product).thenReturn('Product');
-      when(mockAppLocalizations.price).thenReturn('Price');
-      when(mockAppLocalizations.stock).thenReturn('Stock');
-      when(mockAppLocalizations.currency(any)).thenReturn('¥1000');
       
       testProgram = Program.empty().copyWith(
         id: 'program-1',

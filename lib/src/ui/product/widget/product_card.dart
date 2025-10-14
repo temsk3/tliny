@@ -25,17 +25,6 @@ class ProductCard extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
-    if (l10n == null) {
-      // Return a simple card without localization for test environments
-      return Card(
-        child: Column(
-          children: [
-            Text(product.name ?? 'Product'),
-            Text('¥${product.price}'),
-          ],
-        ),
-      );
-    }
     // final appRoute = useRouter();
     // final today = DateTime.now();
     // final now = DateTime(today.year, today.month, today.day, 0, 0, 0);
