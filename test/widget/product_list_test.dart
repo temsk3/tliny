@@ -283,5 +283,36 @@ void main() {
       // Should handle null program id gracefully
       expect(find.byType(GridView), findsOneWidget);
     });
+
+    testWidgets('should handle program with null id safely', (
+      WidgetTester tester,
+    ) async {
+      // Create a program with null id
+      final nullIdProgram = Program.empty().copyWith(
+        name: 'Test Program',
+        id: null, // Explicitly set to null
+      );
+
+      when(
+        mockProductRepository.watchProducts(),
+      ).thenAnswer((_) => Stream.value(testProducts));
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: ProductListPage(program: nullIdProgram),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should handle null program id gracefully
+      expect(find.byType(GridView), findsOneWidget);
+    });
   });
 }

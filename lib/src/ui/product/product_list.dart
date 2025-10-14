@@ -14,6 +14,13 @@ class ProductListPage extends HookConsumerWidget {
   final GenreType? genre;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Handle null program id gracefully
+    if (program.id == null) {
+      return const Center(
+        child: Text('プログラムIDが設定されていません'),
+      );
+    }
+    
     final state = ref.watch(productsStateProvider(program.id!, genre));
 
     // Prepare memoized sorted list in Hook context (build), not inside closures

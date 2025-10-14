@@ -33,6 +33,12 @@ class AsyncValueWidget<T> extends StatelessWidget {
           time: DateTime.now(),
         );
 
+        // nullエラーの場合は空のウィジェットを返す
+        if (error.toString().contains('Unexpected null value') ||
+            error.toString().contains('null')) {
+          return const SizedBox.shrink();
+        }
+
         // ErrorHandlerでエラーを表示
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (context.mounted) {
