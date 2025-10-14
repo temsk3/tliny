@@ -7,6 +7,7 @@ import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
 import 'package:tliny/src/ui/product/product_list.dart';
+import 'package:tliny/src/ui/product/product_state.dart';
 import 'package:tliny/src/ui/product/widget/product_card.dart';
 
 import 'product_list_test.mocks.dart';
@@ -57,6 +58,9 @@ void main() {
       return ProviderScope(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
+          productsStateProvider.overrideWith((ref, programId, genre) {
+            return Stream.value(testProducts);
+          }),
         ],
         child: MaterialApp(
           home: Scaffold(
@@ -70,6 +74,9 @@ void main() {
       return ProviderScope(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
+          productsStateProvider.overrideWith((ref, programId, genre) {
+            return Stream.value(testProducts);
+          }),
         ],
         child: MaterialApp(
           home: Scaffold(
