@@ -32,39 +32,45 @@ void main() {
       // Skip Firebase initialization for unit tests
     });
 
-  setUp(() {
-    mockProductRepository = MockProductRepository();
-    mockAuthRepository = MockAuthRepository();
-    mockStaffRepository = MockStaffRepository();
-    mockUser = MockUser();
+    setUp(() {
+      mockProductRepository = MockProductRepository();
+      mockAuthRepository = MockAuthRepository();
+      mockStaffRepository = MockStaffRepository();
+      mockUser = MockUser();
 
-    // Reset all mocks before each test
-    reset(mockProductRepository);
-    reset(mockAuthRepository);
-    reset(mockStaffRepository);
-    reset(mockUser);
+      // Reset all mocks before each test
+      reset(mockProductRepository);
+      reset(mockAuthRepository);
+      reset(mockStaffRepository);
+      reset(mockUser);
+      
+      // Clear any existing interactions
+      clearInteractions(mockProductRepository);
+      clearInteractions(mockAuthRepository);
+      clearInteractions(mockStaffRepository);
+      clearInteractions(mockUser);
 
-    // Mock the userId method on the auth repository
-    when(
-      mockAuthRepository.userId,
-    ).thenAnswer((_) => Stream.value('test-user-id'));
+      // Mock the userId method on the auth repository
+      when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
 
-    // Mock readProducts by default to return empty list
-    when(
-      mockProductRepository.readProducts(),
-    ).thenAnswer((_) async => <Product>[]);
+      // Mock readProducts by default to return empty list
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => <Product>[]);
 
-    container = ProviderContainer(
-      overrides: [
-        productRepositoryProvider.overrideWithValue(mockProductRepository),
-        authRepositoryProvider.overrideWithValue(mockAuthRepository),
-        staffRepositoryProvider.overrideWithValue(mockStaffRepository),
-        userIdProvider.overrideWith((ref) async* {
-          yield 'test-user-id';
-        }),
-      ],
-    );
-  });
+      container = ProviderContainer(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+          authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          staffRepositoryProvider.overrideWithValue(mockStaffRepository),
+          userIdProvider.overrideWith((ref) async* {
+            yield 'test-user-id';
+          }),
+        ],
+      );
+    });
 
     tearDown(() {
       container.dispose();
@@ -295,6 +301,16 @@ void main() {
 
     test('deleteProduct should handle errors', () async {
       final testProduct = Product.empty().copyWith(id: 'product-1');
+
+      // Reset and clear all mocks before setting up this test
+      reset(mockProductRepository);
+      reset(mockAuthRepository);
+      reset(mockStaffRepository);
+      reset(mockUser);
+      clearInteractions(mockProductRepository);
+      clearInteractions(mockAuthRepository);
+      clearInteractions(mockStaffRepository);
+      clearInteractions(mockUser);
 
       // 認証されたユーザーをモック
       when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);

@@ -36,6 +36,11 @@ void main() {
       reset(mockFirebaseAuth);
       reset(mockUser);
       reset(mockUserCredential);
+      
+      // Clear any existing interactions
+      clearInteractions(mockFirebaseAuth);
+      clearInteractions(mockUser);
+      clearInteractions(mockUserCredential);
 
       container = ProviderContainer(
         overrides: [firebaseAuthProvider.overrideWithValue(mockFirebaseAuth)],
@@ -217,6 +222,14 @@ void main() {
       });
 
       test('should handle sign out error', () async {
+        // Reset and clear all mocks before setting up this test
+        reset(mockFirebaseAuth);
+        reset(mockUser);
+        reset(mockUserCredential);
+        clearInteractions(mockFirebaseAuth);
+        clearInteractions(mockUser);
+        clearInteractions(mockUserCredential);
+        
         when(
           mockFirebaseAuth.signOut(),
         ).thenThrow(firebase_auth.FirebaseAuthException(code: 'unknown'));
@@ -283,6 +296,14 @@ void main() {
       });
 
       test('should handle password reset error', () async {
+        // Reset and clear all mocks before setting up this test
+        reset(mockFirebaseAuth);
+        reset(mockUser);
+        reset(mockUserCredential);
+        clearInteractions(mockFirebaseAuth);
+        clearInteractions(mockUser);
+        clearInteractions(mockUserCredential);
+        
         when(
           mockFirebaseAuth.sendPasswordResetEmail(email: 'invalid@example.com'),
         ).thenThrow(
