@@ -221,11 +221,40 @@ void main() {
         ),
       ];
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(unsortedProducts));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+              return Stream.value(unsortedProducts);
+            }),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('ja', ''),
+              Locale('en', ''),
+            ],
+            home: Localizations(
+              locale: const Locale('ja', ''),
+              delegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              child: Scaffold(
+                body: ProductListPage(program: testProgram),
+              ),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Products should be sorted alphabetically
