@@ -32,6 +32,11 @@ void main() {
       mockUserCredential = MockUserCredential();
       authRepository = AuthRepository(mockFirebaseAuth);
 
+      // Reset all mocks before each test
+      reset(mockFirebaseAuth);
+      reset(mockUser);
+      reset(mockUserCredential);
+
       container = ProviderContainer(
         overrides: [firebaseAuthProvider.overrideWithValue(mockFirebaseAuth)],
       );

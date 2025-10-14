@@ -32,33 +32,39 @@ void main() {
       // Skip Firebase initialization for unit tests
     });
 
-    setUp(() {
-      mockProductRepository = MockProductRepository();
-      mockAuthRepository = MockAuthRepository();
-      mockStaffRepository = MockStaffRepository();
-      mockUser = MockUser();
+  setUp(() {
+    mockProductRepository = MockProductRepository();
+    mockAuthRepository = MockAuthRepository();
+    mockStaffRepository = MockStaffRepository();
+    mockUser = MockUser();
 
-      // Mock the userId method on the auth repository
-      when(
-        mockAuthRepository.userId,
-      ).thenAnswer((_) => Stream.value('test-user-id'));
+    // Reset all mocks before each test
+    reset(mockProductRepository);
+    reset(mockAuthRepository);
+    reset(mockStaffRepository);
+    reset(mockUser);
 
-      // Mock readProducts by default to return empty list
-      when(
-        mockProductRepository.readProducts(),
-      ).thenAnswer((_) async => <Product>[]);
+    // Mock the userId method on the auth repository
+    when(
+      mockAuthRepository.userId,
+    ).thenAnswer((_) => Stream.value('test-user-id'));
 
-      container = ProviderContainer(
-        overrides: [
-          productRepositoryProvider.overrideWithValue(mockProductRepository),
-          authRepositoryProvider.overrideWithValue(mockAuthRepository),
-          staffRepositoryProvider.overrideWithValue(mockStaffRepository),
-          userIdProvider.overrideWith((ref) async* {
-            yield 'test-user-id';
-          }),
-        ],
-      );
-    });
+    // Mock readProducts by default to return empty list
+    when(
+      mockProductRepository.readProducts(),
+    ).thenAnswer((_) async => <Product>[]);
+
+    container = ProviderContainer(
+      overrides: [
+        productRepositoryProvider.overrideWithValue(mockProductRepository),
+        authRepositoryProvider.overrideWithValue(mockAuthRepository),
+        staffRepositoryProvider.overrideWithValue(mockStaffRepository),
+        userIdProvider.overrideWith((ref) async* {
+          yield 'test-user-id';
+        }),
+      ],
+    );
+  });
 
     tearDown(() {
       container.dispose();
