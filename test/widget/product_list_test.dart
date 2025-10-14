@@ -14,23 +14,15 @@ import 'package:tliny/src/ui/product/widget/product_card.dart';
 
 import 'product_list_test.mocks.dart';
 
-@GenerateMocks([ProductRepository, AppLocalizations])
+@GenerateMocks([ProductRepository])
 void main() {
   group('ProductList Widget Tests', () {
     late MockProductRepository mockProductRepository;
-    late MockAppLocalizations mockAppLocalizations;
     late Program testProgram;
     late List<Product> testProducts;
 
     setUp(() {
       mockProductRepository = MockProductRepository();
-      mockAppLocalizations = MockAppLocalizations();
-      
-      // Mock AppLocalizations methods that are used in ProductCard
-      when(mockAppLocalizations.product).thenReturn('Product');
-      when(mockAppLocalizations.price).thenReturn('Price');
-      when(mockAppLocalizations.stock).thenReturn('Stock');
-      when(mockAppLocalizations.currency(any)).thenReturn('¥1000');
 
       testProgram = Program.empty().copyWith(
         id: 'program-1',
