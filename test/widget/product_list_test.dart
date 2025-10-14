@@ -10,9 +10,13 @@ import 'package:tliny/src/ui/product/product_list.dart';
 import 'package:tliny/src/ui/product/widget/product_card.dart';
 
 import 'product_list_test.mocks.dart';
+import '../utils/firebase_test_setup.dart';
 
 @GenerateMocks([ProductRepository])
 void main() {
+  setUpAll(() async {
+    await setupFirebaseForTesting();
+  });
   group('ProductList Widget Tests', () {
     late MockProductRepository mockProductRepository;
     late Program testProgram;

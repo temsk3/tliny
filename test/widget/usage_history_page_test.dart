@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/l10n/app_localizations.dart';
-import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
@@ -160,10 +158,9 @@ void main() {
           ),
           GoRoute(
             path: '/usage-history/:id',
-            builder:
-                (context, state) => const Scaffold(
-                  body: Center(child: Text('Usage History Details')),
-                ),
+            builder: (context, state) => const Scaffold(
+              body: Center(child: Text('Usage History Details')),
+            ),
           ),
         ],
       );
@@ -178,10 +175,6 @@ void main() {
           usageHistoryViewModelProvider.overrideWith(
             () => MockUsageHistoryViewModel(mockUsageHistories),
           ),
-          // Mock Firebase-dependent providers
-          firebaseFirestoreProvider.overrideWithValue(FakeFirebaseFirestore()),
-          firebaseAuthProvider.overrideWithValue(MockFirebaseAuth()),
-          firebaseStorageProvider.overrideWithValue(MockFirebaseStorage()),
           // Mock additional providers that UsageHistoryViewModel depends on
           usageHistoryRepositoryProvider.overrideWithValue(
             MockUsageHistoryRepository(),
@@ -226,6 +219,10 @@ void main() {
               usageHistoryViewModelProvider.overrideWith(
                 () => MockUsageHistoryViewModel(<UsageHistory>[]),
               ),
+              // Mock programsStateProvider to provide program data
+              programsStateProvider.overrideWith(
+                (ref) => Stream.value(mockPrograms),
+              ),
             ],
           ),
         );
@@ -251,6 +248,10 @@ void main() {
               usageHistoryViewModelProvider.overrideWith(
                 () => MockUsageHistoryViewModel(mockUsageHistories),
               ),
+              // Mock programsStateProvider to provide program data
+              programsStateProvider.overrideWith(
+                (ref) => Stream.value(mockPrograms),
+              ),
             ],
           ),
         );
@@ -275,12 +276,6 @@ void main() {
               usageHistoryViewModelProvider.overrideWith(
                 () => MockUsageHistoryViewModel.error(Exception('Test error')),
               ),
-              // Mock Firebase-dependent providers
-              firebaseFirestoreProvider.overrideWithValue(
-                FakeFirebaseFirestore(),
-              ),
-              firebaseAuthProvider.overrideWithValue(MockFirebaseAuth()),
-              firebaseStorageProvider.overrideWithValue(MockFirebaseStorage()),
               // Mock additional providers that UsageHistoryViewModel depends on
               usageHistoryRepositoryProvider.overrideWithValue(
                 MockUsageHistoryRepository(),

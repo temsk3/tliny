@@ -7,13 +7,34 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/src/app.dart';
 import 'package:tliny/src/data/general_provider.dart';
-
+import 'package:tliny/src/data/model/program_model.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
+import 'package:tliny/src/data/repository/program_repository.dart';
+import 'package:tliny/src/ui/program/program_state.dart';
 import '../utils/firebase_test_setup.dart';
 
 // Mock classes for testing
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+class MockFirebaseAuth extends Mock implements FirebaseAuth {
+  @override
+  Stream<User?> authStateChanges() => super.noSuchMethod(
+    Invocation.method(#authStateChanges, []),
+    returnValue: Stream<User?>.value(null),
+  );
+
+  @override
+  User? get currentUser =>
+      super.noSuchMethod(Invocation.getter(#currentUser), returnValue: null);
+}
 
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
+
+class MockProgramRepository extends Mock implements ProgramRepository {
+  @override
+  Stream<List<Program>> watchEventList() => super.noSuchMethod(
+    Invocation.method(#watchEventList, []),
+    returnValue: Stream<List<Program>>.value(<Program>[]),
+  );
+}
 
 void main() {
   group('App Integration Tests', () {
@@ -21,21 +42,30 @@ void main() {
     late FakeFirebaseFirestore fakeFirestore;
     late MockFirebaseAuth mockAuth;
     late MockFirebaseStorage mockStorage;
-
+    
     setUpAll(() async {
       await setupFirebaseForTesting();
     });
-
+    
     setUp(() {
       fakeFirestore = FakeFirebaseFirestore();
       mockAuth = MockFirebaseAuth();
       mockStorage = MockFirebaseStorage();
+
+      // MockFirebaseAuth and MockProgramRepository now handle their methods automatically
 
       container = ProviderContainer(
         overrides: [
           firebaseFirestoreProvider.overrideWithValue(fakeFirestore),
           firebaseAuthProvider.overrideWithValue(mockAuth),
           firebaseStorageProvider.overrideWithValue(mockStorage),
+          programsStateProvider.overrideWith((ref) async* {
+            yield [];
+          }),
+          // Override userId provider to return null (not authenticated)
+          userStateProvider.overrideWith((ref) => Stream.value(null)),
+          // Override userId provider to return null (not authenticated)
+          userIdProvider.overrideWith((ref) => Stream.value(null)),
         ],
       );
     });
@@ -140,7 +170,25 @@ void main() {
     late ProviderContainer container;
 
     setUp(() {
-      container = ProviderContainer();
+      // Ensure no real Firebase is touched in this group as well
+      final fakeFirestore = FakeFirebaseFirestore();
+      final mockAuth = MockFirebaseAuth();
+      final mockStorage = MockFirebaseStorage();
+
+      container = ProviderContainer(
+        overrides: [
+          firebaseFirestoreProvider.overrideWithValue(fakeFirestore),
+          firebaseAuthProvider.overrideWithValue(mockAuth),
+          firebaseStorageProvider.overrideWithValue(mockStorage),
+          programsStateProvider.overrideWith((ref) async* {
+            yield [];
+          }),
+          // Override userId provider to return null (not authenticated)
+          userStateProvider.overrideWith((ref) => Stream.value(null)),
+          // Override userId provider to return null (not authenticated)
+          userIdProvider.overrideWith((ref) => Stream.value(null)),
+        ],
+      );
     });
 
     tearDown(() {

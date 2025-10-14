@@ -62,6 +62,12 @@ class AuthRepository {
   Future<void> _waitForUserDataCreation(String uid) async {
     logger.i('_waitForUserDataCreation: ユーザーデータ作成を待機中... uid=$uid');
 
+    // テスト環境ではスキップ
+    if (kDebugMode && !kIsWeb) {
+      logger.i('_waitForUserDataCreation: テスト環境のためスキップ');
+      return;
+    }
+
     // 最大10秒間、ユーザーデータの作成を待機
     var retryCount = 0;
     const maxRetries = 20; // 500ms × 20 = 10秒

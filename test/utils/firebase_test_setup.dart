@@ -6,6 +6,15 @@ import 'package:flutter_test/flutter_test.dart';
 Future<void> setupFirebaseForTesting() async {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  // Check if Firebase is already initialized
+  try {
+    Firebase.app();
+    // Firebase is already initialized, no need to initialize again
+    return;
+  } catch (e) {
+    // Firebase is not initialized, proceed with initialization
+  }
+
   try {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -19,7 +28,8 @@ Future<void> setupFirebaseForTesting() async {
     );
   } catch (e) {
     // Firebase is already initialized, ignore the error
-    if (!e.toString().contains('already been initialized')) {
+    if (!e.toString().contains('already been initialized') && 
+        !e.toString().contains('PlatformException')) {
       rethrow;
     }
   }

@@ -7,11 +7,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/src/app.dart';
 import 'package:tliny/src/data/general_provider.dart';
-
+import 'package:tliny/src/ui/program/program_state.dart';
 import '../utils/firebase_test_setup.dart';
 
 // Mock classes for testing
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+class MockFirebaseAuth extends Mock implements FirebaseAuth {
+  @override
+  Stream<User?> authStateChanges() => Stream<User?>.value(null);
+
+  @override
+  User? get currentUser => null;
+}
 
 class MockFirebaseStorage extends Mock implements FirebaseStorage {}
 
@@ -36,6 +42,11 @@ void main() {
           firebaseFirestoreProvider.overrideWithValue(fakeFirestore),
           firebaseAuthProvider.overrideWithValue(mockAuth),
           firebaseStorageProvider.overrideWithValue(mockStorage),
+          programsStateProvider.overrideWith((ref) async* {
+            yield [];
+          }),
+          // Override userStateProvider to return empty stream
+          userStateProvider.overrideWith((ref) => Stream.value(null)),
         ],
       );
     });

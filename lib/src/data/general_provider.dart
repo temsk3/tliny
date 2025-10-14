@@ -59,5 +59,6 @@ FirebaseFunctions firebaseFunctions(Ref ref) {
   );
 }
 
-// final userStateProvider =
-//     StreamProvider((ref) => FirebaseAuth.instance.authStateChanges());
+final userStateProvider = StreamProvider(
+  (ref) => FirebaseAuth.instance.authStateChanges(),
+);
