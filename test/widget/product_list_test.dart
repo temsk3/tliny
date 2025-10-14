@@ -236,10 +236,7 @@ void main() {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale('ja', ''),
-              Locale('en', ''),
-            ],
+            supportedLocales: const [Locale('ja', ''), Locale('en', '')],
             home: Localizations(
               locale: const Locale('ja', ''),
               delegates: const [
@@ -248,9 +245,7 @@ void main() {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              child: Scaffold(
-                body: ProductListPage(program: testProgram),
-              ),
+              child: Scaffold(body: ProductListPage(program: testProgram)),
             ),
           ),
         ),
