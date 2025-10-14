@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
@@ -13,15 +14,24 @@ import 'package:tliny/src/ui/product/widget/product_card.dart';
 
 import 'product_list_test.mocks.dart';
 
-@GenerateMocks([ProductRepository])
+@GenerateMocks([ProductRepository, AppLocalizations])
 void main() {
   group('ProductList Widget Tests', () {
     late MockProductRepository mockProductRepository;
+    late MockAppLocalizations mockAppLocalizations;
     late Program testProgram;
     late List<Product> testProducts;
 
     setUp(() {
       mockProductRepository = MockProductRepository();
+      mockAppLocalizations = MockAppLocalizations();
+      
+      // Mock AppLocalizations methods that are used in ProductCard
+      when(mockAppLocalizations.product).thenReturn('Product');
+      when(mockAppLocalizations.price).thenReturn('Price');
+      when(mockAppLocalizations.stock).thenReturn('Stock');
+      when(mockAppLocalizations.currency(any)).thenReturn('¥1000');
+      
       testProgram = Program.empty().copyWith(
         id: 'program-1',
         name: 'Test Program',
@@ -55,55 +65,63 @@ void main() {
       ];
     });
 
-  Widget createTestWidget() {
-    return ProviderScope(
-      overrides: [
-        productRepositoryProvider.overrideWithValue(mockProductRepository),
-        productsStateProvider(testProgram.id!, null).overrideWith((ref) {
-          return Stream.value(testProducts);
-        }),
-      ],
+    Widget createTestWidget() {
+      return ProviderScope(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+          productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+            return Stream.value(testProducts);
+          }),
+        ],
       child: MaterialApp(
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('ja', ''),
-          Locale('en', ''),
-        ],
-        home: Scaffold(
-          body: ProductListPage(program: testProgram),
+        supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+        home: Localizations(
+          locale: const Locale('ja', ''),
+          delegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          child: Scaffold(body: ProductListPage(program: testProgram)),
         ),
       ),
-    );
-  }
+      );
+    }
 
-  Widget createTestWidgetWithGenre(GenreType genre) {
-    return ProviderScope(
-      overrides: [
-        productRepositoryProvider.overrideWithValue(mockProductRepository),
-        productsStateProvider(testProgram.id!, genre).overrideWith((ref) {
-          return Stream.value(testProducts);
-        }),
-      ],
+    Widget createTestWidgetWithGenre(GenreType genre) {
+      return ProviderScope(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+          productsStateProvider(testProgram.id!, genre).overrideWith((ref) {
+            return Stream.value(testProducts);
+          }),
+        ],
       child: MaterialApp(
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [
-          Locale('ja', ''),
-          Locale('en', ''),
-        ],
-        home: Scaffold(
-          body: ProductListPage(program: testProgram, genre: genre),
+        supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+        home: Localizations(
+          locale: const Locale('ja', ''),
+          delegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          child: Scaffold(
+            body: ProductListPage(program: testProgram, genre: genre),
+          ),
         ),
       ),
-    );
-  }
+      );
+    }
 
     testWidgets('should display loading state initially', (
       WidgetTester tester,
@@ -305,9 +323,7 @@ void main() {
             productRepositoryProvider.overrideWithValue(mockProductRepository),
           ],
           child: MaterialApp(
-            home: Scaffold(
-              body: ProductListPage(program: nullIdProgram),
-            ),
+            home: Scaffold(body: ProductListPage(program: nullIdProgram)),
           ),
         ),
       );
@@ -336,9 +352,7 @@ void main() {
             productRepositoryProvider.overrideWithValue(mockProductRepository),
           ],
           child: MaterialApp(
-            home: Scaffold(
-              body: ProductListPage(program: nullIdProgram),
-            ),
+            home: Scaffold(body: ProductListPage(program: nullIdProgram)),
           ),
         ),
       );
