@@ -28,8 +28,9 @@ Future<void> setupFirebaseForTesting() async {
     );
   } catch (e) {
     // Firebase is already initialized, ignore the error
-    if (!e.toString().contains('already been initialized') && 
-        !e.toString().contains('PlatformException')) {
+    if (!e.toString().contains('already been initialized') &&
+        !e.toString().contains('PlatformException') &&
+        !e.toString().contains('channel-error')) {
       rethrow;
     }
   }
