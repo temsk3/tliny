@@ -251,11 +251,35 @@ void main() {
         ),
       ];
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(mixedProducts));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+              return Stream.value(mixedProducts);
+            }),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+            home: Localizations(
+              locale: const Locale('ja', ''),
+              delegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              child: Scaffold(body: ProductListPage(program: testProgram)),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should only show active products
@@ -276,11 +300,35 @@ void main() {
         ),
       ];
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(productsWithNulls));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+              return Stream.value(productsWithNulls);
+            }),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+            home: Localizations(
+              locale: const Locale('ja', ''),
+              delegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              child: Scaffold(body: ProductListPage(program: testProgram)),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should handle null values gracefully

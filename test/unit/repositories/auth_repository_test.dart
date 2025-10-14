@@ -235,7 +235,7 @@ void main() {
         ).thenThrow(firebase_auth.FirebaseAuthException(code: 'unknown'));
 
         expect(
-          () => authRepository.signOut(),
+          () async => await authRepository.signOut(),
           throwsA(isA<GeneralException>()),
         );
       });
