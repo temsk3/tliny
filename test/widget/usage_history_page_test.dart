@@ -80,7 +80,7 @@ class MockUsageHistoryViewModel extends UsageHistoryViewModel {
   @override
   Future<List<UsageHistory>> build() async {
     if (_error != null) {
-      throw _error;
+      throw _error!;
     }
     return _data;
   }

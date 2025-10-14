@@ -43,6 +43,11 @@ void main() {
         mockAuthRepository.userId,
       ).thenAnswer((_) => Stream.value('test-user-id'));
 
+      // Mock readProducts by default to return empty list
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => <Product>[]);
+
       container = ProviderContainer(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
