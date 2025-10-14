@@ -2,12 +2,5 @@
   "name": "tliny",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
-  "devDependencies": {
-    "prettier": "^3.1.1"
-  },
-  "dependencies": {
-    "firebase-admin": "^12.0.0",
-    "firebase-functions": "^4.5.0"
-  }
+  "license": "MIT"
 }

@@ -34,7 +34,7 @@ class SnapshotProduct with _$SnapshotProduct {
   @JsonSerializable(explicitToJson: true)
   const factory SnapshotProduct({
     @documentReferenceKey
-        DocumentReference<Map<String, dynamic>>? productDocRef,
+    DocumentReference<Map<String, dynamic>>? productDocRef,
     int? quantity,
     // 購入者
     String? userId,
@@ -54,7 +54,7 @@ class SnapshotProduct with _$SnapshotProduct {
     String? register,
     // 開催者
     @documentReferenceKey
-        DocumentReference<Map<String, dynamic>>? organizerDocRef,
+    DocumentReference<Map<String, dynamic>>? organizerDocRef,
     String? organizerId,
     // イベント情報
     @documentReferenceKey DocumentReference<Map<String, dynamic>>? eventDocRef,

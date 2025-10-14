@@ -5,7 +5,6 @@ import 'package:tliny/src/data/repository/program_repository.dart';
 
 import '../../data/model/order_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
@@ -18,7 +17,6 @@ class OrderPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
     final state = ref.watch(orderViewModelProvider);
 
     return Scaffold(
@@ -80,7 +78,7 @@ class OrderPage extends HookConsumerWidget {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
+                              color: Colors.grey.withValues(alpha: 0.1),
                               spreadRadius: 1,
                               blurRadius: 10,
                               offset: const Offset(0, 2),
@@ -195,7 +193,7 @@ class OrderCard extends HookConsumerWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.08),
+                      color: Colors.grey.withValues(alpha: 0.08),
                       blurRadius: 20,
                       offset: const Offset(0, 4),
                     ),

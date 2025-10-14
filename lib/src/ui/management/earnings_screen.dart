@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../settings/hooks/use_l10n.dart';
 import '../../settings/routes/routes.dart';
 import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
@@ -16,7 +15,6 @@ class EarningsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
     // final appRoute = useRouter();
     return AsyncValueWidget(
       value: ref.watch(productsManagementStateProvider(eventId)),
@@ -63,7 +61,7 @@ class EarningsScreen extends HookConsumerWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.08),
+                          color: Colors.grey.withValues(alpha: 0.08),
                           blurRadius: 20,
                           offset: const Offset(0, 4),
                         ),
@@ -168,7 +166,7 @@ class EarningsScreen extends HookConsumerWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: Colors.grey.withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),

@@ -33,9 +33,13 @@ class ProductCard extends HookConsumerWidget {
     //     locale: Localizations.localeOf(context).toString());
 
     final now = DateTime.now();
-    final salesStart = program.salesStart!;
-    final salesEnd = program.salesEnd!;
-    final isOpened = salesStart.isBefore(now) && salesEnd.isAfter(now);
+    final salesStart = program.salesStart;
+    final salesEnd = program.salesEnd;
+    final isOpened =
+        salesStart != null &&
+        salesEnd != null &&
+        salesStart.isBefore(now) &&
+        salesEnd.isAfter(now);
     final stateIndicate = isOpened && product.stock != 0;
 
     // logger.d(program);
@@ -43,7 +47,7 @@ class ProductCard extends HookConsumerWidget {
 
     return Stack(
       children: [
-        InkWell(
+        GestureDetector(
           onTap: () async {
             try {
               if (program.id != null && product.id != null) {
@@ -72,21 +76,11 @@ class ProductCard extends HookConsumerWidget {
             elevation: 10,
             child: Column(
               //
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 12,
-                  // child: SizedBox.expand(
-                  //   child: product.pictureURL.isNotEmpty
-                  //       ? CachedNetworkImage(
-                  //           imageUrl: product.pictureURL[0],
-                  //           placeholder: (context, url) => const Center(
-                  //               child: CircularProgressIndicator()),
-                  //           errorWidget: (context, url, error) =>
-                  //               const Icon(Icons.error),
-                  //         )
-                  //       : Container(),
-                  // ),
+                SizedBox(
+                  height: 120,
                   child: PictureView(
                     picture: product.pictureURL,
                     index: 0,
@@ -95,33 +89,31 @@ class ProductCard extends HookConsumerWidget {
                     tap: false,
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          // child: FittedBox(
-                          //   fit: BoxFit.fitWidth,
-                          child: Text(
-                            product.name.toString(),
-                            // style: theme.textTheme.h40.bold(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          // ),
-                        ),
-                        // const SizedBox(height: 8.0),
-                        Expanded(
-                          child: Text(
-                            l10n.currency(product.price),
-                            // style: theme.textTheme.h40,
-                            // .copyWith(color: theme.appColors.onBackground),
-                          ),
-                        ),
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        product.name.toString(),
+                        // style: theme.textTheme.h40.bold(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 8.0),
+                      Text(
+                        '¥${product.price.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                        // style: theme.textTheme.h40,
+                        // .copyWith(color: theme.appColors.onBackground),
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        product.stock == 0 ? '売り切れ' : '在庫: ${product.stock}',
+                        // style: theme.textTheme.h40,
+                        // .copyWith(color: theme.appColors.onBackground),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -141,25 +133,8 @@ class ProductCard extends HookConsumerWidget {
         //     height: 240,
         //   ),
         // ),
-        (product.stock == 0)
-            ? const Positioned(
-              top: 4,
-              child: Text(
-                'SOLD OUT',
-                // style: theme.textTheme.h60.bold(),
-                // .copyWith(color: theme.appColors.onPrimary),
-              ),
-            )
-            : isOpened
-            ? const Positioned(child: Text(''))
-            : Positioned(
-              top: 4,
-              child: Text(
-                l10n.outOfTerm,
-                //  style: theme.textTheme.h60.bold(),
-                // .copyWith(color: theme.appColors.onPrimary),
-              ),
-            ),
+        // Stock information is now displayed in the main content area
+        // Removed Positioned overlay to avoid duplicate stock display
       ],
     );
   }

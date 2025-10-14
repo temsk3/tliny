@@ -46,7 +46,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '312506082989',
     projectId: 'tliny-sample',
     authDomain: 'tliny-sample.firebaseapp.com',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'tliny-sample.appspot.com',
     measurementId: 'G-65ZMZD8S4V',
   );
@@ -56,9 +57,11 @@ class DefaultFirebaseOptions {
     appId: '1:312506082989:ios:d71d0879776e2e27450824',
     messagingSenderId: '312506082989',
     projectId: 'tliny-sample',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'tliny-sample.appspot.com',
-    iosClientId: '312506082989-1umb0hv1bkcvg8rspecjr6v3eicrgaj2.apps.googleusercontent.com',
+    iosClientId:
+        '312506082989-1umb0hv1bkcvg8rspecjr6v3eicrgaj2.apps.googleusercontent.com',
     iosBundleId: 'com.example.tliny',
   );
 
@@ -67,9 +70,11 @@ class DefaultFirebaseOptions {
     appId: '1:312506082989:ios:d71d0879776e2e27450824',
     messagingSenderId: '312506082989',
     projectId: 'tliny-sample',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'tliny-sample.appspot.com',
-    iosClientId: '312506082989-1umb0hv1bkcvg8rspecjr6v3eicrgaj2.apps.googleusercontent.com',
+    iosClientId:
+        '312506082989-1umb0hv1bkcvg8rspecjr6v3eicrgaj2.apps.googleusercontent.com',
     iosBundleId: 'com.example.tliny',
   );
 
@@ -78,7 +83,8 @@ class DefaultFirebaseOptions {
     appId: '1:312506082989:android:84101f58a7eddd02450824',
     messagingSenderId: '312506082989',
     projectId: 'tliny-sample',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'tliny-sample.appspot.com',
   );
 
@@ -88,9 +94,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '312506082989',
     projectId: 'tliny-sample',
     authDomain: 'tliny-sample.firebaseapp.com',
-    databaseURL: 'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://tliny-sample-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'tliny-sample.appspot.com',
     measurementId: 'G-PQBNM3YP5T',
   );
-
 }

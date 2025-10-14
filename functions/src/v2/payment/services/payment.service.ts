@@ -7,7 +7,7 @@ import {
   cancelOrder,
 } from '../../business/services/order.service'
 import { updateAccountStatus } from '../../business/services/account.service'
-import { createTicketDocument } from '../../business/services/ticket.service'
+
 import { db } from '../../../utils/firebase_utils'
 import { checkDocumentExistsByQuery } from '../../firestore/utils/idempotency'
 
@@ -29,23 +29,40 @@ export class PaymentService {
     logger.info('Creating checkout session', { uid, eventId })
 
     try {
-      // 冪等性保証: 既存のチェックアウトセッションをチェック
-      const existingSessionQuery = await db
+      // 既存セッションを全てexpire
+      const existingSessionsQuery = await db
         .collection('v/1/users')
         .doc(uid)
         .collection('checkout_sessions')
         .where('eventId', '==', eventId)
-        .where('status', '==', 'pending')
-        .limit(1)
+        .where('status', 'in', ['pending', 'open'])
         .get()
 
+      for (const doc of existingSessionsQuery.docs) {
+        const sessionId = doc.data().checkoutSessionId
+        try {
+          await getStripe().checkout.sessions.expire(sessionId, {
+            stripeAccount: doc.data().accountId,
+          })
+          await doc.ref.update({
+            status: 'expired',
+            updatedAt: new Date(),
+          })
+        } catch (_e) {
+          // 既にexpire済み等のエラーは握りつぶしてOK
+        }
+      }
+
+      // 既存セッションの再利用ロジックはコメントアウト
+      /*
       if (!existingSessionQuery.empty) {
-        const existingSession = existingSessionQuery.docs[0].data()
+        const existingSession = existingSessionQuery.docs[0].data();
         logger.info('Existing checkout session found, validating with Stripe', {
           sessionId: existingSession.checkoutSessionId,
           uid,
           eventId,
-        })
+          status: existingSession.status,
+        });
 
         try {
           // 既存セッションの詳細情報を取得（stripeAccount指定）
@@ -54,7 +71,7 @@ export class PaymentService {
             {
               stripeAccount: existingSession.accountId,
             },
-          )
+          );
 
           // セッションが有効な場合のみ返す
           if (session.status === 'open') {
@@ -64,14 +81,18 @@ export class PaymentService {
                 sessionId: existingSession.checkoutSessionId,
                 status: session.status,
               },
-            )
+            );
 
+            // 既存セッションの場合は、現在のカート情報を取得して返す
+            // 前の商品情報ではなく、最新のカート状態を反映
+            const currentCartItems = await this.getCurrentCartItems(uid, eventId);
+            
             return {
               checkoutSessionId: existingSession.checkoutSessionId,
               url: session.url,
               status: session.status,
               accountId: existingSession.accountId,
-              lineItem: [], // 既存セッションの場合は空配列
+              lineItem: currentCartItems, // 現在のカート情報を返す
               orderId: existingSession.orderId,
             }
           } else {
@@ -81,7 +102,18 @@ export class PaymentService {
                 sessionId: existingSession.checkoutSessionId,
                 status: session.status,
               },
-            )
+            );
+
+            // 無効なセッションのステータスを更新
+            await db
+              .collection('v/1/users')
+              .doc(uid)
+              .collection('checkout_sessions')
+              .doc(existingSession.checkoutSessionId)
+              .update({
+                status: session.status,
+                updatedAt: new Date(),
+              });
           }
         } catch (stripeError: any) {
           logger.warn(
@@ -91,28 +123,35 @@ export class PaymentService {
               error: stripeError.message,
               errorCode: stripeError.code,
             },
-          )
+          );
 
-          // 無効なセッションをFirestoreから削除
+          // 無効なセッションのステータスを更新
           try {
             await db
               .collection('v/1/users')
               .doc(uid)
               .collection('checkout_sessions')
               .doc(existingSession.checkoutSessionId)
-              .delete()
+              .update({
+                status: 'expired',
+                updatedAt: new Date(),
+              });
 
-            logger.info('Invalid session removed from Firestore', {
+            logger.info('Invalid session status updated in Firestore', {
               sessionId: existingSession.checkoutSessionId,
-            })
-          } catch (deleteError: any) {
-            logger.error('Failed to delete invalid session from Firestore', {
-              sessionId: existingSession.checkoutSessionId,
-              error: deleteError.message,
-            })
+            });
+          } catch (updateError: any) {
+            logger.error(
+              'Failed to update invalid session status in Firestore',
+              {
+                sessionId: existingSession.checkoutSessionId,
+                error: updateError.message,
+              },
+            );
           }
         }
       }
+      */
 
       // プレオーダー作成
       const preOrderResult = await createPreOrder(uid, eventId)
@@ -295,18 +334,20 @@ export class PaymentService {
         }
       }
 
-      // 注文ステータス更新
+      // 注文ステータス更新（paymentIntentIdのみ更新、ステータスはチケット作成後に更新）
       await db.collection('v/1/orders').doc(orderId).update({
-        status: 'paid',
         paymentIntentId: paymentIntent.id,
         updatedAt: new Date(),
       })
     }
 
-    // チケット作成
-    if (orderId) {
-      await createTicketDocument(orderId)
-    }
+    // チケット作成はcheckout.session.completedで実行するため、ここではスキップ
+    logger.info(
+      'Skipping ticket creation in payment_intent.succeeded (handled in checkout.session.completed)',
+      {
+        orderId,
+      },
+    )
   }
 
   /**

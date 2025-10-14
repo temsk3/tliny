@@ -41,11 +41,7 @@ class ProductViewModel extends _$ProductViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readProductDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -79,14 +75,17 @@ class ProductViewModel extends _$ProductViewModel {
   Future<void> addProduct(Program program, Product product) async {
     logger.d('addProduct');
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
 
+    // ユーザーIDを取得して検証
+    final uid = await ref.read(userIdProvider.future);
     if (uid == null) {
       throw const AuthenticationException(message: 'ユーザーが認証されていません');
     }
 
     // スタッフまたは開催者かどうかをチェック
+    if (program.id == null) {
+      throw const GeneralException(message: 'プログラムIDが無効です');
+    }
     final isStaff = await staffRepository.checkExistenceStaff(program.id!, uid);
     final isOrganizer = uid == program.organizerId;
     if (!isStaff && !isOrganizer) {
@@ -131,14 +130,17 @@ class ProductViewModel extends _$ProductViewModel {
   Future<void> updateProduct(Product data) async {
     logger.d('updatedProduct');
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
 
+    // ユーザーIDを取得して検証
+    final uid = await ref.read(userIdProvider.future);
     if (uid == null) {
       throw const AuthenticationException(message: 'ユーザーが認証されていません');
     }
 
     // スタッフまたは開催者かどうかをチェック
+    if (data.eventId == null) {
+      throw const GeneralException(message: 'イベントIDが無効です');
+    }
     final isStaff = await staffRepository.checkExistenceStaff(
       data.eventId!,
       uid,
@@ -159,7 +161,7 @@ class ProductViewModel extends _$ProductViewModel {
         return productRepository.updateProduct(data);
       });
       final updatedProducts = [
-        for (final product in state.value!)
+        for (final product in (state.value ?? <Product>[]))
           if (product.id == id) data else product,
       ];
       state = AsyncValue.data(updatedProducts);
@@ -182,6 +184,13 @@ class ProductViewModel extends _$ProductViewModel {
   Future<void> deleteProduct(String id) async {
     logger.d('deleteProduct');
     final loading = ref.read(globalLoadingControllerProvider.notifier);
+
+    // ユーザーIDを取得して検証
+    final uid = await ref.read(userIdProvider.future);
+    if (uid == null) {
+      throw const AuthenticationException(message: 'ユーザーが認証されていません');
+    }
+
     state = const AsyncLoading();
     try {
       await loading.guardFuture(() async {

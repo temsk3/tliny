@@ -1,30 +1,128 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mockito/mockito.dart';
 import 'package:tliny/l10n/app_localizations.dart';
+import 'package:tliny/src/data/general_provider.dart';
 import 'package:tliny/src/data/model/cart_model.dart';
 import 'package:tliny/src/data/model/product_model.dart';
+import 'package:tliny/src/data/model/ticket_model.dart';
 import 'package:tliny/src/data/model/user_model.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
 
 /// テスト用のAppLocalizationsモック
-class MockAppLocalizations {
-  const MockAppLocalizations();
+class MockAppLocalizations extends AppLocalizations {
+  MockAppLocalizations() : super('ja');
 
+  @override
   String get close => '閉じる';
+
+  @override
   String get retry => '再試行';
+
+  @override
   String get generalError => 'エラー';
+
+  @override
   String get timeoutError => 'タイムアウトエラー';
+
+  @override
   String get imageLoadError => '画像読み込みエラー';
+
+  @override
   String get heicNotSupported => 'HEIC形式はサポートされていません';
+
+  @override
   String get networkError => 'ネットワークエラー';
+
+  @override
   String get serverError => 'サーバーエラー';
+
+  @override
   String get databaseError => 'データベースエラー';
+
+  @override
   String get authenticationError => '認証エラー';
+
+  @override
   String get validationError => 'バリデーションエラー';
-  String get fileNotFoundError => 'ファイルが見つかりません';
+
+  @override
   String get permissionError => '権限エラー';
+
   String get unknownError => '不明なエラー';
+
+  // すべての抽象メソッドのデフォルト実装
+  @override
+  String get appTitle => 'TLINY';
+
+  @override
+  String get home => 'ホーム';
+
+  @override
+  String get hello => 'こんにちは';
+
+  @override
+  String get profile => 'ユーザー情報';
+
+  @override
+  String get usageHistory => 'チケット使用履歴';
+
+  @override
+  String get ok => 'ok';
+
+  @override
+  String get yes => 'yes';
+
+  @override
+  String get no => 'no';
+
+  @override
+  String get title => 'タイトル';
+
+  String get fileNotFoundError => 'ファイルが見つかりません';
+
+  @override
+  String get insufficientStock => '在庫が不足しています';
+
+  @override
+  String get paymentError => '決済エラー';
+
+  @override
+  String get insufficientStockTitle => '在庫不足';
+
+  @override
+  String get paymentErrorTitle => '決済エラー';
+
+  // noSuchMethodを使用してすべての未実装メソッドに対応
+  @override
+  dynamic noSuchMethod(Invocation invocation) {
+    // getterの場合はデフォルト文字列を返す
+    if (invocation.isGetter) {
+      return 'Mock String';
+    }
+    // メソッドの場合もデフォルト文字列を返す
+    return 'Mock String';
+  }
 }
+
+// Mock classes for testing
+class MockFirebaseAuth extends Mock implements firebase_auth.FirebaseAuth {
+  @override
+  Stream<firebase_auth.User?> authStateChanges() => super.noSuchMethod(
+    Invocation.method(#authStateChanges, []),
+    returnValue: Stream<firebase_auth.User?>.value(null),
+  );
+
+  @override
+  firebase_auth.User? get currentUser =>
+      super.noSuchMethod(Invocation.getter(#currentUser), returnValue: null);
+}
+
+class MockFirebaseStorage extends Mock implements FirebaseStorage {}
 
 /// テスト用のヘルパー関数群
 class TestHelpers {
@@ -40,10 +138,23 @@ class TestHelpers {
     required Widget child,
     List<Override> overrides = const [],
   }) {
+    // Firebase関連のプロバイダーをオーバーライド
+    final fakeFirestore = FakeFirebaseFirestore();
+    final mockAuth = MockFirebaseAuth();
+    final mockStorage = MockFirebaseStorage();
+
+    final defaultOverrides = [
+      firebaseFirestoreProvider.overrideWithValue(fakeFirestore),
+      firebaseAuthProvider.overrideWithValue(mockAuth),
+      firebaseStorageProvider.overrideWithValue(mockStorage),
+      userIdProvider.overrideWith((ref) => Stream.value(null)),
+    ];
+
     return ProviderScope(
-      overrides: overrides,
+      overrides: [...defaultOverrides, ...overrides],
       child: MaterialApp(
         home: child,
+        locale: const Locale('ja'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
       ),
@@ -52,7 +163,7 @@ class TestHelpers {
 
   /// テスト用のAppLocalizationsを作成
   static MockAppLocalizations createMockL10n() {
-    return const MockAppLocalizations();
+    return MockAppLocalizations();
   }
 
   /// テスト用のProductを作成
@@ -163,4 +274,21 @@ class TestConstants {
   static const testPrice = 1000;
   static const testDescription = 'Test description';
   static const testImageUrl = 'https://example.com/image.jpg';
+}
+
+/// テスト用のUsageHistoryViewModelモック
+class MockUsageHistoryViewModel {
+  final List<UsageHistory> _data;
+  final Exception? _error;
+
+  MockUsageHistoryViewModel(this._data) : _error = null;
+
+  MockUsageHistoryViewModel.error(this._error) : _data = [];
+
+  Future<List<UsageHistory>> build() async {
+    if (_error != null) {
+      throw _error;
+    }
+    return _data;
+  }
 }

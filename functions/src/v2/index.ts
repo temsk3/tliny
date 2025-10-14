@@ -37,6 +37,7 @@ export {
   v2_business_ticket_onCreate,
   v2_business_ticket_onUpdate,
   v2_business_ticket_onDelete,
+  v2_business_ticket_createManually,
 } from './business/ticket'
 
 export {
@@ -161,3 +162,55 @@ export {
   v2_test_http_function,
   testRepairBrokenUsers,
 } from './test'
+
+// SNS functions
+export {
+  v2_sns_follow_createFollow,
+  v2_sns_follow_deleteFollow,
+  v2_sns_follow_getFollowers,
+  v2_sns_follow_getFollowing,
+} from './sns/follow'
+
+export {
+  v2_sns_post_createPost,
+  v2_sns_post_getFeed,
+  v2_sns_post_likePost,
+  v2_sns_post_unlikePost,
+} from './sns/post'
+
+export {
+  v2_sns_message_sendMessage,
+  v2_sns_message_getConversations,
+  v2_sns_message_getMessages,
+} from './sns/message'
+
+export {
+  v2_sns_notification_getNotifications,
+  v2_sns_notification_markAsRead,
+  v2_sns_notification_markAllAsRead,
+} from './sns/notification'
+
+export {
+  v2_sns_share_shareContent,
+  v2_sns_share_generateShareUrl,
+  v2_sns_share_getUserShares,
+} from './sns/share'
+
+export {
+  v2_sns_profile_getProfile,
+  v2_sns_profile_updateProfile,
+  v2_sns_profile_getUserPosts,
+  v2_sns_profile_checkFollowStatus,
+} from './sns/profile'
+
+export {
+  v2_sns_search_searchUsers,
+  v2_sns_search_searchPosts,
+  v2_sns_search_searchAll,
+} from './sns/search'
+
+export {
+  v2_sns_comment_createComment,
+  v2_sns_comment_getComments,
+  v2_sns_comment_deleteComment,
+} from './sns/comment'

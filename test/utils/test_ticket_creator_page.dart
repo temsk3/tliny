@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tliny/test/utils/create_test_tickets.dart';
+import 'create_test_tickets.dart';
 
 class TestTicketCreatorPage extends StatefulWidget {
   const TestTicketCreatorPage({super.key});

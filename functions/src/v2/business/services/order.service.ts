@@ -336,6 +336,9 @@ export const cancelOrder = async (orderId: string): Promise<void> => {
     if (userId) {
       // カートに差し戻し
       await sendBackCartItem(userId, orderItems)
+
+      // 関連するチェックアウトセッションのステータスを更新
+      await updateCheckoutSessionStatus(userId, orderId)
     }
 
     logger.info('Order canceled successfully', { orderId })
@@ -556,5 +559,53 @@ export const getProductDebug = async (productId: string): Promise<any> => {
     ErrorHandler.logError(error, error.stack, 'order.service.ts')
     const appEx = ErrorHandler.convertToAppException(error, 'order.service.ts')
     throw ErrorHandler.convertToHttpsError(appEx)
+  }
+}
+
+/**
+ * 注文に関連するチェックアウトセッションのステータスを更新
+ * @param {string} userId - ユーザーID
+ * @param {string} orderId - 注文ID
+ * @return {Promise<void>}
+ */
+const updateCheckoutSessionStatus = async (
+  userId: string,
+  orderId: string,
+): Promise<void> => {
+  try {
+    // 該当する注文IDのチェックアウトセッションを検索
+    const checkoutSessionsQuery = await db
+      .collection('v/1/users')
+      .doc(userId)
+      .collection('checkout_sessions')
+      .where('orderId', '==', orderId)
+      .where('status', 'in', ['pending', 'open'])
+      .get()
+
+    if (!checkoutSessionsQuery.empty) {
+      const batch = db.batch()
+
+      for (const doc of checkoutSessionsQuery.docs) {
+        batch.update(doc.ref, {
+          status: 'canceled',
+          updatedAt: Timestamp.now(),
+        })
+      }
+
+      await batch.commit()
+
+      logger.info('Checkout session status updated to canceled', {
+        userId,
+        orderId,
+        sessionCount: checkoutSessionsQuery.docs.length,
+      })
+    }
+  } catch (error: any) {
+    logger.error('Failed to update checkout session status', {
+      userId,
+      orderId,
+      error: error.message,
+    })
+    // チェックアウトセッションの更新に失敗しても注文キャンセルは成功とする
   }
 }

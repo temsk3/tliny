@@ -47,11 +47,11 @@ class TermsViewModel extends _$TermsViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readUserDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -211,11 +211,11 @@ class TermsViewModel extends _$TermsViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('updatePhoto: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -231,11 +231,11 @@ class TermsViewModel extends _$TermsViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('deletePhoto: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -264,11 +264,11 @@ class TermsViewModel extends _$TermsViewModel {
         error: e,
         stackTrace: st,
       );
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -292,11 +292,11 @@ class TermsViewModel extends _$TermsViewModel {
         error: e,
         stackTrace: st,
       );
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 

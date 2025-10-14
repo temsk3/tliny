@@ -24,7 +24,6 @@ class UserActionButtons extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final theme = Theme.of(context);
 
     return Column(
       children: [

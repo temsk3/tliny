@@ -29,9 +29,7 @@ class SalesScreen extends HookConsumerWidget {
     // 販売データを取得
     return AsyncValueWidget(
       value: ref.watch(managementStateProvider(eventId)),
-      data: (orderList) {
-        // null安全: orderListがnullなら空リストとして扱う
-        final safeOrderList = orderList ?? <Order>[];
+      data: (List<Order> orderList) {
         // 商品リスト
         final productList = <SnapshotProduct>[];
         // 商品種類リスト
@@ -43,7 +41,8 @@ class SalesScreen extends HookConsumerWidget {
         try {
           // 注文ステータスが「注文済み」の注文リストを取得
           final data =
-              safeOrderList
+              orderList
+                  .whereType<Order>()
                   .where((element) => element.status == StatusType.order)
                   .toList();
           // 注文リストをログ出力
@@ -133,7 +132,7 @@ class SalesScreen extends HookConsumerWidget {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1),
+                        color: Colors.grey.withValues(alpha: 0.1),
                         spreadRadius: 1,
                         blurRadius: 10,
                         offset: const Offset(0, 2),
@@ -193,7 +192,7 @@ class SalesScreen extends HookConsumerWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.08),
+                        color: Colors.grey.withValues(alpha: 0.08),
                         blurRadius: 20,
                         offset: const Offset(0, 4),
                       ),
@@ -211,7 +210,7 @@ class SalesScreen extends HookConsumerWidget {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: salesLevel.color.withOpacity(0.1),
+                                color: salesLevel.color.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Icon(
@@ -255,10 +254,12 @@ class SalesScreen extends HookConsumerWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: salesLevel.color.withOpacity(0.1),
+                                color: salesLevel.color.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: salesLevel.color.withOpacity(0.3),
+                                  color: salesLevel.color.withValues(
+                                    alpha: 0.3,
+                                  ),
                                 ),
                               ),
                               child: Text(

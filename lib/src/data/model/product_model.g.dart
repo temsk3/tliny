@@ -14,17 +14,13 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       exchangeNumber: (json['exchangeNumber'] as num?)?.toInt(),
       code: json['code'] as String?,
       name: json['name'] as String?,
-      genre: $enumDecodeNullable(
-        _$GenreTypeEnumMap,
-        json['genre'],
-        unknownValue: GenreType.others,
-      ),
+      genre: $enumDecodeNullable(_$GenreTypeEnumMap, json['genre'],
+          unknownValue: GenreType.others),
       desc: json['desc'] as String?,
       stock: (json['stock'] as num?)?.toInt() ?? 0,
       price: (json['price'] as num?)?.toInt() ?? 50,
       strageId: json['strageId'] as String?,
-      pictureURL:
-          (json['pictureURL'] as List<dynamic>?)
+      pictureURL: (json['pictureURL'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -35,12 +31,10 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       priceId: json['priceId'] as String?,
       register: json['register'] as String?,
       organizerDocRef: documentReference(
-        json['organizerDocRef'] as DocumentReference<Map<String, dynamic>>?,
-      ),
+          json['organizerDocRef'] as DocumentReference<Map<String, dynamic>>?),
       organizerId: json['organizerId'] as String?,
       eventDocRef: documentReference(
-        json['eventDocRef'] as DocumentReference<Map<String, dynamic>>?,
-      ),
+          json['eventDocRef'] as DocumentReference<Map<String, dynamic>>?),
       eventId: json['eventId'] as String?,
       eventName: json['eventName'] as String?,
       expirationLink: json['expirationLink'] as bool?,
@@ -89,15 +83,15 @@ const _$GenreTypeEnumMap = {
 };
 
 _$ProductQueryParameterImpl _$$ProductQueryParameterImplFromJson(
-  Map<String, dynamic> json,
-) => _$ProductQueryParameterImpl(
-  json['programId'] as String?,
-  $enumDecodeNullable(_$GenreTypeEnumMap, json['genre']),
-);
+        Map<String, dynamic> json) =>
+    _$ProductQueryParameterImpl(
+      json['programId'] as String?,
+      $enumDecodeNullable(_$GenreTypeEnumMap, json['genre']),
+    );
 
 Map<String, dynamic> _$$ProductQueryParameterImplToJson(
-  _$ProductQueryParameterImpl instance,
-) => <String, dynamic>{
-  'programId': instance.programId,
-  'genre': _$GenreTypeEnumMap[instance.genre],
-};
+        _$ProductQueryParameterImpl instance) =>
+    <String, dynamic>{
+      'programId': instance.programId,
+      'genre': _$GenreTypeEnumMap[instance.genre],
+    };

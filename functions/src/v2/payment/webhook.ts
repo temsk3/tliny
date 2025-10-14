@@ -225,11 +225,10 @@ const handleCheckoutSessionCompleted = async (
       try {
         const parsed = JSON.parse(metadata)
         orderId = parsed.orderId
-      } catch (e) {
+      } catch (_e) {
         orderId = undefined
       }
     }
-
 
     if (!orderId) {
       throw new Error('orderId not found in checkout session metadata')

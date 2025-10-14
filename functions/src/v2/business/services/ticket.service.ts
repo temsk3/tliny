@@ -1,10 +1,8 @@
 import { db } from '../../../utils/firebase_utils'
 import { logger, V2Logger } from '../../../utils/logger'
 import { ErrorHandler } from '../../../utils/error_handler'
-import {
-  generateTicketKey,
-  createDocumentWithIdempotency,
-} from '../../firestore/utils/idempotency'
+import { generateTicketKey } from '../../firestore/utils/idempotency'
+import * as FirebaseFirestore from 'firebase-admin/firestore'
 
 /**
  * チケットドキュメントの作成（v1のcreateTicketDocumentを移行）
@@ -60,8 +58,17 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
       return
     }
 
-    // 注文の確定
+    // 注文の確定（orderステータスに更新）
     await orderDoc.ref.set({ status: 'order' }, { merge: true })
+
+    // 決済完了の確認（paymentIntentIdが存在する場合はpaidステータスに更新）
+    if (orderData.paymentIntentId) {
+      await orderDoc.ref.set({ status: 'paid' }, { merge: true })
+      logger.info('Order status updated to paid', {
+        orderId,
+        paymentIntentId: orderData.paymentIntentId,
+      })
+    }
 
     // ユーザー購入履歴の更新
     const userId = orderData.userId
@@ -89,6 +96,10 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
       'createTicketsTransaction',
       async () => {
         return await db.runTransaction(async (transaction) => {
+          // 最初にすべてのチケットの存在チェックを実行
+          const ticketChecks: Promise<FirebaseFirestore.DocumentSnapshot>[] = []
+          const ticketParams: any[] = []
+
           for (const product of products) {
             for (let index = 0; index < product.quantity; index++) {
               const ticketId = generateTicketKey(
@@ -97,7 +108,7 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
                 index,
               )
 
-              const ticketParams = {
+              const params = {
                 // 購入者
                 paidUserId: product.userId,
                 paidUserName: product.userName,
@@ -139,12 +150,25 @@ export const createTicketDocument = async (orderId: string): Promise<void> => {
                 orderId: orderId,
               }
 
-              // トランザクション内で冪等性を保証してチケット作成
-              await createDocumentWithIdempotency(
-                'v/1/tickets',
-                ticketId,
-                ticketParams,
-                true,
+              // チケットの存在チェックを追加
+              const ticketRef = db.collection('v/1/tickets').doc(ticketId)
+              ticketChecks.push(transaction.get(ticketRef))
+              ticketParams.push({ ticketId, params })
+            }
+          }
+
+          // すべての読み取り操作を実行
+          const ticketSnapshots = await Promise.all(ticketChecks)
+
+          // 存在しないチケットのみ作成
+          for (let i = 0; i < ticketSnapshots.length; i++) {
+            const snapshot = ticketSnapshots[i]
+            const { ticketId, params } = ticketParams[i]
+
+            if (!snapshot.exists) {
+              transaction.set(
+                db.collection('v/1/tickets').doc(ticketId),
+                params,
               )
             }
           }

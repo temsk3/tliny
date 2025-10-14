@@ -58,3 +58,19 @@ emulators
 
 # FVM Version Cache
 .fvm/
+
+# serena
+.serena/memories/
+.serena/cache/
+.serena/index/
+.serena/logs/
+.serena/dashboard/
+
+# MCP configuration (contains secrets)
+.cursor/
+.mcp.json
+
+# Secret files (contains sensitive credentials)
+*.secret.local
+.secret.local
+**/.secret.local

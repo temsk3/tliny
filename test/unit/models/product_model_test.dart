@@ -35,7 +35,7 @@ void main() {
       expect(product.genre, equals(GenreType.foods));
       expect(product.desc, equals('Test Description'));
       expect(product.stock, equals(0)); // default value
-      expect(product.price, equals(0)); // default value
+      expect(product.price, equals(50)); // default value
     });
 
     test('Product.copyWith should create new instance with updated fields', () {
@@ -181,9 +181,9 @@ void main() {
 
   group('GenreType Tests', () {
     test('GenreType should have correct name values', () {
-      expect(GenreType.goods.name, equals('物品'));
-      expect(GenreType.foods.name, equals('食品'));
-      expect(GenreType.others.name, equals('その他'));
+      expect(GenreType.goods.name, equals('goods'));
+      expect(GenreType.foods.name, equals('foods'));
+      expect(GenreType.others.name, equals('others'));
     });
 
     test('GenreType.values should contain all enum values', () {

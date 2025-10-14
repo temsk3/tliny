@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -26,8 +26,9 @@ class UuidRepository {
       var newId = uuid.v4();
 
       // 既存のIDリストを取得
-      final snapShot =
-          await _db.collection('/v/1/platform/spel1/storage_id').get();
+      final snapShot = await _db
+          .collection('/v/1/platform/spel1/storage_id')
+          .get();
       final idList = snapShot.docs.map((e) => e.id).toList();
 
       // 重複しないIDが見つかるまで生成
@@ -75,11 +76,10 @@ class UuidRepository {
   Future<bool> checkUuidExists(String uuid) async {
     logger.i('checkUuidExists: UUIDの存在確認を行います: $uuid');
     try {
-      final doc =
-          await _db
-              .collection('/v/1/platform/spel1/storage_id')
-              .doc(uuid)
-              .get();
+      final doc = await _db
+          .collection('/v/1/platform/spel1/storage_id')
+          .doc(uuid)
+          .get();
 
       final exists = doc.exists;
       logger.i('checkUuidExists: UUIDの存在確認完了 exists=$exists');

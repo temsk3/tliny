@@ -41,11 +41,10 @@ class FavoriteViewModel extends _$FavoriteViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readFavoriteDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
       );
-      rethrow;
     }
   }
 
@@ -70,11 +69,10 @@ class FavoriteViewModel extends _$FavoriteViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('readFavorite: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      state = AsyncValue.error(GeneralException(
         message: e.toString(),
         stackTrace: st,
-      );
-      state = AsyncValue.error(appException, st);
+      ), st);
       rethrow;
     }
   }
@@ -101,11 +99,10 @@ class FavoriteViewModel extends _$FavoriteViewModel {
         rethrow;
       } on Exception catch (e, st) {
         logger.e('addFavorite: Exception - $e', stackTrace: st);
-        final appException = GeneralException(
+        state = AsyncValue.error(GeneralException(
           message: e.toString(),
           stackTrace: st,
-        );
-        state = AsyncValue.error(appException, st);
+        ), st);
         rethrow;
       }
     }
@@ -133,11 +130,10 @@ class FavoriteViewModel extends _$FavoriteViewModel {
         rethrow;
       } on Exception catch (e, st) {
         logger.e('updateFavorite: Exception - $e', stackTrace: st);
-        final appException = GeneralException(
+        state = AsyncValue.error(GeneralException(
           message: e.toString(),
           stackTrace: st,
-        );
-        state = AsyncValue.error(appException, st);
+        ), st);
         rethrow;
       }
     }
@@ -165,11 +161,10 @@ class FavoriteViewModel extends _$FavoriteViewModel {
         rethrow;
       } on Exception catch (e, st) {
         logger.e('deleteFavorite: Exception - $e', stackTrace: st);
-        final appException = GeneralException(
+        state = AsyncValue.error(GeneralException(
           message: e.toString(),
           stackTrace: st,
-        );
-        state = AsyncValue.error(appException, st);
+        ), st);
         rethrow;
       }
     }

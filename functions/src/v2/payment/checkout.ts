@@ -4,106 +4,121 @@ import { HttpsError } from 'firebase-functions/v2/https'
 import { logger, V2Logger } from '../../utils/logger'
 import { requireAuth } from '../../utils/auth-guard'
 import { getStripe } from './utils'
+import {
+  stripeSecret,
+  stripeEpSecret,
+  stripeDevSk,
+  stripeDevEp,
+} from './utils/stripe_config'
 import { PaymentService } from './services/payment.service'
 import { cancelOrder } from '../business/services/order.service'
 
 // Direct exports - no more _exportFunction
-export const v2_payment_checkout_onSetup = onCall(async (request) => {
-  const methodName = 'v2_payment_checkout_onSetup'
+export const v2_payment_checkout_onSetup = onCall(
+  async (request) => {
+    const methodName = 'v2_payment_checkout_onSetup'
 
-  try {
-    V2Logger.start(methodName, {
-      hasAuth: !!request.auth,
-      authUid: request.auth?.uid,
-    })
+    try {
+      V2Logger.start(methodName, {
+        hasAuth: !!request.auth,
+        authUid: request.auth?.uid,
+      })
 
-    requireAuth(request)
+      requireAuth(request)
+      const successUrl = (request.data as any).successUrl
+      const cancelUrl = (request.data as any).cancelUrl
+
+      const params: Stripe.Checkout.SessionCreateParams = {
+        payment_method_types: ['card'],
+        mode: 'setup',
+        customer_update: { name: 'auto' as const },
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+      }
+
+      const session = await getStripe().checkout.sessions.create(params)
+
+      const result = {
+        checkoutSessionId: session.id,
+        url: session.url,
+      }
+
+      V2Logger.success(methodName, result)
+      return result
+    } catch (error: unknown) {
+      V2Logger.error(methodName, error as any, {
+        hasAuth: !!request.auth,
+        authUid: request.auth?.uid,
+      })
+      throw error
+    }
+  },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
+)
+
+export const v2_payment_checkout_onSubscription = onCall(
+  async (request) => {
+    const uid = requireAuth(request)
+    const orderId = (request.data as any).orderId
+    const lineItems = (request.data as any).lineItems
     const successUrl = (request.data as any).successUrl
     const cancelUrl = (request.data as any).cancelUrl
 
-    const params: Stripe.Checkout.SessionCreateParams = {
-      payment_method_types: ['card'],
-      mode: 'setup',
-      customer_update: { name: 'auto' as const },
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-    }
-
-    const session = await getStripe().checkout.sessions.create(params)
-
-    const result = {
-      checkoutSessionId: session.id,
-      url: session.url,
-    }
-
-    V2Logger.success(methodName, result)
-    return result
-  } catch (error: unknown) {
-    V2Logger.error(methodName, error as any, {
-      hasAuth: !!request.auth,
-      authUid: request.auth?.uid,
+    logger.info('Creating subscription session (v1 compatible)', {
+      uid,
+      orderId,
     })
-    throw error
-  }
-})
 
-export const v2_payment_checkout_onSubscription = onCall(async (request) => {
-  const uid = requireAuth(request)
-  const orderId = (request.data as any).orderId
-  const lineItems = (request.data as any).lineItems
-  const successUrl = (request.data as any).successUrl
-  const cancelUrl = (request.data as any).cancelUrl
+    try {
+      const params: Stripe.Checkout.SessionCreateParams = {
+        mode: 'subscription' as const,
+        line_items: lineItems,
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        metadata: { orderId: orderId },
+      }
 
-  logger.info('Creating subscription session (v1 compatible)', {
-    uid,
-    orderId,
-  })
+      const session = await getStripe().checkout.sessions.create(params)
+      logger.info('Subscription session created', { sessionId: session.id })
 
-  try {
-    const params: Stripe.Checkout.SessionCreateParams = {
-      mode: 'subscription' as const,
-      line_items: lineItems,
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      metadata: { orderId: orderId },
+      return {
+        checkoutSessionId: session.id,
+        url: session.url,
+      }
+    } catch (error: unknown) {
+      logger.error('Failed to create subscription session', { error })
+      throw error
     }
+  },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
+)
 
-    const session = await getStripe().checkout.sessions.create(params)
-    logger.info('Subscription session created', { sessionId: session.id })
+export const v2_payment_checkout_onListOfLineItems = onCall(
+  async (request) => {
+    requireAuth(request)
+    const checkoutSessionId = (request.data as any).checkoutSessionId
+    const accountId = (request.data as any).accountId
 
-    return {
-      checkoutSessionId: session.id,
-      url: session.url,
-    }
-  } catch (error: unknown) {
-    logger.error('Failed to create subscription session', { error })
-    throw error
-  }
-})
-
-export const v2_payment_checkout_onListOfLineItems = onCall(async (request) => {
-  requireAuth(request)
-  const checkoutSessionId = (request.data as any).checkoutSessionId
-  const accountId = (request.data as any).accountId
-
-  logger.info('Listing line items (v1 compatible)', {
-    checkoutSessionId,
-    accountId,
-  })
-
-  try {
-    const lineItems = await getStripe().checkout.sessions.listLineItems(
+    logger.info('Listing line items (v1 compatible)', {
       checkoutSessionId,
-      {
-        stripeAccount: accountId,
-      },
-    )
-    return lineItems.data
-  } catch (error: unknown) {
-    logger.error('Failed to list line items', { error })
-    throw error
-  }
-})
+      accountId,
+    })
+
+    try {
+      const lineItems = await getStripe().checkout.sessions.listLineItems(
+        checkoutSessionId,
+        {
+          stripeAccount: accountId,
+        },
+      )
+      return lineItems.data
+    } catch (error: unknown) {
+      logger.error('Failed to list line items', { error })
+      throw error
+    }
+  },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
+)
 
 export const v2_payment_checkout_createPaymentSession = onCall(
   async (request) => {
@@ -167,6 +182,7 @@ export const v2_payment_checkout_createPaymentSession = onCall(
       throw error
     }
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 // セッション取得

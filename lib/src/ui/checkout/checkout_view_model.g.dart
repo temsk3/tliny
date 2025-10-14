@@ -9,22 +9,21 @@ part of 'checkout_view_model.dart';
 // **************************************************************************
 
 String _$stripeCheckoutViewModelHash() =>
-    r'b4a39d316d3c2017f796df1ebdca2912fb9680ad';
+    r'69443d8499ee13e3d966bc63fb228880ba03a514';
 
 /// See also [StripeCheckoutViewModel].
 @ProviderFor(StripeCheckoutViewModel)
 final stripeCheckoutViewModelProvider =
     AutoDisposeAsyncNotifierProvider<StripeCheckoutViewModel, void>.internal(
-      StripeCheckoutViewModel.new,
-      name: r'stripeCheckoutViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$stripeCheckoutViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  StripeCheckoutViewModel.new,
+  name: r'stripeCheckoutViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$stripeCheckoutViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$StripeCheckoutViewModel = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

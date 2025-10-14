@@ -12,8 +12,7 @@ part of 'ticket_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Ticket _$TicketFromJson(Map<String, dynamic> json) {
   return _Ticket.fromJson(json);
@@ -64,12 +63,8 @@ mixin _$Ticket {
   @TimestampConverter()
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this Ticket to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Ticket
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TicketCopyWith<Ticket> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -78,39 +73,38 @@ abstract class $TicketCopyWith<$Res> {
   factory $TicketCopyWith(Ticket value, $Res Function(Ticket) then) =
       _$TicketCopyWithImpl<$Res, Ticket>;
   @useResult
-  $Res call({
-    String? id,
-    String? paidUserId,
-    String? paidUserName,
-    @TimestampConverter() DateTime? purchaseTime,
-    String? ownerId,
-    String? ownerName,
-    List<Assignment>? assignment,
-    bool isActive,
-    bool isPrinting,
-    bool isUsed,
-    String? uuid,
-    String? pdfUuid,
-    @DocumentReferenceNullStringConverter() String? productDocRef,
-    String? productId,
-    String? code,
-    String? name,
-    String? desc,
-    int? price,
-    List<String> pictureURL,
-    @TimestampConverter() DateTime? expirationFrom,
-    @TimestampConverter() DateTime? expirationTo,
-    String? register,
-    String? registerName,
-    @DocumentReferenceNullStringConverter() String? organizerDocRef,
-    String? organizerId,
-    @DocumentReferenceNullStringConverter() String? eventDocRef,
-    String? eventId,
-    String? eventName,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      String? paidUserId,
+      String? paidUserName,
+      @TimestampConverter() DateTime? purchaseTime,
+      String? ownerId,
+      String? ownerName,
+      List<Assignment>? assignment,
+      bool isActive,
+      bool isPrinting,
+      bool isUsed,
+      String? uuid,
+      String? pdfUuid,
+      @DocumentReferenceNullStringConverter() String? productDocRef,
+      String? productId,
+      String? code,
+      String? name,
+      String? desc,
+      int? price,
+      List<String> pictureURL,
+      @TimestampConverter() DateTime? expirationFrom,
+      @TimestampConverter() DateTime? expirationTo,
+      String? register,
+      String? registerName,
+      @DocumentReferenceNullStringConverter() String? organizerDocRef,
+      String? organizerId,
+      @DocumentReferenceNullStringConverter() String? eventDocRef,
+      String? eventId,
+      String? eventName,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt,
+      @TimestampConverter() DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -123,8 +117,6 @@ class _$TicketCopyWithImpl<$Res, $Val extends Ticket>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Ticket
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -160,210 +152,174 @@ class _$TicketCopyWithImpl<$Res, $Val extends Ticket>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id:
-                freezed == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            paidUserId:
-                freezed == paidUserId
-                    ? _value.paidUserId
-                    : paidUserId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            paidUserName:
-                freezed == paidUserName
-                    ? _value.paidUserName
-                    : paidUserName // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            purchaseTime:
-                freezed == purchaseTime
-                    ? _value.purchaseTime
-                    : purchaseTime // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            ownerId:
-                freezed == ownerId
-                    ? _value.ownerId
-                    : ownerId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            ownerName:
-                freezed == ownerName
-                    ? _value.ownerName
-                    : ownerName // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            assignment:
-                freezed == assignment
-                    ? _value.assignment
-                    : assignment // ignore: cast_nullable_to_non_nullable
-                        as List<Assignment>?,
-            isActive:
-                null == isActive
-                    ? _value.isActive
-                    : isActive // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            isPrinting:
-                null == isPrinting
-                    ? _value.isPrinting
-                    : isPrinting // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            isUsed:
-                null == isUsed
-                    ? _value.isUsed
-                    : isUsed // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            uuid:
-                freezed == uuid
-                    ? _value.uuid
-                    : uuid // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            pdfUuid:
-                freezed == pdfUuid
-                    ? _value.pdfUuid
-                    : pdfUuid // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            productDocRef:
-                freezed == productDocRef
-                    ? _value.productDocRef
-                    : productDocRef // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            productId:
-                freezed == productId
-                    ? _value.productId
-                    : productId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            code:
-                freezed == code
-                    ? _value.code
-                    : code // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            name:
-                freezed == name
-                    ? _value.name
-                    : name // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            desc:
-                freezed == desc
-                    ? _value.desc
-                    : desc // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            price:
-                freezed == price
-                    ? _value.price
-                    : price // ignore: cast_nullable_to_non_nullable
-                        as int?,
-            pictureURL:
-                null == pictureURL
-                    ? _value.pictureURL
-                    : pictureURL // ignore: cast_nullable_to_non_nullable
-                        as List<String>,
-            expirationFrom:
-                freezed == expirationFrom
-                    ? _value.expirationFrom
-                    : expirationFrom // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            expirationTo:
-                freezed == expirationTo
-                    ? _value.expirationTo
-                    : expirationTo // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            register:
-                freezed == register
-                    ? _value.register
-                    : register // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            registerName:
-                freezed == registerName
-                    ? _value.registerName
-                    : registerName // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            organizerDocRef:
-                freezed == organizerDocRef
-                    ? _value.organizerDocRef
-                    : organizerDocRef // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            organizerId:
-                freezed == organizerId
-                    ? _value.organizerId
-                    : organizerId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            eventDocRef:
-                freezed == eventDocRef
-                    ? _value.eventDocRef
-                    : eventDocRef // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            eventId:
-                freezed == eventId
-                    ? _value.eventId
-                    : eventId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            eventName:
-                freezed == eventName
-                    ? _value.eventName
-                    : eventName // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            createdAt:
-                freezed == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            updatedAt:
-                freezed == updatedAt
-                    ? _value.updatedAt
-                    : updatedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            deletedAt:
-                freezed == deletedAt
-                    ? _value.deletedAt
-                    : deletedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      paidUserId: freezed == paidUserId
+          ? _value.paidUserId
+          : paidUserId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      paidUserName: freezed == paidUserName
+          ? _value.paidUserName
+          : paidUserName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      purchaseTime: freezed == purchaseTime
+          ? _value.purchaseTime
+          : purchaseTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ownerName: freezed == ownerName
+          ? _value.ownerName
+          : ownerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      assignment: freezed == assignment
+          ? _value.assignment
+          : assignment // ignore: cast_nullable_to_non_nullable
+              as List<Assignment>?,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isPrinting: null == isPrinting
+          ? _value.isPrinting
+          : isPrinting // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUsed: null == isUsed
+          ? _value.isUsed
+          : isUsed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pdfUuid: freezed == pdfUuid
+          ? _value.pdfUuid
+          : pdfUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productDocRef: freezed == productDocRef
+          ? _value.productDocRef
+          : productDocRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productId: freezed == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      desc: freezed == desc
+          ? _value.desc
+          : desc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int?,
+      pictureURL: null == pictureURL
+          ? _value.pictureURL
+          : pictureURL // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      expirationFrom: freezed == expirationFrom
+          ? _value.expirationFrom
+          : expirationFrom // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      expirationTo: freezed == expirationTo
+          ? _value.expirationTo
+          : expirationTo // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      register: freezed == register
+          ? _value.register
+          : register // ignore: cast_nullable_to_non_nullable
+              as String?,
+      registerName: freezed == registerName
+          ? _value.registerName
+          : registerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      organizerDocRef: freezed == organizerDocRef
+          ? _value.organizerDocRef
+          : organizerDocRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      organizerId: freezed == organizerId
+          ? _value.organizerId
+          : organizerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventDocRef: freezed == eventDocRef
+          ? _value.eventDocRef
+          : eventDocRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventName: freezed == eventName
+          ? _value.eventName
+          : eventName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$TicketImplCopyWith<$Res> implements $TicketCopyWith<$Res> {
   factory _$$TicketImplCopyWith(
-    _$TicketImpl value,
-    $Res Function(_$TicketImpl) then,
-  ) = __$$TicketImplCopyWithImpl<$Res>;
+          _$TicketImpl value, $Res Function(_$TicketImpl) then) =
+      __$$TicketImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String? id,
-    String? paidUserId,
-    String? paidUserName,
-    @TimestampConverter() DateTime? purchaseTime,
-    String? ownerId,
-    String? ownerName,
-    List<Assignment>? assignment,
-    bool isActive,
-    bool isPrinting,
-    bool isUsed,
-    String? uuid,
-    String? pdfUuid,
-    @DocumentReferenceNullStringConverter() String? productDocRef,
-    String? productId,
-    String? code,
-    String? name,
-    String? desc,
-    int? price,
-    List<String> pictureURL,
-    @TimestampConverter() DateTime? expirationFrom,
-    @TimestampConverter() DateTime? expirationTo,
-    String? register,
-    String? registerName,
-    @DocumentReferenceNullStringConverter() String? organizerDocRef,
-    String? organizerId,
-    @DocumentReferenceNullStringConverter() String? eventDocRef,
-    String? eventId,
-    String? eventName,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      String? paidUserId,
+      String? paidUserName,
+      @TimestampConverter() DateTime? purchaseTime,
+      String? ownerId,
+      String? ownerName,
+      List<Assignment>? assignment,
+      bool isActive,
+      bool isPrinting,
+      bool isUsed,
+      String? uuid,
+      String? pdfUuid,
+      @DocumentReferenceNullStringConverter() String? productDocRef,
+      String? productId,
+      String? code,
+      String? name,
+      String? desc,
+      int? price,
+      List<String> pictureURL,
+      @TimestampConverter() DateTime? expirationFrom,
+      @TimestampConverter() DateTime? expirationTo,
+      String? register,
+      String? registerName,
+      @DocumentReferenceNullStringConverter() String? organizerDocRef,
+      String? organizerId,
+      @DocumentReferenceNullStringConverter() String? eventDocRef,
+      String? eventId,
+      String? eventName,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt,
+      @TimestampConverter() DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -371,12 +327,9 @@ class __$$TicketImplCopyWithImpl<$Res>
     extends _$TicketCopyWithImpl<$Res, _$TicketImpl>
     implements _$$TicketImplCopyWith<$Res> {
   __$$TicketImplCopyWithImpl(
-    _$TicketImpl _value,
-    $Res Function(_$TicketImpl) _then,
-  ) : super(_value, _then);
+      _$TicketImpl _value, $Res Function(_$TicketImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of Ticket
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -412,213 +365,180 @@ class __$$TicketImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _$TicketImpl(
-        id:
-            freezed == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        paidUserId:
-            freezed == paidUserId
-                ? _value.paidUserId
-                : paidUserId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        paidUserName:
-            freezed == paidUserName
-                ? _value.paidUserName
-                : paidUserName // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        purchaseTime:
-            freezed == purchaseTime
-                ? _value.purchaseTime
-                : purchaseTime // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        ownerId:
-            freezed == ownerId
-                ? _value.ownerId
-                : ownerId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        ownerName:
-            freezed == ownerName
-                ? _value.ownerName
-                : ownerName // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        assignment:
-            freezed == assignment
-                ? _value._assignment
-                : assignment // ignore: cast_nullable_to_non_nullable
-                    as List<Assignment>?,
-        isActive:
-            null == isActive
-                ? _value.isActive
-                : isActive // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        isPrinting:
-            null == isPrinting
-                ? _value.isPrinting
-                : isPrinting // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        isUsed:
-            null == isUsed
-                ? _value.isUsed
-                : isUsed // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        uuid:
-            freezed == uuid
-                ? _value.uuid
-                : uuid // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        pdfUuid:
-            freezed == pdfUuid
-                ? _value.pdfUuid
-                : pdfUuid // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        productDocRef:
-            freezed == productDocRef
-                ? _value.productDocRef
-                : productDocRef // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        productId:
-            freezed == productId
-                ? _value.productId
-                : productId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        code:
-            freezed == code
-                ? _value.code
-                : code // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        name:
-            freezed == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        desc:
-            freezed == desc
-                ? _value.desc
-                : desc // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        price:
-            freezed == price
-                ? _value.price
-                : price // ignore: cast_nullable_to_non_nullable
-                    as int?,
-        pictureURL:
-            null == pictureURL
-                ? _value._pictureURL
-                : pictureURL // ignore: cast_nullable_to_non_nullable
-                    as List<String>,
-        expirationFrom:
-            freezed == expirationFrom
-                ? _value.expirationFrom
-                : expirationFrom // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        expirationTo:
-            freezed == expirationTo
-                ? _value.expirationTo
-                : expirationTo // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        register:
-            freezed == register
-                ? _value.register
-                : register // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        registerName:
-            freezed == registerName
-                ? _value.registerName
-                : registerName // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        organizerDocRef:
-            freezed == organizerDocRef
-                ? _value.organizerDocRef
-                : organizerDocRef // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        organizerId:
-            freezed == organizerId
-                ? _value.organizerId
-                : organizerId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        eventDocRef:
-            freezed == eventDocRef
-                ? _value.eventDocRef
-                : eventDocRef // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        eventId:
-            freezed == eventId
-                ? _value.eventId
-                : eventId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        eventName:
-            freezed == eventName
-                ? _value.eventName
-                : eventName // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        createdAt:
-            freezed == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        updatedAt:
-            freezed == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        deletedAt:
-            freezed == deletedAt
-                ? _value.deletedAt
-                : deletedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-      ),
-    );
+    return _then(_$TicketImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      paidUserId: freezed == paidUserId
+          ? _value.paidUserId
+          : paidUserId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      paidUserName: freezed == paidUserName
+          ? _value.paidUserName
+          : paidUserName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      purchaseTime: freezed == purchaseTime
+          ? _value.purchaseTime
+          : purchaseTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      ownerId: freezed == ownerId
+          ? _value.ownerId
+          : ownerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ownerName: freezed == ownerName
+          ? _value.ownerName
+          : ownerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      assignment: freezed == assignment
+          ? _value._assignment
+          : assignment // ignore: cast_nullable_to_non_nullable
+              as List<Assignment>?,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isPrinting: null == isPrinting
+          ? _value.isPrinting
+          : isPrinting // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUsed: null == isUsed
+          ? _value.isUsed
+          : isUsed // ignore: cast_nullable_to_non_nullable
+              as bool,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pdfUuid: freezed == pdfUuid
+          ? _value.pdfUuid
+          : pdfUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productDocRef: freezed == productDocRef
+          ? _value.productDocRef
+          : productDocRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productId: freezed == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      desc: freezed == desc
+          ? _value.desc
+          : desc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int?,
+      pictureURL: null == pictureURL
+          ? _value._pictureURL
+          : pictureURL // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      expirationFrom: freezed == expirationFrom
+          ? _value.expirationFrom
+          : expirationFrom // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      expirationTo: freezed == expirationTo
+          ? _value.expirationTo
+          : expirationTo // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      register: freezed == register
+          ? _value.register
+          : register // ignore: cast_nullable_to_non_nullable
+              as String?,
+      registerName: freezed == registerName
+          ? _value.registerName
+          : registerName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      organizerDocRef: freezed == organizerDocRef
+          ? _value.organizerDocRef
+          : organizerDocRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      organizerId: freezed == organizerId
+          ? _value.organizerId
+          : organizerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventDocRef: freezed == eventDocRef
+          ? _value.eventDocRef
+          : eventDocRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventName: freezed == eventName
+          ? _value.eventName
+          : eventName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TicketImpl extends _Ticket {
-  const _$TicketImpl({
-    this.id,
-    this.paidUserId,
-    this.paidUserName,
-    @TimestampConverter() this.purchaseTime,
-    this.ownerId,
-    this.ownerName,
-    final List<Assignment>? assignment,
-    this.isActive = true,
-    this.isPrinting = false,
-    this.isUsed = false,
-    this.uuid,
-    this.pdfUuid,
-    @DocumentReferenceNullStringConverter() this.productDocRef,
-    this.productId,
-    this.code,
-    this.name,
-    this.desc,
-    this.price,
-    final List<String> pictureURL = const [],
-    @TimestampConverter() this.expirationFrom,
-    @TimestampConverter() this.expirationTo,
-    this.register,
-    this.registerName,
-    @DocumentReferenceNullStringConverter() this.organizerDocRef,
-    this.organizerId,
-    @DocumentReferenceNullStringConverter() this.eventDocRef,
-    this.eventId,
-    this.eventName,
-    @TimestampConverter() this.createdAt,
-    @TimestampConverter() this.updatedAt,
-    @TimestampConverter() this.deletedAt,
-  }) : _assignment = assignment,
-       _pictureURL = pictureURL,
-       super._();
+  const _$TicketImpl(
+      {this.id,
+      this.paidUserId,
+      this.paidUserName,
+      @TimestampConverter() this.purchaseTime,
+      this.ownerId,
+      this.ownerName,
+      final List<Assignment>? assignment,
+      this.isActive = true,
+      this.isPrinting = false,
+      this.isUsed = false,
+      this.uuid,
+      this.pdfUuid,
+      @DocumentReferenceNullStringConverter() this.productDocRef,
+      this.productId,
+      this.code,
+      this.name,
+      this.desc,
+      this.price,
+      final List<String> pictureURL = const [],
+      @TimestampConverter() this.expirationFrom,
+      @TimestampConverter() this.expirationTo,
+      this.register,
+      this.registerName,
+      @DocumentReferenceNullStringConverter() this.organizerDocRef,
+      this.organizerId,
+      @DocumentReferenceNullStringConverter() this.eventDocRef,
+      this.eventId,
+      this.eventName,
+      @TimestampConverter() this.createdAt,
+      @TimestampConverter() this.updatedAt,
+      @TimestampConverter() this.deletedAt})
+      : _assignment = assignment,
+        _pictureURL = pictureURL,
+        super._();
 
   factory _$TicketImpl.fromJson(Map<String, dynamic> json) =>
       _$$TicketImplFromJson(json);
 
   @override
   final String? id;
-  // 購入者
+// 購入者
   @override
   final String? paidUserId;
   @override
@@ -626,7 +546,7 @@ class _$TicketImpl extends _Ticket {
   @override
   @TimestampConverter()
   final DateTime? purchaseTime;
-  // 所有者
+// 所有者
   @override
   final String? ownerId;
   @override
@@ -654,18 +574,18 @@ class _$TicketImpl extends _Ticket {
   final String? uuid;
   @override
   final String? pdfUuid;
-  // 商品情報
+// 商品情報
   @override
   @DocumentReferenceNullStringConverter()
   final String? productDocRef;
   @override
   final String? productId;
-  // int? exchangeNumber,
+// int? exchangeNumber,
   @override
   final String? code;
   @override
   final String? name;
-  // genre: string
+// genre: string
   @override
   final String? desc;
   @override
@@ -685,18 +605,18 @@ class _$TicketImpl extends _Ticket {
   @override
   @TimestampConverter()
   final DateTime? expirationTo;
-  // 登録者
+// 登録者
   @override
   final String? register;
   @override
   final String? registerName;
-  // 開催者
+// 開催者
   @override
   @DocumentReferenceNullStringConverter()
   final String? organizerDocRef;
   @override
   final String? organizerId;
-  // イベント情報
+// イベント情報
   @override
   @DocumentReferenceNullStringConverter()
   final String? eventDocRef;
@@ -704,7 +624,7 @@ class _$TicketImpl extends _Ticket {
   final String? eventId;
   @override
   final String? eventName;
-  // @Default(true) bool expirationLink,
+// @Default(true) bool expirationLink,
   @override
   @TimestampConverter()
   final DateTime? createdAt;
@@ -720,9 +640,7 @@ class _$TicketImpl extends _Ticket {
     return 'Ticket(id: $id, paidUserId: $paidUserId, paidUserName: $paidUserName, purchaseTime: $purchaseTime, ownerId: $ownerId, ownerName: $ownerName, assignment: $assignment, isActive: $isActive, isPrinting: $isPrinting, isUsed: $isUsed, uuid: $uuid, pdfUuid: $pdfUuid, productDocRef: $productDocRef, productId: $productId, code: $code, name: $name, desc: $desc, price: $price, pictureURL: $pictureURL, expirationFrom: $expirationFrom, expirationTo: $expirationTo, register: $register, registerName: $registerName, organizerDocRef: $organizerDocRef, organizerId: $organizerId, eventDocRef: $eventDocRef, eventId: $eventId, eventName: $eventName, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt)';
   }
 
-  /// Create a copy of Ticket
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TicketImplCopyWith<_$TicketImpl> get copyWith =>
@@ -730,58 +648,59 @@ class _$TicketImpl extends _Ticket {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TicketImplToJson(this);
+    return _$$TicketImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Ticket extends Ticket {
-  const factory _Ticket({
-    final String? id,
-    final String? paidUserId,
-    final String? paidUserName,
-    @TimestampConverter() final DateTime? purchaseTime,
-    final String? ownerId,
-    final String? ownerName,
-    final List<Assignment>? assignment,
-    final bool isActive,
-    final bool isPrinting,
-    final bool isUsed,
-    final String? uuid,
-    final String? pdfUuid,
-    @DocumentReferenceNullStringConverter() final String? productDocRef,
-    final String? productId,
-    final String? code,
-    final String? name,
-    final String? desc,
-    final int? price,
-    final List<String> pictureURL,
-    @TimestampConverter() final DateTime? expirationFrom,
-    @TimestampConverter() final DateTime? expirationTo,
-    final String? register,
-    final String? registerName,
-    @DocumentReferenceNullStringConverter() final String? organizerDocRef,
-    final String? organizerId,
-    @DocumentReferenceNullStringConverter() final String? eventDocRef,
-    final String? eventId,
-    final String? eventName,
-    @TimestampConverter() final DateTime? createdAt,
-    @TimestampConverter() final DateTime? updatedAt,
-    @TimestampConverter() final DateTime? deletedAt,
-  }) = _$TicketImpl;
+  const factory _Ticket(
+      {final String? id,
+      final String? paidUserId,
+      final String? paidUserName,
+      @TimestampConverter() final DateTime? purchaseTime,
+      final String? ownerId,
+      final String? ownerName,
+      final List<Assignment>? assignment,
+      final bool isActive,
+      final bool isPrinting,
+      final bool isUsed,
+      final String? uuid,
+      final String? pdfUuid,
+      @DocumentReferenceNullStringConverter() final String? productDocRef,
+      final String? productId,
+      final String? code,
+      final String? name,
+      final String? desc,
+      final int? price,
+      final List<String> pictureURL,
+      @TimestampConverter() final DateTime? expirationFrom,
+      @TimestampConverter() final DateTime? expirationTo,
+      final String? register,
+      final String? registerName,
+      @DocumentReferenceNullStringConverter() final String? organizerDocRef,
+      final String? organizerId,
+      @DocumentReferenceNullStringConverter() final String? eventDocRef,
+      final String? eventId,
+      final String? eventName,
+      @TimestampConverter() final DateTime? createdAt,
+      @TimestampConverter() final DateTime? updatedAt,
+      @TimestampConverter() final DateTime? deletedAt}) = _$TicketImpl;
   const _Ticket._() : super._();
 
   factory _Ticket.fromJson(Map<String, dynamic> json) = _$TicketImpl.fromJson;
 
   @override
-  String? get id; // 購入者
-  @override
+  String? get id;
+  @override // 購入者
   String? get paidUserId;
   @override
   String? get paidUserName;
   @override
   @TimestampConverter()
-  DateTime? get purchaseTime; // 所有者
-  @override
+  DateTime? get purchaseTime;
+  @override // 所有者
   String? get ownerId;
   @override
   String? get ownerName;
@@ -796,17 +715,17 @@ abstract class _Ticket extends Ticket {
   @override
   String? get uuid;
   @override
-  String? get pdfUuid; // 商品情報
-  @override
+  String? get pdfUuid;
+  @override // 商品情報
   @DocumentReferenceNullStringConverter()
   String? get productDocRef;
   @override
-  String? get productId; // int? exchangeNumber,
-  @override
+  String? get productId;
+  @override // int? exchangeNumber,
   String? get code;
   @override
-  String? get name; // genre: string
-  @override
+  String? get name;
+  @override // genre: string
   String? get desc;
   @override
   int? get price;
@@ -817,24 +736,24 @@ abstract class _Ticket extends Ticket {
   DateTime? get expirationFrom;
   @override
   @TimestampConverter()
-  DateTime? get expirationTo; // 登録者
-  @override
+  DateTime? get expirationTo;
+  @override // 登録者
   String? get register;
   @override
-  String? get registerName; // 開催者
-  @override
+  String? get registerName;
+  @override // 開催者
   @DocumentReferenceNullStringConverter()
   String? get organizerDocRef;
   @override
-  String? get organizerId; // イベント情報
-  @override
+  String? get organizerId;
+  @override // イベント情報
   @DocumentReferenceNullStringConverter()
   String? get eventDocRef;
   @override
   String? get eventId;
   @override
-  String? get eventName; // @Default(true) bool expirationLink,
-  @override
+  String? get eventName;
+  @override // @Default(true) bool expirationLink,
   @TimestampConverter()
   DateTime? get createdAt;
   @override
@@ -843,11 +762,8 @@ abstract class _Ticket extends Ticket {
   @override
   @TimestampConverter()
   DateTime? get deletedAt;
-
-  /// Create a copy of Ticket
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TicketImplCopyWith<_$TicketImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -863,12 +779,8 @@ mixin _$Assignment {
   @timestampKey
   DateTime? get assignmentDate => throw _privateConstructorUsedError;
 
-  /// Serializes this Assignment to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Assignment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $AssignmentCopyWith<Assignment> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -876,9 +788,8 @@ mixin _$Assignment {
 /// @nodoc
 abstract class $AssignmentCopyWith<$Res> {
   factory $AssignmentCopyWith(
-    Assignment value,
-    $Res Function(Assignment) then,
-  ) = _$AssignmentCopyWithImpl<$Res, Assignment>;
+          Assignment value, $Res Function(Assignment) then) =
+      _$AssignmentCopyWithImpl<$Res, Assignment>;
   @useResult
   $Res call({String? from, String? to, @timestampKey DateTime? assignmentDate});
 }
@@ -893,8 +804,6 @@ class _$AssignmentCopyWithImpl<$Res, $Val extends Assignment>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Assignment
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -902,26 +811,20 @@ class _$AssignmentCopyWithImpl<$Res, $Val extends Assignment>
     Object? to = freezed,
     Object? assignmentDate = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            from:
-                freezed == from
-                    ? _value.from
-                    : from // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            to:
-                freezed == to
-                    ? _value.to
-                    : to // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            assignmentDate:
-                freezed == assignmentDate
-                    ? _value.assignmentDate
-                    : assignmentDate // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      from: freezed == from
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: freezed == to
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as String?,
+      assignmentDate: freezed == assignmentDate
+          ? _value.assignmentDate
+          : assignmentDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
@@ -929,9 +832,8 @@ class _$AssignmentCopyWithImpl<$Res, $Val extends Assignment>
 abstract class _$$AssignmentImplCopyWith<$Res>
     implements $AssignmentCopyWith<$Res> {
   factory _$$AssignmentImplCopyWith(
-    _$AssignmentImpl value,
-    $Res Function(_$AssignmentImpl) then,
-  ) = __$$AssignmentImplCopyWithImpl<$Res>;
+          _$AssignmentImpl value, $Res Function(_$AssignmentImpl) then) =
+      __$$AssignmentImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? from, String? to, @timestampKey DateTime? assignmentDate});
@@ -942,12 +844,9 @@ class __$$AssignmentImplCopyWithImpl<$Res>
     extends _$AssignmentCopyWithImpl<$Res, _$AssignmentImpl>
     implements _$$AssignmentImplCopyWith<$Res> {
   __$$AssignmentImplCopyWithImpl(
-    _$AssignmentImpl _value,
-    $Res Function(_$AssignmentImpl) _then,
-  ) : super(_value, _then);
+      _$AssignmentImpl _value, $Res Function(_$AssignmentImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of Assignment
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -955,36 +854,28 @@ class __$$AssignmentImplCopyWithImpl<$Res>
     Object? to = freezed,
     Object? assignmentDate = freezed,
   }) {
-    return _then(
-      _$AssignmentImpl(
-        from:
-            freezed == from
-                ? _value.from
-                : from // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        to:
-            freezed == to
-                ? _value.to
-                : to // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        assignmentDate:
-            freezed == assignmentDate
-                ? _value.assignmentDate
-                : assignmentDate // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-      ),
-    );
+    return _then(_$AssignmentImpl(
+      from: freezed == from
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: freezed == to
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as String?,
+      assignmentDate: freezed == assignmentDate
+          ? _value.assignmentDate
+          : assignmentDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$AssignmentImpl implements _Assignment {
-  const _$AssignmentImpl({
-    this.from,
-    this.to,
-    @timestampKey this.assignmentDate,
-  });
+  const _$AssignmentImpl(
+      {this.from, this.to, @timestampKey this.assignmentDate});
 
   factory _$AssignmentImpl.fromJson(Map<String, dynamic> json) =>
       _$$AssignmentImplFromJson(json);
@@ -1013,13 +904,11 @@ class _$AssignmentImpl implements _Assignment {
                 other.assignmentDate == assignmentDate));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, from, to, assignmentDate);
 
-  /// Create a copy of Assignment
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AssignmentImplCopyWith<_$AssignmentImpl> get copyWith =>
@@ -1027,16 +916,17 @@ class _$AssignmentImpl implements _Assignment {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$AssignmentImplToJson(this);
+    return _$$AssignmentImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Assignment implements Assignment {
-  const factory _Assignment({
-    final String? from,
-    final String? to,
-    @timestampKey final DateTime? assignmentDate,
-  }) = _$AssignmentImpl;
+  const factory _Assignment(
+      {final String? from,
+      final String? to,
+      @timestampKey final DateTime? assignmentDate}) = _$AssignmentImpl;
 
   factory _Assignment.fromJson(Map<String, dynamic> json) =
       _$AssignmentImpl.fromJson;
@@ -1048,11 +938,8 @@ abstract class _Assignment implements Assignment {
   @override
   @timestampKey
   DateTime? get assignmentDate;
-
-  /// Create a copy of Assignment
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AssignmentImplCopyWith<_$AssignmentImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1076,12 +963,8 @@ mixin _$UsageHistory {
   @timestampKey
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this UsageHistory to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of UsageHistory
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $UsageHistoryCopyWith<UsageHistory> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1089,20 +972,18 @@ mixin _$UsageHistory {
 /// @nodoc
 abstract class $UsageHistoryCopyWith<$Res> {
   factory $UsageHistoryCopyWith(
-    UsageHistory value,
-    $Res Function(UsageHistory) then,
-  ) = _$UsageHistoryCopyWithImpl<$Res, UsageHistory>;
+          UsageHistory value, $Res Function(UsageHistory) then) =
+      _$UsageHistoryCopyWithImpl<$Res, UsageHistory>;
   @useResult
-  $Res call({
-    String? id,
-    @timestampKey DateTime? dateOfUse,
-    String? eventId,
-    String? receptionistId,
-    List<String>? useTicket,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
-    @timestampKey DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      @timestampKey DateTime? dateOfUse,
+      String? eventId,
+      String? receptionistId,
+      List<String>? useTicket,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -1115,8 +996,6 @@ class _$UsageHistoryCopyWithImpl<$Res, $Val extends UsageHistory>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of UsageHistory
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1129,51 +1008,40 @@ class _$UsageHistoryCopyWithImpl<$Res, $Val extends UsageHistory>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id:
-                freezed == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            dateOfUse:
-                freezed == dateOfUse
-                    ? _value.dateOfUse
-                    : dateOfUse // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            eventId:
-                freezed == eventId
-                    ? _value.eventId
-                    : eventId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            receptionistId:
-                freezed == receptionistId
-                    ? _value.receptionistId
-                    : receptionistId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            useTicket:
-                freezed == useTicket
-                    ? _value.useTicket
-                    : useTicket // ignore: cast_nullable_to_non_nullable
-                        as List<String>?,
-            createdAt:
-                freezed == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            updatedAt:
-                freezed == updatedAt
-                    ? _value.updatedAt
-                    : updatedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            deletedAt:
-                freezed == deletedAt
-                    ? _value.deletedAt
-                    : deletedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateOfUse: freezed == dateOfUse
+          ? _value.dateOfUse
+          : dateOfUse // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      receptionistId: freezed == receptionistId
+          ? _value.receptionistId
+          : receptionistId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      useTicket: freezed == useTicket
+          ? _value.useTicket
+          : useTicket // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
@@ -1181,21 +1049,19 @@ class _$UsageHistoryCopyWithImpl<$Res, $Val extends UsageHistory>
 abstract class _$$UsageHistoryImplCopyWith<$Res>
     implements $UsageHistoryCopyWith<$Res> {
   factory _$$UsageHistoryImplCopyWith(
-    _$UsageHistoryImpl value,
-    $Res Function(_$UsageHistoryImpl) then,
-  ) = __$$UsageHistoryImplCopyWithImpl<$Res>;
+          _$UsageHistoryImpl value, $Res Function(_$UsageHistoryImpl) then) =
+      __$$UsageHistoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String? id,
-    @timestampKey DateTime? dateOfUse,
-    String? eventId,
-    String? receptionistId,
-    List<String>? useTicket,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
-    @timestampKey DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      @timestampKey DateTime? dateOfUse,
+      String? eventId,
+      String? receptionistId,
+      List<String>? useTicket,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -1203,12 +1069,9 @@ class __$$UsageHistoryImplCopyWithImpl<$Res>
     extends _$UsageHistoryCopyWithImpl<$Res, _$UsageHistoryImpl>
     implements _$$UsageHistoryImplCopyWith<$Res> {
   __$$UsageHistoryImplCopyWithImpl(
-    _$UsageHistoryImpl _value,
-    $Res Function(_$UsageHistoryImpl) _then,
-  ) : super(_value, _then);
+      _$UsageHistoryImpl _value, $Res Function(_$UsageHistoryImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of UsageHistory
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1221,67 +1084,57 @@ class __$$UsageHistoryImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _$UsageHistoryImpl(
-        id:
-            freezed == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        dateOfUse:
-            freezed == dateOfUse
-                ? _value.dateOfUse
-                : dateOfUse // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        eventId:
-            freezed == eventId
-                ? _value.eventId
-                : eventId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        receptionistId:
-            freezed == receptionistId
-                ? _value.receptionistId
-                : receptionistId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        useTicket:
-            freezed == useTicket
-                ? _value._useTicket
-                : useTicket // ignore: cast_nullable_to_non_nullable
-                    as List<String>?,
-        createdAt:
-            freezed == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        updatedAt:
-            freezed == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        deletedAt:
-            freezed == deletedAt
-                ? _value.deletedAt
-                : deletedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-      ),
-    );
+    return _then(_$UsageHistoryImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateOfUse: freezed == dateOfUse
+          ? _value.dateOfUse
+          : dateOfUse // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      receptionistId: freezed == receptionistId
+          ? _value.receptionistId
+          : receptionistId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      useTicket: freezed == useTicket
+          ? _value._useTicket
+          : useTicket // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$UsageHistoryImpl extends _UsageHistory {
-  _$UsageHistoryImpl({
-    this.id,
-    @timestampKey required this.dateOfUse,
-    required this.eventId,
-    required this.receptionistId,
-    required final List<String>? useTicket,
-    @timestampKey this.createdAt,
-    @timestampKey this.updatedAt,
-    @timestampKey this.deletedAt,
-  }) : _useTicket = useTicket,
-       super._();
+  _$UsageHistoryImpl(
+      {this.id,
+      @timestampKey required this.dateOfUse,
+      required this.eventId,
+      required this.receptionistId,
+      required final List<String>? useTicket,
+      @timestampKey this.createdAt,
+      @timestampKey this.updatedAt,
+      @timestampKey this.deletedAt})
+      : _useTicket = useTicket,
+        super._();
 
   factory _$UsageHistoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$UsageHistoryImplFromJson(json);
@@ -1331,10 +1184,8 @@ class _$UsageHistoryImpl extends _UsageHistory {
             (identical(other.eventId, eventId) || other.eventId == eventId) &&
             (identical(other.receptionistId, receptionistId) ||
                 other.receptionistId == receptionistId) &&
-            const DeepCollectionEquality().equals(
-              other._useTicket,
-              _useTicket,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._useTicket, _useTicket) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -1343,23 +1194,20 @@ class _$UsageHistoryImpl extends _UsageHistory {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    dateOfUse,
-    eventId,
-    receptionistId,
-    const DeepCollectionEquality().hash(_useTicket),
-    createdAt,
-    updatedAt,
-    deletedAt,
-  );
+      runtimeType,
+      id,
+      dateOfUse,
+      eventId,
+      receptionistId,
+      const DeepCollectionEquality().hash(_useTicket),
+      createdAt,
+      updatedAt,
+      deletedAt);
 
-  /// Create a copy of UsageHistory
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UsageHistoryImplCopyWith<_$UsageHistoryImpl> get copyWith =>
@@ -1367,21 +1215,22 @@ class _$UsageHistoryImpl extends _UsageHistory {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$UsageHistoryImplToJson(this);
+    return _$$UsageHistoryImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _UsageHistory extends UsageHistory {
-  factory _UsageHistory({
-    final String? id,
-    @timestampKey required final DateTime? dateOfUse,
-    required final String? eventId,
-    required final String? receptionistId,
-    required final List<String>? useTicket,
-    @timestampKey final DateTime? createdAt,
-    @timestampKey final DateTime? updatedAt,
-    @timestampKey final DateTime? deletedAt,
-  }) = _$UsageHistoryImpl;
+  factory _UsageHistory(
+      {final String? id,
+      @timestampKey required final DateTime? dateOfUse,
+      required final String? eventId,
+      required final String? receptionistId,
+      required final List<String>? useTicket,
+      @timestampKey final DateTime? createdAt,
+      @timestampKey final DateTime? updatedAt,
+      @timestampKey final DateTime? deletedAt}) = _$UsageHistoryImpl;
   _UsageHistory._() : super._();
 
   factory _UsageHistory.fromJson(Map<String, dynamic> json) =
@@ -1407,11 +1256,8 @@ abstract class _UsageHistory extends UsageHistory {
   @override
   @timestampKey
   DateTime? get deletedAt;
-
-  /// Create a copy of UsageHistory
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UsageHistoryImplCopyWith<_$UsageHistoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

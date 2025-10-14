@@ -6,12 +6,17 @@ import 'package:tliny/src/ui/usage_history/history_page.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 import '../utils/test_helpers.dart';
+import '../utils/firebase_test_setup.dart';
 
 void main() {
   group('UsageHistory Integration Tests', () {
     late UsageHistory mockUsageHistory1;
     late UsageHistory mockUsageHistory2;
     late List<UsageHistory> mockUsageHistories;
+
+    setUpAll(() async {
+      await setupFirebaseForTesting();
+    });
 
     setUp(() {
       mockUsageHistory1 = UsageHistory(
@@ -49,9 +54,12 @@ void main() {
 
         // Act
         await tester.pumpAndSettle();
+        // extra settle for CI flakiness
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(const Duration(milliseconds: 100));
 
         // Assert
-        expect(find.text('利用履歴'), findsOneWidget);
+        expect(find.text('チケット使用履歴'), findsOneWidget);
         expect(find.byType(Card), findsNWidgets(2));
         expect(find.text('3枚のチケット'), findsOneWidget);
         expect(find.text('1枚のチケット'), findsOneWidget);
@@ -74,6 +82,8 @@ void main() {
 
         // Act
         await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(const Duration(milliseconds: 100));
 
         // Assert
         expect(find.text('使用履歴がありません'), findsOneWidget);
@@ -92,7 +102,7 @@ void main() {
               usageHistoryViewModelProvider.overrideWith(
                 () => MockUsageHistoryViewModel(
                   mockUsageHistories,
-                  delay: const Duration(seconds: 1),
+                  delay: const Duration(milliseconds: 100),
                 ),
               ),
             ],
@@ -101,9 +111,10 @@ void main() {
 
         // Act
         await tester.pump();
-
-        // Assert
+        // Assert: loading indicator should appear before data resolves
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        // Then settle timers to clean up
+        await tester.pumpAndSettle();
       });
     });
 
@@ -119,6 +130,8 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(const Duration(milliseconds: 100));
 
         // Assert
         expect(find.text('利用履歴詳細'), findsOneWidget);

@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
-import 'package:tliny/src/data/repository/user_repository.dart';
 import 'package:tliny/src/ui/common/main_body.dart';
 
 import '../../data/model/ticket_model.dart';
 import '../../data/repository/program_repository.dart';
-import '../../settings/hooks/use_l10n.dart';
 import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 import 'management_state.dart';
@@ -26,7 +24,7 @@ class EarningsDetailScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = useL10n();
+    // final l10n = useL10n();
     return AsyncValueWidget(
       value: ref.watch(allTicketStateProvider),
       data: (data) {
@@ -70,25 +68,6 @@ class EarningsDetailScreen extends HookConsumerWidget {
         }
         // チケットリストをログ出力
         logger.d(orderList);
-
-        // ユーザーの表示名を取得する関数
-        Widget getDisplayName(String id) {
-          // ユーザー情報を取得
-          // final publicUser = ref.watch(publicUserStreamProvider(id)).value;
-          final publicUser = ref.watch(publicUserFutureProvider(id)).value;
-          // ユーザー情報をログ出力
-          logger.d(publicUser, time: DateTime.now());
-          // ユーザー情報が取得できなかった場合、空のテキストを返す
-          if (publicUser == null) {
-            return const Text('');
-          }
-          // ユーザーの表示名を返す
-          return Text(
-            publicUser.displayName.toString(),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          );
-        }
 
         // ヘッダー項目のWidgetを作成する関数
         Widget getTitleItemWidget(String label, double width) {

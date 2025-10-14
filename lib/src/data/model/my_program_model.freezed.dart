@@ -12,8 +12,7 @@ part of 'my_program_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 MyProgram _$MyProgramFromJson(Map<String, dynamic> json) {
   return _MyProgram.fromJson(json);
@@ -30,12 +29,8 @@ mixin _$MyProgram {
   @timestampKey
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this MyProgram to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of MyProgram
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $MyProgramCopyWith<MyProgram> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,13 +40,12 @@ abstract class $MyProgramCopyWith<$Res> {
   factory $MyProgramCopyWith(MyProgram value, $Res Function(MyProgram) then) =
       _$MyProgramCopyWithImpl<$Res, MyProgram>;
   @useResult
-  $Res call({
-    String? id,
-    String? programId,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
-    @timestampKey DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      String? programId,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -64,8 +58,6 @@ class _$MyProgramCopyWithImpl<$Res, $Val extends MyProgram>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of MyProgram
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -75,36 +67,28 @@ class _$MyProgramCopyWithImpl<$Res, $Val extends MyProgram>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id:
-                freezed == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            programId:
-                freezed == programId
-                    ? _value.programId
-                    : programId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            createdAt:
-                freezed == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            updatedAt:
-                freezed == updatedAt
-                    ? _value.updatedAt
-                    : updatedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            deletedAt:
-                freezed == deletedAt
-                    ? _value.deletedAt
-                    : deletedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      programId: freezed == programId
+          ? _value.programId
+          : programId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
@@ -112,18 +96,16 @@ class _$MyProgramCopyWithImpl<$Res, $Val extends MyProgram>
 abstract class _$$MyProgramImplCopyWith<$Res>
     implements $MyProgramCopyWith<$Res> {
   factory _$$MyProgramImplCopyWith(
-    _$MyProgramImpl value,
-    $Res Function(_$MyProgramImpl) then,
-  ) = __$$MyProgramImplCopyWithImpl<$Res>;
+          _$MyProgramImpl value, $Res Function(_$MyProgramImpl) then) =
+      __$$MyProgramImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String? id,
-    String? programId,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
-    @timestampKey DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      String? programId,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -131,12 +113,9 @@ class __$$MyProgramImplCopyWithImpl<$Res>
     extends _$MyProgramCopyWithImpl<$Res, _$MyProgramImpl>
     implements _$$MyProgramImplCopyWith<$Res> {
   __$$MyProgramImplCopyWithImpl(
-    _$MyProgramImpl _value,
-    $Res Function(_$MyProgramImpl) _then,
-  ) : super(_value, _then);
+      _$MyProgramImpl _value, $Res Function(_$MyProgramImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of MyProgram
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -146,48 +125,41 @@ class __$$MyProgramImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _$MyProgramImpl(
-        id:
-            freezed == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        programId:
-            freezed == programId
-                ? _value.programId
-                : programId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        createdAt:
-            freezed == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        updatedAt:
-            freezed == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        deletedAt:
-            freezed == deletedAt
-                ? _value.deletedAt
-                : deletedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-      ),
-    );
+    return _then(_$MyProgramImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      programId: freezed == programId
+          ? _value.programId
+          : programId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$MyProgramImpl extends _MyProgram {
-  _$MyProgramImpl({
-    this.id,
-    required this.programId,
-    @timestampKey this.createdAt,
-    @timestampKey this.updatedAt,
-    @timestampKey this.deletedAt,
-  }) : super._();
+  _$MyProgramImpl(
+      {this.id,
+      required this.programId,
+      @timestampKey this.createdAt,
+      @timestampKey this.updatedAt,
+      @timestampKey this.deletedAt})
+      : super._();
 
   factory _$MyProgramImpl.fromJson(Map<String, dynamic> json) =>
       _$$MyProgramImplFromJson(json);
@@ -227,14 +199,12 @@ class _$MyProgramImpl extends _MyProgram {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, programId, createdAt, updatedAt, deletedAt);
 
-  /// Create a copy of MyProgram
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MyProgramImplCopyWith<_$MyProgramImpl> get copyWith =>
@@ -242,18 +212,19 @@ class _$MyProgramImpl extends _MyProgram {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MyProgramImplToJson(this);
+    return _$$MyProgramImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _MyProgram extends MyProgram {
-  factory _MyProgram({
-    final String? id,
-    required final String? programId,
-    @timestampKey final DateTime? createdAt,
-    @timestampKey final DateTime? updatedAt,
-    @timestampKey final DateTime? deletedAt,
-  }) = _$MyProgramImpl;
+  factory _MyProgram(
+      {final String? id,
+      required final String? programId,
+      @timestampKey final DateTime? createdAt,
+      @timestampKey final DateTime? updatedAt,
+      @timestampKey final DateTime? deletedAt}) = _$MyProgramImpl;
   _MyProgram._() : super._();
 
   factory _MyProgram.fromJson(Map<String, dynamic> json) =
@@ -272,11 +243,8 @@ abstract class _MyProgram extends MyProgram {
   @override
   @timestampKey
   DateTime? get deletedAt;
-
-  /// Create a copy of MyProgram
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MyProgramImplCopyWith<_$MyProgramImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

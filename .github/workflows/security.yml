@@ -54,6 +54,8 @@ jobs:
           channel: 'stable'
           flutter-version: '3.32.8'
 
+      - name: Clean Flutter cache
+        run: flutter clean
       - name: Get Flutter dependencies
         run: flutter pub get
 
@@ -111,6 +113,8 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Clean Flutter cache
+        run: flutter clean
       - name: Get Flutter dependencies
         run: flutter pub get
 
@@ -150,6 +154,15 @@ jobs:
         with:
           node-version: '20'
 
+<<<<<<< HEAD
+=======
+      - name: Clean Flutter cache
+        run: flutter clean
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+>>>>>>> feature/sns-integration
       - name: Check Flutter dependencies
         run: flutter pub outdated
 

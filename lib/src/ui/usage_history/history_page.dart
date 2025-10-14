@@ -21,7 +21,7 @@ class UsageHistoryPage extends HookConsumerWidget {
     final theme = Theme.of(context);
     final l10n = useL10n();
     final state = ref.watch(usageHistoryViewModelProvider);
-    final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
+    // final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
 
     return AsyncValueWidget(
       value: state,
@@ -70,9 +70,18 @@ class UsageHistoryPage extends HookConsumerWidget {
         final usageHistory = data[index];
         logger.d('Processing usage history: ${usageHistory.eventId}');
 
-        final programAsyncValue = ref.watch(programsStateProvider);
-        final programList = programAsyncValue.value;
+        final programStream = ref.watch(programsStateProvider);
+        final programList = programStream.value;
         logger.d('Program list: ${programList?.length ?? 0} items');
+
+        // Handle AsyncValue states
+        if (programStream.isLoading) {
+          logger.d('Program list is loading...');
+          return const SizedBox.shrink(); // Return empty widget while loading
+        } else if (programStream.hasError) {
+          logger.e('Program list error: ${programStream.error}');
+          return const SizedBox.shrink(); // Return empty widget on error
+        }
 
         var name = '';
         if (programList != null && usageHistory.eventId != null) {
@@ -311,7 +320,7 @@ class UsageHistoryPage extends HookConsumerWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 10,
                   offset: const Offset(0, 2),

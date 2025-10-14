@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -12,7 +12,7 @@ part 'staff_repository.g.dart';
 
 const _defaultPath = 'v/1';
 const _eventCollectionPath = '$_defaultPath/events';
-const _collectionPath = 'staff';
+const _collectionPath = '$_defaultPath/staff';
 
 // StaffRepositoryProvider
 @Riverpod(keepAlive: true)
@@ -30,18 +30,16 @@ class StaffRepository {
         .doc(eventId)
         .collection(_collectionPath)
         .withConverter<Staff>(
-          fromFirestore:
-              (snapshot, _) =>
-                  Staff.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-          toFirestore:
-              (model, _) => {
-                ...model.toJson()..remove('id'),
-                if (model.createdAt == null)
-                  'createdAt': FieldValue.serverTimestamp(),
-                'updatedAt': FieldValue.serverTimestamp(),
-                if (model.isActive == false)
-                  'deletedAt': FieldValue.serverTimestamp(),
-              },
+          fromFirestore: (snapshot, _) =>
+              Staff.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+          toFirestore: (model, _) => {
+            ...model.toJson()..remove('id'),
+            if (model.createdAt == null)
+              'createdAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+            if (model.isActive == false)
+              'deletedAt': FieldValue.serverTimestamp(),
+          },
         );
   }
 

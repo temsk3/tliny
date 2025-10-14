@@ -14,6 +14,16 @@ Stream<List<Program>> programsState(Ref ref) {
 }
 
 @riverpod
+Future<List<Program>> programsStateAsync(Ref ref) async {
+  final asyncValue = ref.watch(programsStateProvider);
+  return asyncValue.when(
+    data: (programs) => programs,
+    loading: () => <Program>[],
+    error: (error, stack) => throw error,
+  );
+}
+
+@riverpod
 Stream<Program> programState(Ref ref, String? programId) {
   if (programId == null) {
     return Stream.error('Program ID is required');

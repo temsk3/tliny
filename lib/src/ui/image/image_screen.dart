@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/ui/common/asyncvalue_widget.dart';
 
 import '../../data/model/exception/app_exception.dart';
@@ -44,40 +45,19 @@ class ImageScreen extends HookConsumerWidget {
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e, l10n);
+          final l10nLocal = AppLocalizations.of(context)!;
+          ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
         }
       } on Exception catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e, l10n);
+          final l10nLocal = AppLocalizations.of(context)!;
+          ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
         }
       }
     }
 
-    // カメラを使う関数
-    Future<void> pickImageCamera() async {
-      try {
-        final image = await picker.pickImage(source: ImageSource.camera);
-        // 画像がnullの場合戻る
-        if (image == null) {
-          return;
-        }
-
-        final imageTemp = File(image.path);
-
-        imageState.value = imageTemp;
-      } on PlatformException catch (e) {
-        logger.e('Failed to pick image: $e');
-        if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e, l10n);
-        }
-      } on Exception catch (e) {
-        logger.e('Failed to pick image: $e');
-        if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e, l10n);
-        }
-      }
-    }
+    // カメラからの画像選択は未使用のため削除しました
 
     return Column(
       children: [
@@ -88,7 +68,8 @@ class ImageScreen extends HookConsumerWidget {
             } catch (e) {
               logger.e('Failed to pick image: $e');
               if (context.mounted) {
-                ErrorHandler.showErrorSnackBar(context, e, l10n);
+                final l10nLocal = AppLocalizations.of(context)!;
+                ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
               }
             }
           },
@@ -105,7 +86,6 @@ class EditCircleAvatar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = useL10n();
     final state = ref.watch(tempImageViewModelProvider);
     final viewModel = ref.watch(tempImageViewModelProvider.notifier);
 
@@ -118,6 +98,10 @@ class EditCircleAvatar extends HookConsumerWidget {
               await viewModel.addTempImage();
             } on Exception catch (e) {
               logger.e('Failed to add temp image: $e');
+              if (context.mounted) {
+                final l10nLocal = AppLocalizations.of(context)!;
+                ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
+              }
             }
           },
           child:
@@ -156,7 +140,7 @@ class EditPictureView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = useL10n();
+    // final l10n = useL10n();
     final picker = ImagePicker();
 
     Future<void> pickImage() async {
@@ -176,23 +160,27 @@ class EditPictureView extends HookConsumerWidget {
         } on AppException catch (e) {
           logger.e('setTempImage AppException: ${e.message}');
           if (context.mounted) {
-            ErrorHandler.showErrorSnackBar(context, e, l10n);
+            final l10nLocal = AppLocalizations.of(context)!;
+            ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
           }
         } on Exception catch (e) {
           logger.e('setTempImage Exception: $e');
           if (context.mounted) {
-            ErrorHandler.showErrorSnackBar(context, e, l10n);
+            final l10nLocal = AppLocalizations.of(context)!;
+            ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
           }
         }
       } on PlatformException catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e, l10n);
+          final l10nLocal = AppLocalizations.of(context)!;
+          ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
         }
       } on Exception catch (e) {
         logger.e('Failed to pick image: $e');
         if (context.mounted) {
-          ErrorHandler.showErrorSnackBar(context, e, l10n);
+          final l10nLocal = AppLocalizations.of(context)!;
+          ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
         }
       }
     }
@@ -204,7 +192,8 @@ class EditPictureView extends HookConsumerWidget {
         } on Exception catch (e) {
           logger.e('Failed to pick image: $e');
           if (context.mounted) {
-            ErrorHandler.showErrorSnackBar(context, e, l10n);
+            final l10nLocal = AppLocalizations.of(context)!;
+            ErrorHandler.showErrorSnackBar(context, e, l10nLocal);
           }
         }
       },
@@ -285,7 +274,11 @@ class PictureView extends HookWidget {
       alignment: Alignment.center,
       child:
           (picture.isEmpty || index >= picture.length)
-              ? const Text('NoImage')
+              ? const Icon(
+                Icons.image_not_supported,
+                color: Colors.grey,
+                size: 24,
+              )
               : InkWell(
                 onTap:
                     tap

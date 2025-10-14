@@ -41,15 +41,21 @@ class UsageHistoryStateFamily extends Family<AsyncValue<UsageHistory>> {
   const UsageHistoryStateFamily();
 
   /// See also [usageHistoryState].
-  UsageHistoryStateProvider call(String id) {
-    return UsageHistoryStateProvider(id);
+  UsageHistoryStateProvider call(
+    String id,
+  ) {
+    return UsageHistoryStateProvider(
+      id,
+    );
   }
 
   @override
   UsageHistoryStateProvider getProviderOverride(
     covariant UsageHistoryStateProvider provider,
   ) {
-    return call(provider.id);
+    return call(
+      provider.id,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -71,20 +77,24 @@ class UsageHistoryStateFamily extends Family<AsyncValue<UsageHistory>> {
 class UsageHistoryStateProvider
     extends AutoDisposeStreamProvider<UsageHistory> {
   /// See also [usageHistoryState].
-  UsageHistoryStateProvider(String id)
-    : this._internal(
-        (ref) => usageHistoryState(ref as UsageHistoryStateRef, id),
-        from: usageHistoryStateProvider,
-        name: r'usageHistoryStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$usageHistoryStateHash,
-        dependencies: UsageHistoryStateFamily._dependencies,
-        allTransitiveDependencies:
-            UsageHistoryStateFamily._allTransitiveDependencies,
-        id: id,
-      );
+  UsageHistoryStateProvider(
+    String id,
+  ) : this._internal(
+          (ref) => usageHistoryState(
+            ref as UsageHistoryStateRef,
+            id,
+          ),
+          from: usageHistoryStateProvider,
+          name: r'usageHistoryStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$usageHistoryStateHash,
+          dependencies: UsageHistoryStateFamily._dependencies,
+          allTransitiveDependencies:
+              UsageHistoryStateFamily._allTransitiveDependencies,
+          id: id,
+        );
 
   UsageHistoryStateProvider._internal(
     super._createNotifier, {
@@ -135,8 +145,6 @@ class UsageHistoryStateProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin UsageHistoryStateRef on AutoDisposeStreamProviderRef<UsageHistory> {
   /// The parameter `id` of this provider.
   String get id;
@@ -163,15 +171,21 @@ class TicketStreamStateFamily extends Family<AsyncValue<Ticket>> {
   const TicketStreamStateFamily();
 
   /// See also [ticketStreamState].
-  TicketStreamStateProvider call(String id) {
-    return TicketStreamStateProvider(id);
+  TicketStreamStateProvider call(
+    String id,
+  ) {
+    return TicketStreamStateProvider(
+      id,
+    );
   }
 
   @override
   TicketStreamStateProvider getProviderOverride(
     covariant TicketStreamStateProvider provider,
   ) {
-    return call(provider.id);
+    return call(
+      provider.id,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -192,20 +206,24 @@ class TicketStreamStateFamily extends Family<AsyncValue<Ticket>> {
 /// See also [ticketStreamState].
 class TicketStreamStateProvider extends AutoDisposeStreamProvider<Ticket> {
   /// See also [ticketStreamState].
-  TicketStreamStateProvider(String id)
-    : this._internal(
-        (ref) => ticketStreamState(ref as TicketStreamStateRef, id),
-        from: ticketStreamStateProvider,
-        name: r'ticketStreamStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$ticketStreamStateHash,
-        dependencies: TicketStreamStateFamily._dependencies,
-        allTransitiveDependencies:
-            TicketStreamStateFamily._allTransitiveDependencies,
-        id: id,
-      );
+  TicketStreamStateProvider(
+    String id,
+  ) : this._internal(
+          (ref) => ticketStreamState(
+            ref as TicketStreamStateRef,
+            id,
+          ),
+          from: ticketStreamStateProvider,
+          name: r'ticketStreamStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ticketStreamStateHash,
+          dependencies: TicketStreamStateFamily._dependencies,
+          allTransitiveDependencies:
+              TicketStreamStateFamily._allTransitiveDependencies,
+          id: id,
+        );
 
   TicketStreamStateProvider._internal(
     super._createNotifier, {
@@ -256,21 +274,17 @@ class TicketStreamStateProvider extends AutoDisposeStreamProvider<Ticket> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin TicketStreamStateRef on AutoDisposeStreamProviderRef<Ticket> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
 class _TicketStreamStateProviderElement
-    extends AutoDisposeStreamProviderElement<Ticket>
-    with TicketStreamStateRef {
+    extends AutoDisposeStreamProviderElement<Ticket> with TicketStreamStateRef {
   _TicketStreamStateProviderElement(super.provider);
 
   @override
   String get id => (origin as TicketStreamStateProvider).id;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

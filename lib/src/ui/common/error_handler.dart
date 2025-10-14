@@ -220,10 +220,30 @@ class ErrorHandler {
       default:
         // エラーデータから詳細メッセージを取得
         final details = error.details;
-        if (details != null && details is Map<String, dynamic>) {
-          final message = details['message'] as String?;
-          if (message != null && message.isNotEmpty) {
-            return message;
+        if (details != null) {
+          try {
+            Map<String, dynamic>? safeDetails;
+            if (details is Map<String, dynamic>) {
+              safeDetails = details;
+            } else if (details is Map) {
+              // LinkedMap<Object?, Object?>の場合の安全な変換
+              final rawDetails = details;
+              safeDetails = <String, dynamic>{};
+              for (final entry in rawDetails.entries) {
+                if (entry.key is String) {
+                  safeDetails[entry.key as String] = entry.value;
+                }
+              }
+            }
+
+            if (safeDetails != null) {
+              final message = safeDetails['message'] as String?;
+              if (message != null && message.isNotEmpty) {
+                return message;
+              }
+            }
+          } catch (e) {
+            // キャストに失敗した場合はデフォルトメッセージを使用
           }
         }
         return 'サーバー処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
@@ -352,26 +372,30 @@ class ErrorHandler {
         icon = Icons.error;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(icon, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(icon, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
+          backgroundColor: backgroundColor,
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
+            label: l10n.close,
+            textColor: Colors.white,
+            onPressed: () {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              }
+            },
+          ),
         ),
-        backgroundColor: backgroundColor,
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: l10n.close,
-          textColor: Colors.white,
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
+      );
+    }
   }
 
   /// エラーをダイアログで表示
@@ -437,8 +461,7 @@ class ErrorHandler {
                   ),
                 ],
                 // FirebaseFunctionsExceptionの場合は詳細情報を表示
-                if (error is FirebaseFunctionsException &&
-                    error.details != null) ...[
+                if (error is FirebaseFunctionsException) ...[
                   const SizedBox(height: 16),
                   const Text(
                     '詳細情報:',
@@ -453,6 +476,13 @@ class ErrorHandler {
                     'エラーコード: ${error.code}',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
+                  if (error.details != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'エラー詳細: ${error.details}',
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
                 ],
               ],
             ),
@@ -460,13 +490,15 @@ class ErrorHandler {
               if (onRetry != null)
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    if (context.mounted) Navigator.of(context).pop();
                     onRetry();
                   },
                   child: Text(l10n.retry),
                 ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  if (context.mounted) Navigator.of(context).pop();
+                },
                 child: Text(l10n.close),
               ),
             ],
@@ -475,8 +507,12 @@ class ErrorHandler {
   }
 
   /// 成功メッセージをスナックバーで表示
-  static void showSuccessSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  static Future<SnackBarClosedReason> showSuccessSnackBar(
+    BuildContext context,
+    String message,
+  ) {
+    if (!context.mounted) return Future.value(SnackBarClosedReason.remove);
+    final controller = ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
@@ -487,44 +523,49 @@ class ErrorHandler {
         ),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 5),
       ),
     );
+    return controller.closed;
   }
 
   /// 情報メッセージをスナックバーで表示
   static void showInfoSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.info, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.info, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
+          backgroundColor: Colors.blue,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 3),
         ),
-        backgroundColor: Colors.blue,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
-      ),
-    );
+      );
+    }
   }
 
   /// 警告メッセージをスナックバーで表示
   static void showWarningSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.warning, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.warning, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
+          backgroundColor: Colors.orange,
+          behavior: SnackBarBehavior.floating,
         ),
-        backgroundColor: Colors.orange,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+      );
+    }
   }
 }
 
@@ -538,8 +579,41 @@ mixin ErrorHandlingMixin {
     VoidCallback? onRetry,
     bool showLoading = true,
     required AppLocalizations l10n,
+    required WidgetRef ref,
   }) async {
-    final loadingController = GlobalLoadingController();
+    // テスト環境ではローディングを無効化
+    if (const bool.fromEnvironment('FLUTTER_TEST')) {
+      try {
+        final result = await operation();
+        return result;
+      } on AppException catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: errorContext,
+            onRetry: onRetry,
+          );
+        }
+        return null;
+      } on Exception catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: errorContext,
+            onRetry: onRetry,
+          );
+        }
+        return null;
+      }
+    }
+
+    final loadingController = ref.read(
+      globalLoadingControllerProvider.notifier,
+    );
 
     try {
       if (showLoading) {
@@ -553,31 +627,37 @@ mixin ErrorHandlingMixin {
       }
 
       return result;
-    } on AppException catch (e, st) {
+    } on AppException catch (e) {
       if (showLoading) {
         loadingController.stopLoading();
       }
 
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
-    } on Exception catch (e, st) {
+    } on Exception catch (e) {
       if (showLoading) {
         loadingController.stopLoading();
       }
 
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
     }
   }
@@ -774,25 +854,31 @@ class ErrorHandlerController {
       final result = await operation();
       loadingController.stopLoading();
       return result;
-    } on AppException catch (e, st) {
+    } on AppException catch (e) {
       loadingController.stopLoading();
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
-    } on Exception catch (e, st) {
+    } on Exception catch (e) {
       loadingController.stopLoading();
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
     }
   }

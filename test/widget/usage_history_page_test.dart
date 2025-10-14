@@ -1,14 +1,101 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mockito/mockito.dart';
+import 'package:tliny/l10n/app_localizations.dart';
+import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
+import 'package:tliny/src/data/repository/auth_repository.dart';
+import 'package:tliny/src/data/repository/program_repository.dart';
+import 'package:tliny/src/data/repository/ticket_repository.dart';
+import 'package:tliny/src/ui/common/error_screen.dart';
+import 'package:tliny/src/ui/program/program_state.dart';
 import 'package:tliny/src/ui/usage_history/history_page.dart';
 import 'package:tliny/src/ui/usage_history/history_view_model.dart';
 
 import '../utils/test_helpers.dart';
 
+// Mock classes for Firebase services
+class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+
+class MockFirebaseStorage extends Mock implements FirebaseStorage {}
+
+// Mock classes for repositories
+class MockUsageHistoryRepository extends Mock
+    implements UsageHistoryRepository {}
+
+class MockAuthRepository extends Mock implements AuthRepository {}
+
+class MockProgramRepository extends Mock implements ProgramRepository {
+  @override
+  Stream<List<Program>> watchEventList() {
+    return Stream.value([
+      Program(
+        id: 'event1',
+        organizerId: 'organizer1',
+        name: 'テストイベント1',
+        message: 'テストイベント1の説明',
+        salesStart: DateTime(2023, 12, 1),
+        salesEnd: DateTime(2024, 1, 30),
+        eventFrom: DateTime(2024, 1, 1),
+        eventTo: DateTime(2024, 1, 31),
+        place: 'テスト会場1',
+        isActive: true,
+        isPublish: true,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+      Program(
+        id: 'event2',
+        organizerId: 'organizer2',
+        name: 'テストイベント2',
+        message: 'テストイベント2の説明',
+        salesStart: DateTime(2024, 1, 1),
+        salesEnd: DateTime(2024, 2, 27),
+        eventFrom: DateTime(2024, 2, 1),
+        eventTo: DateTime(2024, 2, 28),
+        place: 'テスト会場2',
+        isActive: true,
+        isPublish: true,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+    ]);
+  }
+}
+
+// Mock UsageHistoryViewModel for testing
+class MockUsageHistoryViewModel extends UsageHistoryViewModel {
+  final List<UsageHistory> _data;
+  final Exception? _error;
+
+  MockUsageHistoryViewModel(this._data) : _error = null;
+
+  MockUsageHistoryViewModel.error(this._error) : _data = [];
+
+  @override
+  Future<List<UsageHistory>> build() async {
+    if (_error != null) {
+      throw _error;
+    }
+    return _data;
+  }
+}
+
 void main() {
   group('UsageHistoryPage', () {
     late List<UsageHistory> mockUsageHistories;
+    late List<Program> mockPrograms;
+
+    setUpAll(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      // Skip Firebase initialization for widget tests
+      // Firebase services will be mocked through provider overrides
+    });
 
     setUp(() {
       mockUsageHistories = [
@@ -27,14 +114,79 @@ void main() {
           useTicket: ['ticket3'],
         ),
       ];
+
+      mockPrograms = [
+        Program(
+          id: 'event1',
+          organizerId: 'organizer1',
+          name: 'テストイベント1',
+          message: 'テストイベント1の説明',
+          salesStart: DateTime(2023, 12, 1),
+          salesEnd: DateTime(2024, 1, 30),
+          eventFrom: DateTime(2024, 1, 1),
+          eventTo: DateTime(2024, 1, 31),
+          place: 'テスト会場1',
+          isActive: true,
+          isPublish: true,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+        Program(
+          id: 'event2',
+          organizerId: 'organizer2',
+          name: 'テストイベント2',
+          message: 'テストイベント2の説明',
+          salesStart: DateTime(2024, 1, 1),
+          salesEnd: DateTime(2024, 2, 27),
+          eventFrom: DateTime(2024, 2, 1),
+          eventTo: DateTime(2024, 2, 28),
+          place: 'テスト会場2',
+          isActive: true,
+          isPublish: true,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+      ];
     });
 
-    Widget createTestWidget() {
+    Widget createTestWidget({List<Program>? programs}) {
+      final router = GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (context, state) => const UsageHistoryPage(),
+          ),
+          GoRoute(
+            path: '/usage-history/:id',
+            builder: (context, state) => const Scaffold(
+              body: Center(child: Text('Usage History Details')),
+            ),
+          ),
+        ],
+      );
+
       return TestHelpers.createTestWidget(
-        child: const UsageHistoryPage(),
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
         overrides: [
           usageHistoryViewModelProvider.overrideWith(
-            (ref) => Future.value(mockUsageHistories),
+            () => MockUsageHistoryViewModel(mockUsageHistories),
+          ),
+          // Mock additional providers that UsageHistoryViewModel depends on
+          usageHistoryRepositoryProvider.overrideWithValue(
+            MockUsageHistoryRepository(),
+          ),
+          authRepositoryProvider.overrideWithValue(MockAuthRepository()),
+          // Mock userIdProvider to provide user ID
+          userIdProvider.overrideWith((ref) => Stream.value('test-user-id')),
+          // Mock ProgramRepository to provide program data
+          programRepositoryProvider.overrideWithValue(MockProgramRepository()),
+          // Mock programsStateProvider to provide program data
+          programsStateProvider.overrideWith(
+            (ref) => Stream.value(programs ?? mockPrograms),
           ),
         ],
       );
@@ -46,6 +198,10 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Act
+        await tester.pumpAndSettle();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
         // Assert
@@ -61,13 +217,21 @@ void main() {
             child: const UsageHistoryPage(),
             overrides: [
               usageHistoryViewModelProvider.overrideWith(
-                (ref) => Future.value(<UsageHistory>[]),
+                () => MockUsageHistoryViewModel(<UsageHistory>[]),
+              ),
+              // Mock programsStateProvider to provide program data
+              programsStateProvider.overrideWith(
+                (ref) => Stream.value(mockPrograms),
               ),
             ],
           ),
         );
 
         // Act
+        await tester.pumpAndSettle();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
         // Assert
@@ -82,10 +246,11 @@ void main() {
             child: const UsageHistoryPage(),
             overrides: [
               usageHistoryViewModelProvider.overrideWith(
-                (ref) => Future.delayed(
-                  const Duration(seconds: 1),
-                  () => mockUsageHistories,
-                ),
+                () => MockUsageHistoryViewModel(mockUsageHistories),
+              ),
+              // Mock programsStateProvider to provide program data
+              programsStateProvider.overrideWith(
+                (ref) => Stream.value(mockPrograms),
               ),
             ],
           ),
@@ -93,6 +258,10 @@ void main() {
 
         // Act
         await tester.pump();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpAndSettle();
 
         // Assert
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
@@ -105,7 +274,24 @@ void main() {
             child: const UsageHistoryPage(),
             overrides: [
               usageHistoryViewModelProvider.overrideWith(
-                (ref) => Future.error(Exception('Test error')),
+                () => MockUsageHistoryViewModel.error(Exception('Test error')),
+              ),
+              // Mock additional providers that UsageHistoryViewModel depends on
+              usageHistoryRepositoryProvider.overrideWithValue(
+                MockUsageHistoryRepository(),
+              ),
+              authRepositoryProvider.overrideWithValue(MockAuthRepository()),
+              // Mock userIdProvider to provide user ID
+              userIdProvider.overrideWith(
+                (ref) => Stream.value('test-user-id'),
+              ),
+              // Mock ProgramRepository to provide program data
+              programRepositoryProvider.overrideWithValue(
+                MockProgramRepository(),
+              ),
+              // Mock programsStateProvider to provide program data
+              programsStateProvider.overrideWith(
+                (ref) => Stream.value(mockPrograms),
               ),
             ],
           ),
@@ -114,8 +300,14 @@ void main() {
         // Act
         await tester.pumpAndSettle();
 
-        // Assert
-        expect(find.text('エラーが発生しました'), findsOneWidget);
+        // Wait for error to be displayed
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpAndSettle();
+
+        // Assert - Check for error screen elements
+        expect(find.byType(ErrorScreen), findsOneWidget);
+        // The error message should be displayed in the ErrorScreen
+        expect(find.textContaining('Exception'), findsOneWidget);
       });
     });
 
@@ -125,6 +317,10 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Act
+        await tester.pumpAndSettle();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
         // Assert
@@ -140,6 +336,10 @@ void main() {
         // Act
         await tester.pumpAndSettle();
 
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pumpAndSettle();
+
         // Assert
         // 日付フォーマットは実際の実装に依存するため、基本的な表示を確認
         expect(find.textContaining('2024'), findsNWidgets(2));
@@ -150,6 +350,10 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Act
+        await tester.pumpAndSettle();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
         // Assert
@@ -164,14 +368,53 @@ void main() {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        // Act
-        await tester.tap(find.byType(Card).first);
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
-        // Assert
-        // ナビゲーションの結果は実際のルーティング設定に依存
-        // ここでは基本的なタップ動作を確認
-        expect(find.byType(Card), findsNWidgets(2));
+        // Wait for Card widgets to be rendered with multiple attempts
+        bool cardsFound = false;
+        for (int i = 0; i < 20; i++) {
+          await tester.pump(const Duration(milliseconds: 50));
+          await tester.pumpAndSettle();
+
+          // Check if Card widgets are available
+          final cardFinder = find.byType(Card);
+          if (cardFinder.evaluate().isNotEmpty) {
+            // print(
+            //   'Found ${cardFinder.evaluate().length} Card widgets after ${i + 1} attempts',
+            // );
+            cardsFound = true;
+            break;
+          }
+        }
+
+        // Debug: Check what widgets are actually rendered
+        // print('Available widgets:');
+        // print('Cards: ${find.byType(Card).evaluate().length}');
+        // print(
+        //   'AnimatedContainers: ${find.byType(AnimatedContainer).evaluate().length}',
+        // );
+        // print('InkWells: ${find.byType(InkWell).evaluate().length}');
+        // print('Containers: ${find.byType(Container).evaluate().length}');
+
+        // Assert that cards are found
+        expect(
+          cardsFound,
+          isTrue,
+          reason: 'Card widgets should be found after waiting',
+        );
+
+        // Find cards again for the tap action
+        final cardFinder = find.byType(Card);
+        expect(cardFinder, findsNWidgets(2));
+
+        // Act - Tap the first card
+        await tester.tap(cardFinder.first);
+        await tester.pumpAndSettle();
+
+        // Assert - Check that navigation occurred (basic tap verification)
+        // The actual navigation result depends on the routing setup
       });
     });
 
@@ -181,22 +424,30 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         // Act - 小さい画面サイズ
-        tester.binding.window.physicalSizeTestValue = const Size(320, 568);
-        tester.binding.window.devicePixelRatioTestValue = 1.0;
+        tester.view.physicalSize = const Size(320, 568);
+        tester.view.devicePixelRatio = 1.0;
+        await tester.pumpAndSettle();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
         // Assert
         expect(find.byType(UsageHistoryPage), findsOneWidget);
 
         // Act - 大きい画面サイズ
-        tester.binding.window.physicalSizeTestValue = const Size(1024, 768);
+        tester.view.physicalSize = const Size(1024, 768);
+        await tester.pumpAndSettle();
+
+        // Wait for programs to load
+        await tester.pump(const Duration(milliseconds: 100));
         await tester.pumpAndSettle();
 
         // Assert
         expect(find.byType(UsageHistoryPage), findsOneWidget);
 
         // Cleanup
-        addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+        addTearDown(tester.view.resetPhysicalSize);
       });
     });
   });

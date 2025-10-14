@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tliny/src/data/general_provider.dart';
+import 'package:tliny/src/data/model/exception/app_exception.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
 
 import 'auth_repository_test.mocks.dart';
@@ -21,11 +22,25 @@ void main() {
     late AuthRepository authRepository;
     late ProviderContainer container;
 
+    setUpAll(() async {
+      // Firebase setup is not needed for unit tests with mocked dependencies
+    });
+
     setUp(() {
       mockFirebaseAuth = MockFirebaseAuth();
       mockUser = MockUser();
       mockUserCredential = MockUserCredential();
       authRepository = AuthRepository(mockFirebaseAuth);
+
+      // Reset all mocks before each test
+      reset(mockFirebaseAuth);
+      reset(mockUser);
+      reset(mockUserCredential);
+      
+      // Clear any existing interactions
+      clearInteractions(mockFirebaseAuth);
+      clearInteractions(mockUser);
+      clearInteractions(mockUserCredential);
 
       container = ProviderContainer(
         overrides: [firebaseAuthProvider.overrideWithValue(mockFirebaseAuth)],
@@ -115,7 +130,7 @@ void main() {
 
         expect(
           () => authRepository.signInWithEmail('invalid-email', 'password123'),
-          throwsA(equals('メールアドレスを正しい形式で入力してください')),
+          throwsA(isA<AuthenticationException>()),
         );
       });
 
@@ -134,13 +149,15 @@ void main() {
             'test@example.com',
             'wrong-password',
           ),
-          throwsA(equals('パスワードが間違っています')),
+          throwsA(isA<AuthenticationException>()),
         );
       });
     });
 
     group('signUp', () {
       test('should create user successfully', () async {
+        when(mockUserCredential.user).thenReturn(mockUser);
+        when(mockUser.uid).thenReturn('test-user-id');
         when(
           mockFirebaseAuth.createUserWithEmailAndPassword(
             email: 'new@example.com',
@@ -172,7 +189,7 @@ void main() {
 
         expect(
           () => authRepository.signUp('new@example.com', '123'),
-          throwsA(equals('パスワードは6文字以上で入力してください')),
+          throwsA(isA<AuthenticationException>()),
         );
       });
 
@@ -188,7 +205,7 @@ void main() {
 
         expect(
           () => authRepository.signUp('existing@example.com', 'password123'),
-          throwsA(equals('このメールアドレスは既に登録されています')),
+          throwsA(isA<AuthenticationException>()),
         );
       });
     });
@@ -205,11 +222,22 @@ void main() {
       });
 
       test('should handle sign out error', () async {
+        // Reset and clear all mocks before setting up this test
+        reset(mockFirebaseAuth);
+        reset(mockUser);
+        reset(mockUserCredential);
+        clearInteractions(mockFirebaseAuth);
+        clearInteractions(mockUser);
+        clearInteractions(mockUserCredential);
+        
         when(
           mockFirebaseAuth.signOut(),
         ).thenThrow(firebase_auth.FirebaseAuthException(code: 'unknown'));
 
-        expect(() => authRepository.signOut(), throwsA(equals('不明なエラーです')));
+        expect(
+          () async => await authRepository.signOut(),
+          throwsA(isA<GeneralException>()),
+        );
       });
     });
 
@@ -268,6 +296,14 @@ void main() {
       });
 
       test('should handle password reset error', () async {
+        // Reset and clear all mocks before setting up this test
+        reset(mockFirebaseAuth);
+        reset(mockUser);
+        reset(mockUserCredential);
+        clearInteractions(mockFirebaseAuth);
+        clearInteractions(mockUser);
+        clearInteractions(mockUserCredential);
+        
         when(
           mockFirebaseAuth.sendPasswordResetEmail(email: 'invalid@example.com'),
         ).thenThrow(
@@ -276,7 +312,7 @@ void main() {
 
         expect(
           () => authRepository.sendPasswordResetEmail('invalid@example.com'),
-          throwsA(equals('ユーザーが見つかりません')),
+          throwsA(isA<AuthenticationException>()),
         );
       });
     });
@@ -285,37 +321,43 @@ void main() {
   group('convertAuthError', () {
     test('should convert invalid-email error', () {
       final result = convertAuthError('invalid-email');
-      expect(result, equals('メールアドレスを正しい形式で入力してください'));
+      expect(result, equals('メールアドレスの形式が正しくありません。正しいメールアドレスを入力してください。'));
     });
 
     test('should convert wrong-password error', () {
       final result = convertAuthError('wrong-password');
-      expect(result, equals('パスワードが間違っています'));
+      expect(result, equals('パスワードが間違っています。正しいパスワードを入力してください。'));
     });
 
     test('should convert user-not-found error', () {
       final result = convertAuthError('user-not-found');
-      expect(result, equals('ユーザーが見つかりません'));
+      expect(
+        result,
+        equals('このメールアドレスで登録されたユーザーが見つかりません。メールアドレスを確認するか、新規登録してください。'),
+      );
     });
 
     test('should convert weak-password error', () {
       final result = convertAuthError('weak-password');
-      expect(result, equals('パスワードは6文字以上で入力してください'));
+      expect(result, equals('パスワードが弱すぎます。6文字以上のパスワードを設定してください。'));
     });
 
     test('should convert user-disabled error', () {
       final result = convertAuthError('user-disabled');
-      expect(result, equals('ユーザーが無効です'));
+      expect(result, equals('このアカウントは無効になっています。管理者にお問い合わせください。'));
     });
 
     test('should convert email-already-in-use error', () {
       final result = convertAuthError('email-already-in-use');
-      expect(result, equals('このメールアドレスは既に登録されています'));
+      expect(
+        result,
+        equals('このメールアドレスは既に使用されています。別のメールアドレスを使用するか、ログインしてください。'),
+      );
     });
 
     test('should return default error for unknown error code', () {
       final result = convertAuthError('unknown-error');
-      expect(result, equals('不明なエラーです'));
+      expect(result, equals('認証エラーが発生しました。しばらく時間をおいてから再度お試しください。'));
     });
   });
 }

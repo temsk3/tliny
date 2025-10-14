@@ -222,7 +222,6 @@ class CartPage extends HookConsumerWidget {
 
     // 「未分類」グループの場合
     if (value == '未分類') {
-      final ungroupedCarts = groupCarts;
       return RepaintBoundary(
         child: SizedBox(
           height: 60,
@@ -286,16 +285,6 @@ class CartPage extends HookConsumerWidget {
 
     return programAsync.when(
       data: (program) {
-        if (program == null) {
-          if (kDebugMode) {
-            logger.w(
-              'CartPage: groupSeparatorBuilder: program is null for value="$value"',
-              time: DateTime.now(),
-            );
-          }
-          return Container();
-        }
-
         final programCarts = groupCarts;
         return RepaintBoundary(
           child: SizedBox(

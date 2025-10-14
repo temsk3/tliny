@@ -15,16 +15,13 @@ String _$userRepositoryHash() => r'7b838d76413a4ed7caa642e36081918247857705';
 final userRepositoryProvider = Provider<UserRepository>.internal(
   userRepository,
   name: r'userRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$userRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef UserRepositoryRef = ProviderRef<UserRepository>;
 String _$userStreamHash() => r'2cf4b17d65e881eb21b099203c985d8c3e341b81';
 
@@ -59,15 +56,21 @@ class UserStreamFamily extends Family<AsyncValue<User>> {
   const UserStreamFamily();
 
   /// See also [userStream].
-  UserStreamProvider call(String uid) {
-    return UserStreamProvider(uid);
+  UserStreamProvider call(
+    String uid,
+  ) {
+    return UserStreamProvider(
+      uid,
+    );
   }
 
   @override
   UserStreamProvider getProviderOverride(
     covariant UserStreamProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -88,19 +91,24 @@ class UserStreamFamily extends Family<AsyncValue<User>> {
 /// See also [userStream].
 class UserStreamProvider extends AutoDisposeStreamProvider<User> {
   /// See also [userStream].
-  UserStreamProvider(String uid)
-    : this._internal(
-        (ref) => userStream(ref as UserStreamRef, uid),
-        from: userStreamProvider,
-        name: r'userStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$userStreamHash,
-        dependencies: UserStreamFamily._dependencies,
-        allTransitiveDependencies: UserStreamFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  UserStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => userStream(
+            ref as UserStreamRef,
+            uid,
+          ),
+          from: userStreamProvider,
+          name: r'userStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$userStreamHash,
+          dependencies: UserStreamFamily._dependencies,
+          allTransitiveDependencies:
+              UserStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   UserStreamProvider._internal(
     super._createNotifier, {
@@ -115,7 +123,9 @@ class UserStreamProvider extends AutoDisposeStreamProvider<User> {
   final String uid;
 
   @override
-  Override overrideWith(Stream<User> Function(UserStreamRef provider) create) {
+  Override overrideWith(
+    Stream<User> Function(UserStreamRef provider) create,
+  ) {
     return ProviderOverride(
       origin: this,
       override: UserStreamProvider._internal(
@@ -149,8 +159,6 @@ class UserStreamProvider extends AutoDisposeStreamProvider<User> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin UserStreamRef on AutoDisposeStreamProviderRef<User> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -172,16 +180,13 @@ String _$publicUserRepositoryHash() =>
 final publicUserRepositoryProvider = Provider<PublicUserRepository>.internal(
   publicUserRepository,
   name: r'publicUserRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$publicUserRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$publicUserRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef PublicUserRepositoryRef = ProviderRef<PublicUserRepository>;
 String _$publicUserStreamHash() => r'a4bebdc2b6382db7796a963ed4541007fe8aa8db';
 
@@ -195,15 +200,21 @@ class PublicUserStreamFamily extends Family<AsyncValue<PublicUsers>> {
   const PublicUserStreamFamily();
 
   /// See also [publicUserStream].
-  PublicUserStreamProvider call(String uid) {
-    return PublicUserStreamProvider(uid);
+  PublicUserStreamProvider call(
+    String uid,
+  ) {
+    return PublicUserStreamProvider(
+      uid,
+    );
   }
 
   @override
   PublicUserStreamProvider getProviderOverride(
     covariant PublicUserStreamProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -224,20 +235,24 @@ class PublicUserStreamFamily extends Family<AsyncValue<PublicUsers>> {
 /// See also [publicUserStream].
 class PublicUserStreamProvider extends AutoDisposeStreamProvider<PublicUsers> {
   /// See also [publicUserStream].
-  PublicUserStreamProvider(String uid)
-    : this._internal(
-        (ref) => publicUserStream(ref as PublicUserStreamRef, uid),
-        from: publicUserStreamProvider,
-        name: r'publicUserStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$publicUserStreamHash,
-        dependencies: PublicUserStreamFamily._dependencies,
-        allTransitiveDependencies:
-            PublicUserStreamFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  PublicUserStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => publicUserStream(
+            ref as PublicUserStreamRef,
+            uid,
+          ),
+          from: publicUserStreamProvider,
+          name: r'publicUserStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$publicUserStreamHash,
+          dependencies: PublicUserStreamFamily._dependencies,
+          allTransitiveDependencies:
+              PublicUserStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   PublicUserStreamProvider._internal(
     super._createNotifier, {
@@ -288,8 +303,6 @@ class PublicUserStreamProvider extends AutoDisposeStreamProvider<PublicUsers> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PublicUserStreamRef on AutoDisposeStreamProviderRef<PublicUsers> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -316,15 +329,21 @@ class PublicUserFutureFamily extends Family<AsyncValue<PublicUsers>> {
   const PublicUserFutureFamily();
 
   /// See also [publicUserFuture].
-  PublicUserFutureProvider call(String uid) {
-    return PublicUserFutureProvider(uid);
+  PublicUserFutureProvider call(
+    String uid,
+  ) {
+    return PublicUserFutureProvider(
+      uid,
+    );
   }
 
   @override
   PublicUserFutureProvider getProviderOverride(
     covariant PublicUserFutureProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -345,20 +364,24 @@ class PublicUserFutureFamily extends Family<AsyncValue<PublicUsers>> {
 /// See also [publicUserFuture].
 class PublicUserFutureProvider extends AutoDisposeFutureProvider<PublicUsers> {
   /// See also [publicUserFuture].
-  PublicUserFutureProvider(String uid)
-    : this._internal(
-        (ref) => publicUserFuture(ref as PublicUserFutureRef, uid),
-        from: publicUserFutureProvider,
-        name: r'publicUserFutureProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$publicUserFutureHash,
-        dependencies: PublicUserFutureFamily._dependencies,
-        allTransitiveDependencies:
-            PublicUserFutureFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  PublicUserFutureProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => publicUserFuture(
+            ref as PublicUserFutureRef,
+            uid,
+          ),
+          from: publicUserFutureProvider,
+          name: r'publicUserFutureProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$publicUserFutureHash,
+          dependencies: PublicUserFutureFamily._dependencies,
+          allTransitiveDependencies:
+              PublicUserFutureFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   PublicUserFutureProvider._internal(
     super._createNotifier, {
@@ -409,8 +432,6 @@ class PublicUserFutureProvider extends AutoDisposeFutureProvider<PublicUsers> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin PublicUserFutureRef on AutoDisposeFutureProviderRef<PublicUsers> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -424,6 +445,5 @@ class _PublicUserFutureProviderElement
   @override
   String get uid => (origin as PublicUserFutureProvider).uid;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

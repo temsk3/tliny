@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -28,16 +28,14 @@ class UserRepository {
   late final CollectionReference<User> _collectionRef = _db
       .collection(_userCollectionPath)
       .withConverter<User>(
-        fromFirestore:
-            (snapshot, _) =>
-                User.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-        toFirestore:
-            (model, _) => {
-              ...model.toJson()..remove('id'),
-              if (model.createdAt == null)
-                'createdAt': FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-            },
+        fromFirestore: (snapshot, _) =>
+            User.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+        toFirestore: (model, _) => {
+          ...model.toJson()..remove('id'),
+          if (model.createdAt == null)
+            'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
       );
 
   // ユーザー情報を取得するストリーム
@@ -154,8 +152,10 @@ class UserRepository {
   Stream<bool> streamCheckExistenceAccount(String uid) {
     logger.d('streamCheckExistenceAccount: uid=$uid');
     try {
-      final snapshot =
-          _db.collection(_accountCollectionPath).doc(uid).snapshots();
+      final snapshot = _db
+          .collection(_accountCollectionPath)
+          .doc(uid)
+          .snapshots();
       return snapshot.map((doc) => doc.exists);
     } on Exception catch (e, st) {
       logger.e('streamCheckExistenceAccount: error=$e, stackTrace=$st');
@@ -167,8 +167,10 @@ class UserRepository {
   Stream<bool> streamCheckAccountStatus(String uid) {
     logger.d('streamCheckAccountStatus: uid=$uid');
     try {
-      final snapshot =
-          _db.collection(_accountCollectionPath).doc(uid).snapshots();
+      final snapshot = _db
+          .collection(_accountCollectionPath)
+          .doc(uid)
+          .snapshots();
       return snapshot.map((doc) {
         final data = doc.data();
         if (data == null) {
@@ -211,17 +213,14 @@ class PublicUserRepository {
   late final CollectionReference<PublicUsers> _collectionRef = _db
       .collection(_publicUsersCollectionPath)
       .withConverter<PublicUsers>(
-        fromFirestore:
-            (snapshot, _) => PublicUsers.fromJson(
-              snapshot.data()!,
-            ).copyWith(id: snapshot.id),
-        toFirestore:
-            (model, _) => {
-              ...model.toJson()..remove('id'),
-              if (model.createdAt == null)
-                'createdAt': FieldValue.serverTimestamp(),
-              'updatedAt': FieldValue.serverTimestamp(),
-            },
+        fromFirestore: (snapshot, _) =>
+            PublicUsers.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+        toFirestore: (model, _) => {
+          ...model.toJson()..remove('id'),
+          if (model.createdAt == null)
+            'createdAt': FieldValue.serverTimestamp(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
       );
 
   // 公開ユーザー情報を取得するストリーム

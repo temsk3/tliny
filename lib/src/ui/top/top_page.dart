@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../data/model/program_model.dart';
@@ -11,12 +12,29 @@ import '../program/program_state.dart';
 import 'program_screen.dart';
 import 'widgets/program_search_card.dart';
 
+part 'top_page.g.dart';
+
 // final logger = Logger();
 
-final StateProvider<bool> onSearchProvider = StateProvider((ref) => false);
-final StateProvider<Set<int>> searchIndexListProvider = StateProvider(
-  (ref) => <int>{},
-);
+@riverpod
+class OnSearch extends _$OnSearch {
+  @override
+  bool build() => false;
+
+  void toggle() => state = !state;
+  void setTrue() => state = true;
+  void setFalse() => state = false;
+}
+
+@riverpod
+class SearchIndexList extends _$SearchIndexList {
+  @override
+  Set<int> build() => <int>{};
+
+  void clear() => state = <int>{};
+  void add(int index) => state = {...state, index};
+  void set(Set<int> newState) => state = newState;
+}
 
 // @RoutePage()
 class TopPage extends HookConsumerWidget {
@@ -27,76 +45,68 @@ class TopPage extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    // final appMediaQuery = useMediaQuery();
+    // // final appMediaQuery = useMediaQuery();
 
-    final onSearchNotifier = ref.watch(onSearchProvider.notifier);
     final onSearch = ref.watch(onSearchProvider);
-    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
 
     return AsyncValueWidget(
       value: ref.watch(programsStateProvider),
       data: (list) {
-        final data =
-            list
-                .where(
-                  (element) =>
-                      element.isPublish == true && element.isActive == true,
-                )
-                .toList();
+        final data = list
+            .where(
+              (element) =>
+                  element.isPublish == true && element.isActive == true,
+            )
+            .toList();
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             automaticallyImplyLeading: false,
-            title:
-                onSearch
-                    ? _searchTextField(context, ref, l10n, data)
-                    : null, // const Text('Search'),
-            actions:
-                onSearch
-                    ? [
-                      IconButton(
-                        onPressed: () {
-                          onSearchNotifier.state = false;
-                        },
-                        icon: Icon(
-                          Icons.clear,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+            title: onSearch
+                ? _searchTextField(context, ref, l10n, data)
+                : null, // const Text('Search'),
+            actions: onSearch
+                ? [
+                    IconButton(
+                      onPressed: () {
+                        ref.read(onSearchProvider.notifier).setFalse();
+                      },
+                      icon: Icon(
+                        Icons.clear,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
-                    ]
-                    : [
-                      IconButton(
-                        onPressed: () {
-                          onSearchNotifier.state = true;
-                          searchIndexListNotifier.state = {};
-                        },
-                        icon: Icon(
-                          Icons.search,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        tooltip: l10n.searchEvent,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ProgramEditRoute(
-                            $extra: Program.empty(),
-                          ).push(context);
-                        },
-                        icon: const Icon(Icons.add),
-                        tooltip: l10n.createEvent, // 必要に応じてl10nを使って多言語化
-                      ),
-                    ],
-          ),
-          body:
-              onSearch
-                  ? MainBodyWidget(
-                    body: Container(
-                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                      child: _searchListView(ref, data),
                     ),
-                  )
-                  : const EventScreen(), // TikTok風の全画面表示
+                  ]
+                : [
+                    IconButton(
+                      onPressed: () {
+                        ref.read(onSearchProvider.notifier).setTrue();
+                        ref.read(searchIndexListProvider.notifier).clear();
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      tooltip: l10n.searchEvent,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        ProgramEditRoute($extra: Program.empty()).push(context);
+                      },
+                      icon: const Icon(Icons.add),
+                      tooltip: l10n.createEvent, // 必要に応じてl10nを使って多言語化
+                    ),
+                  ],
+          ),
+          body: onSearch
+              ? MainBodyWidget(
+                  body: Container(
+                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    child: _searchListView(ref, data),
+                  ),
+                )
+              : const EventScreen(), // TikTok風の全画面表示
         );
       },
     );
@@ -108,7 +118,6 @@ class TopPage extends HookConsumerWidget {
     AppLocalizations l10n,
     List<Program> data,
   ) {
-    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
     return SizedBox(
       height: 40,
       child: DecoratedBox(
@@ -130,13 +139,14 @@ class TopPage extends HookConsumerWidget {
             ),
             autofocus: true,
             onChanged: (String text) {
-              searchIndexListNotifier.state = {};
+              final searchNotifier = ref.read(searchIndexListProvider.notifier);
+              searchNotifier.clear();
               for (var i = 0; i < data.length; i++) {
                 final map = data[i].toJson();
                 for (final key in map.keys) {
                   final value = map[key];
                   if (value.toString().contains(text)) {
-                    searchIndexListNotifier.state.add(i);
+                    searchNotifier.add(i);
                   }
                 }
               }
@@ -152,12 +162,11 @@ class TopPage extends HookConsumerWidget {
     List<Program> data,
     // StackRouter appRoute,
   ) {
-    final searchIndexListNotifier = ref.watch(searchIndexListProvider.notifier);
     final searchIndexList = ref.watch(searchIndexListProvider);
     return ListView.builder(
       itemCount: searchIndexList.length,
       itemBuilder: (context, int index) {
-        index = searchIndexListNotifier.state.toList()[index];
+        index = searchIndexList.toList()[index];
         final program = data[index];
         return ProgramSearchCard(program: program);
       },

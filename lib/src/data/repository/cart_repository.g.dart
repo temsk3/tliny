@@ -15,16 +15,13 @@ String _$cartRepositoryHash() => r'dc5f40f430d8fdc57240a0529f3651cff5214961';
 final cartRepositoryProvider = Provider<CartRepository>.internal(
   cartRepository,
   name: r'cartRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$cartRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$cartRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef CartRepositoryRef = ProviderRef<CartRepository>;
 String _$cartStreamHash() => r'07a66d6a90ef5b68908868ffa45ef0240138f444';
 
@@ -59,15 +56,21 @@ class CartStreamFamily extends Family<AsyncValue<List<Cart>>> {
   const CartStreamFamily();
 
   /// See also [cartStream].
-  CartStreamProvider call(String uid) {
-    return CartStreamProvider(uid);
+  CartStreamProvider call(
+    String uid,
+  ) {
+    return CartStreamProvider(
+      uid,
+    );
   }
 
   @override
   CartStreamProvider getProviderOverride(
     covariant CartStreamProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -88,19 +91,24 @@ class CartStreamFamily extends Family<AsyncValue<List<Cart>>> {
 /// See also [cartStream].
 class CartStreamProvider extends AutoDisposeStreamProvider<List<Cart>> {
   /// See also [cartStream].
-  CartStreamProvider(String uid)
-    : this._internal(
-        (ref) => cartStream(ref as CartStreamRef, uid),
-        from: cartStreamProvider,
-        name: r'cartStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$cartStreamHash,
-        dependencies: CartStreamFamily._dependencies,
-        allTransitiveDependencies: CartStreamFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  CartStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => cartStream(
+            ref as CartStreamRef,
+            uid,
+          ),
+          from: cartStreamProvider,
+          name: r'cartStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$cartStreamHash,
+          dependencies: CartStreamFamily._dependencies,
+          allTransitiveDependencies:
+              CartStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   CartStreamProvider._internal(
     super._createNotifier, {
@@ -151,21 +159,17 @@ class CartStreamProvider extends AutoDisposeStreamProvider<List<Cart>> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin CartStreamRef on AutoDisposeStreamProviderRef<List<Cart>> {
   /// The parameter `uid` of this provider.
   String get uid;
 }
 
 class _CartStreamProviderElement
-    extends AutoDisposeStreamProviderElement<List<Cart>>
-    with CartStreamRef {
+    extends AutoDisposeStreamProviderElement<List<Cart>> with CartStreamRef {
   _CartStreamProviderElement(super.provider);
 
   @override
   String get uid => (origin as CartStreamProvider).uid;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

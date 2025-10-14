@@ -9,24 +9,21 @@ part of 'history_view_model.dart';
 // **************************************************************************
 
 String _$usageHistoryViewModelHash() =>
-    r'8924b8b2055edfd7a3b0b1f7f40819a65f60d865';
+    r'03219df6b5af304cac26069ad5a2aa68ec355d65';
 
 /// See also [UsageHistoryViewModel].
 @ProviderFor(UsageHistoryViewModel)
 final usageHistoryViewModelProvider = AutoDisposeAsyncNotifierProvider<
-  UsageHistoryViewModel,
-  List<UsageHistory>
->.internal(
+    UsageHistoryViewModel, List<UsageHistory>>.internal(
   UsageHistoryViewModel.new,
   name: r'usageHistoryViewModelProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$usageHistoryViewModelHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$usageHistoryViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 typedef _$UsageHistoryViewModel = AutoDisposeAsyncNotifier<List<UsageHistory>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

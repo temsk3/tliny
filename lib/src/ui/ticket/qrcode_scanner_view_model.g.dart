@@ -17,16 +17,15 @@ String _$qRCodeScannerViewModelHash() =>
 @ProviderFor(QRCodeScannerViewModel)
 final qRCodeScannerViewModelProvider =
     AutoDisposeNotifierProvider<QRCodeScannerViewModel, String?>.internal(
-      QRCodeScannerViewModel.new,
-      name: r'qRCodeScannerViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$qRCodeScannerViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  QRCodeScannerViewModel.new,
+  name: r'qRCodeScannerViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$qRCodeScannerViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$QRCodeScannerViewModel = AutoDisposeNotifier<String?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

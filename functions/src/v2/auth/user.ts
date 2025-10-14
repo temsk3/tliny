@@ -6,12 +6,15 @@ import Stripe from 'stripe'
 import paths from '../firestore/utils/db_paths'
 import stripeErrors from '../payment/utils/stripe_error'
 import { logger } from '../../utils/logger'
-import { defineSecret } from 'firebase-functions/params'
 import { onCall } from '../../utils/base_function'
 import { getRequestingUserId } from '../../utils/firebase_utils'
-
-// Firebase Functionsのシークレット定義
-const stripeSecret = defineSecret('STRIPE_SECRET')
+import {
+  stripeSecret,
+  stripeEpSecret,
+  stripeDevSk,
+  stripeDevEp,
+} from '../payment/utils/stripe_config'
+import { SecretManagerServiceClient } from '@google-cloud/secret-manager'
 
 // Firestoreの初期化
 if (!admin.apps.length) {
@@ -20,13 +23,66 @@ if (!admin.apps.length) {
 
 const db = admin.firestore()
 
+function getProjectId() {
+  return (
+    process.env.GCLOUD_PROJECT ||
+    process.env.GCP_PROJECT ||
+    process.env.FUNCTIONS_EMULATOR_PROJECT_ID ||
+    (process.env.FIREBASE_CONFIG &&
+      (() => {
+        try {
+          return JSON.parse(process.env.FIREBASE_CONFIG).projectId
+        } catch {
+          return undefined
+        }
+      })()) ||
+    undefined
+  )
+}
+async function getSecretManagerSecret(secretName: string) {
+  try {
+    const client = new SecretManagerServiceClient()
+    const projectId = getProjectId()
+    let project = 'tliny-c9630'
+    if (projectId && projectId !== 'tliny-c9630') {
+      project = 'tliny-sample'
+    }
+    const [version] = await client.accessSecretVersion({
+      name: `projects/${project}/secrets/${secretName}/versions/latest`,
+    })
+    return (version.payload?.data?.toString() || '').trim()
+  } catch (error) {
+    console.error(
+      `Failed to retrieve ${secretName} from Secret Manager:`,
+      error,
+    )
+    return undefined
+  }
+}
+async function getStripeKey() {
+  const projectId = getProjectId()
+  let key
+  if (projectId === 'tliny-c9630') {
+    key = process.env.STRIPE_SECRET
+  } else {
+    key = process.env.STRIPE_DEV_SK
+  }
+  if (!key) {
+    key = await getSecretManagerSecret(
+      projectId === 'tliny-c9630' ? 'STRIPE_SECRET' : 'STRIPE_DEV_SK',
+    )
+    console.log('Stripe secret retrieved from Secret Manager')
+  }
+  return key
+}
+
 /**
  * 新規ユーザー作成時のトリガー
  * Firestoreにユーザードキュメントを作成し、Stripe Customerを作成する
  */
 export const onUserCreatedTrigger = functions
   .runWith({
-    secrets: [stripeSecret],
+    // secrets: [stripeSecret], // v1では不要
   })
   .auth.user()
   .onCreate(async (user) => {
@@ -137,105 +193,54 @@ export const onUserCreatedTrigger = functions
         throw firestoreError
       }
 
-      // Stripe Customerを作成（既存実装に合わせる）
-      logger.info(`${methodName}: Stripe Customer作成開始`, {
-        uid: user.uid,
+      // Stripe Customerを作成
+      logger.info(`${methodName}: Stripe Customer作成開始`, { uid: user.uid })
+      let stripeKey = await getStripeKey()
+      if (!stripeKey) throw new Error('Stripe secret key is not set')
+      const stripe = new Stripe(stripeKey, { apiVersion: '2025-06-30.basil' })
+      const customer = await stripe.customers.create({
+        name: user.displayName,
+        email: user.email,
+        phone: user.phoneNumber,
+        metadata: { uid: user.uid },
       })
-
-      const customer = await getStripe()
-        .customers.create(
-          {
-            name: user.displayName,
-            email: user.email,
-            phone: user.phoneNumber,
-            metadata: { uid: user.uid },
-          },
-          stripeOptions,
-        )
-        .then(
-          (result: Stripe.Response<Stripe.Customer>) => {
-            logger.info(`${methodName}: Stripe Customer作成成功`, {
-              uid: user.uid,
-              customerId: result.id,
-            })
-            return result
-          },
-          (error: any) => {
-            stripeErrors(error)
-            throw new Error(error)
-          },
-        )
-
-      // SetupIntent作成（既存実装に合わせる）
+      // SetupIntent作成
       logger.info(`${methodName}: SetupIntent作成開始`, {
         uid: user.uid,
         customerId: customer.id,
       })
-
-      const intent = await getStripe()
-        .setupIntents.create(
-          {
-            customer: customer.id,
-          },
-          stripeOptions,
-        )
-        .then(
-          (result: Stripe.Response<Stripe.SetupIntent>) => {
-            logger.info(`${methodName}: SetupIntent作成成功`, {
-              uid: user.uid,
-              setupIntentId: result.id,
-            })
-            return result
-          },
-          (error: any) => {
-            stripeErrors(error)
-            throw new Error(error)
-          },
-        )
-
-      // Authenticationの認証で利用するユーザー属性に独自の情報(stripe)を追加（既存実装に合わせる）
+      const intent = await stripe.setupIntents.create({ customer: customer.id })
+      // Authenticationの認証で利用するユーザー属性に独自の情報(stripe)を追加
       logger.info(`${methodName}: Custom Claims設定開始`, {
         uid: user.uid,
         customerId: customer.id,
       })
-
       await admin
         .auth()
         .setCustomUserClaims(user.uid, { customerId: customer.id })
-
       logger.info(`${methodName}: Custom Claims設定完了`, {
         uid: user.uid,
         customerId: customer.id,
       })
-
-      // stripe_customers collection への登録（既存実装に合わせる）
+      // stripe_customers collection への登録
       logger.info(
         `${methodName}: stripe_customers collection への書き込み開始`,
-        {
-          uid: user.uid,
-          path: paths.customersCollectionPath,
-        },
+        { uid: user.uid, path: paths.customersCollectionPath },
       )
-
       const customerData = {
         customer_id: customer.id,
         setup_secret: intent.client_secret,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
-
       try {
         await db
           .collection(paths.customersCollectionPath)
           .doc(user.uid)
           .set(customerData)
-
         logger.info(
           `${methodName}: stripe_customers collection への書き込み完了`,
-          {
-            uid: user.uid,
-            data: customerData,
-          },
+          { uid: user.uid, data: customerData },
         )
       } catch (firestoreError: any) {
         logger.error(
@@ -579,6 +584,7 @@ export const repairUserStripeCustomer = onCall<{ uid?: string }>(
       throw ErrorHandler.convertToHttpsError(appEx)
     }
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 /**

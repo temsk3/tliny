@@ -203,17 +203,20 @@ class CartViewModel extends _$CartViewModel {
       logger.d('updateCart: $data', time: DateTime.now());
     }
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    
+
     // 楽観的更新: UIを即座に更新
     final currentCarts = state.value ?? [];
     final optimisticCarts = [
       for (final cart in currentCarts)
-        if (cart.id == data.id) cart.copyWith(quantity: data.quantity) else cart,
+        if (cart.id == data.id)
+          cart.copyWith(quantity: data.quantity)
+        else
+          cart,
     ];
     state = AsyncValue.data(optimisticCarts);
-    
+
     try {
-      final id = await loading.guardFuture(() {
+      await loading.guardFuture(() {
         return cartRepository.updateCart(uid, data);
       });
       // 成功した場合は既に楽観的更新済みなので何もしない
@@ -245,15 +248,13 @@ class CartViewModel extends _$CartViewModel {
     logger.d('updateCartOptimized: $data', time: DateTime.now());
     final loading = ref.read(globalLoadingControllerProvider.notifier);
     try {
-      final id = await loading.guardFuture(() {
-        return cartRepository.updateCart(uid, data);
-      });
+      await loading.guardFuture(() { return cartRepository.updateCart(uid, data); });
 
       // 現在の状態を直接更新（AsyncLoadingを使わない）
       if (state.value != null) {
         final updatedCarts = [
           for (final cart in state.value!)
-            if (cart.id == id) cart.copyWith(quantity: data.quantity) else cart,
+            if (cart.id == data.id) cart.copyWith(quantity: data.quantity) else cart,
         ];
         state = AsyncValue.data(updatedCarts);
       }

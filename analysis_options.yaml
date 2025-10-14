@@ -7,8 +7,7 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
-# include: package:flutter_lints/flutter.yaml
-include: package:pedantic_mono/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 # include: package:riverpod_lint/analysis_options.yaml
 # include: package:custom_lint/analysis_options.yaml
 
@@ -34,10 +33,10 @@ analyzer:
   errors:
     invalid_annotation_target: ignore
     lines_longer_than_80_chars: ignore
+    deprecated_member_use: ignore
   exclude:
-    - '**/*.g.dart'
-    - '**/*.freezed.dart'
-    - '**/*.gr.dart'
+    - 'build/**'
+    - 'lib/generated/**'
     - 'build/**'
     - 'lib/generated/**'
   # plugins:

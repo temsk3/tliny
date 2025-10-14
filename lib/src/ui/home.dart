@@ -11,7 +11,7 @@ import '../utils/logger.dart';
 import '../utils/router_utils.dart';
 import 'drawer/drawer.dart';
 
-enum PageIndex { top, cart, ticket }
+enum PageIndex { top, cart, ticket, sns }
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key, required this.navigationShell});
@@ -70,6 +70,7 @@ class HomePage extends HookConsumerWidget {
       AppRoutes.topPage,
       AppRoutes.cartPage,
       AppRoutes.ticketPage,
+      AppRoutes.snsPage,
     ].contains(GoRouterState.of(context).uri.toString());
   }
 
@@ -108,6 +109,12 @@ class HomePage extends HookConsumerWidget {
           icon: const FaIcon(FontAwesomeIcons.ticket),
           label: l10n.ticket,
           activeIcon: const FaIcon(FontAwesomeIcons.ticketSimple),
+        ),
+        // SNS
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.people_outline),
+          label: 'SNS',
+          activeIcon: const Icon(Icons.people),
         ),
       ],
       onTap: (int index) {

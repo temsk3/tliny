@@ -9,7 +9,7 @@ part of 'email_change_view_model.dart';
 // **************************************************************************
 
 String _$emailChangeViewModelHash() =>
-    r'991b700a8d002e7e5dc4f724e15159a75927515c';
+    r'e2003303f9b6820cec738dbca344ae50cfca793b';
 
 /// メールアドレス変更を管理する ViewModel
 ///
@@ -17,16 +17,15 @@ String _$emailChangeViewModelHash() =>
 @ProviderFor(EmailChangeViewModel)
 final emailChangeViewModelProvider =
     AutoDisposeAsyncNotifierProvider<EmailChangeViewModel, void>.internal(
-      EmailChangeViewModel.new,
-      name: r'emailChangeViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$emailChangeViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  EmailChangeViewModel.new,
+  name: r'emailChangeViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$emailChangeViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$EmailChangeViewModel = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

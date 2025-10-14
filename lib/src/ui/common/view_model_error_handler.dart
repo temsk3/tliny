@@ -44,13 +44,15 @@ class ViewModelErrorHandler {
         stackTrace: st,
       );
 
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
     } on Exception catch (e, st) {
       if (showLoading) {
@@ -64,13 +66,15 @@ class ViewModelErrorHandler {
         stackTrace: st,
       );
 
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
     }
   }

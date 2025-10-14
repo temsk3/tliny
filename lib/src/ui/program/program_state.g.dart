@@ -15,17 +15,31 @@ String _$programsStateHash() => r'ad3d1dda06125f9a1c29dd99fde2b80e102778bb';
 final programsStateProvider = AutoDisposeStreamProvider<List<Program>>.internal(
   programsState,
   name: r'programsStateProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$programsStateHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$programsStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef ProgramsStateRef = AutoDisposeStreamProviderRef<List<Program>>;
+String _$programsStateAsyncHash() =>
+    r'f35d77d400c7d52bd6e480912ad3de3949b2a1ac';
+
+/// See also [programsStateAsync].
+@ProviderFor(programsStateAsync)
+final programsStateAsyncProvider =
+    AutoDisposeFutureProvider<List<Program>>.internal(
+  programsStateAsync,
+  name: r'programsStateAsyncProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$programsStateAsyncHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ProgramsStateAsyncRef = AutoDisposeFutureProviderRef<List<Program>>;
 String _$programStateHash() => r'c6fe483208bfe5fcded5085b735818d2cea3a164';
 
 /// Copied from Dart SDK
@@ -59,15 +73,21 @@ class ProgramStateFamily extends Family<AsyncValue<Program>> {
   const ProgramStateFamily();
 
   /// See also [programState].
-  ProgramStateProvider call(String? programId) {
-    return ProgramStateProvider(programId);
+  ProgramStateProvider call(
+    String? programId,
+  ) {
+    return ProgramStateProvider(
+      programId,
+    );
   }
 
   @override
   ProgramStateProvider getProviderOverride(
     covariant ProgramStateProvider provider,
   ) {
-    return call(provider.programId);
+    return call(
+      provider.programId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -88,20 +108,24 @@ class ProgramStateFamily extends Family<AsyncValue<Program>> {
 /// See also [programState].
 class ProgramStateProvider extends AutoDisposeStreamProvider<Program> {
   /// See also [programState].
-  ProgramStateProvider(String? programId)
-    : this._internal(
-        (ref) => programState(ref as ProgramStateRef, programId),
-        from: programStateProvider,
-        name: r'programStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$programStateHash,
-        dependencies: ProgramStateFamily._dependencies,
-        allTransitiveDependencies:
-            ProgramStateFamily._allTransitiveDependencies,
-        programId: programId,
-      );
+  ProgramStateProvider(
+    String? programId,
+  ) : this._internal(
+          (ref) => programState(
+            ref as ProgramStateRef,
+            programId,
+          ),
+          from: programStateProvider,
+          name: r'programStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$programStateHash,
+          dependencies: ProgramStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProgramStateFamily._allTransitiveDependencies,
+          programId: programId,
+        );
 
   ProgramStateProvider._internal(
     super._createNotifier, {
@@ -152,16 +176,13 @@ class ProgramStateProvider extends AutoDisposeStreamProvider<Program> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProgramStateRef on AutoDisposeStreamProviderRef<Program> {
   /// The parameter `programId` of this provider.
   String? get programId;
 }
 
 class _ProgramStateProviderElement
-    extends AutoDisposeStreamProviderElement<Program>
-    with ProgramStateRef {
+    extends AutoDisposeStreamProviderElement<Program> with ProgramStateRef {
   _ProgramStateProviderElement(super.provider);
 
   @override
@@ -175,18 +196,15 @@ String _$myProgramListStateHash() =>
 @ProviderFor(myProgramListState)
 final myProgramListStateProvider =
     AutoDisposeStreamProvider<List<Program>>.internal(
-      myProgramListState,
-      name: r'myProgramListStateProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$myProgramListStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  myProgramListState,
+  name: r'myProgramListStateProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$myProgramListStateHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef MyProgramListStateRef = AutoDisposeStreamProviderRef<List<Program>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

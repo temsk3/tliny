@@ -8,7 +8,7 @@ part of 'order_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ordersStateHash() => r'adf7e995cf8446b149d11d382a4eeb7e9971fa7b';
+String _$ordersStateHash() => r'190a8f2a8b87686e1cb8be5c6bc7a043f415a91e';
 
 /// See also [ordersState].
 @ProviderFor(ordersState)
@@ -21,8 +21,6 @@ final ordersStateProvider = AutoDisposeStreamProvider<List<Order>>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef OrdersStateRef = AutoDisposeStreamProviderRef<List<Order>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

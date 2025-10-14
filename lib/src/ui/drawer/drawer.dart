@@ -392,24 +392,26 @@ class CustomTermsListTile extends HookWidget {
           final txtContent = await rootBundle.loadString(
             'assets/files/TLINY_terms.txt',
           );
-          await showDialog<void>(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(l10n.terms),
-                content: SingleChildScrollView(child: Text(txtContent)),
-                actions: [
-                  TextButton(
-                    child: Text(l10n.close),
-                    onPressed: () {
-                      // appRoute.pop(false);
-                      context.pop(false);
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+          if (context.mounted) {
+            await showDialog<void>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(l10n.terms),
+                  content: SingleChildScrollView(child: Text(txtContent)),
+                  actions: [
+                    TextButton(
+                      child: Text(l10n.close),
+                      onPressed: () {
+                        // appRoute.pop(false);
+                        context.pop(false);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         } catch (e) {
           logger.e('Failed to load terms: $e');
           if (context.mounted) {
@@ -436,24 +438,26 @@ class CustomCommerceListTile extends HookWidget {
           final txtContent = await rootBundle.loadString(
             'assets/files/TLINY_commerce.txt',
           );
-          await showDialog<void>(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(l10n.specificCommercialCode),
-                content: SingleChildScrollView(child: Text(txtContent)),
-                actions: [
-                  TextButton(
-                    child: Text(l10n.close),
-                    onPressed: () {
-                      // appRoute.pop(false);
-                      context.pop(false);
-                    },
-                  ),
-                ],
-              );
-            },
-          );
+          if (context.mounted) {
+            await showDialog<void>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text(l10n.specificCommercialCode),
+                  content: SingleChildScrollView(child: Text(txtContent)),
+                  actions: [
+                    TextButton(
+                      child: Text(l10n.close),
+                      onPressed: () {
+                        // appRoute.pop(false);
+                        context.pop(false);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         } catch (e) {
           logger.e('Failed to load commerce: $e');
           if (context.mounted) {

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -9,7 +9,6 @@ import '../model/ticket_model.dart';
 
 part 'ticket_repository.g.dart';
 
-const _defaultPath = 'v/1';
 const _collectionPath = 'v/1/users'; // 明示的にusersに固定
 const _ticketCollectionPath = 'v/1/tickets'; // 明示的に
 const _usageHistoryCollectionPath = 'use_of_tickets'; // 利用履歴はusers配下のみ
@@ -27,15 +26,13 @@ class TicketRepository {
           .collection(_ticketCollectionPath)
           .withConverter<Ticket>(
             fromFirestore: (snapshot, _) => Ticket.fromFirestore(snapshot),
-            toFirestore:
-                (model, _) => {
-                  ...model.toFirestore(),
-                  'updatedAt': FieldValue.serverTimestamp(),
-                  if (model.createdAt == null)
-                    'createdAt': FieldValue.serverTimestamp(),
-                  if (!model.isActive)
-                    'deletedAt': FieldValue.serverTimestamp(),
-                },
+            toFirestore: (model, _) => {
+              ...model.toFirestore(),
+              'updatedAt': FieldValue.serverTimestamp(),
+              if (model.createdAt == null)
+                'createdAt': FieldValue.serverTimestamp(),
+              if (!model.isActive) 'deletedAt': FieldValue.serverTimestamp(),
+            },
           );
   final FirebaseFirestore _db;
   final CollectionReference<Ticket> _ticketRef;
@@ -128,8 +125,9 @@ class TicketRepository {
   Future<List<Ticket>> readTicket(String uid) async {
     logger.d('readTicket: uid=$uid');
     try {
-      final querySnapshot =
-          await _ticketRef.where('ownerId', isEqualTo: uid).get();
+      final querySnapshot = await _ticketRef
+          .where('ownerId', isEqualTo: uid)
+          .get();
       logger.d('readTicket: querySnapshot=$querySnapshot');
       return querySnapshot.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
@@ -155,7 +153,8 @@ class TicketRepository {
   Future<String> updateTicket(Ticket ticket) async {
     logger.d('updateTicket: ticket=$ticket');
     try {
-      await _ticketRef.doc(ticket.id).update(ticket.toFirestore());
+      final docRef = _ticketRef.doc(ticket.id);
+      await docRef.set(ticket, SetOptions(merge: true));
       logger.d('updateTicket: success');
       return ticket.id!;
     } on Exception catch (e, st) {
@@ -170,7 +169,9 @@ class TicketRepository {
     Map<String, dynamic> data,
   ) async {
     try {
-      await _ticketRef.doc(ticketId).update(data);
+      // updatedAtを追加
+      final updateData = {...data, 'updatedAt': FieldValue.serverTimestamp()};
+      await _ticketRef.doc(ticketId).update(updateData);
     } catch (e, st) {
       logger.e('Error updating ticket field: $e', stackTrace: st);
       rethrow; // エラーを上に伝える
@@ -193,12 +194,11 @@ class TicketRepository {
   Future<List<Map<String, dynamic>>> testTicket(String uid) async {
     logger.d('testTicket: uid=$uid');
     try {
-      final docRef =
-          await _db
-              .collection(_collectionPath)
-              .doc(uid)
-              .collection(_ticketCollectionPath)
-              .get();
+      final docRef = await _db
+          .collection(_collectionPath)
+          .doc(uid)
+          .collection(_ticketCollectionPath)
+          .get();
       logger.d('testTicket: docRef=$docRef');
       return docRef.docs.map((doc) => doc.data()).toList();
     } on Exception catch (e, st) {
@@ -262,17 +262,14 @@ class UsageHistoryRepository {
         .doc(uid)
         .collection(_usageHistoryCollectionPath)
         .withConverter<UsageHistory>(
-          fromFirestore:
-              (snapshot, _) => UsageHistory.fromJson(
-                snapshot.data()!,
-              ).copyWith(id: snapshot.id),
-          toFirestore:
-              (model, _) => {
-                ...model.toJson()..remove('id'),
-                if (model.createdAt == null)
-                  'createdAt': FieldValue.serverTimestamp(),
-                'updatedAt': FieldValue.serverTimestamp(),
-              },
+          fromFirestore: (snapshot, _) =>
+              UsageHistory.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+          toFirestore: (model, _) => {
+            ...model.toJson()..remove('id'),
+            if (model.createdAt == null)
+              'createdAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          },
         );
   }
 
@@ -315,13 +312,10 @@ class UsageHistoryRepository {
         'readUsageHistory: querySnapshot.docs.length=${querySnapshot.docs.length}',
       );
 
-      final result =
-          querySnapshot.docs.map((doc) {
-            logger.d(
-              'readUsageHistory: doc.id=${doc.id}, doc.data=${doc.data()}',
-            );
-            return doc.data();
-          }).toList();
+      final result = querySnapshot.docs.map((doc) {
+        logger.d('readUsageHistory: doc.id=${doc.id}, doc.data=${doc.data()}');
+        return doc.data();
+      }).toList();
 
       logger.d('readUsageHistory: result.length=${result.length}');
       for (final history in result) {

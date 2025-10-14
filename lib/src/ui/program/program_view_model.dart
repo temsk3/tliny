@@ -49,11 +49,11 @@ class ProgramViewModel extends _$ProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readProgramsDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -193,11 +193,11 @@ class ProgramViewModel extends _$ProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('searchProgram: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 
@@ -219,11 +219,11 @@ class ProgramViewModel extends _$ProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('checkAccount: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
+      throw GeneralException(
         message: e.toString(),
         stackTrace: st,
+      
       );
-      rethrow;
     }
   }
 }

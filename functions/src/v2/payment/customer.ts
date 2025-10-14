@@ -12,6 +12,12 @@ import {
   stripeErrors,
   getStripeCustomerId,
 } from './utils'
+import {
+  stripeSecret,
+  stripeEpSecret,
+  stripeDevSk,
+  stripeDevEp,
+} from './utils/stripe_config'
 
 // MARK: - EphemeralKeyを返す
 export const v2_payment_customer_getEphemeralKey = onCall<CustomerRequestData>(
@@ -41,6 +47,7 @@ export const v2_payment_customer_getEphemeralKey = onCall<CustomerRequestData>(
         },
       )
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 // MARK: - stripeのcustomerを作ってcustomerIdを返す
@@ -74,6 +81,7 @@ export const v2_payment_customer_onCreate = onCall<CustomerRequestData>(
         },
       )
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 // MARK: customerのretrieve
@@ -96,6 +104,7 @@ export const v2_payment_customer_onRetrieve = onCall<CustomerRequestData>(
         },
       )
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 // MARK: customerのupdate
@@ -138,6 +147,7 @@ export const v2_payment_customer_onUpdate = onCall<CustomerRequestData>(
         },
       )
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 // MARK: stripeのcustomerを削除
@@ -159,6 +169,7 @@ export const v2_payment_customer_onDelete = onCall<CustomerRequestData>(
         },
       )
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )
 
 // MARK: stripeのcustomerを検索
@@ -186,4 +197,5 @@ export const v2_payment_customer_onSearch = onCall<CustomerRequestData>(
         },
       )
   },
+  { secrets: [stripeSecret, stripeEpSecret, stripeDevSk, stripeDevEp] },
 )

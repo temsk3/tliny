@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/main_body.dart';
 import '../../ui/product/widget/product_button.dart';
 import '../../utils/logger.dart';
@@ -23,13 +22,13 @@ class ProductDetailsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final theme = ref.watch(appThemeProvider);
+    // // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    final appMediaQuery = useMediaQuery();
+    // // final appMediaQuery = useMediaQuery();
     // final state = ref.watch(productStateProvider(product.id?.toString() ?? ''));
     // final state = ref.watch(productViewModelProvider);
-    // final viewModel = ref.watch(productViewModelProvider.notifier);
+    // // final viewModel = ref.watch(productViewModelProvider.notifier);
 
     final quantity = useState<int>(1);
 
@@ -40,9 +39,8 @@ class ProductDetailsPage extends HookConsumerWidget {
     logger.d('ProductDetailsPage: product.name=${data.name}');
     logger.d('ProductDetailsPage: product.price=${data.price}');
 
-    final code = data.code ?? l10n.noCode;
+    // final code = data.code ?? l10n.noCode;
     final name = data.name ?? l10n.noName;
-    final genre = data.genre?.getLocalizedName(l10n) ?? l10n.noGenre;
     final desc = data.desc ?? l10n.noDesc;
     final stock = data.stock;
     final price = data.price;

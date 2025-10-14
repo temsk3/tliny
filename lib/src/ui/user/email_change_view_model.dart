@@ -79,7 +79,8 @@ class EmailChangeViewModel extends _$EmailChangeViewModel {
         logger.w('changeEmail: ユーザー情報の再取得に失敗しました: $e');
       }
 
-      state = const AsyncValue.data(null);
+      // Refresh the state by calling build again
+      ref.invalidateSelf();
     } on FirebaseAuthException catch (e) {
       logger.e('changeEmail: FirebaseAuthException - ${e.code} - ${e.message}');
       String errorMessage;
@@ -101,33 +102,24 @@ class EmailChangeViewModel extends _$EmailChangeViewModel {
           errorMessage = 'メールアドレス変更に失敗しました: ${e.message}';
       }
 
-      final appException = AuthenticationException(
+      AuthenticationException(
         message: errorMessage,
         code: e.code,
         stackTrace: e.stackTrace,
       );
-      state = AsyncValue.error(
-        appException,
-        e.stackTrace ?? StackTrace.current,
-      );
       rethrow;
     } on AppException catch (e, st) {
       logger.e('changeEmail: AppException - ${e.message}', stackTrace: st);
-      state = AsyncValue.error(e, st);
       rethrow;
     } catch (e, st) {
       logger.e('changeEmail: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      state = AsyncValue.error(appException, st);
+      GeneralException(message: e.toString(), stackTrace: st);
       rethrow;
     }
   }
 
   /// メールアドレス変更の状態をリセット
   void resetState() {
-    state = const AsyncValue.data(null);
+    ref.invalidateSelf();
   }
 }

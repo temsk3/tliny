@@ -16,16 +16,13 @@ String _$myProgramRepositoryHash() =>
 final myProgramRepositoryProvider = Provider<MyProgramRepository>.internal(
   myProgramRepository,
   name: r'myProgramRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$myProgramRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$myProgramRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef MyProgramRepositoryRef = ProviderRef<MyProgramRepository>;
 String _$myProgramExistsStreamHash() =>
     r'7a24eab920d71080e7ce80ec2b389aed9aec8011';
@@ -61,15 +58,21 @@ class MyProgramExistsStreamFamily extends Family<AsyncValue<bool>> {
   const MyProgramExistsStreamFamily();
 
   /// See also [myProgramExistsStream].
-  MyProgramExistsStreamProvider call(String programId) {
-    return MyProgramExistsStreamProvider(programId);
+  MyProgramExistsStreamProvider call(
+    String programId,
+  ) {
+    return MyProgramExistsStreamProvider(
+      programId,
+    );
   }
 
   @override
   MyProgramExistsStreamProvider getProviderOverride(
     covariant MyProgramExistsStreamProvider provider,
   ) {
-    return call(provider.programId);
+    return call(
+      provider.programId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -90,21 +93,24 @@ class MyProgramExistsStreamFamily extends Family<AsyncValue<bool>> {
 /// See also [myProgramExistsStream].
 class MyProgramExistsStreamProvider extends AutoDisposeStreamProvider<bool> {
   /// See also [myProgramExistsStream].
-  MyProgramExistsStreamProvider(String programId)
-    : this._internal(
-        (ref) =>
-            myProgramExistsStream(ref as MyProgramExistsStreamRef, programId),
-        from: myProgramExistsStreamProvider,
-        name: r'myProgramExistsStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$myProgramExistsStreamHash,
-        dependencies: MyProgramExistsStreamFamily._dependencies,
-        allTransitiveDependencies:
-            MyProgramExistsStreamFamily._allTransitiveDependencies,
-        programId: programId,
-      );
+  MyProgramExistsStreamProvider(
+    String programId,
+  ) : this._internal(
+          (ref) => myProgramExistsStream(
+            ref as MyProgramExistsStreamRef,
+            programId,
+          ),
+          from: myProgramExistsStreamProvider,
+          name: r'myProgramExistsStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$myProgramExistsStreamHash,
+          dependencies: MyProgramExistsStreamFamily._dependencies,
+          allTransitiveDependencies:
+              MyProgramExistsStreamFamily._allTransitiveDependencies,
+          programId: programId,
+        );
 
   MyProgramExistsStreamProvider._internal(
     super._createNotifier, {
@@ -156,8 +162,6 @@ class MyProgramExistsStreamProvider extends AutoDisposeStreamProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin MyProgramExistsStreamRef on AutoDisposeStreamProviderRef<bool> {
   /// The parameter `programId` of this provider.
   String get programId;
@@ -171,6 +175,5 @@ class _MyProgramExistsStreamProviderElement
   @override
   String get programId => (origin as MyProgramExistsStreamProvider).programId;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

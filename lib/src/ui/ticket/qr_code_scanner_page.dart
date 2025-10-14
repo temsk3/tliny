@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/ticket_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_snackbar.dart';
@@ -474,9 +475,13 @@ class QRCodeScannerPage extends HookConsumerWidget {
                 heroTag: 'qr_scanner_fab',
                 onPressed: () async {
                   try {
-                    print('FloatingActionButton onPressed'); // 追加
+                    debugPrint('FloatingActionButton onPressed'); // 追加
                     isDialogShowing.value = true;
                     await mobileScannerController.stop();
+
+                    // Check if widget is still mounted before using context
+                    if (!context.mounted) return;
+
                     bool? confirmed = false;
                     // 使用済みチケットを除外
                     final tickets =
@@ -500,6 +505,9 @@ class QRCodeScannerPage extends HookConsumerWidget {
                           ),
                     );
 
+                    // Check if widget is still mounted before second dialog
+                    if (!context.mounted) return;
+
                     confirmed = await showDialog<bool>(
                       context: context,
                       barrierDismissible: false,
@@ -522,24 +530,50 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
                     if (confirmed == true) {
                       try {
-                        print('Updating database tickets...');
+                        debugPrint('Updating database tickets...');
                         await viewModel.updateDatabaseTickets(tickets);
-                        print('Tickets updated successfully.');
+                        debugPrint('Tickets updated successfully.');
                         await Future.delayed(const Duration(milliseconds: 5));
+
+                        // Check if widget is still mounted before updating UI
+                        if (!context.mounted) return;
+
                         viewModel.resetUserId();
                         scannedTickets.value = {};
                         errorHandler.showSuccessSnackBar(
                           l10n.ticketsUpdatedSuccessfully,
                         );
-                      } on Exception catch (e) {
-                        print('Failed to update tickets: $e');
+                      } on AppException catch (e, st) {
+                        logger.e(
+                          'Failed to update tickets AppException: ${e.message}',
+                          stackTrace: st,
+                        );
+                        // Check if widget is still mounted before showing error
+                        if (!context.mounted) return;
                         errorHandler.showError(
                           e,
+                          errorContext: l10n.ticketUpdateError,
+                        );
+                      } on Exception catch (e, st) {
+                        logger.e(
+                          'Failed to update tickets Exception: $e',
+                          stackTrace: st,
+                        );
+                        // Check if widget is still mounted before showing error
+                        if (!context.mounted) return;
+                        final appException = GeneralException(
+                          message: 'チケットの更新に失敗しました。',
+                          stackTrace: st,
+                        );
+                        errorHandler.showError(
+                          appException,
                           errorContext: l10n.ticketUpdateError,
                         );
                       }
                     }
                   } catch (e) {
+                    // Check if widget is still mounted before showing error
+                    if (!context.mounted) return;
                     errorHandler.showError(
                       e,
                       errorContext: l10n.qrScannerOperationError,

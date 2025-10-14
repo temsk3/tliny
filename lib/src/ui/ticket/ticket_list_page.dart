@@ -21,7 +21,6 @@ class TicketListPage extends HookConsumerWidget {
     final l10n = useL10n();
     final sortOrder = useState(SortOrder.expirationFrom);
     final ticketsAsyncValue = ref.watch(ticketsStateProvider);
-    final viewModel = ref.read(ticketListViewModelProvider.notifier);
 
     return MainBodyWidget(
       width: 400,
@@ -29,14 +28,16 @@ class TicketListPage extends HookConsumerWidget {
         value: ticketsAsyncValue,
         data: (tickets) {
           if (tickets.isEmpty) {
-            print('TicketListPage: No tickets found');
+            debugPrint('TicketListPage: No tickets found');
             return _buildEmptyTicketsWidget(context, l10n);
           }
 
-          print('TicketListPage: Found ${tickets.length} tickets');
+          debugPrint('TicketListPage: Found ${tickets.length} tickets');
           final sortedTickets = sortTickets(tickets, sortOrder.value);
           final groupedTickets = groupTicketsByEvent(sortedTickets);
-          print('TicketListPage: Grouped into ${groupedTickets.length} events');
+          debugPrint(
+            'TicketListPage: Grouped into ${groupedTickets.length} events',
+          );
 
           return Scaffold(
             body: Column(
@@ -53,14 +54,14 @@ class TicketListPage extends HookConsumerWidget {
                       final filteredTickets = viewModel.filterExpiredTickets(
                         sortedTickets,
                       );
-                      print(
+                      debugPrint(
                         'TicketListPage: After expired filter: ${filteredTickets.length} tickets',
                       );
 
                       final filteredGroupedTickets = groupTicketsByEvent(
                         filteredTickets,
                       );
-                      print(
+                      debugPrint(
                         'TicketListPage: After grouping: ${filteredGroupedTickets.length} events',
                       );
 
@@ -69,7 +70,7 @@ class TicketListPage extends HookConsumerWidget {
                           .filterEventsWithNoValidTickets(
                             filteredGroupedTickets,
                           );
-                      print(
+                      debugPrint(
                         'TicketListPage: Final events: ${finalGroupedTickets.length} events',
                       );
 
@@ -268,7 +269,7 @@ class TicketListPage extends HookConsumerWidget {
 
     return ExpansionTile(
       leading: PictureView(
-        picture: event.pictureURL ?? [],
+        picture: event.pictureURL,
         index: 0,
         height: 45,
         width: 80,
@@ -374,7 +375,7 @@ class TicketListPage extends HookConsumerWidget {
       secondary: Stack(
         children: [
           PictureView(
-            picture: ticket.pictureURL ?? [],
+            picture: ticket.pictureURL,
             index: 0,
             height: 45,
             width: 80,

@@ -16,15 +16,14 @@ String _$imageViewModelHash() => r'bef9288007c5d6202b282c3be4fa1b82d6c661f8';
 @ProviderFor(ImageViewModel)
 final imageViewModelProvider =
     AutoDisposeAsyncNotifierProvider<ImageViewModel, List<String>>.internal(
-      ImageViewModel.new,
-      name: r'imageViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$imageViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  ImageViewModel.new,
+  name: r'imageViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$imageViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$ImageViewModel = AutoDisposeAsyncNotifier<List<String>>;
 String _$tempImageViewModelHash() =>
@@ -36,15 +35,14 @@ String _$tempImageViewModelHash() =>
 @ProviderFor(TempImageViewModel)
 final tempImageViewModelProvider =
     AutoDisposeAsyncNotifierProvider<TempImageViewModel, XFile?>.internal(
-      TempImageViewModel.new,
-      name: r'tempImageViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$tempImageViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  TempImageViewModel.new,
+  name: r'tempImageViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$tempImageViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$TempImageViewModel = AutoDisposeAsyncNotifier<XFile?>;
 String _$tempImageListViewModelHash() =>
@@ -55,19 +53,16 @@ String _$tempImageListViewModelHash() =>
 /// Copied from [TempImageListViewModel].
 @ProviderFor(TempImageListViewModel)
 final tempImageListViewModelProvider = AutoDisposeAsyncNotifierProvider<
-  TempImageListViewModel,
-  Map<int, XFile>
->.internal(
+    TempImageListViewModel, Map<int, XFile>>.internal(
   TempImageListViewModel.new,
   name: r'tempImageListViewModelProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$tempImageListViewModelHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$tempImageListViewModelHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 typedef _$TempImageListViewModel = AutoDisposeAsyncNotifier<Map<int, XFile>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

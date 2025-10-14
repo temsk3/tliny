@@ -9,16 +9,16 @@ part of 'user_model.dart';
 // **************************************************************************
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
-  id: json['id'] as String?,
-  photoUrl: json['photoUrl'] as String?,
-  displayName: json['displayName'] as String?,
-  name: json['name'] as String?,
-  email: json['email'] as String?,
-  phoneNumber: json['phoneNumber'] as String?,
-  createdAt: dateFromTimestampValue(json['createdAt']),
-  updatedAt: dateFromTimestampValue(json['updatedAt']),
-  deletedAt: dateFromTimestampValue(json['deletedAt']),
-);
+      id: json['id'] as String?,
+      photoUrl: json['photoUrl'] as String?,
+      displayName: json['displayName'] as String?,
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      phoneNumber: json['phoneNumber'] as String?,
+      createdAt: dateFromTimestampValue(json['createdAt']),
+      updatedAt: dateFromTimestampValue(json['updatedAt']),
+      deletedAt: dateFromTimestampValue(json['deletedAt']),
+    );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
     <String, dynamic>{

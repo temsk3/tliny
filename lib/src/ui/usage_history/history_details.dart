@@ -5,7 +5,6 @@ import 'package:tliny/l10n/app_localizations.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/usage_history/history_state.dart';
 import '../common/main_body.dart';
-import 'history_view_model.dart';
 
 // final logger = Logger();
 
@@ -18,7 +17,7 @@ class UsageHistoryDetailsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final l10n = useL10n();
-    final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
+    // final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
