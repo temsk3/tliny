@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/ticket_model.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../settings/hooks/use_snackbar.dart';
@@ -52,13 +53,13 @@ class QRCodeScannerPage extends HookConsumerWidget {
         final parts = decryptedData.split('|');
 
         if (parts.length < 3) {
-          snackBar.showAlertSnackBar('Invalid QR code format.');
+          snackBar.showAlertSnackBar(l10n.invalidQrCodeFormat);
           return null; // フォーマットエラーの場合はnullを返す
         }
 
         return {'prefix': parts[0], 'eventId': parts[1], 'uuid': parts[2]};
       } on Exception catch (e) {
-        snackBar.showAlertSnackBar('Failed to decrypt QR code: $e');
+        snackBar.showAlertSnackBar(l10n.failedToDecryptQrCode(e.toString()));
         return null; // 復号エラーの場合はnullを返す
       }
     }
@@ -87,15 +88,14 @@ class QRCodeScannerPage extends HookConsumerWidget {
         final uuid = qrData['uuid']!;
 
         if (eventId != currentEventID) {
-          snackBar.showAlertSnackBar('Access denied: Wrong event.');
+          snackBar.showAlertSnackBar(l10n.accessDeniedWrongEvent);
           return; // イベントID不一致の場合は早期リターン
         }
 
         final newTickets = await viewModel.findTicketsByUuid(prefix, uuid);
         if (newTickets.isNotEmpty) {
-          // 重複チェック
+          // 重複チェックのみ（isUsedは問わない）
           for (final newTicket in newTickets) {
-            // IDが一致するチケットがscannedTicketsに存在しない場合に追加
             if (!scannedTickets.value.any(
               (ticket) => ticket.id == newTicket.id,
             )) {
@@ -110,10 +110,10 @@ class QRCodeScannerPage extends HookConsumerWidget {
         showSuccess.value = false;
         animationController.repeat(reverse: true);
 
-        snackBar.showSuccessSnackBar('Ticket scanned successfully.');
+        snackBar.showSuccessSnackBar(l10n.ticketScannedSuccessfully);
       } on Exception catch (e) {
         logger.e('Failed to handle QR code scan: $e');
-        snackBar.showAlertSnackBar('Failed to process QR code: $e');
+        snackBar.showAlertSnackBar(l10n.failedToProcessQrCode(e.toString()));
       } finally {
         isScanning.value = false;
         // 少し遅延を入れてからlastScannedCodeをクリア（連続スキャン防止のため）
@@ -129,7 +129,7 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scan QR Codes'),
+        title: Text(l10n.scanQrCodes),
         actions: [
           IconButton(
             onPressed:
@@ -182,73 +182,347 @@ class QRCodeScannerPage extends HookConsumerWidget {
             ),
             Expanded(
               flex: 3,
-              child: ListView.builder(
-                itemCount: scannedTickets.value.length,
-                itemBuilder: (context, index) {
-                  final ticket = scannedTickets.value.toList()[index];
-                  return ListTile(
-                    title: Text(ticket.name!),
-                    leading:
-                        ticket.isUsed
-                            ? const Icon(
-                              Icons.check_circle_outlined,
-                              color: Colors.green,
-                            )
-                            : null,
-                  );
-                },
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          l10n.scannedTicketsCount(scannedTickets.value.length),
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        if (scannedTickets.value.isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              l10n.usedTickets(
+                                scannedTickets.value
+                                    .where((t) => t.isUsed)
+                                    .length,
+                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child:
+                          scannedTickets.value.isEmpty
+                              ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.qr_code_scanner_outlined,
+                                      size: 64,
+                                      color:
+                                          Theme.of(context).colorScheme.outline,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      l10n.noTicketsScannedYet,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyLarge?.copyWith(
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.outline,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      l10n.scanQrCodesToSeeTickets,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .outline
+                                            .withValues(alpha: 0.7),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              : ListView.builder(
+                                itemCount: scannedTickets.value.length,
+                                itemBuilder: (context, index) {
+                                  final ticket =
+                                      scannedTickets.value.toList()[index];
+                                  return Container(
+                                    margin: const EdgeInsets.only(bottom: 12),
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color:
+                                            ticket.isUsed
+                                                ? Colors.green.withValues(
+                                                  alpha: 0.3,
+                                                )
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .outline
+                                                    .withValues(alpha: 0.2),
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(
+                                            alpha: 0.05,
+                                          ),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          // チケットアイコン
+                                          Container(
+                                            width: 48,
+                                            height: 48,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Icon(
+                                              Icons
+                                                  .confirmation_number_outlined,
+                                              color:
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimaryContainer,
+                                              size: 24,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 16),
+                                          // チケット情報
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  ticket.name ??
+                                                      l10n.unknownTicket,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium
+                                                      ?.copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                const SizedBox(height: 4),
+                                                if (ticket.desc != null &&
+                                                    ticket.desc!.isNotEmpty)
+                                                  Text(
+                                                    ticket.desc!,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          color: Theme.of(
+                                                                context,
+                                                              )
+                                                              .colorScheme
+                                                              .onSurface
+                                                              .withValues(
+                                                                alpha: 0.7,
+                                                              ),
+                                                        ),
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                const SizedBox(height: 8),
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 4,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            ticket.isUsed
+                                                                ? Colors.green
+                                                                    .withValues(
+                                                                      alpha:
+                                                                          0.1,
+                                                                    )
+                                                                : Theme.of(
+                                                                      context,
+                                                                    )
+                                                                    .colorScheme
+                                                                    .secondaryContainer,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              6,
+                                                            ),
+                                                      ),
+                                                      child: Text(
+                                                        ticket.isUsed
+                                                            ? l10n.used
+                                                            : l10n.unused,
+                                                        style: Theme.of(
+                                                          context,
+                                                        ).textTheme.bodySmall?.copyWith(
+                                                          color:
+                                                              ticket.isUsed
+                                                                  ? Colors.green
+                                                                  : Theme.of(
+                                                                        context,
+                                                                      )
+                                                                      .colorScheme
+                                                                      .onSecondaryContainer,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    if (ticket.price != null)
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets.symmetric(
+                                                              horizontal: 8,
+                                                              vertical: 4,
+                                                            ),
+                                                        decoration: BoxDecoration(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .tertiaryContainer,
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                6,
+                                                              ),
+                                                        ),
+                                                        child: Text(
+                                                          '¥${ticket.price!.toStringAsFixed(0)}',
+                                                          style: Theme.of(
+                                                            context,
+                                                          ).textTheme.bodySmall?.copyWith(
+                                                            color:
+                                                                Theme.of(
+                                                                      context,
+                                                                    )
+                                                                    .colorScheme
+                                                                    .onTertiaryContainer,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
       floatingActionButton:
-          scannedTickets.value.isNotEmpty
+          scannedTickets.value.any((t) => !t.isUsed)
               ? FloatingActionButton(
                 heroTag: 'qr_scanner_fab',
                 onPressed: () async {
                   try {
-                    print('FloatingActionButton onPressed'); // 追加
+                    debugPrint('FloatingActionButton onPressed'); // 追加
                     isDialogShowing.value = true;
                     await mobileScannerController.stop();
+
+                    // Check if widget is still mounted before using context
+                    if (!context.mounted) return;
+
                     bool? confirmed = false;
-                    final tickets = scannedTickets.value.toList();
+                    // 使用済みチケットを除外
+                    final tickets =
+                        scannedTickets.value.where((t) => !t.isUsed).toList();
 
                     await showDialog<void>(
                       context: context,
                       barrierDismissible: false,
                       builder:
                           (context) => AlertDialog(
-                            title: const Text('Scanned Tickets'),
+                            title: Text(l10n.scannedTicketsTitle),
                             content: Text(viewModel.ticketCounts(tickets)),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Text('OK'),
+                                child: Text(l10n.ok),
                               ),
                             ],
                           ),
                     );
+
+                    // Check if widget is still mounted before second dialog
+                    if (!context.mounted) return;
 
                     confirmed = await showDialog<bool>(
                       context: context,
                       barrierDismissible: false,
                       builder:
                           (context) => AlertDialog(
-                            title: const Text('Confirm Action'),
-                            content: const Text(
-                              'Do you want to mark the scanned ticket as used?',
-                            ),
+                            title: Text(l10n.confirmAction),
+                            content: Text(l10n.markTicketsAsUsed),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context, false),
-                                child: const Text('Cancel'),
+                                child: Text(l10n.cancel),
                               ),
                               TextButton(
                                 onPressed: () => Navigator.pop(context, true),
-                                child: const Text('Confirm'),
+                                child: Text(l10n.confirm),
                               ),
                             ],
                           ),
@@ -256,22 +530,54 @@ class QRCodeScannerPage extends HookConsumerWidget {
 
                     if (confirmed == true) {
                       try {
-                        print('Updating database tickets...');
+                        debugPrint('Updating database tickets...');
                         await viewModel.updateDatabaseTickets(tickets);
-                        print('Tickets updated successfully.');
+                        debugPrint('Tickets updated successfully.');
                         await Future.delayed(const Duration(milliseconds: 5));
+
+                        // Check if widget is still mounted before updating UI
+                        if (!context.mounted) return;
+
                         viewModel.resetUserId();
                         scannedTickets.value = {};
                         errorHandler.showSuccessSnackBar(
-                          'Tickets updated successfully.',
+                          l10n.ticketsUpdatedSuccessfully,
                         );
-                      } on Exception catch (e) {
-                        print('Failed to update tickets: $e');
-                        errorHandler.showError(e, errorContext: 'チケット更新');
+                      } on AppException catch (e, st) {
+                        logger.e(
+                          'Failed to update tickets AppException: ${e.message}',
+                          stackTrace: st,
+                        );
+                        // Check if widget is still mounted before showing error
+                        if (!context.mounted) return;
+                        errorHandler.showError(
+                          e,
+                          errorContext: l10n.ticketUpdateError,
+                        );
+                      } on Exception catch (e, st) {
+                        logger.e(
+                          'Failed to update tickets Exception: $e',
+                          stackTrace: st,
+                        );
+                        // Check if widget is still mounted before showing error
+                        if (!context.mounted) return;
+                        final appException = GeneralException(
+                          message: 'チケットの更新に失敗しました。',
+                          stackTrace: st,
+                        );
+                        errorHandler.showError(
+                          appException,
+                          errorContext: l10n.ticketUpdateError,
+                        );
                       }
                     }
                   } catch (e) {
-                    errorHandler.showError(e, errorContext: 'QRスキャナー操作');
+                    // Check if widget is still mounted before showing error
+                    if (!context.mounted) return;
+                    errorHandler.showError(
+                      e,
+                      errorContext: l10n.qrScannerOperationError,
+                    );
                   } finally {
                     isDialogShowing.value = false;
                     await mobileScannerController.start();

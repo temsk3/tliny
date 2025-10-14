@@ -18,9 +18,7 @@ class MyProgram with _$MyProgram {
   }) = _MyProgram;
 
   const MyProgram._();
-  factory MyProgram.empty() => MyProgram(
-        programId: '123',
-      );
+  factory MyProgram.empty() => MyProgram(programId: '123');
   factory MyProgram.fromJson(Map<String, dynamic> json) =>
       _$MyProgramFromJson(json);
 }

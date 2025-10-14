@@ -28,13 +28,25 @@ class ManagementPage extends HookConsumerWidget {
     return DefaultTabController(
       length: tabTitles.length,
       child: Scaffold(
+        backgroundColor: Colors.grey[50],
         // AppBarを作成
         appBar: AppBar(
           // タイトルを設定
-          title: Text(l10n.salesInformation),
+          title: Text(
+            l10n.salesInformation,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black87,
+          surfaceTintColor: Colors.transparent,
           // タブバーをAppBarの下に表示
           bottom: TabBar(
             tabs: tabTitles.map((title) => Tab(text: title)).toList(),
+            labelColor: Colors.black87,
+            unselectedLabelColor: Colors.grey[600],
+            indicatorColor: Colors.blue.shade600,
           ),
         ),
         body: TabBarView(

@@ -8,9 +8,8 @@ part 'document_reference_model.g.dart';
 
 @freezed
 class DocRefModel with _$DocRefModel {
-  factory DocRefModel(
-    @DocumentReferenceNullStringConverter() String? docRef,
-  ) = _DocRefModel;
+  factory DocRefModel(@DocumentReferenceNullStringConverter() String? docRef) =
+      _DocRefModel;
 
   factory DocRefModel.fromJson(Map<String, dynamic> json) =>
       _$DocRefModelFromJson(json);

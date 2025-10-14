@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
+import '../../data/repository/auth_repository.dart';
+import '../../data/repository/staff_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
@@ -225,36 +227,64 @@ class ProductEditPage extends HookConsumerWidget {
                           padding: EdgeInsets.symmetric(horizontal: 8),
                         ),
                         Flexible(
-                          child: TextFormField(
-                            textInputAction: TextInputAction.done,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                            controller: priceEditingController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              labelText: l10n.price,
-                              helperText: '商品の金額は¥50以上で設定してください',
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return l10n.pleaseEnterSomeNum;
+                          child: Consumer(
+                            builder: (context, ref, _) {
+                              final uid = ref.watch(userIdProvider).value;
+                              final staffAsyncValue =
+                                  uid != null
+                                      ? ref.watch(
+                                        staffCheckExistenceProvider(
+                                          program.id!,
+                                        ),
+                                      )
+                                      : null;
+                              final isStaff = staffAsyncValue?.value ?? false;
+                              final isOrganizer = uid == program.organizerId;
+                              final isAllowed = isStaff || isOrganizer;
+                              if (staffAsyncValue == null ||
+                                  staffAsyncValue.isLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
                               }
-                              final price = int.parse(value);
-
-                              // 基本的な価格制限
-                              if (price < 50) {
-                                return '商品の金額は¥50以上で設定してください';
+                              if (!isAllowed) {
+                                return TextFormField(
+                                  enabled: false,
+                                  decoration: InputDecoration(
+                                    labelText: l10n.price,
+                                    helperText: 'スタッフまたは開催者のみ商品登録が可能です',
+                                  ),
+                                );
                               }
-
-                              return null;
+                              return TextFormField(
+                                textInputAction: TextInputAction.done,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                ],
+                                controller: priceEditingController,
+                                keyboardType: TextInputType.number,
+                                enabled: true,
+                                decoration: InputDecoration(
+                                  labelText: l10n.price,
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return l10n.pleaseEnterSomeNum;
+                                  }
+                                  final price = int.parse(value);
+                                  if (!(price == 0 || price >= 50)) {
+                                    // スナックバーでエラー表示するため、ここではnullを返す
+                                    return null;
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  priceEditingController.text =
+                                      value.toString();
+                                },
+                                textAlign: TextAlign.right,
+                              );
                             },
-                            onSaved: (value) {
-                              priceEditingController.text = value.toString();
-                            },
-                            textAlign: TextAlign.right,
-                            // focusNode: priceFocus,
-                            // onFieldSubmitted: (value) => priceFocus.unfocus(),
                           ),
                         ),
                       ],
@@ -301,6 +331,20 @@ class ProductEditPage extends HookConsumerWidget {
                         RegisterProductElevatedButton(
                           onPressed: () async {
                             if (form.currentState!.validate()) {
+                              final price =
+                                  int.tryParse(priceEditingController.text) ??
+                                  0;
+                              if (!(price == 0 || price >= 50)) {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('0円または50円以上で設定してください'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                                return;
+                              }
                               form.currentState!.save();
 
                               final storageId = await imageViewModel.createUuid;

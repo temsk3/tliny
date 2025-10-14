@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
@@ -18,7 +17,7 @@ class SellerRegistrationPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
+    // final appMediaQuery = useMediaQuery();
     final state = ref.watch(userViewModelProvider);
     final viewModel = ref.watch(userViewModelProvider.notifier);
 
@@ -29,7 +28,7 @@ class SellerRegistrationPage extends HookConsumerWidget {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('出品者登録'),
+            title: Text(l10n.sellerRegistration),
             elevation: 0,
             backgroundColor: Colors.transparent,
             leading: IconButton(

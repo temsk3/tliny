@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import '../../settings/hooks/use_l10n.dart';
 import '../common/asyncvalue_widget.dart';
@@ -32,134 +31,258 @@ class StockScreen extends HookConsumerWidget {
         final productList =
             data.where((product) => product.isActive == true).toList();
         // 商品名を昇順でソート
-        productList
-            .sort((a, b) => a.name.toString().compareTo(b.name.toString()));
+        productList.sort(
+          (a, b) => a.name.toString().compareTo(b.name.toString()),
+        );
         // 商品コードを昇順でソート
-        productList
-            .sort((a, b) => a.code.toString().compareTo(b.code.toString()));
+        productList.sort(
+          (a, b) => a.code.toString().compareTo(b.code.toString()),
+        );
 
-        // ヘッダー項目のWidgetを作成する関数
-        Widget getTitleItemWidget(String label, double width) {
-          return Container(
-            width: width,
-            height: 56,
-            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              label,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          );
-        }
-
-        // ヘッダー項目のWidgetリストを作成する関数
-        List<Widget> getTitleWidget() {
-          return [
-            getTitleItemWidget('コード', 150),
-            getTitleItemWidget('商品名', 150),
-            getTitleItemWidget('在庫数', 80),
-            getTitleItemWidget('金額', 80),
-          ];
-        }
-
-        // 左側のカラムの行のWidgetを作成する関数
-        Widget generateFirstColumnRow(BuildContext context, int index) {
-          return Container(
-            width: 150,
-            height: 52,
-            padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              productList[index].code.toString(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          );
-        }
-
-        // 右側のカラムの行のWidgetを作成する関数
-        Widget generateRightHandSideColumnRow(
-          BuildContext context,
-          int index,
-        ) {
-          return Row(
-            children: <Widget>[
-              // 商品名を表示
-              Container(
-                width: 150,
-                height: 52,
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  productList[index].name.toString(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              // 在庫数を表示
-              Container(
-                width: 80,
-                height: 52,
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  l10n.decimalPattern(productList[index].stock),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              // 金額を表示
-              Container(
-                width: 80,
-                height: 52,
-                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                alignment: Alignment.centerRight,
-                child: Text(
-                  l10n.currency(productList[index].price),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          );
-        }
-
-        // 商品リストが空の場合、空のコンテナを表示
-        return productList.isEmpty
-            ? Container()
-            // 商品リストが空でない場合、HorizontalDataTableを表示
-            : Padding(
-                padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                child: HorizontalDataTable(
-                  // 左側のカラムの幅
-                  leftHandSideColumnWidth: 150,
-                  // 右側のカラムの幅
-                  rightHandSideColumnWidth: 350,
-                  // ヘッダーを固定するかどうか
-                  isFixedHeader: true,
-                  // ヘッダーのWidgetリスト
-                  headerWidgets: getTitleWidget(),
-                  // 左側のカラムの行のWidgetを作成する関数
-                  leftSideItemBuilder: generateFirstColumnRow,
-                  // 右側のカラムの行のWidgetを作成する関数
-                  rightSideItemBuilder: generateRightHandSideColumnRow,
-                  // 行の数
-                  itemCount: productList.length,
-                  // 行間の区切り線
-                  rowSeparatorWidget: Divider(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    height: 1,
-                    thickness: 0,
+        // 商品リストが空の場合、統一された空状態を表示
+        if (productList.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withValues(alpha: 0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
-                  // 左側のカラムの背景色
-                  leftHandSideColBackgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
-                  // 右側のカラムの背景色
-                  rightHandSideColBackgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
+                  child: Icon(
+                    Icons.inventory_2_outlined,
+                    size: 64,
+                    color: Colors.grey[400],
+                  ),
                 ),
-              );
+                const SizedBox(height: 24),
+                Text(
+                  '在庫データがありません',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '商品が登録されると、ここに在庫データが表示されます',
+                  style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+                ),
+              ],
+            ),
+          );
+        }
+
+        // 商品リストが空でない場合、洗練されたカードレイアウトを表示
+        return ListView.separated(
+          padding: const EdgeInsets.all(20),
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: productList.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
+          itemBuilder: (context, index) {
+            final product = productList[index];
+            final stockLevel = _getStockLevel(product.stock);
+
+            return AnimatedContainer(
+              duration: Duration(milliseconds: 300 + (index * 100)),
+              curve: Curves.easeOutCubic,
+              child: Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    gradient: LinearGradient(
+                      colors: [Colors.white, Colors.grey.shade50],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withValues(alpha: 0.08),
+                        blurRadius: 20,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // ヘッダー部分
+                        Row(
+                          children: [
+                            // 商品アイコン
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: stockLevel.color.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                Icons.inventory_2,
+                                color: stockLevel.color,
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            // 商品情報
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'コード: ${product.code}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // 在庫ステータスバッジ
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: stockLevel.color.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: stockLevel.color.withValues(alpha: 0.3),
+                                ),
+                              ),
+                              child: Text(
+                                stockLevel.label,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: stockLevel.color,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // 在庫詳細情報
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            children: [
+                              // 在庫数
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '在庫数',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey[600],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      l10n.decimalPattern(product.stock),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // 価格
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '価格',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.grey[600],
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      l10n.currency(product.price),
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
       },
     );
   }
+
+  // 在庫レベルを判定する関数
+  StockLevel _getStockLevel(int stock) {
+    if (stock <= 0) {
+      return StockLevel(label: '在庫切れ', color: Colors.red);
+    } else if (stock <= 10) {
+      return StockLevel(label: '残りわずか', color: Colors.orange);
+    } else if (stock <= 50) {
+      return StockLevel(label: '在庫あり', color: Colors.blue);
+    } else {
+      return StockLevel(label: '十分', color: Colors.green);
+    }
+  }
+}
+
+// 在庫レベルを表すクラス
+class StockLevel {
+  StockLevel({required this.label, required this.color});
+  final String label;
+  final Color color;
 }

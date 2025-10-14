@@ -1,0 +1,41 @@
+name: 'Checkout and Setup'
+description: 'Checkout repository and setup Flutter and Node.js environments'
+
+inputs:
+  flutter-version:
+    description: 'Flutter version to use'
+    required: false
+    default: '3.32.8'
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '20'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
+        flutter-version: ${{ inputs.flutter-version }}
+        cache: true
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+        cache-dependency-path: functions/package-lock.json
+
+    - name: Get Flutter dependencies
+      shell: bash
+      run: flutter pub get
+
+    - name: Install Functions dependencies
+      shell: bash
+      working-directory: functions
+      run: npm ci

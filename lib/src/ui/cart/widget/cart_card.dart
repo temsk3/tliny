@@ -7,8 +7,6 @@ import '../../../data/model/cart_model.dart';
 import '../../../data/model/product_model.dart';
 import '../../../data/repository/auth_repository.dart';
 import '../../../data/repository/product_repository.dart';
-import '../../../settings/hooks/use_l10n.dart';
-import '../../../settings/hooks/use_media_query.dart';
 import '../../../ui/common/asyncvalue_widget.dart';
 import '../../../utils/logger.dart';
 import '../../image/image_screen.dart';
@@ -27,14 +25,14 @@ class CartCard extends HookConsumerWidget {
     // テーマを取得
     // final theme = ref.watch(appThemeProvider);
     // ローカリゼーションを取得
-    final l10n = useL10n();
+    // // final l10n = useL10n();
     // ルーターを取得
     // final appRoute = useRouter();
     // メディアクエリを取得
-    final appMediaQuery = useMediaQuery();
+    // final appMediaQuery = useMediaQuery();
 
     // 現在日時を取得
-    final now = DateTime.now();
+    // final now = DateTime.now();
     // 通貨フォーマッターを作成
     final formatter = NumberFormat.simpleCurrency(
       locale: Localizations.localeOf(context).toString(),
@@ -88,7 +86,7 @@ class CartCard extends HookConsumerWidget {
     useEffect(() {
       state.whenData((product) {
         if (product != null) {
-          final stock = product.stock ?? 0;
+          final stock = product.stock;
           final isStockInsufficient = cart.quantity > stock;
 
           logger.d(
@@ -134,9 +132,9 @@ class CartCard extends HookConsumerWidget {
         }
 
         // 単価と小計を計算
-        final unitPrice = product.price ?? 0;
+        final unitPrice = product.price;
         final subtotal = unitPrice * cart.quantity;
-        final stock = product.stock ?? 0;
+        final stock = product.stock;
 
         // 在庫不足チェック
         final isStockInsufficient = cart.quantity > stock;
@@ -334,7 +332,7 @@ class CartCard extends HookConsumerWidget {
     int availableStock,
   ) async {
     try {
-      return await showDialog<bool>(
+      return await showDialog<bool?>(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
@@ -392,7 +390,7 @@ class CartCard extends HookConsumerWidget {
 }
 
 // 商品データを取得するStreamProvider（リアルタイム更新対応）
-final AutoDisposeStreamProviderFamily<Product?, String> _productStreamProvider =
+final _productStreamProvider =
     StreamProvider.autoDispose.family<Product?, String>((
       ref,
       productId,

@@ -12,8 +12,7 @@ part of 'order_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
   return _Order.fromJson(json);
@@ -38,12 +37,8 @@ mixin _$Order {
   @timestampKey
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this Order to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of Order
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $OrderCopyWith<Order> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -52,19 +47,18 @@ abstract class $OrderCopyWith<$Res> {
   factory $OrderCopyWith(Order value, $Res Function(Order) then) =
       _$OrderCopyWithImpl<$Res, Order>;
   @useResult
-  $Res call({
-    String? id,
-    StatusType? status,
-    String? paymentIntentId,
-    String? checkoutSessionId,
-    String? userId,
-    String? eventId,
-    @timestampKey DateTime? purchaseTime,
-    List<SnapshotProduct>? snapshotProducts,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
-    @timestampKey DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      StatusType? status,
+      String? paymentIntentId,
+      String? checkoutSessionId,
+      String? userId,
+      String? eventId,
+      @timestampKey DateTime? purchaseTime,
+      List<SnapshotProduct>? snapshotProducts,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -77,8 +71,6 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Order
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -94,90 +86,74 @@ class _$OrderCopyWithImpl<$Res, $Val extends Order>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id:
-                freezed == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            status:
-                freezed == status
-                    ? _value.status
-                    : status // ignore: cast_nullable_to_non_nullable
-                        as StatusType?,
-            paymentIntentId:
-                freezed == paymentIntentId
-                    ? _value.paymentIntentId
-                    : paymentIntentId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            checkoutSessionId:
-                freezed == checkoutSessionId
-                    ? _value.checkoutSessionId
-                    : checkoutSessionId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            userId:
-                freezed == userId
-                    ? _value.userId
-                    : userId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            eventId:
-                freezed == eventId
-                    ? _value.eventId
-                    : eventId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            purchaseTime:
-                freezed == purchaseTime
-                    ? _value.purchaseTime
-                    : purchaseTime // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            snapshotProducts:
-                freezed == snapshotProducts
-                    ? _value.snapshotProducts
-                    : snapshotProducts // ignore: cast_nullable_to_non_nullable
-                        as List<SnapshotProduct>?,
-            createdAt:
-                freezed == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            updatedAt:
-                freezed == updatedAt
-                    ? _value.updatedAt
-                    : updatedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            deletedAt:
-                freezed == deletedAt
-                    ? _value.deletedAt
-                    : deletedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as StatusType?,
+      paymentIntentId: freezed == paymentIntentId
+          ? _value.paymentIntentId
+          : paymentIntentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      checkoutSessionId: freezed == checkoutSessionId
+          ? _value.checkoutSessionId
+          : checkoutSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      purchaseTime: freezed == purchaseTime
+          ? _value.purchaseTime
+          : purchaseTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      snapshotProducts: freezed == snapshotProducts
+          ? _value.snapshotProducts
+          : snapshotProducts // ignore: cast_nullable_to_non_nullable
+              as List<SnapshotProduct>?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$OrderImplCopyWith<$Res> implements $OrderCopyWith<$Res> {
   factory _$$OrderImplCopyWith(
-    _$OrderImpl value,
-    $Res Function(_$OrderImpl) then,
-  ) = __$$OrderImplCopyWithImpl<$Res>;
+          _$OrderImpl value, $Res Function(_$OrderImpl) then) =
+      __$$OrderImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String? id,
-    StatusType? status,
-    String? paymentIntentId,
-    String? checkoutSessionId,
-    String? userId,
-    String? eventId,
-    @timestampKey DateTime? purchaseTime,
-    List<SnapshotProduct>? snapshotProducts,
-    @timestampKey DateTime? createdAt,
-    @timestampKey DateTime? updatedAt,
-    @timestampKey DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      StatusType? status,
+      String? paymentIntentId,
+      String? checkoutSessionId,
+      String? userId,
+      String? eventId,
+      @timestampKey DateTime? purchaseTime,
+      List<SnapshotProduct>? snapshotProducts,
+      @timestampKey DateTime? createdAt,
+      @timestampKey DateTime? updatedAt,
+      @timestampKey DateTime? deletedAt});
 }
 
 /// @nodoc
@@ -185,12 +161,9 @@ class __$$OrderImplCopyWithImpl<$Res>
     extends _$OrderCopyWithImpl<$Res, _$OrderImpl>
     implements _$$OrderImplCopyWith<$Res> {
   __$$OrderImplCopyWithImpl(
-    _$OrderImpl _value,
-    $Res Function(_$OrderImpl) _then,
-  ) : super(_value, _then);
+      _$OrderImpl _value, $Res Function(_$OrderImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of Order
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -206,65 +179,52 @@ class __$$OrderImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _$OrderImpl(
-        id:
-            freezed == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        status:
-            freezed == status
-                ? _value.status
-                : status // ignore: cast_nullable_to_non_nullable
-                    as StatusType?,
-        paymentIntentId:
-            freezed == paymentIntentId
-                ? _value.paymentIntentId
-                : paymentIntentId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        checkoutSessionId:
-            freezed == checkoutSessionId
-                ? _value.checkoutSessionId
-                : checkoutSessionId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        userId:
-            freezed == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        eventId:
-            freezed == eventId
-                ? _value.eventId
-                : eventId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        purchaseTime:
-            freezed == purchaseTime
-                ? _value.purchaseTime
-                : purchaseTime // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        snapshotProducts:
-            freezed == snapshotProducts
-                ? _value._snapshotProducts
-                : snapshotProducts // ignore: cast_nullable_to_non_nullable
-                    as List<SnapshotProduct>?,
-        createdAt:
-            freezed == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        updatedAt:
-            freezed == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        deletedAt:
-            freezed == deletedAt
-                ? _value.deletedAt
-                : deletedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-      ),
-    );
+    return _then(_$OrderImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as StatusType?,
+      paymentIntentId: freezed == paymentIntentId
+          ? _value.paymentIntentId
+          : paymentIntentId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      checkoutSessionId: freezed == checkoutSessionId
+          ? _value.checkoutSessionId
+          : checkoutSessionId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      purchaseTime: freezed == purchaseTime
+          ? _value.purchaseTime
+          : purchaseTime // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      snapshotProducts: freezed == snapshotProducts
+          ? _value._snapshotProducts
+          : snapshotProducts // ignore: cast_nullable_to_non_nullable
+              as List<SnapshotProduct>?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
@@ -272,19 +232,19 @@ class __$$OrderImplCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$OrderImpl implements _Order {
-  const _$OrderImpl({
-    this.id,
-    this.status,
-    this.paymentIntentId,
-    this.checkoutSessionId,
-    this.userId,
-    this.eventId,
-    @timestampKey this.purchaseTime,
-    final List<SnapshotProduct>? snapshotProducts,
-    @timestampKey this.createdAt,
-    @timestampKey this.updatedAt,
-    @timestampKey this.deletedAt,
-  }) : _snapshotProducts = snapshotProducts;
+  const _$OrderImpl(
+      {this.id,
+      this.status,
+      this.paymentIntentId,
+      this.checkoutSessionId,
+      this.userId,
+      this.eventId,
+      @timestampKey this.purchaseTime,
+      final List<SnapshotProduct>? snapshotProducts,
+      @timestampKey this.createdAt,
+      @timestampKey this.updatedAt,
+      @timestampKey this.deletedAt})
+      : _snapshotProducts = snapshotProducts;
 
   factory _$OrderImpl.fromJson(Map<String, dynamic> json) =>
       _$$OrderImplFromJson(json);
@@ -345,10 +305,8 @@ class _$OrderImpl implements _Order {
             (identical(other.eventId, eventId) || other.eventId == eventId) &&
             (identical(other.purchaseTime, purchaseTime) ||
                 other.purchaseTime == purchaseTime) &&
-            const DeepCollectionEquality().equals(
-              other._snapshotProducts,
-              _snapshotProducts,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._snapshotProducts, _snapshotProducts) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -357,26 +315,23 @@ class _$OrderImpl implements _Order {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    status,
-    paymentIntentId,
-    checkoutSessionId,
-    userId,
-    eventId,
-    purchaseTime,
-    const DeepCollectionEquality().hash(_snapshotProducts),
-    createdAt,
-    updatedAt,
-    deletedAt,
-  );
+      runtimeType,
+      id,
+      status,
+      paymentIntentId,
+      checkoutSessionId,
+      userId,
+      eventId,
+      purchaseTime,
+      const DeepCollectionEquality().hash(_snapshotProducts),
+      createdAt,
+      updatedAt,
+      deletedAt);
 
-  /// Create a copy of Order
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OrderImplCopyWith<_$OrderImpl> get copyWith =>
@@ -384,24 +339,25 @@ class _$OrderImpl implements _Order {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$OrderImplToJson(this);
+    return _$$OrderImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _Order implements Order {
-  const factory _Order({
-    final String? id,
-    final StatusType? status,
-    final String? paymentIntentId,
-    final String? checkoutSessionId,
-    final String? userId,
-    final String? eventId,
-    @timestampKey final DateTime? purchaseTime,
-    final List<SnapshotProduct>? snapshotProducts,
-    @timestampKey final DateTime? createdAt,
-    @timestampKey final DateTime? updatedAt,
-    @timestampKey final DateTime? deletedAt,
-  }) = _$OrderImpl;
+  const factory _Order(
+      {final String? id,
+      final StatusType? status,
+      final String? paymentIntentId,
+      final String? checkoutSessionId,
+      final String? userId,
+      final String? eventId,
+      @timestampKey final DateTime? purchaseTime,
+      final List<SnapshotProduct>? snapshotProducts,
+      @timestampKey final DateTime? createdAt,
+      @timestampKey final DateTime? updatedAt,
+      @timestampKey final DateTime? deletedAt}) = _$OrderImpl;
 
   factory _Order.fromJson(Map<String, dynamic> json) = _$OrderImpl.fromJson;
 
@@ -431,11 +387,8 @@ abstract class _Order implements Order {
   @override
   @timestampKey
   DateTime? get deletedAt;
-
-  /// Create a copy of Order
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OrderImplCopyWith<_$OrderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -476,12 +429,8 @@ mixin _$SnapshotProduct {
   bool get expirationLink => throw _privateConstructorUsedError; // Stripe
   String? get priceId => throw _privateConstructorUsedError;
 
-  /// Serializes this SnapshotProduct to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of SnapshotProduct
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SnapshotProductCopyWith<SnapshotProduct> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -489,35 +438,34 @@ mixin _$SnapshotProduct {
 /// @nodoc
 abstract class $SnapshotProductCopyWith<$Res> {
   factory $SnapshotProductCopyWith(
-    SnapshotProduct value,
-    $Res Function(SnapshotProduct) then,
-  ) = _$SnapshotProductCopyWithImpl<$Res, SnapshotProduct>;
+          SnapshotProduct value, $Res Function(SnapshotProduct) then) =
+      _$SnapshotProductCopyWithImpl<$Res, SnapshotProduct>;
   @useResult
-  $Res call({
-    @documentReferenceKey
-    DocumentReference<Map<String, dynamic>>? productDocRef,
-    int? quantity,
-    String? userId,
-    String? userName,
-    String? productId,
-    int? exchangeNumber,
-    String? code,
-    String? name,
-    String? desc,
-    int? price,
-    List<String>? pictureURL,
-    @timestampKey DateTime? expirationFrom,
-    @timestampKey DateTime? expirationTo,
-    String? register,
-    @documentReferenceKey
-    DocumentReference<Map<String, dynamic>>? organizerDocRef,
-    String? organizerId,
-    @documentReferenceKey DocumentReference<Map<String, dynamic>>? eventDocRef,
-    String? eventId,
-    String? eventName,
-    bool expirationLink,
-    String? priceId,
-  });
+  $Res call(
+      {@documentReferenceKey
+      DocumentReference<Map<String, dynamic>>? productDocRef,
+      int? quantity,
+      String? userId,
+      String? userName,
+      String? productId,
+      int? exchangeNumber,
+      String? code,
+      String? name,
+      String? desc,
+      int? price,
+      List<String>? pictureURL,
+      @timestampKey DateTime? expirationFrom,
+      @timestampKey DateTime? expirationTo,
+      String? register,
+      @documentReferenceKey
+      DocumentReference<Map<String, dynamic>>? organizerDocRef,
+      String? organizerId,
+      @documentReferenceKey
+      DocumentReference<Map<String, dynamic>>? eventDocRef,
+      String? eventId,
+      String? eventName,
+      bool expirationLink,
+      String? priceId});
 }
 
 /// @nodoc
@@ -530,8 +478,6 @@ class _$SnapshotProductCopyWithImpl<$Res, $Val extends SnapshotProduct>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SnapshotProduct
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -557,153 +503,128 @@ class _$SnapshotProductCopyWithImpl<$Res, $Val extends SnapshotProduct>
     Object? expirationLink = null,
     Object? priceId = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            productDocRef:
-                freezed == productDocRef
-                    ? _value.productDocRef
-                    : productDocRef // ignore: cast_nullable_to_non_nullable
-                        as DocumentReference<Map<String, dynamic>>?,
-            quantity:
-                freezed == quantity
-                    ? _value.quantity
-                    : quantity // ignore: cast_nullable_to_non_nullable
-                        as int?,
-            userId:
-                freezed == userId
-                    ? _value.userId
-                    : userId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            userName:
-                freezed == userName
-                    ? _value.userName
-                    : userName // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            productId:
-                freezed == productId
-                    ? _value.productId
-                    : productId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            exchangeNumber:
-                freezed == exchangeNumber
-                    ? _value.exchangeNumber
-                    : exchangeNumber // ignore: cast_nullable_to_non_nullable
-                        as int?,
-            code:
-                freezed == code
-                    ? _value.code
-                    : code // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            name:
-                freezed == name
-                    ? _value.name
-                    : name // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            desc:
-                freezed == desc
-                    ? _value.desc
-                    : desc // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            price:
-                freezed == price
-                    ? _value.price
-                    : price // ignore: cast_nullable_to_non_nullable
-                        as int?,
-            pictureURL:
-                freezed == pictureURL
-                    ? _value.pictureURL
-                    : pictureURL // ignore: cast_nullable_to_non_nullable
-                        as List<String>?,
-            expirationFrom:
-                freezed == expirationFrom
-                    ? _value.expirationFrom
-                    : expirationFrom // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            expirationTo:
-                freezed == expirationTo
-                    ? _value.expirationTo
-                    : expirationTo // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            register:
-                freezed == register
-                    ? _value.register
-                    : register // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            organizerDocRef:
-                freezed == organizerDocRef
-                    ? _value.organizerDocRef
-                    : organizerDocRef // ignore: cast_nullable_to_non_nullable
-                        as DocumentReference<Map<String, dynamic>>?,
-            organizerId:
-                freezed == organizerId
-                    ? _value.organizerId
-                    : organizerId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            eventDocRef:
-                freezed == eventDocRef
-                    ? _value.eventDocRef
-                    : eventDocRef // ignore: cast_nullable_to_non_nullable
-                        as DocumentReference<Map<String, dynamic>>?,
-            eventId:
-                freezed == eventId
-                    ? _value.eventId
-                    : eventId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            eventName:
-                freezed == eventName
-                    ? _value.eventName
-                    : eventName // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            expirationLink:
-                null == expirationLink
-                    ? _value.expirationLink
-                    : expirationLink // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            priceId:
-                freezed == priceId
-                    ? _value.priceId
-                    : priceId // ignore: cast_nullable_to_non_nullable
-                        as String?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      productDocRef: freezed == productDocRef
+          ? _value.productDocRef
+          : productDocRef // ignore: cast_nullable_to_non_nullable
+              as DocumentReference<Map<String, dynamic>>?,
+      quantity: freezed == quantity
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productId: freezed == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      exchangeNumber: freezed == exchangeNumber
+          ? _value.exchangeNumber
+          : exchangeNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      desc: freezed == desc
+          ? _value.desc
+          : desc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int?,
+      pictureURL: freezed == pictureURL
+          ? _value.pictureURL
+          : pictureURL // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      expirationFrom: freezed == expirationFrom
+          ? _value.expirationFrom
+          : expirationFrom // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      expirationTo: freezed == expirationTo
+          ? _value.expirationTo
+          : expirationTo // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      register: freezed == register
+          ? _value.register
+          : register // ignore: cast_nullable_to_non_nullable
+              as String?,
+      organizerDocRef: freezed == organizerDocRef
+          ? _value.organizerDocRef
+          : organizerDocRef // ignore: cast_nullable_to_non_nullable
+              as DocumentReference<Map<String, dynamic>>?,
+      organizerId: freezed == organizerId
+          ? _value.organizerId
+          : organizerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventDocRef: freezed == eventDocRef
+          ? _value.eventDocRef
+          : eventDocRef // ignore: cast_nullable_to_non_nullable
+              as DocumentReference<Map<String, dynamic>>?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventName: freezed == eventName
+          ? _value.eventName
+          : eventName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expirationLink: null == expirationLink
+          ? _value.expirationLink
+          : expirationLink // ignore: cast_nullable_to_non_nullable
+              as bool,
+      priceId: freezed == priceId
+          ? _value.priceId
+          : priceId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
 /// @nodoc
 abstract class _$$SnapshotProductImplCopyWith<$Res>
     implements $SnapshotProductCopyWith<$Res> {
-  factory _$$SnapshotProductImplCopyWith(
-    _$SnapshotProductImpl value,
-    $Res Function(_$SnapshotProductImpl) then,
-  ) = __$$SnapshotProductImplCopyWithImpl<$Res>;
+  factory _$$SnapshotProductImplCopyWith(_$SnapshotProductImpl value,
+          $Res Function(_$SnapshotProductImpl) then) =
+      __$$SnapshotProductImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    @documentReferenceKey
-    DocumentReference<Map<String, dynamic>>? productDocRef,
-    int? quantity,
-    String? userId,
-    String? userName,
-    String? productId,
-    int? exchangeNumber,
-    String? code,
-    String? name,
-    String? desc,
-    int? price,
-    List<String>? pictureURL,
-    @timestampKey DateTime? expirationFrom,
-    @timestampKey DateTime? expirationTo,
-    String? register,
-    @documentReferenceKey
-    DocumentReference<Map<String, dynamic>>? organizerDocRef,
-    String? organizerId,
-    @documentReferenceKey DocumentReference<Map<String, dynamic>>? eventDocRef,
-    String? eventId,
-    String? eventName,
-    bool expirationLink,
-    String? priceId,
-  });
+  $Res call(
+      {@documentReferenceKey
+      DocumentReference<Map<String, dynamic>>? productDocRef,
+      int? quantity,
+      String? userId,
+      String? userName,
+      String? productId,
+      int? exchangeNumber,
+      String? code,
+      String? name,
+      String? desc,
+      int? price,
+      List<String>? pictureURL,
+      @timestampKey DateTime? expirationFrom,
+      @timestampKey DateTime? expirationTo,
+      String? register,
+      @documentReferenceKey
+      DocumentReference<Map<String, dynamic>>? organizerDocRef,
+      String? organizerId,
+      @documentReferenceKey
+      DocumentReference<Map<String, dynamic>>? eventDocRef,
+      String? eventId,
+      String? eventName,
+      bool expirationLink,
+      String? priceId});
 }
 
 /// @nodoc
@@ -711,12 +632,9 @@ class __$$SnapshotProductImplCopyWithImpl<$Res>
     extends _$SnapshotProductCopyWithImpl<$Res, _$SnapshotProductImpl>
     implements _$$SnapshotProductImplCopyWith<$Res> {
   __$$SnapshotProductImplCopyWithImpl(
-    _$SnapshotProductImpl _value,
-    $Res Function(_$SnapshotProductImpl) _then,
-  ) : super(_value, _then);
+      _$SnapshotProductImpl _value, $Res Function(_$SnapshotProductImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of SnapshotProduct
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -742,115 +660,92 @@ class __$$SnapshotProductImplCopyWithImpl<$Res>
     Object? expirationLink = null,
     Object? priceId = freezed,
   }) {
-    return _then(
-      _$SnapshotProductImpl(
-        productDocRef:
-            freezed == productDocRef
-                ? _value.productDocRef
-                : productDocRef // ignore: cast_nullable_to_non_nullable
-                    as DocumentReference<Map<String, dynamic>>?,
-        quantity:
-            freezed == quantity
-                ? _value.quantity
-                : quantity // ignore: cast_nullable_to_non_nullable
-                    as int?,
-        userId:
-            freezed == userId
-                ? _value.userId
-                : userId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        userName:
-            freezed == userName
-                ? _value.userName
-                : userName // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        productId:
-            freezed == productId
-                ? _value.productId
-                : productId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        exchangeNumber:
-            freezed == exchangeNumber
-                ? _value.exchangeNumber
-                : exchangeNumber // ignore: cast_nullable_to_non_nullable
-                    as int?,
-        code:
-            freezed == code
-                ? _value.code
-                : code // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        name:
-            freezed == name
-                ? _value.name
-                : name // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        desc:
-            freezed == desc
-                ? _value.desc
-                : desc // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        price:
-            freezed == price
-                ? _value.price
-                : price // ignore: cast_nullable_to_non_nullable
-                    as int?,
-        pictureURL:
-            freezed == pictureURL
-                ? _value._pictureURL
-                : pictureURL // ignore: cast_nullable_to_non_nullable
-                    as List<String>?,
-        expirationFrom:
-            freezed == expirationFrom
-                ? _value.expirationFrom
-                : expirationFrom // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        expirationTo:
-            freezed == expirationTo
-                ? _value.expirationTo
-                : expirationTo // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        register:
-            freezed == register
-                ? _value.register
-                : register // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        organizerDocRef:
-            freezed == organizerDocRef
-                ? _value.organizerDocRef
-                : organizerDocRef // ignore: cast_nullable_to_non_nullable
-                    as DocumentReference<Map<String, dynamic>>?,
-        organizerId:
-            freezed == organizerId
-                ? _value.organizerId
-                : organizerId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        eventDocRef:
-            freezed == eventDocRef
-                ? _value.eventDocRef
-                : eventDocRef // ignore: cast_nullable_to_non_nullable
-                    as DocumentReference<Map<String, dynamic>>?,
-        eventId:
-            freezed == eventId
-                ? _value.eventId
-                : eventId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        eventName:
-            freezed == eventName
-                ? _value.eventName
-                : eventName // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        expirationLink:
-            null == expirationLink
-                ? _value.expirationLink
-                : expirationLink // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        priceId:
-            freezed == priceId
-                ? _value.priceId
-                : priceId // ignore: cast_nullable_to_non_nullable
-                    as String?,
-      ),
-    );
+    return _then(_$SnapshotProductImpl(
+      productDocRef: freezed == productDocRef
+          ? _value.productDocRef
+          : productDocRef // ignore: cast_nullable_to_non_nullable
+              as DocumentReference<Map<String, dynamic>>?,
+      quantity: freezed == quantity
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int?,
+      userId: freezed == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      productId: freezed == productId
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      exchangeNumber: freezed == exchangeNumber
+          ? _value.exchangeNumber
+          : exchangeNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+      code: freezed == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      desc: freezed == desc
+          ? _value.desc
+          : desc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      price: freezed == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int?,
+      pictureURL: freezed == pictureURL
+          ? _value._pictureURL
+          : pictureURL // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      expirationFrom: freezed == expirationFrom
+          ? _value.expirationFrom
+          : expirationFrom // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      expirationTo: freezed == expirationTo
+          ? _value.expirationTo
+          : expirationTo // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      register: freezed == register
+          ? _value.register
+          : register // ignore: cast_nullable_to_non_nullable
+              as String?,
+      organizerDocRef: freezed == organizerDocRef
+          ? _value.organizerDocRef
+          : organizerDocRef // ignore: cast_nullable_to_non_nullable
+              as DocumentReference<Map<String, dynamic>>?,
+      organizerId: freezed == organizerId
+          ? _value.organizerId
+          : organizerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventDocRef: freezed == eventDocRef
+          ? _value.eventDocRef
+          : eventDocRef // ignore: cast_nullable_to_non_nullable
+              as DocumentReference<Map<String, dynamic>>?,
+      eventId: freezed == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      eventName: freezed == eventName
+          ? _value.eventName
+          : eventName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      expirationLink: null == expirationLink
+          ? _value.expirationLink
+          : expirationLink // ignore: cast_nullable_to_non_nullable
+              as bool,
+      priceId: freezed == priceId
+          ? _value.priceId
+          : priceId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
@@ -858,29 +753,29 @@ class __$$SnapshotProductImplCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true)
 class _$SnapshotProductImpl implements _SnapshotProduct {
-  const _$SnapshotProductImpl({
-    @documentReferenceKey this.productDocRef,
-    this.quantity,
-    this.userId,
-    this.userName,
-    this.productId,
-    this.exchangeNumber,
-    this.code,
-    this.name,
-    this.desc,
-    this.price,
-    final List<String>? pictureURL,
-    @timestampKey this.expirationFrom,
-    @timestampKey this.expirationTo,
-    this.register,
-    @documentReferenceKey this.organizerDocRef,
-    this.organizerId,
-    @documentReferenceKey this.eventDocRef,
-    this.eventId,
-    this.eventName,
-    this.expirationLink = true,
-    this.priceId,
-  }) : _pictureURL = pictureURL;
+  const _$SnapshotProductImpl(
+      {@documentReferenceKey this.productDocRef,
+      this.quantity,
+      this.userId,
+      this.userName,
+      this.productId,
+      this.exchangeNumber,
+      this.code,
+      this.name,
+      this.desc,
+      this.price,
+      final List<String>? pictureURL,
+      @timestampKey this.expirationFrom,
+      @timestampKey this.expirationTo,
+      this.register,
+      @documentReferenceKey this.organizerDocRef,
+      this.organizerId,
+      @documentReferenceKey this.eventDocRef,
+      this.eventId,
+      this.eventName,
+      this.expirationLink = true,
+      this.priceId})
+      : _pictureURL = pictureURL;
 
   factory _$SnapshotProductImpl.fromJson(Map<String, dynamic> json) =>
       _$$SnapshotProductImplFromJson(json);
@@ -890,12 +785,12 @@ class _$SnapshotProductImpl implements _SnapshotProduct {
   final DocumentReference<Map<String, dynamic>>? productDocRef;
   @override
   final int? quantity;
-  // 購入者
+// 購入者
   @override
   final String? userId;
   @override
   final String? userName;
-  // 商品情報
+// 商品情報
   @override
   final String? productId;
   @override
@@ -904,7 +799,7 @@ class _$SnapshotProductImpl implements _SnapshotProduct {
   final String? code;
   @override
   final String? name;
-  // genre: string
+// genre: string
   @override
   final String? desc;
   @override
@@ -925,16 +820,16 @@ class _$SnapshotProductImpl implements _SnapshotProduct {
   @override
   @timestampKey
   final DateTime? expirationTo;
-  // 登録者
+// 登録者
   @override
   final String? register;
-  // 開催者
+// 開催者
   @override
   @documentReferenceKey
   final DocumentReference<Map<String, dynamic>>? organizerDocRef;
   @override
   final String? organizerId;
-  // イベント情報
+// イベント情報
   @override
   @documentReferenceKey
   final DocumentReference<Map<String, dynamic>>? eventDocRef;
@@ -945,7 +840,7 @@ class _$SnapshotProductImpl implements _SnapshotProduct {
   @override
   @JsonKey()
   final bool expirationLink;
-  // Stripe
+// Stripe
   @override
   final String? priceId;
 
@@ -974,10 +869,8 @@ class _$SnapshotProductImpl implements _SnapshotProduct {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.desc, desc) || other.desc == desc) &&
             (identical(other.price, price) || other.price == price) &&
-            const DeepCollectionEquality().equals(
-              other._pictureURL,
-              _pictureURL,
-            ) &&
+            const DeepCollectionEquality()
+                .equals(other._pictureURL, _pictureURL) &&
             (identical(other.expirationFrom, expirationFrom) ||
                 other.expirationFrom == expirationFrom) &&
             (identical(other.expirationTo, expirationTo) ||
@@ -998,77 +891,74 @@ class _$SnapshotProductImpl implements _SnapshotProduct {
             (identical(other.priceId, priceId) || other.priceId == priceId));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hashAll([
-    runtimeType,
-    productDocRef,
-    quantity,
-    userId,
-    userName,
-    productId,
-    exchangeNumber,
-    code,
-    name,
-    desc,
-    price,
-    const DeepCollectionEquality().hash(_pictureURL),
-    expirationFrom,
-    expirationTo,
-    register,
-    organizerDocRef,
-    organizerId,
-    eventDocRef,
-    eventId,
-    eventName,
-    expirationLink,
-    priceId,
-  ]);
+        runtimeType,
+        productDocRef,
+        quantity,
+        userId,
+        userName,
+        productId,
+        exchangeNumber,
+        code,
+        name,
+        desc,
+        price,
+        const DeepCollectionEquality().hash(_pictureURL),
+        expirationFrom,
+        expirationTo,
+        register,
+        organizerDocRef,
+        organizerId,
+        eventDocRef,
+        eventId,
+        eventName,
+        expirationLink,
+        priceId
+      ]);
 
-  /// Create a copy of SnapshotProduct
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SnapshotProductImplCopyWith<_$SnapshotProductImpl> get copyWith =>
       __$$SnapshotProductImplCopyWithImpl<_$SnapshotProductImpl>(
-        this,
-        _$identity,
-      );
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SnapshotProductImplToJson(this);
+    return _$$SnapshotProductImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _SnapshotProduct implements SnapshotProduct {
-  const factory _SnapshotProduct({
-    @documentReferenceKey
-    final DocumentReference<Map<String, dynamic>>? productDocRef,
-    final int? quantity,
-    final String? userId,
-    final String? userName,
-    final String? productId,
-    final int? exchangeNumber,
-    final String? code,
-    final String? name,
-    final String? desc,
-    final int? price,
-    final List<String>? pictureURL,
-    @timestampKey final DateTime? expirationFrom,
-    @timestampKey final DateTime? expirationTo,
-    final String? register,
-    @documentReferenceKey
-    final DocumentReference<Map<String, dynamic>>? organizerDocRef,
-    final String? organizerId,
-    @documentReferenceKey
-    final DocumentReference<Map<String, dynamic>>? eventDocRef,
-    final String? eventId,
-    final String? eventName,
-    final bool expirationLink,
-    final String? priceId,
-  }) = _$SnapshotProductImpl;
+  const factory _SnapshotProduct(
+      {@documentReferenceKey
+      final DocumentReference<Map<String, dynamic>>? productDocRef,
+      final int? quantity,
+      final String? userId,
+      final String? userName,
+      final String? productId,
+      final int? exchangeNumber,
+      final String? code,
+      final String? name,
+      final String? desc,
+      final int? price,
+      final List<String>? pictureURL,
+      @timestampKey final DateTime? expirationFrom,
+      @timestampKey final DateTime? expirationTo,
+      final String? register,
+      @documentReferenceKey
+      final DocumentReference<Map<String, dynamic>>? organizerDocRef,
+      final String? organizerId,
+      @documentReferenceKey
+      final DocumentReference<Map<String, dynamic>>? eventDocRef,
+      final String? eventId,
+      final String? eventName,
+      final bool expirationLink,
+      final String? priceId}) = _$SnapshotProductImpl;
 
   factory _SnapshotProduct.fromJson(Map<String, dynamic> json) =
       _$SnapshotProductImpl.fromJson;
@@ -1077,20 +967,20 @@ abstract class _SnapshotProduct implements SnapshotProduct {
   @documentReferenceKey
   DocumentReference<Map<String, dynamic>>? get productDocRef;
   @override
-  int? get quantity; // 購入者
-  @override
+  int? get quantity;
+  @override // 購入者
   String? get userId;
   @override
-  String? get userName; // 商品情報
-  @override
+  String? get userName;
+  @override // 商品情報
   String? get productId;
   @override
   int? get exchangeNumber;
   @override
   String? get code;
   @override
-  String? get name; // genre: string
-  @override
+  String? get name;
+  @override // genre: string
   String? get desc;
   @override
   int? get price;
@@ -1101,15 +991,15 @@ abstract class _SnapshotProduct implements SnapshotProduct {
   DateTime? get expirationFrom;
   @override
   @timestampKey
-  DateTime? get expirationTo; // 登録者
-  @override
-  String? get register; // 開催者
-  @override
+  DateTime? get expirationTo;
+  @override // 登録者
+  String? get register;
+  @override // 開催者
   @documentReferenceKey
   DocumentReference<Map<String, dynamic>>? get organizerDocRef;
   @override
-  String? get organizerId; // イベント情報
-  @override
+  String? get organizerId;
+  @override // イベント情報
   @documentReferenceKey
   DocumentReference<Map<String, dynamic>>? get eventDocRef;
   @override
@@ -1117,14 +1007,11 @@ abstract class _SnapshotProduct implements SnapshotProduct {
   @override
   String? get eventName;
   @override
-  bool get expirationLink; // Stripe
-  @override
+  bool get expirationLink;
+  @override // Stripe
   String? get priceId;
-
-  /// Create a copy of SnapshotProduct
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SnapshotProductImplCopyWith<_$SnapshotProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,4 +1,4 @@
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../data/model/order_model.dart';
@@ -18,7 +18,10 @@ Stream<List<Order>> managementState(Ref ref, String eventId) {
 
 @riverpod
 Stream<List<Product>> productsManagementState(Ref ref, String eventId) {
-  return ref.watch(productRepositoryProvider).watchProducts();
+  final queryParameter = ProductQueryParameter(eventId, null);
+  return ref
+      .watch(productRepositoryProvider)
+      .streamProgramProducts(queryParameter);
 }
 
 @riverpod

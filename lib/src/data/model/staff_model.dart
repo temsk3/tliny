@@ -27,11 +27,7 @@ class Staff with _$Staff {
 
   const Staff._();
 
-  factory Staff.empty() => const Staff(
-        displayName: '',
-        name: '',
-        email: '',
-      );
+  factory Staff.empty() => const Staff(displayName: '', name: '', email: '');
 
   factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);
 }

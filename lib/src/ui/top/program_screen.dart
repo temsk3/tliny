@@ -46,12 +46,6 @@ class EventScreen extends HookConsumerWidget {
         }
 
         return Scaffold(
-          floatingActionButton: AddProgramFloatingActionButton(
-            heroTag: 'program_screen_fab',
-            onPressed: () {
-              // プログラム追加画面への遷移はAddProgramFloatingActionButton内で処理
-            },
-          ),
           body: Stack(
             children: [
               // フルスクリーンのPageView
@@ -452,7 +446,7 @@ class FullScreenEventCard extends HookConsumerWidget {
                 border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
@@ -475,12 +469,15 @@ class FullScreenEventCard extends HookConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${l10n.date(program.salesStart!)}〜${l10n.date(program.salesEnd!)}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      '${l10n.date(program.salesStart!)}〜${l10n.date(program.salesEnd!)}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -504,12 +501,15 @@ class FullScreenEventCard extends HookConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    '${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      '${l10n.date(program.eventFrom!)}〜${l10n.date(program.eventTo!)}',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -535,14 +535,17 @@ class FullScreenEventCard extends HookConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      program.place!,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        program.place!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.start,
                       ),
-                      textAlign: TextAlign.end,
                     ),
                   ],
                 ],

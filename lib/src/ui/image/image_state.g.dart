@@ -8,7 +8,7 @@ part of 'image_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tempImageHash() => r'1521eb9481b73b51dba215b16ca1cfcce878baa1';
+String _$tempImageHash() => r'e2678ea9fb90b5d700c986b196db37f69f81470d';
 
 /// See also [tempImage].
 @ProviderFor(tempImage)
@@ -21,8 +21,6 @@ final tempImageProvider = AutoDisposeFutureProvider<XFile?>.internal(
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef TempImageRef = AutoDisposeFutureProviderRef<XFile?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

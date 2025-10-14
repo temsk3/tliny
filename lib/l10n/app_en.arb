@@ -207,6 +207,7 @@
   "insufficientStock": "Insufficient stock. Please adjust the quantity and try again.",
   "networkError": "Network error occurred. Please check your internet connection and try again.",
   "authenticationError": "Authentication error occurred. Please log in again.",
+  "pleaseLogin": "Please log in",
   "paymentError": "Payment processing error occurred. Please try again later.",
   "serverError": "Server error occurred. Please try again later.",
   "timeoutError": "Request timed out. Please try again later.",
@@ -304,6 +305,9 @@
   "priceOnProductPage": "Price listed on each product page",
   "noEmail": "No Email",
   "noName": "No Name",
+  "noCode": "No code",
+  "noGenre": "No Genre",
+  "noDesc": "No Description",
   "priceLabel": "Price",
   "ticketNotFound": "Ticket not found",
   "error": "Error",
@@ -333,5 +337,84 @@
   "passwordMismatch": "New passwords do not match",
   "passwordTooWeak": "Password is too weak. Please enter at least 6 alphanumeric characters",
   "passwordChangeInProgress": "Password change in progress...",
-  "passwordChangeCompleted": "Password change completed"
+  "passwordChangeCompleted": "Password change completed",
+  "scanQrCodes": "Scan QR Codes",
+  "scannedTickets": "Scanned Tickets",
+  "scannedTicketsCount": "Scanned Tickets ({count})",
+  "@scannedTicketsCount": {
+    "description": "Scanned tickets count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "usedTickets": "{count} Used",
+  "@usedTickets": {
+    "description": "Used tickets count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTicketsScannedYet": "No tickets scanned yet",
+  "scanQrCodesToSeeTickets": "Scan QR codes to see tickets here",
+  "unknownTicket": "Unknown Ticket",
+  "used": "Used",
+  "unused": "Unused",
+  "invalidQrCodeFormat": "Invalid QR code format.",
+  "failedToDecryptQrCode": "Failed to decrypt QR code: {error}",
+  "@failedToDecryptQrCode": {
+    "description": "QR code decryption failed message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accessDeniedWrongEvent": "Access denied: Wrong event.",
+  "ticketScannedSuccessfully": "Ticket scanned successfully.",
+  "failedToProcessQrCode": "Failed to process QR code: {error}",
+  "@failedToProcessQrCode": {
+    "description": "QR code processing failed message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "scannedTicketsTitle": "Scanned Tickets",
+  "confirmAction": "Confirm Action",
+  "markTicketsAsUsed": "Do you want to mark the scanned ticket as used?",
+  "ticketsUpdatedSuccessfully": "Tickets updated successfully.",
+  "ticketUpdateError": "Ticket Update Error",
+  "qrScannerOperationError": "QR Scanner Operation Error",
+  "terms": "Terms of Service",
+  "sellerRegistration": "Seller Registration",
+  "sellerFeature": "Seller Feature",
+  "sellerDescription": "To sell products as a seller, please complete the following steps.",
+  "registerUpdateSeller": "Register/Update Seller",
+  "manageSite": "Management Site",
+  "manageSiteDescription": "If you want to check sales information, please use the button below to go to the management site.",
+  "pleasePurchaseNewTicket": "Please purchase a new ticket",
+  "showExpiredOrPurchaseNewTicket": "Show expired tickets or purchase a new ticket",
+  "validationError": "There is an error in the input. Please check and try again.",
+  "permissionError": "You do not have sufficient permissions. Please contact the administrator.",
+  "databaseError": "A database error has occurred. Please try again later.",
+  "searchEvent": "Search Event",
+  "createEvent": "Create Event",
+  "searchText": "Search Text",
+  "noTickets": "No tickets available",
+  "noAvailableTickets": "No available tickets",
+  "purchasedTicketsDisplayedHere": "Purchased tickets will be displayed here",
+  "hideExpired": "Hide expired",
+  "showExpired": "Show expired",
+  "sortByEventName": "Sort by Event Name",
+  "sortByEventDate": "Sort by Event Date",
+  "generatePdf": "Generate PDF",
+  "displayQrCode": "Display QR Code",
+  "expiredTicket": "Expired Ticket",
+  "myEvent": "My Event",
+  "non": "None"
 }

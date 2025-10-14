@@ -52,10 +52,6 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_getUserDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -74,19 +70,14 @@ class UserViewModel extends _$UserViewModel {
       final user = await loading.guardFuture(() async {
         return userRepository.readUser(uid);
       });
-      state = AsyncValue.data(user);
+      // Refresh the state by calling build again
+      ref.invalidateSelf();
       return user;
     } on AppException catch (e, st) {
       logger.e('getUser: AppException - ${e.message}', stackTrace: st);
-      state = AsyncValue.error(e, st);
       rethrow;
     } on Exception catch (e, st) {
       logger.e('getUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -96,22 +87,16 @@ class UserViewModel extends _$UserViewModel {
     logger.d('addUser');
     try {
       final loading = ref.read(globalLoadingControllerProvider.notifier);
-      final id = await loading.guardFuture(() async {
+      await loading.guardFuture(() async {
         return userRepository.createUser(data);
       });
-      final updatedUser = data.copyWith(id: id);
-      state = AsyncValue.data(updatedUser);
+      // Refresh the state by calling build again
+      ref.invalidateSelf();
     } on AppException catch (e, st) {
       logger.e('addUser: AppException - ${e.message}', stackTrace: st);
-      state = AsyncValue.error(e, st);
       rethrow;
     } on Exception catch (e, st) {
       logger.e('addUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -121,27 +106,21 @@ class UserViewModel extends _$UserViewModel {
     logger.d('updateUser');
     try {
       final loading = ref.read(globalLoadingControllerProvider.notifier);
-      final id = await loading.guardFuture(() async {
+      await loading.guardFuture(() async {
         return userRepository.updateUser(data);
       });
-      final updatedUser = data.copyWith(id: id);
-      updateProfile(data);
+      await updateProfile(data);
 
       // PublicUsersも更新
       await ref.read(publicUserRepositoryProvider).updateUser(data);
 
-      state = AsyncValue.data(updatedUser);
+      // Refresh the state by calling build again
+      ref.invalidateSelf();
     } on AppException catch (e, st) {
       logger.e('updateUser: AppException - ${e.message}', stackTrace: st);
-      state = AsyncValue.error(e, st);
       rethrow;
     } on Exception catch (e, st) {
       logger.e('updateUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -154,30 +133,24 @@ class UserViewModel extends _$UserViewModel {
       await loading.guardFuture(() async {
         await userRepository.deleteUser(data.id.toString());
       });
-      state = AsyncValue.data(User.empty());
+      // Refresh the state by calling build again
+      ref.invalidateSelf();
     } on AppException catch (e, st) {
       logger.e('deleteUser: AppException - ${e.message}', stackTrace: st);
-      state = AsyncValue.error(e, st);
       rethrow;
     } on Exception catch (e, st) {
       logger.e('deleteUser: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
 
   //
-  void updateProfile(User user) {
-    authRepository
-      ..updateDisplayName(user.displayName)
-      ..updatePhotoUrl(user.photoUrl);
+  Future<void> updateProfile(User user) async {
+    await authRepository.updateDisplayName(user.displayName);
+    await authRepository.updatePhotoUrl(user.photoUrl);
     // メールアドレスは専用ページで変更するため、ここでは更新しない
-    // ..updateEmail(user.email)
-    // ..updatePhoneNumber(user.phoneNumber);
+    // await authRepository.updateEmail(user.email)
+    // await authRepository.updatePhoneNumber(user.phoneNumber);
   }
 
   //
@@ -197,10 +170,6 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('updatePhoto: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -217,10 +186,6 @@ class UserViewModel extends _$UserViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('deletePhoto: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -246,10 +211,6 @@ class UserViewModel extends _$UserViewModel {
         error: e,
         stackTrace: st,
       );
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
       rethrow;
     }
   }
@@ -269,10 +230,6 @@ class UserViewModel extends _$UserViewModel {
         'createLoginLinkError',
         time: DateTime.now(),
         error: e,
-        stackTrace: st,
-      );
-      final appException = GeneralException(
-        message: e.toString(),
         stackTrace: st,
       );
       rethrow;

@@ -109,7 +109,9 @@ class DeleteProgramIconButton extends HookWidget {
                           .watch(programViewModelProvider.notifier)
                           .deleteProgram(program.id.toString());
                       // appRoute.popUntilRoot();
-                      RouterUtils.safePop(context);
+                      if (context.mounted) {
+                        RouterUtils.safePop(context);
+                      }
                     }
                   } catch (e) {
                     errorHandler.showError(e, errorContext: 'プログラム削除');
@@ -278,7 +280,7 @@ class RegisterProgramElevatedButton extends HookWidget {
       builder: (context, ref, child) {
         return BaseElevatedButton(
           l10n: l10n,
-          onPressed: onPressed,
+          onPressed: () async => onPressed(),
           child: child!,
         );
       },
@@ -297,7 +299,7 @@ class CancelElevatedButton extends HookWidget {
       builder: (context, ref, child) {
         return BaseElevatedButton(
           l10n: l10n,
-          onPressed: () => RouterUtils.safePop(context),
+          onPressed: () async => RouterUtils.safePop(context),
           child: child!,
         );
       },

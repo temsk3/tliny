@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tliny/l10n/app_localizations.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
 import 'package:tliny/src/ui/product/product_list.dart';
+import 'package:tliny/src/ui/product/product_state.dart';
 import 'package:tliny/src/ui/product/widget/product_card.dart';
 
 import 'product_list_test.mocks.dart';
@@ -15,12 +18,12 @@ import 'product_list_test.mocks.dart';
 void main() {
   group('ProductList Widget Tests', () {
     late MockProductRepository mockProductRepository;
-    late ProviderContainer container;
     late Program testProgram;
     late List<Product> testProducts;
 
     setUp(() {
       mockProductRepository = MockProductRepository();
+
       testProgram = Program.empty().copyWith(
         id: 'program-1',
         name: 'Test Program',
@@ -52,35 +55,65 @@ void main() {
           isPublish: true,
         ),
       ];
-
-      container = ProviderContainer(
-        overrides: [
-          productRepositoryProvider.overrideWithValue(mockProductRepository),
-        ],
-      );
-    });
-
-    tearDown(() {
-      container.dispose();
     });
 
     Widget createTestWidget() {
-      return MaterialApp(
-        home: Scaffold(
-          body: ProviderScope(
-            parent: container,
-            child: ProductListPage(program: testProgram),
+      return ProviderScope(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+          productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+            return Stream.value(testProducts);
+          }),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+          home: Localizations(
+            locale: const Locale('ja', ''),
+            delegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            child: Scaffold(body: ProductListPage(program: testProgram)),
           ),
         ),
       );
     }
 
     Widget createTestWidgetWithGenre(GenreType genre) {
-      return MaterialApp(
-        home: Scaffold(
-          body: ProviderScope(
-            parent: container,
-            child: ProductListPage(program: testProgram, genre: genre),
+      return ProviderScope(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+          productsStateProvider(testProgram.id!, genre).overrideWith((ref) {
+            return Stream.value(testProducts);
+          }),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+          home: Localizations(
+            locale: const Locale('ja', ''),
+            delegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            child: Scaffold(
+              body: ProductListPage(program: testProgram, genre: genre),
+            ),
           ),
         ),
       );
@@ -188,11 +221,35 @@ void main() {
         ),
       ];
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(unsortedProducts));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+              return Stream.value(unsortedProducts);
+            }),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+            home: Localizations(
+              locale: const Locale('ja', ''),
+              delegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              child: Scaffold(body: ProductListPage(program: testProgram)),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Products should be sorted alphabetically
@@ -218,11 +275,35 @@ void main() {
         ),
       ];
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(mixedProducts));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+              return Stream.value(mixedProducts);
+            }),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+            home: Localizations(
+              locale: const Locale('ja', ''),
+              delegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              child: Scaffold(body: ProductListPage(program: testProgram)),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should only show active products
@@ -243,11 +324,35 @@ void main() {
         ),
       ];
 
-      when(
-        mockProductRepository.watchProducts(),
-      ).thenAnswer((_) => Stream.value(productsWithNulls));
-
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            productsStateProvider(testProgram.id!, null).overrideWith((ref) {
+              return Stream.value(productsWithNulls);
+            }),
+          ],
+          child: MaterialApp(
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('ja', ''), Locale('en', '')],
+            home: Localizations(
+              locale: const Locale('ja', ''),
+              delegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              child: Scaffold(body: ProductListPage(program: testProgram)),
+            ),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should handle null values gracefully
@@ -274,17 +379,55 @@ void main() {
     testWidgets('should handle program with null id', (
       WidgetTester tester,
     ) async {
-      testProgram = testProgram.copyWith(id: null);
+      // Create a program with null id
+      final nullIdProgram = Program.empty().copyWith(
+        name: 'Test Program',
+        id: null,
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(body: ProductListPage(program: nullIdProgram)),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Should handle null program id gracefully
+      expect(find.text('プログラムIDが設定されていません'), findsOneWidget);
+    });
+
+    testWidgets('should handle program with null id safely', (
+      WidgetTester tester,
+    ) async {
+      // Create a program with null id
+      final nullIdProgram = Program.empty().copyWith(
+        name: 'Test Program',
+        id: null, // Explicitly set to null
+      );
 
       when(
         mockProductRepository.watchProducts(),
       ).thenAnswer((_) => Stream.value(testProducts));
 
-      await tester.pumpWidget(createTestWidget());
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+          ],
+          child: MaterialApp(
+            home: Scaffold(body: ProductListPage(program: nullIdProgram)),
+          ),
+        ),
+      );
       await tester.pumpAndSettle();
 
       // Should handle null program id gracefully
-      expect(find.byType(GridView), findsOneWidget);
+      expect(find.text('プログラムIDが設定されていません'), findsOneWidget);
     });
   });
 }

@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,14 +15,12 @@ import '../common/loading_screen.dart';
 part 'ticket_list_view_model.g.dart';
 
 @riverpod
-AsyncValue<List<Ticket>> ticketsState(TicketsStateRef ref) {
+AsyncValue<List<Ticket>> ticketsState(Ref ref) {
   final uidAsyncValue = ref.watch(userIdProvider);
   return uidAsyncValue.when(
-    data:
-        (userId) =>
-            userId != null
-                ? ref.watch(ticketsStreamProvider(userId))
-                : const AsyncValue.data([]),
+    data: (userId) => userId != null
+        ? ref.watch(ticketsStreamProvider(userId))
+        : const AsyncValue.data([]),
     loading: () => const AsyncValue.loading(),
     error: AsyncValue.error,
   );
@@ -46,7 +46,7 @@ class TicketListViewModel extends _$TicketListViewModel {
   // 期限切れチケットの表示・非表示を切り替える
   void toggleExpiredTicketsVisibility() {
     showExpiredTickets = !showExpiredTickets;
-    print('toggleExpiredTicketsVisibility: $showExpiredTickets');
+    debugPrint('toggleExpiredTicketsVisibility: $showExpiredTickets');
     // 状態を更新してUIの再構築を促す
     state = AsyncValue.data({...selectedTicketIds});
   }
@@ -87,7 +87,7 @@ class TicketListViewModel extends _$TicketListViewModel {
     // チケットの有効期限が設定されている場合
     if (ticket.expirationTo != null) {
       final isExpired = ticket.expirationTo!.isBefore(now);
-      print(
+      debugPrint(
         'isTicketExpired (ticket.expirationTo): ${ticket.id} -> $isExpired (${ticket.expirationTo} vs $now)',
       );
       return isExpired;
@@ -96,27 +96,28 @@ class TicketListViewModel extends _$TicketListViewModel {
     // イベントの開催期間で判定する場合
     if (ticket.eventId != null) {
       try {
-        final event =
-            ref.read(programStreamProvider(ticket.eventId!)).valueOrNull;
+        final event = ref.read(programStreamProvider(ticket.eventId!)).value;
         if (event != null && event.eventTo != null) {
           final isExpired = event.eventTo!.isBefore(now);
-          print(
+          debugPrint(
             'isTicketExpired (event.eventTo): ${ticket.id} -> $isExpired (${event.eventTo} vs $now)',
           );
           return isExpired;
         } else {
-          print(
+          debugPrint(
             'isTicketExpired (no event data): ${ticket.id} -> false (event: $event)',
           );
         }
       } catch (e) {
-        print('isTicketExpired (error): ${ticket.id} -> false (error: $e)');
+        debugPrint(
+          'isTicketExpired (error): ${ticket.id} -> false (error: $e)',
+        );
         // エラーが発生した場合は期限切れでないとみなす
         return false;
       }
     }
 
-    print('isTicketExpired (default): ${ticket.id} -> false');
+    debugPrint('isTicketExpired (default): ${ticket.id} -> false');
     return false; // デフォルトでは期限切れでない
   }
 
@@ -126,9 +127,10 @@ class TicketListViewModel extends _$TicketListViewModel {
       return tickets; // 全て表示
     }
 
-    final filteredTickets =
-        tickets.where((ticket) => !isTicketExpired(ticket)).toList();
-    print(
+    final filteredTickets = tickets
+        .where((ticket) => !isTicketExpired(ticket))
+        .toList();
+    debugPrint(
       'filterExpiredTickets: ${tickets.length} -> ${filteredTickets.length}',
     );
     return filteredTickets;
@@ -139,7 +141,8 @@ class TicketListViewModel extends _$TicketListViewModel {
     Map<String, List<Ticket>> groupedTickets,
   ) {
     if (showExpiredTickets) {
-      return groupedTickets; // 全て表示
+      // 期限切れ表示時は、全てのイベントを表示（使用済みでも有効期限がない場合は表示）
+      return groupedTickets;
     }
 
     final filteredMap = <String, List<Ticket>>{};
@@ -150,13 +153,10 @@ class TicketListViewModel extends _$TicketListViewModel {
 
       // このイベントに使用可能なチケットがあるかチェック
       final hasValidTickets = tickets.any((ticket) {
-        // 使用済みでない
-        if (ticket.isUsed) return false;
+        // 未使用で有効期限内のチケットがあるかチェック
+        if (!ticket.isUsed && !isTicketExpired(ticket)) return true;
 
-        // 期限切れでない
-        if (isTicketExpired(ticket)) return false;
-
-        return true;
+        return false;
       });
 
       // 使用可能なチケットがある場合のみイベントを表示
@@ -165,8 +165,8 @@ class TicketListViewModel extends _$TicketListViewModel {
       }
     }
 
-    print(
-      'filterEventsWithNoValidTickets: ${groupedTickets.length} -> ${filteredMap.length}',
+    debugPrint(
+      'filterEventsWithNoValidTickets (expired hidden): ${groupedTickets.length} -> ${filteredMap.length}',
     );
     return filteredMap;
   }
@@ -185,11 +185,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('getTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -209,6 +205,7 @@ class TicketListViewModel extends _$TicketListViewModel {
         selectedEventId = null; // 全ての選択が解除されたらイベントIDもクリア
       }
     } else {
+      // 未使用で有効期限内のもののみ選択可能
       if (ticket.isUsed) {
         // 使用済みチケットは選択できない
         return;
@@ -259,11 +256,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('Error updating ticket $value: $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -296,11 +289,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('generatePdfUuidsForTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -316,11 +305,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('printingTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -336,11 +321,7 @@ class TicketListViewModel extends _$TicketListViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('usedTickets: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -350,7 +331,7 @@ class TicketListViewModel extends _$TicketListViewModel {
 
   Program? getEvent(String eventId) {
     try {
-      return ref.read(programStreamProvider(eventId)).valueOrNull;
+      return ref.read(programStreamProvider(eventId)).value;
     } catch (e) {
       return null;
     }

@@ -21,7 +21,7 @@ class UsageHistoryPage extends HookConsumerWidget {
     final theme = Theme.of(context);
     final l10n = useL10n();
     final state = ref.watch(usageHistoryViewModelProvider);
-    final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
+    // final viewModel = ref.watch(usageHistoryViewModelProvider.notifier);
 
     return AsyncValueWidget(
       value: state,
@@ -32,11 +32,17 @@ class UsageHistoryPage extends HookConsumerWidget {
         logger.d(data);
 
         return Scaffold(
+          backgroundColor: Colors.grey[50],
           appBar: AppBar(
-            title: Text(l10n.usageHistory),
+            title: Text(
+              l10n.usageHistory,
+              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            ),
+            centerTitle: true,
             elevation: 0,
-            backgroundColor: theme.colorScheme.primary,
-            foregroundColor: theme.colorScheme.onPrimary,
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black87,
+            surfaceTintColor: Colors.transparent,
           ),
           body: MainBodyWidget(
             body:
@@ -64,9 +70,18 @@ class UsageHistoryPage extends HookConsumerWidget {
         final usageHistory = data[index];
         logger.d('Processing usage history: ${usageHistory.eventId}');
 
-        final programAsyncValue = ref.watch(programsStateProvider);
-        final programList = programAsyncValue.value;
+        final programStream = ref.watch(programsStateProvider);
+        final programList = programStream.value;
         logger.d('Program list: ${programList?.length ?? 0} items');
+
+        // Handle AsyncValue states
+        if (programStream.isLoading) {
+          logger.d('Program list is loading...');
+          return const SizedBox.shrink(); // Return empty widget while loading
+        } else if (programStream.hasError) {
+          logger.e('Program list error: ${programStream.error}');
+          return const SizedBox.shrink(); // Return empty widget on error
+        }
 
         var name = '';
         if (programList != null && usageHistory.eventId != null) {
@@ -295,70 +310,44 @@ class UsageHistoryPage extends HookConsumerWidget {
     ThemeData theme,
   ) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.history_outlined,
-                size: 80,
-                color: theme.colorScheme.primary,
-              ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              '使用履歴がありません',
-              style: theme.textTheme.headlineSmall?.copyWith(
-                color: theme.colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'チケットを使用すると、ここに履歴が表示されます',
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.1),
+                  spreadRadius: 1,
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    color: theme.colorScheme.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'チケットを使用してください',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                    ),
-                  ),
-                ],
-              ),
+              ],
             ),
-          ],
-        ),
+            child: Icon(
+              Icons.history_outlined,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text(
+            '使用履歴がありません',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'チケットを使用すると、ここに履歴が表示されます',
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+          ),
+        ],
       ),
     );
   }

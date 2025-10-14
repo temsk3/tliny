@@ -34,14 +34,18 @@ class ProductPage extends HookConsumerWidget {
         ),
         body: TabBarView(
           children: [
-            ProductListTab($extra: (program, null))
-                .build(context, GoRouterState.of(context)),
-            ProductListTab($extra: (program, GenreType.foods))
-                .build(context, GoRouterState.of(context)),
-            ProductListTab($extra: (program, GenreType.goods))
-                .build(context, GoRouterState.of(context)),
-            ProductListTab($extra: (program, GenreType.others))
-                .build(context, GoRouterState.of(context)),
+            ProductListTab(
+              $extra: (program, null),
+            ).build(context, GoRouterState.of(context)),
+            ProductListTab(
+              $extra: (program, GenreType.foods),
+            ).build(context, GoRouterState.of(context)),
+            ProductListTab(
+              $extra: (program, GenreType.goods),
+            ).build(context, GoRouterState.of(context)),
+            ProductListTab(
+              $extra: (program, GenreType.others),
+            ).build(context, GoRouterState.of(context)),
           ],
         ),
       ),

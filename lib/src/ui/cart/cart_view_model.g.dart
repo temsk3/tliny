@@ -8,7 +8,7 @@ part of 'cart_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cartViewModelHash() => r'24c6906a83e90438445a1ee815f7e6fce1eeed09';
+String _$cartViewModelHash() => r'4e3c96b54f3001582c41f8243dc61db84350d622';
 
 /// カートの状態を管理する ViewModel
 ///
@@ -16,16 +16,15 @@ String _$cartViewModelHash() => r'24c6906a83e90438445a1ee815f7e6fce1eeed09';
 @ProviderFor(CartViewModel)
 final cartViewModelProvider =
     AutoDisposeAsyncNotifierProvider<CartViewModel, List<Cart>>.internal(
-      CartViewModel.new,
-      name: r'cartViewModelProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$cartViewModelHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  CartViewModel.new,
+  name: r'cartViewModelProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$cartViewModelHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
 typedef _$CartViewModel = AutoDisposeAsyncNotifier<List<Cart>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

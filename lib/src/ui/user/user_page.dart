@@ -3,7 +3,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../settings/routes/routes.dart';
 import '../../ui/common/main_body.dart';
 import '../../utils/logger.dart';
@@ -24,9 +23,7 @@ class UserPage extends HookConsumerWidget {
     // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    final appMediaQuery = useMediaQuery();
     final state = ref.watch(userViewModelProvider);
-    final viewModel = ref.watch(userViewModelProvider.notifier);
 
     // スプラッシュスクリーン表示終了
     FlutterNativeSplash.remove();

@@ -21,7 +21,6 @@ class TicketListPage extends HookConsumerWidget {
     final l10n = useL10n();
     final sortOrder = useState(SortOrder.expirationFrom);
     final ticketsAsyncValue = ref.watch(ticketsStateProvider);
-    final viewModel = ref.read(ticketListViewModelProvider.notifier);
 
     return MainBodyWidget(
       width: 400,
@@ -29,19 +28,21 @@ class TicketListPage extends HookConsumerWidget {
         value: ticketsAsyncValue,
         data: (tickets) {
           if (tickets.isEmpty) {
-            print('TicketListPage: No tickets found');
+            debugPrint('TicketListPage: No tickets found');
             return _buildEmptyTicketsWidget(context, l10n);
           }
 
-          print('TicketListPage: Found ${tickets.length} tickets');
+          debugPrint('TicketListPage: Found ${tickets.length} tickets');
           final sortedTickets = sortTickets(tickets, sortOrder.value);
           final groupedTickets = groupTicketsByEvent(sortedTickets);
-          print('TicketListPage: Grouped into ${groupedTickets.length} events');
+          debugPrint(
+            'TicketListPage: Grouped into ${groupedTickets.length} events',
+          );
 
           return Scaffold(
             body: Column(
               children: [
-                _buildSortMenu(sortOrder),
+                _buildSortMenu(l10n, sortOrder),
                 Expanded(
                   child: Consumer(
                     builder: (context, ref, child) {
@@ -53,14 +54,14 @@ class TicketListPage extends HookConsumerWidget {
                       final filteredTickets = viewModel.filterExpiredTickets(
                         sortedTickets,
                       );
-                      print(
+                      debugPrint(
                         'TicketListPage: After expired filter: ${filteredTickets.length} tickets',
                       );
 
                       final filteredGroupedTickets = groupTicketsByEvent(
                         filteredTickets,
                       );
-                      print(
+                      debugPrint(
                         'TicketListPage: After grouping: ${filteredGroupedTickets.length} events',
                       );
 
@@ -69,9 +70,43 @@ class TicketListPage extends HookConsumerWidget {
                           .filterEventsWithNoValidTickets(
                             filteredGroupedTickets,
                           );
-                      print(
+                      debugPrint(
                         'TicketListPage: Final events: ${finalGroupedTickets.length} events',
                       );
+
+                      // 使用可能なチケットがない場合のメッセージ表示
+                      if (finalGroupedTickets.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.event_busy,
+                                size: 80,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                viewModel.isExpiredTicketsVisible
+                                    ? l10n.noTickets
+                                    : l10n.noAvailableTickets,
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(color: Colors.grey[600]),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                viewModel.isExpiredTicketsVisible
+                                    ? l10n.pleasePurchaseNewTicket
+                                    : l10n.showExpiredOrPurchaseNewTicket,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Colors.grey[500]),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
 
                       return Column(
                         children: [
@@ -102,7 +137,7 @@ class TicketListPage extends HookConsumerWidget {
                                               ? () => const TicketPdfRoute()
                                                   .push(context)
                                               : null,
-                                      tooltip: 'Generate PDF',
+                                      tooltip: l10n.generatePdf,
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.qr_code),
@@ -114,7 +149,7 @@ class TicketListPage extends HookConsumerWidget {
                                                 ),
                                               ).push(context)
                                               : null,
-                                      tooltip: 'Display QR Code',
+                                      tooltip: l10n.displayQrCode,
                                     ),
                                   ],
                                 ),
@@ -160,7 +195,10 @@ class TicketListPage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildSortMenu(ValueNotifier<SortOrder> sortOrder) {
+  Widget _buildSortMenu(
+    AppLocalizations l10n,
+    ValueNotifier<SortOrder> sortOrder,
+  ) {
     return Padding(
       // Add padding for better visuals
       padding: const EdgeInsets.symmetric(
@@ -185,7 +223,7 @@ class TicketListPage extends HookConsumerWidget {
                   size: 20,
                 ),
                 label: Text(
-                  isExpiredVisible ? '期限切れを非表示' : '期限切れを表示',
+                  isExpiredVisible ? l10n.hideExpired : l10n.showExpired,
                   style: const TextStyle(fontSize: 12),
                 ),
                 style: TextButton.styleFrom(
@@ -202,13 +240,13 @@ class TicketListPage extends HookConsumerWidget {
             onSelected: (sort) => sortOrder.value = sort,
             itemBuilder:
                 (context) => [
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: SortOrder.eventName,
-                    child: Text('Sort by Event Name'),
+                    child: Text(l10n.sortByEventName),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: SortOrder.expirationFrom,
-                    child: Text('Sort by Event Date'),
+                    child: Text(l10n.sortByEventDate),
                   ),
                 ],
           ),
@@ -228,6 +266,7 @@ class TicketListPage extends HookConsumerWidget {
         ref.watch(ticketListViewModelProvider).value ?? {};
     final selectedEventId =
         ref.read(ticketListViewModelProvider.notifier).selectedEventId;
+
     return ExpansionTile(
       leading: PictureView(
         picture: event.pictureURL,
@@ -237,8 +276,15 @@ class TicketListPage extends HookConsumerWidget {
         tap: false,
       ),
       title: Text(event.name!),
-      subtitle: Text(
-        '  ${l10n.periods} : ${l10n.date(event.eventFrom!)}〜${l10n.date(event.eventTo!)}',
+      subtitle: FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: Alignment.centerLeft,
+        child: Text(
+          event.eventFrom != null && event.eventTo != null
+              ? '  ${l10n.periods} : ${l10n.date(event.eventFrom!)}〜${l10n.date(event.eventTo!)}'
+              : '  ${l10n.periods} : 期間未設定',
+          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+        ),
       ),
       initiallyExpanded: eventTickets.any(
         (ticket) => selectedTicketIds.contains(ticket.id),
@@ -279,6 +325,7 @@ class TicketListPage extends HookConsumerWidget {
           if (isExpired) isSelected = false;
 
           return _buildTicketCard(
+            l10n,
             ref,
             ticketKey,
             ticket,
@@ -292,6 +339,7 @@ class TicketListPage extends HookConsumerWidget {
   }
 
   Widget _buildTicketCard(
+    AppLocalizations l10n,
     WidgetRef ref,
     Key ticketKey,
     Ticket ticket,
@@ -335,6 +383,12 @@ class TicketListPage extends HookConsumerWidget {
           ),
           if (ticket.isPrinting)
             const Icon(Icons.print_outlined, color: Colors.green),
+          if (isExpired) // 期限切れの場合（印刷アイコンの上に重ねる）
+            Icon(
+              Icons.access_time,
+              color: Colors.orange,
+              semanticLabel: l10n.expiredTicket,
+            ),
         ],
       ),
     );
@@ -352,7 +406,7 @@ class TicketListPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'チケットがありません',
+            l10n.noTickets,
             style: Theme.of(
               context,
             ).textTheme.headlineSmall?.copyWith(color: Colors.grey[600]),
@@ -360,7 +414,7 @@ class TicketListPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            '購入したチケットがここに表示されます',
+            l10n.purchasedTicketsDisplayedHere,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),

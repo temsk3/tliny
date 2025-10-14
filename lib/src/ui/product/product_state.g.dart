@@ -41,15 +41,24 @@ class ProductsStateFamily extends Family<AsyncValue<List<Product>>> {
   const ProductsStateFamily();
 
   /// See also [productsState].
-  ProductsStateProvider call(String programId, GenreType? genre) {
-    return ProductsStateProvider(programId, genre);
+  ProductsStateProvider call(
+    String programId,
+    GenreType? genre,
+  ) {
+    return ProductsStateProvider(
+      programId,
+      genre,
+    );
   }
 
   @override
   ProductsStateProvider getProviderOverride(
     covariant ProductsStateProvider provider,
   ) {
-    return call(provider.programId, provider.genre);
+    return call(
+      provider.programId,
+      provider.genre,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -70,21 +79,27 @@ class ProductsStateFamily extends Family<AsyncValue<List<Product>>> {
 /// See also [productsState].
 class ProductsStateProvider extends AutoDisposeStreamProvider<List<Product>> {
   /// See also [productsState].
-  ProductsStateProvider(String programId, GenreType? genre)
-    : this._internal(
-        (ref) => productsState(ref as ProductsStateRef, programId, genre),
-        from: productsStateProvider,
-        name: r'productsStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productsStateHash,
-        dependencies: ProductsStateFamily._dependencies,
-        allTransitiveDependencies:
-            ProductsStateFamily._allTransitiveDependencies,
-        programId: programId,
-        genre: genre,
-      );
+  ProductsStateProvider(
+    String programId,
+    GenreType? genre,
+  ) : this._internal(
+          (ref) => productsState(
+            ref as ProductsStateRef,
+            programId,
+            genre,
+          ),
+          from: productsStateProvider,
+          name: r'productsStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productsStateHash,
+          dependencies: ProductsStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProductsStateFamily._allTransitiveDependencies,
+          programId: programId,
+          genre: genre,
+        );
 
   ProductsStateProvider._internal(
     super._createNotifier, {
@@ -141,8 +156,6 @@ class ProductsStateProvider extends AutoDisposeStreamProvider<List<Product>> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductsStateRef on AutoDisposeStreamProviderRef<List<Product>> {
   /// The parameter `programId` of this provider.
   String get programId;
@@ -174,15 +187,21 @@ class ProductStateFamily extends Family<AsyncValue<Product>> {
   const ProductStateFamily();
 
   /// See also [productState].
-  ProductStateProvider call(String? productId) {
-    return ProductStateProvider(productId);
+  ProductStateProvider call(
+    String? productId,
+  ) {
+    return ProductStateProvider(
+      productId,
+    );
   }
 
   @override
   ProductStateProvider getProviderOverride(
     covariant ProductStateProvider provider,
   ) {
-    return call(provider.productId);
+    return call(
+      provider.productId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -203,20 +222,24 @@ class ProductStateFamily extends Family<AsyncValue<Product>> {
 /// See also [productState].
 class ProductStateProvider extends AutoDisposeStreamProvider<Product> {
   /// See also [productState].
-  ProductStateProvider(String? productId)
-    : this._internal(
-        (ref) => productState(ref as ProductStateRef, productId),
-        from: productStateProvider,
-        name: r'productStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productStateHash,
-        dependencies: ProductStateFamily._dependencies,
-        allTransitiveDependencies:
-            ProductStateFamily._allTransitiveDependencies,
-        productId: productId,
-      );
+  ProductStateProvider(
+    String? productId,
+  ) : this._internal(
+          (ref) => productState(
+            ref as ProductStateRef,
+            productId,
+          ),
+          from: productStateProvider,
+          name: r'productStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productStateHash,
+          dependencies: ProductStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProductStateFamily._allTransitiveDependencies,
+          productId: productId,
+        );
 
   ProductStateProvider._internal(
     super._createNotifier, {
@@ -267,16 +290,13 @@ class ProductStateProvider extends AutoDisposeStreamProvider<Product> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductStateRef on AutoDisposeStreamProviderRef<Product> {
   /// The parameter `productId` of this provider.
   String? get productId;
 }
 
 class _ProductStateProviderElement
-    extends AutoDisposeStreamProviderElement<Product>
-    with ProductStateRef {
+    extends AutoDisposeStreamProviderElement<Product> with ProductStateRef {
   _ProductStateProviderElement(super.provider);
 
   @override
@@ -296,15 +316,21 @@ class AddProductButtonStateFamily extends Family<AsyncValue<bool>> {
   const AddProductButtonStateFamily();
 
   /// See also [addProductButtonState].
-  AddProductButtonStateProvider call(Program program) {
-    return AddProductButtonStateProvider(program);
+  AddProductButtonStateProvider call(
+    Program program,
+  ) {
+    return AddProductButtonStateProvider(
+      program,
+    );
   }
 
   @override
   AddProductButtonStateProvider getProviderOverride(
     covariant AddProductButtonStateProvider provider,
   ) {
-    return call(provider.program);
+    return call(
+      provider.program,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -325,21 +351,24 @@ class AddProductButtonStateFamily extends Family<AsyncValue<bool>> {
 /// See also [addProductButtonState].
 class AddProductButtonStateProvider extends AutoDisposeStreamProvider<bool> {
   /// See also [addProductButtonState].
-  AddProductButtonStateProvider(Program program)
-    : this._internal(
-        (ref) =>
-            addProductButtonState(ref as AddProductButtonStateRef, program),
-        from: addProductButtonStateProvider,
-        name: r'addProductButtonStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$addProductButtonStateHash,
-        dependencies: AddProductButtonStateFamily._dependencies,
-        allTransitiveDependencies:
-            AddProductButtonStateFamily._allTransitiveDependencies,
-        program: program,
-      );
+  AddProductButtonStateProvider(
+    Program program,
+  ) : this._internal(
+          (ref) => addProductButtonState(
+            ref as AddProductButtonStateRef,
+            program,
+          ),
+          from: addProductButtonStateProvider,
+          name: r'addProductButtonStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$addProductButtonStateHash,
+          dependencies: AddProductButtonStateFamily._dependencies,
+          allTransitiveDependencies:
+              AddProductButtonStateFamily._allTransitiveDependencies,
+          program: program,
+        );
 
   AddProductButtonStateProvider._internal(
     super._createNotifier, {
@@ -390,8 +419,6 @@ class AddProductButtonStateProvider extends AutoDisposeStreamProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin AddProductButtonStateRef on AutoDisposeStreamProviderRef<bool> {
   /// The parameter `program` of this provider.
   Program get program;
@@ -419,15 +446,21 @@ class EditProductButtonStateFamily extends Family<AsyncValue<bool>> {
   const EditProductButtonStateFamily();
 
   /// See also [editProductButtonState].
-  EditProductButtonStateProvider call(Product product) {
-    return EditProductButtonStateProvider(product);
+  EditProductButtonStateProvider call(
+    Product product,
+  ) {
+    return EditProductButtonStateProvider(
+      product,
+    );
   }
 
   @override
   EditProductButtonStateProvider getProviderOverride(
     covariant EditProductButtonStateProvider provider,
   ) {
-    return call(provider.product);
+    return call(
+      provider.product,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -448,21 +481,24 @@ class EditProductButtonStateFamily extends Family<AsyncValue<bool>> {
 /// See also [editProductButtonState].
 class EditProductButtonStateProvider extends AutoDisposeStreamProvider<bool> {
   /// See also [editProductButtonState].
-  EditProductButtonStateProvider(Product product)
-    : this._internal(
-        (ref) =>
-            editProductButtonState(ref as EditProductButtonStateRef, product),
-        from: editProductButtonStateProvider,
-        name: r'editProductButtonStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$editProductButtonStateHash,
-        dependencies: EditProductButtonStateFamily._dependencies,
-        allTransitiveDependencies:
-            EditProductButtonStateFamily._allTransitiveDependencies,
-        product: product,
-      );
+  EditProductButtonStateProvider(
+    Product product,
+  ) : this._internal(
+          (ref) => editProductButtonState(
+            ref as EditProductButtonStateRef,
+            product,
+          ),
+          from: editProductButtonStateProvider,
+          name: r'editProductButtonStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$editProductButtonStateHash,
+          dependencies: EditProductButtonStateFamily._dependencies,
+          allTransitiveDependencies:
+              EditProductButtonStateFamily._allTransitiveDependencies,
+          product: product,
+        );
 
   EditProductButtonStateProvider._internal(
     super._createNotifier, {
@@ -513,8 +549,6 @@ class EditProductButtonStateProvider extends AutoDisposeStreamProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin EditProductButtonStateRef on AutoDisposeStreamProviderRef<bool> {
   /// The parameter `product` of this provider.
   Product get product;
@@ -528,6 +562,5 @@ class _EditProductButtonStateProviderElement
   @override
   Product get product => (origin as EditProductButtonStateProvider).product;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

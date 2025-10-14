@@ -5,7 +5,6 @@ import 'package:tliny/src/data/repository/program_repository.dart';
 
 import '../../data/model/order_model.dart';
 import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../../utils/logger.dart';
 import '../common/asyncvalue_widget.dart';
 import '../common/main_body.dart';
@@ -18,17 +17,23 @@ class OrderPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
     final state = ref.watch(orderViewModelProvider);
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: Text(l10n.purchaseHistory),
+        title: Text(
+          l10n.purchaseHistory,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+        ),
         centerTitle: true,
-        elevation: 1,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black87,
+        surfaceTintColor: Colors.transparent,
       ),
       body: MainBodyWidget(
-        width: 600, // Increased width for better readability
+        width: 600,
         body: AsyncValueWidget(
           value: state,
           data: (list) {
@@ -49,30 +54,56 @@ class OrderPage extends HookConsumerWidget {
 
             return data.isNotEmpty
                 ? ListView.separated(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   itemCount: data.length,
                   separatorBuilder:
-                      (context, index) => const SizedBox(
-                        height: 16,
-                      ), // Add spacing between cards
+                      (context, index) => const SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     final order = data[index];
-                    return OrderCard(order: order);
+                    return AnimatedContainer(
+                      duration: Duration(milliseconds: 300 + (index * 100)),
+                      curve: Curves.easeOutCubic,
+                      child: OrderCard(order: order),
+                    );
                   },
                 )
                 : Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.shopping_cart_outlined,
-                        size: 64,
-                        color: Colors.grey[400],
+                      Container(
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withValues(alpha: 0.1),
+                              spreadRadius: 1,
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
                       Text(
                         l10n.noPurchaseHistory,
-                        style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '購入すると、ここに履歴が表示されます',
+                        style: TextStyle(fontSize: 14, color: Colors.grey[500]),
                       ),
                     ],
                   ),
@@ -109,11 +140,36 @@ class OrderCard extends HookConsumerWidget {
     if (order.eventId == null) {
       logger.e('OrderCard: eventIdがnullです orderId=${order.id}');
       return Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: const Padding(
-          padding: EdgeInsets.all(16),
-          child: Text('イベント情報が見つかりません', style: TextStyle(color: Colors.red)),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: Colors.red.shade200),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: LinearGradient(
+              colors: [Colors.red.shade50, Colors.red.shade100],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.red.shade400, size: 24),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'イベント情報が見つかりません',
+                  style: TextStyle(
+                    color: Colors.red.shade700,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -123,86 +179,213 @@ class OrderCard extends HookConsumerWidget {
       data: (data) {
         return data != null
             ? Card(
-              elevation: 2,
+              elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(20),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // プログラム名を表示
-                    Text(
-                      data.name.toString(),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    colors: [Colors.white, Colors.grey.shade50],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withValues(alpha: 0.08),
+                      blurRadius: 20,
+                      offset: const Offset(0, 4),
                     ),
-                    const SizedBox(height: 8),
-                    // 購入日時と金額を表示
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${l10n.date(order.purchaseTime!)} ${l10n.time(order.purchaseTime!)}',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // ヘッダー部分
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade50,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(
+                              Icons.event,
+                              color: Colors.blue.shade600,
+                              size: 24,
+                            ),
                           ),
-                        ),
-                        Text(
-                          l10n.currency(amount),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 24),
-                    // 購入した商品一覧を表示
-                    order.snapshotProducts != null &&
-                            order.snapshotProducts!.isNotEmpty
-                        ? ListView.separated(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: order.snapshotProducts!.length,
-                          separatorBuilder:
-                              (context, index) => const SizedBox(height: 8),
-                          itemBuilder: (context, index) {
-                            final product = order.snapshotProducts![index];
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // 商品名を表示
-                                  Expanded(
-                                    child: Text(
-                                      product.name.toString(),
-                                      style: const TextStyle(fontSize: 16),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.name.toString(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black87,
                                   ),
-                                  // 商品価格と数量を表示
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${l10n.date(order.purchaseTime!)} ${l10n.time(order.purchaseTime!)}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[600],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.green.shade200),
+                            ),
+                            child: Text(
+                              l10n.currency(amount),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green.shade700,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      // 商品一覧
+                      if (order.snapshotProducts != null &&
+                          order.snapshotProducts!.isNotEmpty) ...[
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade50,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.shopping_bag,
+                                    size: 20,
+                                    color: Colors.grey[600],
+                                  ),
+                                  const SizedBox(width: 8),
                                   Text(
-                                    '${l10n.currency(product.price ?? 0)} x ${product.quantity ?? 0}',
-                                    style: const TextStyle(fontSize: 16),
+                                    '購入商品',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.grey[700],
+                                    ),
                                   ),
                                 ],
                               ),
-                            );
-                          },
-                        )
-                        : const SizedBox.shrink(),
-                  ],
+                              const SizedBox(height: 12),
+                              ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: order.snapshotProducts!.length,
+                                separatorBuilder:
+                                    (context, index) =>
+                                        const SizedBox(height: 12),
+                                itemBuilder: (context, index) {
+                                  final product =
+                                      order.snapshotProducts![index];
+                                  return Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: Colors.grey.shade200,
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue.shade100,
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.inventory_2,
+                                            color: Colors.blue.shade600,
+                                            size: 20,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                product.name.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black87,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              const SizedBox(height: 4),
+                                              Text(
+                                                '${l10n.currency(product.price ?? 0)} × ${product.quantity ?? 0}',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.grey[600],
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Text(
+                                          l10n.currency(
+                                            (product.price ?? 0) *
+                                                (product.quantity ?? 0),
+                                          ),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
               ),
             )
-            : Container();
+            : const SizedBox.shrink();
       },
     );
   }

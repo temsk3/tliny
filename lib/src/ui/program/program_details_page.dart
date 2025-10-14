@@ -5,11 +5,8 @@ import 'package:tliny/src/ui/product/product_list.dart';
 
 import '../../data/model/product_model.dart';
 import '../../data/model/program_model.dart';
-import '../../settings/hooks/use_l10n.dart';
-import '../../settings/hooks/use_media_query.dart';
 import '../common/main_body.dart';
 import '../product/widget/product_button.dart';
-import 'program_view_model.dart';
 import 'widget/program_button.dart';
 
 // final logger = Logger();
@@ -21,12 +18,12 @@ class ProgramDetailsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final theme = ref.watch(appThemeProvider);
-    final l10n = useL10n();
-    final appMediaQuery = useMediaQuery();
+    // // final theme = ref.watch(appThemeProvider);
+    // final l10n = useL10n();
+    // // final appMediaQuery = useMediaQuery();
     // final state = ref.watch(programStateProvider(program.id.toString()));
     // final state = ref.watch(programViewModelProvider);
-    final viewModel = ref.watch(programViewModelProvider.notifier);
+    // final viewModel = ref.watch(programViewModelProvider.notifier);
     // final asyncValue = ref.watch(productListStreamProvider);
 
     // final DateFormat dateFormatter =
@@ -36,7 +33,7 @@ class ProgramDetailsPage extends HookConsumerWidget {
     // final supported = ref.watch(supporterListStreamProvider(bazaar.id));
     // final owner = useState<bool>(ref.watch(editProgramButtonStateProvider(program)));
     // final supporter = useState<bool>(false);
-    // final authState = ref.watch(authStateProvider);
+    // // final authState = ref.watch(authStateProvider);
     // authState.whenData(
     //   (data) {
     //     if (data != null) {
@@ -60,12 +57,6 @@ class ProgramDetailsPage extends HookConsumerWidget {
     //     }
     //   },
     // );
-    const boxShadow = BoxShadow(
-      // color: Color.fromARGB(255, 0, 0, 0),
-      blurRadius: 10,
-      spreadRadius: 30,
-      blurStyle: BlurStyle.solid,
-    );
 
     // return AsyncValueWidget(
     //   value: state,

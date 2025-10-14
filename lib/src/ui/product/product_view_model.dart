@@ -41,11 +41,7 @@ class ProductViewModel extends _$ProductViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readProductDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -79,19 +75,26 @@ class ProductViewModel extends _$ProductViewModel {
   Future<void> addProduct(Program program, Product product) async {
     logger.d('addProduct');
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
 
+    // ユーザーIDを取得して検証
+    final uid = await ref.read(userIdProvider.future);
     if (uid == null) {
       throw const AuthenticationException(message: 'ユーザーが認証されていません');
     }
 
-    // スタッフかどうかをチェック
+    // スタッフまたは開催者かどうかをチェック
+    if (program.id == null) {
+      throw const GeneralException(message: 'プログラムIDが無効です');
+    }
     final isStaff = await staffRepository.checkExistenceStaff(program.id!, uid);
+    final isOrganizer = uid == program.organizerId;
+    if (!isStaff && !isOrganizer) {
+      throw const GeneralException(message: 'スタッフまたは開催者のみ商品登録が可能です');
+    }
 
-    // 商品の金額は50円以上で設定する
-    if (product.price < 50) {
-      throw const GeneralException(message: '商品の金額は¥50以上で設定してください');
+    // Stripe登録判定を廃止し、金額バリデーションは「0円または50円以上」のみ
+    if (!(product.price == 0 || product.price >= 50)) {
+      throw const GeneralException(message: '商品の金額は0円または¥50以上で設定してください');
     }
 
     final data = product.copyWith(
@@ -127,22 +130,29 @@ class ProductViewModel extends _$ProductViewModel {
   Future<void> updateProduct(Product data) async {
     logger.d('updatedProduct');
     final loading = ref.read(globalLoadingControllerProvider.notifier);
-    final uidAsyncValue = ref.watch(userIdProvider);
-    final uid = uidAsyncValue.value;
 
+    // ユーザーIDを取得して検証
+    final uid = await ref.read(userIdProvider.future);
     if (uid == null) {
       throw const AuthenticationException(message: 'ユーザーが認証されていません');
     }
 
-    // スタッフかどうかをチェック
+    // スタッフまたは開催者かどうかをチェック
+    if (data.eventId == null) {
+      throw const GeneralException(message: 'イベントIDが無効です');
+    }
     final isStaff = await staffRepository.checkExistenceStaff(
       data.eventId!,
       uid,
     );
+    final isOrganizer = uid == data.organizerId;
+    if (!isStaff && !isOrganizer) {
+      throw const GeneralException(message: 'スタッフまたは開催者のみ商品登録が可能です');
+    }
 
-    // 商品の金額は50円以上で設定する
-    if (data.price < 50) {
-      throw const GeneralException(message: '商品の金額は¥50以上で設定してください');
+    // Stripe登録判定を廃止し、金額バリデーションは「0円または50円以上」のみ
+    if (!(data.price == 0 || data.price >= 50)) {
+      throw const GeneralException(message: '商品の金額は0円または¥50以上で設定してください');
     }
 
     state = const AsyncLoading();
@@ -151,7 +161,7 @@ class ProductViewModel extends _$ProductViewModel {
         return productRepository.updateProduct(data);
       });
       final updatedProducts = [
-        for (final product in state.value!)
+        for (final product in (state.value ?? <Product>[]))
           if (product.id == id) data else product,
       ];
       state = AsyncValue.data(updatedProducts);
@@ -174,6 +184,13 @@ class ProductViewModel extends _$ProductViewModel {
   Future<void> deleteProduct(String id) async {
     logger.d('deleteProduct');
     final loading = ref.read(globalLoadingControllerProvider.notifier);
+
+    // ユーザーIDを取得して検証
+    final uid = await ref.read(userIdProvider.future);
+    if (uid == null) {
+      throw const AuthenticationException(message: 'ユーザーが認証されていません');
+    }
+
     state = const AsyncLoading();
     try {
       await loading.guardFuture(() async {

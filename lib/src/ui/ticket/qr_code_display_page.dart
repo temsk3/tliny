@@ -15,17 +15,21 @@ class QRCodeDisplayPage extends HookConsumerWidget {
     final tickets = ref.watch(ticketsStateProvider);
     final viewModel = ref.read(ticketListViewModelProvider.notifier);
     final selectedTickets = tickets.whenOrNull(
-      data: (tickets) => tickets
-          .where(
-            (ticket) => viewModel.getSelectedTicketIds().contains(ticket.id),
-          )
-          .toList(),
+      data:
+          (tickets) =>
+              tickets
+                  .where(
+                    (ticket) =>
+                        viewModel.getSelectedTicketIds().contains(ticket.id),
+                  )
+                  .toList(),
     );
 
     final userId = viewModel.getUserId();
-    final eventId = selectedTickets?.isNotEmpty == true
-        ? selectedTickets!.first.eventId
-        : null;
+    final eventId =
+        selectedTickets?.isNotEmpty == true
+            ? selectedTickets!.first.eventId
+            : null;
 
     if (eventId == null || userId == null || selectedTickets == null) {
       return Scaffold(
@@ -60,12 +64,13 @@ class QRCodeDisplayPage extends HookConsumerWidget {
                       final ticket = selectedTickets[index];
                       return ListTile(
                         title: Text(ticket.name!),
-                        leading: ticket.isUsed
-                            ? const Icon(
-                                Icons.check_circle_outlined,
-                                color: Colors.green,
-                              )
-                            : null,
+                        leading:
+                            ticket.isUsed
+                                ? const Icon(
+                                  Icons.check_circle_outlined,
+                                  color: Colors.green,
+                                )
+                                : null,
                       );
                     },
                   ),

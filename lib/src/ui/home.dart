@@ -11,7 +11,7 @@ import '../utils/logger.dart';
 import '../utils/router_utils.dart';
 import 'drawer/drawer.dart';
 
-enum PageIndex { top, cart, ticket }
+enum PageIndex { top, cart, ticket, sns }
 
 class HomePage extends HookConsumerWidget {
   const HomePage({super.key, required this.navigationShell});
@@ -40,9 +40,10 @@ class HomePage extends HookConsumerWidget {
   }
 
   AppBar _appBar(BuildContext context) {
+    final l10n = useL10n();
     return AppBar(
       leading: _showLeading(context) ? _leadButton(context) : null,
-      title: const Text('TLINY'),
+      title: Text(l10n.appTitle),
       actions: const [
         // テストページへのアクセスボタン（開発時のみ表示）
         // if (kDebugMode)
@@ -69,6 +70,7 @@ class HomePage extends HookConsumerWidget {
       AppRoutes.topPage,
       AppRoutes.cartPage,
       AppRoutes.ticketPage,
+      AppRoutes.snsPage,
     ].contains(GoRouterState.of(context).uri.toString());
   }
 
@@ -107,6 +109,12 @@ class HomePage extends HookConsumerWidget {
           icon: const FaIcon(FontAwesomeIcons.ticket),
           label: l10n.ticket,
           activeIcon: const FaIcon(FontAwesomeIcons.ticketSimple),
+        ),
+        // SNS
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.people_outline),
+          label: 'SNS',
+          activeIcon: const Icon(Icons.people),
         ),
       ],
       onTap: (int index) {

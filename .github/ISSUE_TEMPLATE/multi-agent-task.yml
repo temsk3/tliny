@@ -1,0 +1,119 @@
+name: Multi-Agent Collaborative Task
+description: Create a task that requires multiple specialized agents to work together
+title: "[MULTI-AGENT] "
+labels: ["multi-agent", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Multi-Agent Task Request
+        This template triggers automatic collaboration between specialized AI agents.
+
+        Available agents:
+        - 🔥 **firebase-functions-developer**: Cloud Functions, webhooks, APIs
+        - 🎨 **flutter-ui-builder**: UI components, screens, widgets
+        - 🔄 **riverpod-state-manager**: State management, providers
+        - 💳 **stripe-payment-integrator**: Payment processing, billing
+        - 🧪 **test-automation-engineer**: Testing, quality assurance
+        - 📊 **firestore-optimizer**: Database optimization, queries
+        - ⚡ **performance-optimizer**: Performance, optimization
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature/Task Description
+      description: Describe what you want to implement or fix
+      placeholder: |
+        Example: Implement a new subscription billing feature that allows users to upgrade their plans with automatic prorated billing.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: required-agents
+    attributes:
+      label: Required Agents (Auto-detected, but you can specify)
+      description: Which specialized agents should work on this task?
+      options:
+        - label: Firebase Functions Developer (Backend APIs, webhooks)
+        - label: Flutter UI Builder (User interface, screens)
+        - label: Riverpod State Manager (State management)
+        - label: Stripe Payment Integrator (Payment processing)
+        - label: Test Automation Engineer (Testing)
+        - label: Firestore Optimizer (Database optimization)
+        - label: Performance Optimizer (Performance tuning)
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How urgent is this task?
+      options:
+        - Low (Can wait)
+        - Medium (Important)
+        - High (Urgent)
+        - Critical (Blocking)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Estimated Complexity
+      description: How complex do you think this task is?
+      options:
+        - Simple (Few components affected)
+        - Medium (Multiple components, some integration)
+        - Complex (Many components, significant integration)
+        - Very Complex (Major architectural changes)
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions must be met for this to be considered complete?
+      placeholder: |
+        - [ ] Users can select a new subscription plan
+        - [ ] Payment is processed with prorated billing
+        - [ ] UI updates to reflect new plan
+        - [ ] All tests pass
+        - [ ] Documentation is updated
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-requirements
+    attributes:
+      label: Technical Requirements
+      description: Any specific technical constraints or requirements?
+      placeholder: |
+        - Must integrate with existing Stripe setup
+        - Should follow current UI/UX patterns
+        - Needs comprehensive error handling
+        - Must be mobile-responsive
+
+  - type: textarea
+    id: related-issues
+    attributes:
+      label: Related Issues/PRs
+      description: Link any related issues or pull requests
+      placeholder: |
+        - Relates to #123
+        - Blocked by #456
+        - Depends on #789
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## What happens next?
+
+        1. 🤖 **Conductor Agent** will analyze this issue and create a project plan
+        2. 🔄 **Specialized agents** will be automatically assigned based on requirements
+        3. 👥 **Agents collaborate** to implement the feature with proper coordination
+        4. ✅ **Integration testing** and review will be performed automatically
+        5. 📋 **Pull request** will be created with all changes consolidated
+
+        The entire process is automated - just create this issue and watch the agents work together!

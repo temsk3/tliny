@@ -1,0 +1,171 @@
+name: Release Management
+
+# タグがプッシュされた際に実行
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  # リリース前のチェック
+  pre_release_check:
+    name: Pre-release Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.32.8'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Install Functions dependencies
+        working-directory: functions
+        run: npm ci
+
+      - name: Run all tests
+        run: flutter test
+
+      - name: Build Flutter Web
+        run: flutter build web --release
+
+      - name: Build Functions
+        working-directory: functions
+        run: npm run build
+
+  # リリースの作成
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: pre_release_check
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # 前回のタグから現在のタグまでのコミットを取得
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          else
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          fi
+
+          if [ -n "$PREVIOUS_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREVIOUS_TAG..HEAD)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --max-count=20)
+          fi
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          body: |
+            ## Changes in this Release
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## Build Information
+            - Flutter Version: 3.32.8
+            - Node.js Version: 20
+            - Build Date: ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+  # デプロイメント
+  deploy_release:
+    name: Deploy Release
+    runs-on: ubuntu-latest
+    needs: create_release
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.32.8'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Install Functions dependencies
+        working-directory: functions
+        run: npm ci
+
+      - name: Build Flutter Web
+        run: flutter build web --release --target lib/main.dart
+
+      - name: Build Functions
+        working-directory: functions
+        run: npm run build
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TLINY_58DE7 }}'
+          channelId: live
+          projectId: tliny-58de7
+
+      - name: Deploy Firebase Functions
+        run: |
+          cd functions
+          npm ci
+          npm run build
+          firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Update deployment status
+        run: |
+          echo "Release ${{ steps.version.outputs.version }} deployed successfully!"
+          echo "Flutter App: https://tliny-58de7.web.app"
+          echo "Functions: Deployed to Firebase Functions"

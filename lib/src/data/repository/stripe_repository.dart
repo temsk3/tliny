@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
 import '../general_provider.dart';
+import 'base_repository.dart';
 
 part 'stripe_repository.g.dart';
 
@@ -18,37 +19,13 @@ StripeRepository stripeRepository(Ref ref) {
   );
 }
 
-class StripeRepository {
+class StripeRepository extends BaseRepository {
   StripeRepository(this._func, this._db);
   final FirebaseFunctions _func;
   final FirebaseFirestore _db;
 
-  /// Cloud Functions を呼び出すためのヘルパー関数
-  Future<T?> _call<T>(String name, Map<dynamic, dynamic> params) async {
-    logger.i('Service._call start - function: $name, params: $params');
-    final callable = _func.httpsCallable(name);
-    try {
-      final result = await callable.call<T>(params);
-      logger.i('Service._call success - function: $name, result: $result');
-      return result.data;
-    } on FirebaseFunctionsException catch (e, st) {
-      logger.e(
-        'Service._call Error: FirebaseFunctionsException - function: $name, params: $params',
-        time: DateTime.now(),
-        error: e,
-        stackTrace: st,
-      );
-      return Future.error(e, st);
-    } on Exception catch (e, st) {
-      logger.e(
-        'Service._call Error: Exception - function: $name, params: $params',
-        time: DateTime.now(),
-        error: e,
-        stackTrace: st,
-      );
-      return Future.error(e, st);
-    }
-  }
+  @override
+  FirebaseFunctions getFunctions() => _func;
 
   // checkout
   /// チェックアウトセッションを作成する
@@ -62,9 +39,10 @@ class StripeRepository {
       };
       logger.i('paymentCheckoutSession params: $params');
 
-      final response = await _call<Map<String, dynamic>>(
+      final response = await callFunction<Map<String, dynamic>>(
         'v2_payment_checkout_createPaymentSession',
         params,
+        context: 'paymentCheckoutSession',
       );
 
       logger.i('paymentCheckoutSession response: $response');
@@ -94,9 +72,10 @@ class StripeRepository {
       final params = {'checkoutSessionId': sessionId, 'accountId': accountId};
       logger.i('retrieveCheckoutSession params: $params');
 
-      final checkoutSession = await _call<Map<String, dynamic>>(
+      final checkoutSession = await callFunction<Map<String, dynamic>>(
         'v2_payment_checkout_retrieveSession',
         params,
+        context: 'retrieveCheckoutSession',
       );
 
       logger.i('retrieveCheckoutSession response: $checkoutSession');
@@ -118,9 +97,9 @@ class StripeRepository {
   Future<void> cancelOrder(String orderId) async {
     logger.d('cancelOrder: orderId=$orderId');
     try {
-      await _call<void>('v2_payment_checkout_cancelOrder', {
+      await callFunction<void>('v2_payment_checkout_cancelOrder', {
         'orderId': orderId,
-      });
+      }, context: 'cancelOrder');
     } on Exception catch (e, st) {
       logger.e(
         'order cancel Error',
@@ -144,9 +123,10 @@ class StripeRepository {
         'refreshUrl': dotenv.get('ACCOUNT_REFRESH_URL'),
         'returnUrl': dotenv.get('ACCOUNT_RETURN_URL'),
       };
-      final response = await _call<Map<String, dynamic>>(
+      final response = await callFunction<Map<String, dynamic>>(
         'v2_payment_account_onCreateAccountLink',
         params,
+        context: 'getAccountLink',
       );
       final accountLink = response!['accountUrl'].toString();
       return accountLink;
@@ -168,13 +148,12 @@ class StripeRepository {
   ) async {
     logger.d('getSettlement: uid=$uid, sessionId=$sessionId');
     try {
-      final docRef =
-          await _db
-              .collection('users')
-              .doc(uid)
-              .collection('settlement')
-              .doc(sessionId)
-              .get();
+      final docRef = await _db
+          .collection('v/1/users') // パスを統一
+          .doc(uid)
+          .collection('settlement')
+          .doc(sessionId)
+          .get();
 
       if (!docRef.exists) {
         throw Exception(
@@ -207,9 +186,10 @@ class StripeRepository {
     try {
       logger.i('createLoginLink');
 
-      final response = await _call<Map<String, dynamic>>(
+      final response = await callFunction<Map<String, dynamic>>(
         'v2_payment_account_onCreateLoginLink',
         {},
+        context: 'createLoginLink',
       );
       final loginUrl = response!['loginUrl'].toString();
       return loginUrl;

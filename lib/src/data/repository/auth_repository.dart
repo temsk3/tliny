@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../utils/logger.dart';
@@ -30,16 +30,13 @@ Stream<String?> userId(Ref ref) {
 }
 
 class AuthRepository {
-  AuthRepository(this._auth);
+  AuthRepository(this._auth) {
+    _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
+  }
   final FirebaseAuth _auth;
 
   // GoogleSignInの設定を修正
-  final _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-    // iOSプラットフォームでの問題を解決するための設定
-    clientId:
-        '736590453040-2fpunln7gljjoaviks28upfq138bn7g1.apps.googleusercontent.com',
-  );
+  late final GoogleSignIn _googleSignIn;
 
   /// 認証状態の変化を監視するストリーム
   Stream<bool> get authStateChanges =>
@@ -65,14 +62,23 @@ class AuthRepository {
   Future<void> _waitForUserDataCreation(String uid) async {
     logger.i('_waitForUserDataCreation: ユーザーデータ作成を待機中... uid=$uid');
 
+    // テスト環境ではスキップ
+    if (kDebugMode && !kIsWeb) {
+      logger.i('_waitForUserDataCreation: テスト環境のためスキップ');
+      return;
+    }
+
     // 最大10秒間、ユーザーデータの作成を待機
-    int retryCount = 0;
+    var retryCount = 0;
     const maxRetries = 20; // 500ms × 20 = 10秒
 
     while (retryCount < maxRetries) {
       try {
-        final userDoc =
-            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        // Cloud Functionsが作成するパスに合わせて修正
+        final userDoc = await FirebaseFirestore.instance
+            .collection('v/1/users')
+            .doc(uid)
+            .get();
 
         if (userDoc.exists) {
           logger.i('_waitForUserDataCreation: ユーザーデータ作成完了');
@@ -233,8 +239,9 @@ class AuthRepository {
       logger.i('signInWithEmail: サインイン成功');
     } on FirebaseAuthException catch (e) {
       logger.e('signInWithEmail: サインイン失敗', error: e);
-      throw GeneralException(
+      throw AuthenticationException(
         message: convertAuthError(e.code),
+        code: e.code,
         stackTrace: e.stackTrace,
       );
     }
@@ -248,8 +255,9 @@ class AuthRepository {
       logger.i('sendPasswordResetEmail: パスワードリセットメール送信成功');
     } on FirebaseAuthException catch (e) {
       logger.e('sendPasswordResetEmail: パスワードリセットメール送信失敗', error: e);
-      throw GeneralException(
+      throw AuthenticationException(
         message: convertAuthError(e.code),
+        code: e.code,
         stackTrace: e.stackTrace,
       );
     }
@@ -313,13 +321,24 @@ class AuthRepository {
   }
 
   /// ユーザーの表示名を更新する
-  void updateDisplayName(String? displayName) {
+  Future<void> updateDisplayName(String? displayName) async {
     logger.i('updateDisplayName: ユーザーの表示名を更新します');
     try {
-      if (_auth.currentUser!.displayName != displayName ||
-          _auth.currentUser!.displayName != null) {
-        _auth.currentUser!.updateDisplayName(displayName);
+      final currentUser = _auth.currentUser;
+      if (currentUser == null) {
+        throw GeneralException(
+          message: 'ユーザーが認証されていません',
+          stackTrace: StackTrace.current,
+        );
+      }
+
+      // 現在のdisplayNameと新しいdisplayNameを比較
+      final currentDisplayName = currentUser.displayName;
+      if (currentDisplayName != displayName) {
+        await currentUser.updateDisplayName(displayName);
         logger.i('updateDisplayName: ユーザーの表示名更新成功');
+      } else {
+        logger.i('updateDisplayName: 表示名が同じため更新をスキップ');
       }
     } on FirebaseAuthException catch (e) {
       logger.e('updateDisplayName: ユーザーの表示名更新失敗', error: e);
@@ -373,11 +392,11 @@ class AuthRepository {
   }
 
   /// ユーザーのプロフィール画像のURLを更新する
-  void updatePhotoUrl(String? photoUrl) {
+  Future<void> updatePhotoUrl(String? photoUrl) async {
     logger.i('updatePhotoUrl: ユーザーのプロフィール画像のURLを更新します');
     try {
       if (photoUrl != null) {
-        _auth.currentUser!.updatePhotoURL(photoUrl);
+        await _auth.currentUser!.updatePhotoURL(photoUrl);
         logger.i('updatePhotoUrl: ユーザーのプロフィール画像のURL更新成功');
       }
     } on FirebaseAuthException catch (e) {
@@ -394,18 +413,30 @@ class AuthRepository {
 String convertAuthError(String errorCode) {
   switch (errorCode) {
     case 'invalid-email':
-      return 'メールアドレスを正しい形式で入力してください';
+      return 'メールアドレスの形式が正しくありません。正しいメールアドレスを入力してください。';
     case 'wrong-password':
-      return 'パスワードが間違っています';
+      return 'パスワードが間違っています。正しいパスワードを入力してください。';
     case 'user-not-found':
-      return 'ユーザーが見つかりません';
+      return 'このメールアドレスで登録されたユーザーが見つかりません。メールアドレスを確認するか、新規登録してください。';
     case 'weak-password':
-      return 'パスワードは6文字以上で入力してください';
+      return 'パスワードが弱すぎます。6文字以上のパスワードを設定してください。';
     case 'user-disabled':
-      return 'ユーザーが無効です';
+      return 'このアカウントは無効になっています。管理者にお問い合わせください。';
     case 'email-already-in-use':
-      return 'このメールアドレスは既に登録されています';
+      return 'このメールアドレスは既に使用されています。別のメールアドレスを使用するか、ログインしてください。';
+    case 'too-many-requests':
+      return '試行回数が多すぎます。しばらく時間をおいてから再度お試しください。';
+    case 'operation-not-allowed':
+      return 'この操作は許可されていません。管理者にお問い合わせください。';
+    case 'network-request-failed':
+      return 'ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。';
+    case 'invalid-credential':
+      return '認証情報が無効です。メールアドレスとパスワードを確認してください。';
+    case 'account-exists-with-different-credential':
+      return 'このメールアドレスは別の認証方法で既に登録されています。';
+    case 'requires-recent-login':
+      return 'セキュリティのため、再度ログインしてください。';
     default:
-      return '不明なエラーです';
+      return '認証エラーが発生しました。しばらく時間をおいてから再度お試しください。';
   }
 }

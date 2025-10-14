@@ -15,16 +15,13 @@ String _$productRepositoryHash() => r'93a29e114c0f2197ebcbb1c29ac3b96cb0c786de';
 final productRepositoryProvider = Provider<ProductRepository>.internal(
   productRepository,
   name: r'productRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$productRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$productRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef ProductRepositoryRef = ProviderRef<ProductRepository>;
 String _$productsStreamHash() => r'08fe08fdfd972bff22f4f3afe02e5a125565997d';
 
@@ -32,18 +29,15 @@ String _$productsStreamHash() => r'08fe08fdfd972bff22f4f3afe02e5a125565997d';
 @ProviderFor(productsStream)
 final productsStreamProvider =
     AutoDisposeStreamProvider<List<Product>>.internal(
-      productsStream,
-      name: r'productsStreamProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$productsStreamHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  productsStream,
+  name: r'productsStreamProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$productsStreamHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef ProductsStreamRef = AutoDisposeStreamProviderRef<List<Product>>;
 String _$productDocStreamHash() => r'9f94bca57ae5fd3b1e880d3960de84216a464585';
 
@@ -78,15 +72,21 @@ class ProductDocStreamFamily extends Family<AsyncValue<Product>> {
   const ProductDocStreamFamily();
 
   /// See also [productDocStream].
-  ProductDocStreamProvider call(DocumentReference<Product> productDocRef) {
-    return ProductDocStreamProvider(productDocRef);
+  ProductDocStreamProvider call(
+    DocumentReference<Product> productDocRef,
+  ) {
+    return ProductDocStreamProvider(
+      productDocRef,
+    );
   }
 
   @override
   ProductDocStreamProvider getProviderOverride(
     covariant ProductDocStreamProvider provider,
   ) {
-    return call(provider.productDocRef);
+    return call(
+      provider.productDocRef,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -107,20 +107,24 @@ class ProductDocStreamFamily extends Family<AsyncValue<Product>> {
 /// See also [productDocStream].
 class ProductDocStreamProvider extends AutoDisposeStreamProvider<Product> {
   /// See also [productDocStream].
-  ProductDocStreamProvider(DocumentReference<Product> productDocRef)
-    : this._internal(
-        (ref) => productDocStream(ref as ProductDocStreamRef, productDocRef),
-        from: productDocStreamProvider,
-        name: r'productDocStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productDocStreamHash,
-        dependencies: ProductDocStreamFamily._dependencies,
-        allTransitiveDependencies:
-            ProductDocStreamFamily._allTransitiveDependencies,
-        productDocRef: productDocRef,
-      );
+  ProductDocStreamProvider(
+    DocumentReference<Product> productDocRef,
+  ) : this._internal(
+          (ref) => productDocStream(
+            ref as ProductDocStreamRef,
+            productDocRef,
+          ),
+          from: productDocStreamProvider,
+          name: r'productDocStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productDocStreamHash,
+          dependencies: ProductDocStreamFamily._dependencies,
+          allTransitiveDependencies:
+              ProductDocStreamFamily._allTransitiveDependencies,
+          productDocRef: productDocRef,
+        );
 
   ProductDocStreamProvider._internal(
     super._createNotifier, {
@@ -172,16 +176,13 @@ class ProductDocStreamProvider extends AutoDisposeStreamProvider<Product> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductDocStreamRef on AutoDisposeStreamProviderRef<Product> {
   /// The parameter `productDocRef` of this provider.
   DocumentReference<Product> get productDocRef;
 }
 
 class _ProductDocStreamProviderElement
-    extends AutoDisposeStreamProviderElement<Product>
-    with ProductDocStreamRef {
+    extends AutoDisposeStreamProviderElement<Product> with ProductDocStreamRef {
   _ProductDocStreamProviderElement(super.provider);
 
   @override
@@ -201,15 +202,21 @@ class ProductStreamFamily extends Family<AsyncValue<Product>> {
   const ProductStreamFamily();
 
   /// See also [productStream].
-  ProductStreamProvider call(String productId) {
-    return ProductStreamProvider(productId);
+  ProductStreamProvider call(
+    String productId,
+  ) {
+    return ProductStreamProvider(
+      productId,
+    );
   }
 
   @override
   ProductStreamProvider getProviderOverride(
     covariant ProductStreamProvider provider,
   ) {
-    return call(provider.productId);
+    return call(
+      provider.productId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -230,20 +237,24 @@ class ProductStreamFamily extends Family<AsyncValue<Product>> {
 /// See also [productStream].
 class ProductStreamProvider extends AutoDisposeStreamProvider<Product> {
   /// See also [productStream].
-  ProductStreamProvider(String productId)
-    : this._internal(
-        (ref) => productStream(ref as ProductStreamRef, productId),
-        from: productStreamProvider,
-        name: r'productStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productStreamHash,
-        dependencies: ProductStreamFamily._dependencies,
-        allTransitiveDependencies:
-            ProductStreamFamily._allTransitiveDependencies,
-        productId: productId,
-      );
+  ProductStreamProvider(
+    String productId,
+  ) : this._internal(
+          (ref) => productStream(
+            ref as ProductStreamRef,
+            productId,
+          ),
+          from: productStreamProvider,
+          name: r'productStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productStreamHash,
+          dependencies: ProductStreamFamily._dependencies,
+          allTransitiveDependencies:
+              ProductStreamFamily._allTransitiveDependencies,
+          productId: productId,
+        );
 
   ProductStreamProvider._internal(
     super._createNotifier, {
@@ -294,21 +305,17 @@ class ProductStreamProvider extends AutoDisposeStreamProvider<Product> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductStreamRef on AutoDisposeStreamProviderRef<Product> {
   /// The parameter `productId` of this provider.
   String get productId;
 }
 
 class _ProductStreamProviderElement
-    extends AutoDisposeStreamProviderElement<Product>
-    with ProductStreamRef {
+    extends AutoDisposeStreamProviderElement<Product> with ProductStreamRef {
   _ProductStreamProviderElement(super.provider);
 
   @override
   String get productId => (origin as ProductStreamProvider).productId;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

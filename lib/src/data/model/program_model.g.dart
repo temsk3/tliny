@@ -20,8 +20,7 @@ _$ProgramImpl _$$ProgramImplFromJson(Map<String, dynamic> json) =>
       eventTo: dateFromTimestampValue(json['eventTo']),
       place: json['place'] as String?,
       storageId: json['storageId'] as String?,
-      pictureURL:
-          (json['pictureURL'] as List<dynamic>?)
+      pictureURL: (json['pictureURL'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
           const [],
@@ -30,15 +29,15 @@ _$ProgramImpl _$$ProgramImplFromJson(Map<String, dynamic> json) =>
       deletedAt: dateFromTimestampValue(json['deletedAt']),
       isActive: json['isActive'] as bool?,
       isPublish: json['isPublish'] as bool?,
+      isSecret: json['isSecret'] as bool? ?? false,
+      secretUrl: json['secretUrl'] as String?,
       staffCode: json['staffCode'] as String?,
-      staff:
-          (json['staff'] as List<dynamic>?)
-              ?.map((e) => Staff.fromJson(e as Map<String, dynamic>))
-              .toList(),
-      product:
-          (json['product'] as List<dynamic>?)
-              ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
-              .toList(),
+      staff: (json['staff'] as List<dynamic>?)
+          ?.map((e) => Staff.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      product: (json['product'] as List<dynamic>?)
+          ?.map((e) => Product.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$ProgramImplToJson(_$ProgramImpl instance) =>
@@ -59,6 +58,8 @@ Map<String, dynamic> _$$ProgramImplToJson(_$ProgramImpl instance) =>
       'deletedAt': timestampFromDateValue(instance.deletedAt),
       'isActive': instance.isActive,
       'isPublish': instance.isPublish,
+      'isSecret': instance.isSecret,
+      'secretUrl': instance.secretUrl,
       'staffCode': instance.staffCode,
       'staff': instance.staff,
       'product': instance.product,

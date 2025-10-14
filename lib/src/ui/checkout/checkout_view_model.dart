@@ -7,11 +7,20 @@ import 'package:tliny/l10n/app_localizations.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../data/model/cart_model.dart';
 import '../../data/model/exception/app_exception.dart';
+import '../../data/model/order_model.dart';
+import '../../data/model/product_model.dart';
+import '../../data/model/program_model.dart';
+import '../../data/model/ticket_model.dart';
 import '../../data/repository/auth_repository.dart';
+import '../../data/repository/order_repository.dart';
+import '../../data/repository/product_repository.dart';
 import '../../data/repository/stripe_repository.dart';
+import '../../data/repository/ticket_repository.dart';
 import '../../settings/routes/routes.dart';
 import '../../utils/logger.dart';
+import '../cart/cart_view_model.dart';
 import '../common/error_handler.dart';
 import '../common/loading_screen.dart';
 
@@ -45,11 +54,7 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('openUrl: error=$e, stackTrace=$st', time: DateTime.now());
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -108,6 +113,18 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
         'getCheckoutPaymentLink: AppException - ${e.message}',
         stackTrace: st,
       );
+
+      // エラーをアラートダイアログで表示
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: 'getCheckoutPaymentLink',
+          onRetry: () => getCheckoutPaymentLink(context, eventId),
+        );
+      }
       return false;
     } on Exception catch (e, st) {
       logger.e(
@@ -118,6 +135,18 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
         message: e.toString(),
         stackTrace: st,
       );
+
+      // エラーをアラートダイアログで表示
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showError(
+          context,
+          appException,
+          l10n,
+          errorContext: 'getCheckoutPaymentLink',
+          onRetry: () => getCheckoutPaymentLink(context, eventId),
+        );
+      }
       return false;
     }
   }
@@ -154,7 +183,11 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
             time: DateTime.now(),
           );
           // await appRoute.replace(CheckoutSuccessRoute(sessionId: sessionId));
-          context.go('${AppRoutes.checkoutSuccessPage}?session_id=$sessionId');
+          if (context.mounted) {
+            context.go(
+              '${AppRoutes.checkoutSuccessPage}?session_id=$sessionId',
+            );
+          }
           // リスナーを解除
           await subscription.cancel();
           // 3 秒間待機
@@ -168,6 +201,25 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
           'paymentWithBrowser: AppException - ${e.message}',
           stackTrace: st,
         );
+
+        // エラーをアラートダイアログで表示
+        if (context.mounted) {
+          final l10n = AppLocalizations.of(context)!;
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: 'paymentWithBrowser',
+            onRetry:
+                () => paymentWithBrowser(
+                  context,
+                  url,
+                  sessionId,
+                  accountId,
+                  orderId,
+                ),
+          );
+        }
         completer.completeError(e);
       } on Exception catch (e, st) {
         logger.e('paymentWithBrowser: Exception - $e', stackTrace: st);
@@ -175,6 +227,25 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
           message: e.toString(),
           stackTrace: st,
         );
+
+        // エラーをアラートダイアログで表示
+        if (context.mounted) {
+          final l10n = AppLocalizations.of(context)!;
+          ErrorHandler.showError(
+            context,
+            appException,
+            l10n,
+            errorContext: 'paymentWithBrowser',
+            onRetry:
+                () => paymentWithBrowser(
+                  context,
+                  url,
+                  sessionId,
+                  accountId,
+                  orderId,
+                ),
+          );
+        }
         completer.completeError(appException);
       }
     });
@@ -213,9 +284,11 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
                       // ローディングを明示的に解除
                       loading.stopLoading();
                       // チェックアウトキャンセル画面へ遷移
-                      context.go(
-                        '${AppRoutes.checkoutCancelPage}?session_id=$sessionId',
-                      );
+                      if (context.mounted) {
+                        context.go(
+                          '${AppRoutes.checkoutCancelPage}?session_id=$sessionId',
+                        );
+                      }
                       await subscription.cancel();
                       completer.complete(
                         await stripeRepository.retrieveCheckoutSession(
@@ -266,7 +339,60 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
     }
 
     // Completer の Future を返す
-    return completer.future;
+    try {
+      return await completer.future;
+    } on AppException catch (e, st) {
+      logger.e(
+        'paymentWithBrowser: Completer AppException - ${e.message}',
+        stackTrace: st,
+      );
+
+      // エラーをアラートダイアログで表示
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: 'paymentWithBrowser_completer',
+          onRetry:
+              () => paymentWithBrowser(
+                context,
+                url,
+                sessionId,
+                accountId,
+                orderId,
+              ),
+        );
+      }
+      rethrow;
+    } on Exception catch (e, st) {
+      logger.e('paymentWithBrowser: Completer Exception - $e', stackTrace: st);
+      final appException = GeneralException(
+        message: e.toString(),
+        stackTrace: st,
+      );
+
+      // エラーをアラートダイアログで表示
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showError(
+          context,
+          appException,
+          l10n,
+          errorContext: 'paymentWithBrowser_completer',
+          onRetry:
+              () => paymentWithBrowser(
+                context,
+                url,
+                sessionId,
+                accountId,
+                orderId,
+              ),
+        );
+      }
+      rethrow;
+    }
   }
 
   /// チェックアウトセッションをキャンセルする
@@ -299,6 +425,9 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
         await stripeRepository.cancelOrder(orderId);
       });
 
+      // チェックアウトセッションの状態をクリア
+      await clearCheckoutSessionState(sessionId);
+
       logger.d('cancelCheckout: completed successfully', time: DateTime.now());
     } on AppException catch (e, st) {
       logger.e('cancelCheckout: AppException - ${e.message}', stackTrace: st);
@@ -311,6 +440,142 @@ class StripeCheckoutViewModel extends _$StripeCheckoutViewModel {
       );
       // エラーが発生しても処理を継続（ローディングは自動で解除される）
       // エラーは上位でハンドリングされるため、ここではrethrowしない
+    }
+  }
+
+  /// チェックアウトセッションの状態をクリア
+  Future<void> clearCheckoutSessionState(String sessionId) async {
+    try {
+      // 現在のチェックアウトセッションの状態をリセット
+      state = const AsyncValue.data(null);
+
+      logger.d('Checkout session state cleared', time: DateTime.now());
+    } catch (e, st) {
+      logger.e(
+        'Failed to clear checkout session state',
+        error: e,
+        stackTrace: st,
+        time: DateTime.now(),
+      );
+    }
+  }
+
+  /// 0円購入時の注文・チケット発行処理
+  Future<void> freeOrderAndIssueTickets(
+    BuildContext context,
+    List<Cart> cartList,
+    Program event,
+  ) async {
+    logger.d('freeOrderAndIssueTickets: start', time: DateTime.now());
+    final loading = ref.read(globalLoadingControllerProvider.notifier);
+    try {
+      // ユーザー情報取得
+      final user = ref.read(authRepositoryProvider).getCurrentUser();
+      if (user == null) {
+        throw const AuthenticationException(message: 'ユーザーが認証されていません');
+      }
+      final uid = user.uid;
+      final userName = user.displayName;
+      final now = DateTime.now();
+
+      // 商品情報取得
+      final productRepo = ref.read(productRepositoryProvider);
+      final orderProducts = <SnapshotProduct>[];
+      final tickets = <Ticket>[];
+      final updatedProducts = <Product>[];
+      for (final cart in cartList) {
+        final product = await productRepo.getProduct(cart.productId!);
+        // 在庫減少
+        final newStock = (product.stock) - cart.quantity;
+        final updatedProduct = product.copyWith(stock: newStock);
+        await productRepo.updateProduct(updatedProduct);
+        updatedProducts.add(updatedProduct);
+        orderProducts.add(
+          SnapshotProduct(
+            quantity: cart.quantity,
+            userId: uid,
+            userName: userName,
+            productId: product.id,
+            code: product.code,
+            name: product.name,
+            desc: product.desc,
+            price: product.price,
+            pictureURL: product.pictureURL,
+            expirationFrom: product.expirationFrom,
+            expirationTo: product.expirationTo,
+            register: product.register,
+            organizerId: product.organizerId,
+            eventId: product.eventId,
+            eventName: product.eventName,
+            expirationLink: product.expirationLink ?? false,
+          ),
+        );
+        for (var i = 0; i < cart.quantity; i++) {
+          tickets.add(
+            Ticket(
+              paidUserId: uid,
+              paidUserName: userName,
+              purchaseTime: now,
+              ownerId: uid,
+              ownerName: userName,
+              productId: product.id,
+              code: product.code,
+              name: product.name,
+              desc: product.desc,
+              price: product.price,
+              pictureURL: product.pictureURL,
+              expirationFrom: product.expirationFrom,
+              expirationTo: product.expirationTo,
+              register: product.register,
+              organizerId: product.organizerId,
+              eventId: product.eventId,
+              eventName: product.eventName,
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+        }
+      }
+
+      // 注文作成
+      final order = Order(
+        userId: uid,
+        eventId: event.id,
+        purchaseTime: now,
+        snapshotProducts: orderProducts,
+        createdAt: now,
+        updatedAt: now,
+        status: StatusType.order, // ← preに変更
+      );
+      final orderRepo = ref.read(orderRepositoryProvider);
+      await loading.guardFuture(() async {
+        await orderRepo.createOrder(uid, order);
+      });
+
+      // チケット発行
+      final ticketRepo = ref.read(ticketRepositoryProvider);
+      final ticketIds = <String>[];
+      for (final ticket in tickets) {
+        final id = await loading.guardFuture(() async {
+          return ticketRepo.createTicket(ticket);
+        });
+        ticketIds.add(id);
+      }
+
+      // カートクリア
+      await ref.read(cartViewModelProvider.notifier).clearCart();
+
+      // サンクス画面へ遷移
+      if (context.mounted) {
+        context.go(AppRoutes.checkoutSuccessPage);
+      }
+    } on Exception catch (e, st) {
+      logger.e('freeOrderAndIssueTickets: error=$e', stackTrace: st);
+      if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ErrorHandler.showErrorSnackBar(context, e, l10n);
+      }
+      rethrow;
     }
   }
 }

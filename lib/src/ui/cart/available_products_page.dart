@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../data/model/exception/app_exception.dart';
 import '../../data/model/product_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../settings/hooks/use_l10n.dart';
 import '../../ui/common/asyncvalue_widget.dart';
+import '../../ui/common/error_handler.dart';
 import '../../ui/common/main_body.dart';
-import '../common/loading_screen.dart';
+import '../../utils/logger.dart';
 import '../image/image_screen.dart';
 import '../product/product_view_model.dart';
 import 'cart_view_model.dart';
@@ -29,61 +31,58 @@ class AvailableProductsPage extends HookConsumerWidget {
       appBar: AppBar(title: Text(l10n.productListTitle)),
       body: MainBodyWidget(
         width: 400,
-        body: WidgetWithLoading(
-          child: AsyncValueWidget<List<Product>>(
-            value: productsState,
-            data: (products) {
-              // 購入可能な商品のみをフィルタリング
-              final availableProducts =
-                  products.where((product) {
-                    // 在庫がある商品のみ
-                    if (product.stock <= 0) {
+        body: AsyncValueWidget<List<Product>>(
+          value: productsState,
+          data: (products) {
+            // 購入可能な商品のみをフィルタリング
+            final availableProducts =
+                products.where((product) {
+                  // 在庫がある商品のみ
+                  if (product.stock <= 0) {
+                    return false;
+                  }
+
+                  // 商品がアクティブな商品のみ
+                  if (product.isActive != true) {
+                    return false;
+                  }
+
+                  // 販売期間内の商品のみ
+                  final now = DateTime.now();
+                  if (product.salesStart != null && product.salesEnd != null) {
+                    if (now.isBefore(product.salesStart!) ||
+                        now.isAfter(product.salesEnd!)) {
                       return false;
                     }
+                  }
 
-                    // 商品がアクティブな商品のみ
-                    if (product.isActive != true) {
-                      return false;
-                    }
+                  return true;
+                }).toList();
 
-                    // 販売期間内の商品のみ
-                    final now = DateTime.now();
-                    if (product.salesStart != null &&
-                        product.salesEnd != null) {
-                      if (now.isBefore(product.salesStart!) ||
-                          now.isAfter(product.salesEnd!)) {
-                        return false;
-                      }
-                    }
+            if (availableProducts.isEmpty) {
+              return _buildEmptyProductsWidget(context, l10n);
+            }
 
-                    return true;
-                  }).toList();
-
-              if (availableProducts.isEmpty) {
-                return _buildEmptyProductsWidget(context, l10n);
-              }
-
-              return RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(productViewModelProvider);
+            return RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(productViewModelProvider);
+              },
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: availableProducts.length,
+                itemBuilder: (context, index) {
+                  final product = availableProducts[index];
+                  return _buildProductCard(
+                    context,
+                    product,
+                    cartViewModel,
+                    ref,
+                    l10n,
+                  );
                 },
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: availableProducts.length,
-                  itemBuilder: (context, index) {
-                    final product = availableProducts[index];
-                    return _buildProductCard(
-                      context,
-                      product,
-                      cartViewModel,
-                      ref,
-                      l10n,
-                    );
-                  },
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -169,7 +168,12 @@ class AvailableProductsPage extends HookConsumerWidget {
                 builder: (context, ref, child) {
                   // 認証状態を取得
                   final authState = ref.watch(authStateChangesProvider);
-                  final isAuthenticated = authState.value ?? false;
+                  final isAuthenticated =
+                      authState.hasValue && (authState.value ?? false);
+                  logger.d(
+                    'available_products_page: authState=$authState, isAuthenticated=$isAuthenticated, product.stock=${product.stock}',
+                    time: DateTime.now(),
+                  );
 
                   return ElevatedButton.icon(
                     onPressed:
@@ -194,15 +198,38 @@ class AvailableProductsPage extends HookConsumerWidget {
                                     ),
                                   );
                                 }
-                              } on Exception catch (e) {
+                              } on AppException catch (e, st) {
+                                logger.e(
+                                  'Add to cart AppException: ${e.message}',
+                                  stackTrace: st,
+                                );
                                 if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        l10n.addToCartFailed(e.toString()),
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ),
+                                  final l10n = AppLocalizations.of(context)!;
+                                  ErrorHandler.showError(
+                                    context,
+                                    e,
+                                    l10n,
+                                    errorContext:
+                                        'AvailableProductsPage_addToCart',
+                                  );
+                                }
+                              } on Exception catch (e, st) {
+                                logger.e(
+                                  'Add to cart Exception: $e',
+                                  stackTrace: st,
+                                );
+                                if (context.mounted) {
+                                  final l10n = AppLocalizations.of(context)!;
+                                  final appException = GeneralException(
+                                    message: 'カートへの追加に失敗しました。',
+                                    stackTrace: st,
+                                  );
+                                  ErrorHandler.showError(
+                                    context,
+                                    appException,
+                                    l10n,
+                                    errorContext:
+                                        'AvailableProductsPage_addToCart',
                                   );
                                 }
                               }
@@ -213,7 +240,7 @@ class AvailableProductsPage extends HookConsumerWidget {
                       product.stock > 0
                           ? (isAuthenticated
                               ? l10n.addToCartButton
-                              : 'ログインしてください')
+                              : l10n.pleaseLogin)
                           : l10n.outOfStock,
                     ),
                     style: ElevatedButton.styleFrom(

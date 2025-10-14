@@ -41,11 +41,7 @@ class MyProgramViewModel extends _$MyProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('_readMyProgramDirectly: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
-      );
-      rethrow;
+      throw GeneralException(message: e.toString(), stackTrace: st);
     }
   }
 
@@ -73,11 +69,10 @@ class MyProgramViewModel extends _$MyProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('readMyProgram: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -105,11 +100,10 @@ class MyProgramViewModel extends _$MyProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('addMyProgram: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -139,11 +133,10 @@ class MyProgramViewModel extends _$MyProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('updateMyProgram: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }
@@ -173,11 +166,10 @@ class MyProgramViewModel extends _$MyProgramViewModel {
       rethrow;
     } on Exception catch (e, st) {
       logger.e('deleteMyProgram: Exception - $e', stackTrace: st);
-      final appException = GeneralException(
-        message: e.toString(),
-        stackTrace: st,
+      state = AsyncValue.error(
+        GeneralException(message: e.toString(), stackTrace: st),
+        st,
       );
-      state = AsyncValue.error(appException, st);
       rethrow;
     }
   }

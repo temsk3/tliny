@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../general_provider.dart';
@@ -32,16 +32,14 @@ class FavoriteRepository {
         .doc(uid)
         .collection(_subCollectionPath)
         .withConverter<Favorite>(
-          fromFirestore:
-              (snapshot, _) =>
-                  Favorite.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
-          toFirestore:
-              (model, _) => {
-                ...model.toJson()..remove('id'),
-                if (model.createdAt == null)
-                  'createdAt': FieldValue.serverTimestamp(),
-                'updatedAt': FieldValue.serverTimestamp(),
-              },
+          fromFirestore: (snapshot, _) =>
+              Favorite.fromJson(snapshot.data()!).copyWith(id: snapshot.id),
+          toFirestore: (model, _) => {
+            ...model.toJson()..remove('id'),
+            if (model.createdAt == null)
+              'createdAt': FieldValue.serverTimestamp(),
+            'updatedAt': FieldValue.serverTimestamp(),
+          },
         );
   }
 

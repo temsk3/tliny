@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -54,6 +55,9 @@ enum ErrorType {
   /// タイムアウトエラー
   timeout,
 
+  /// Cloud Functionsエラー
+  cloudFunctions,
+
   /// その他のエラー
   general,
 }
@@ -64,6 +68,11 @@ class ErrorHandler {
   static ErrorType _getErrorType(Object error) {
     final errorString = error.toString().toLowerCase();
 
+    // FirebaseFunctionsExceptionの処理
+    if (error is FirebaseFunctionsException) {
+      return ErrorType.cloudFunctions;
+    }
+
     if (error is AppException) {
       if (error is NetworkException) return ErrorType.network;
       if (error is AuthenticationException) return ErrorType.authentication;
@@ -71,6 +80,7 @@ class ErrorHandler {
       if (error is PermissionException) return ErrorType.permission;
       if (error is DatabaseException) return ErrorType.database;
       if (error is PaymentException) return ErrorType.payment;
+      if (error is CloudFunctionsException) return ErrorType.cloudFunctions;
     }
 
     // 文字列ベースの判定
@@ -121,14 +131,15 @@ class ErrorHandler {
       case ErrorType.image:
       case ErrorType.fileFormat:
       case ErrorType.validation:
-        return ErrorSeverity.minor;
       case ErrorType.authentication:
+        return ErrorSeverity.minor;
       case ErrorType.permission:
       case ErrorType.insufficientStock:
         return ErrorSeverity.major;
       case ErrorType.database:
       case ErrorType.payment:
       case ErrorType.server:
+      case ErrorType.cloudFunctions:
       case ErrorType.general:
         return ErrorSeverity.critical;
     }
@@ -136,6 +147,11 @@ class ErrorHandler {
 
   /// エラーメッセージを取得（AppExceptionの場合はuserMessageを優先）
   static String getErrorMessage(Object error, AppLocalizations l10n) {
+    // FirebaseFunctionsExceptionの処理
+    if (error is FirebaseFunctionsException) {
+      return _getFirebaseFunctionsErrorMessage(error, l10n);
+    }
+
     if (error is AppException) {
       return error.userMessage;
     }
@@ -160,13 +176,77 @@ class ErrorHandler {
       case ErrorType.fileFormat:
         return l10n.heicNotSupported;
       case ErrorType.validation:
-        return '入力内容に誤りがあります。確認してから再度お試しください。';
+        return l10n.validationError;
       case ErrorType.permission:
-        return '権限が不足しています。管理者にお問い合わせください。';
+        return l10n.permissionError;
       case ErrorType.database:
-        return 'データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+        return l10n.databaseError;
+      case ErrorType.cloudFunctions:
+        return 'サーバー処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
       case ErrorType.general:
         return l10n.generalError;
+    }
+  }
+
+  /// FirebaseFunctionsExceptionのエラーメッセージを取得
+  static String _getFirebaseFunctionsErrorMessage(
+    FirebaseFunctionsException error,
+    AppLocalizations l10n,
+  ) {
+    // エラーコードに基づいてメッセージを決定
+    switch (error.code) {
+      case 'unauthenticated':
+        return '認証が必要です。再度ログインしてください。';
+      case 'permission-denied':
+        return 'この操作を実行する権限がありません。';
+      case 'not-found':
+        return 'リクエストされたリソースが見つかりません。';
+      case 'already-exists':
+        return '既に存在するリソースです。';
+      case 'resource-exhausted':
+        return 'リソースが不足しています。しばらく時間をおいてから再度お試しください。';
+      case 'cancelled':
+        return '操作がキャンセルされました。';
+      case 'internal':
+        return 'サーバー内部エラーが発生しました。しばらく時間をおいてから再度お試しください。';
+      case 'unimplemented':
+        return 'この機能は現在利用できません。';
+      case 'unavailable':
+        return 'サービスが一時的に利用できません。しばらく時間をおいてから再度お試しください。';
+      case 'deadline-exceeded':
+        return 'リクエストがタイムアウトしました。しばらく時間をおいてから再度お試しください。';
+      case 'invalid-argument':
+        return '無効なリクエストです。入力内容を確認してください。';
+      default:
+        // エラーデータから詳細メッセージを取得
+        final details = error.details;
+        if (details != null) {
+          try {
+            Map<String, dynamic>? safeDetails;
+            if (details is Map<String, dynamic>) {
+              safeDetails = details;
+            } else if (details is Map) {
+              // LinkedMap<Object?, Object?>の場合の安全な変換
+              final rawDetails = details;
+              safeDetails = <String, dynamic>{};
+              for (final entry in rawDetails.entries) {
+                if (entry.key is String) {
+                  safeDetails[entry.key as String] = entry.value;
+                }
+              }
+            }
+
+            if (safeDetails != null) {
+              final message = safeDetails['message'] as String?;
+              if (message != null && message.isNotEmpty) {
+                return message;
+              }
+            }
+          } catch (e) {
+            // キャストに失敗した場合はデフォルトメッセージを使用
+          }
+        }
+        return 'サーバー処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
     }
   }
 
@@ -195,6 +275,8 @@ class ErrorHandler {
         return '画像エラー';
       case ErrorType.fileFormat:
         return 'ファイル形式エラー';
+      case ErrorType.cloudFunctions:
+        return 'サーバーエラー';
       case ErrorType.general:
         return 'エラー';
     }
@@ -209,12 +291,22 @@ class ErrorHandler {
     final errorType = _getErrorType(error);
     final severity = _getErrorSeverity(errorType);
 
-    logger.e(
-      'ErrorHandler: ${context ?? 'Unknown error'} - Type: $errorType, Severity: $severity',
-      time: DateTime.now(),
-      error: error,
-      stackTrace: stackTrace,
-    );
+    // FirebaseFunctionsExceptionの詳細ログ
+    if (error is FirebaseFunctionsException) {
+      logger.e(
+        'ErrorHandler: ${context ?? 'FirebaseFunctionsException'} - Type: $errorType, Severity: $severity, Code: ${error.code}, Details: ${error.details}',
+        time: DateTime.now(),
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } else {
+      logger.e(
+        'ErrorHandler: ${context ?? 'Unknown error'} - Type: $errorType, Severity: $severity',
+        time: DateTime.now(),
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   /// エラーを適切な方法で表示
@@ -263,37 +355,47 @@ class ErrorHandler {
         backgroundColor = Colors.orange;
         icon = Icons.wifi_off;
       case ErrorType.validation:
-        backgroundColor = Colors.orange;
-        icon = Icons.warning;
+        backgroundColor = Colors.blue;
+        icon = Icons.info;
+      case ErrorType.authentication:
+        backgroundColor = Colors.red;
+        icon = Icons.lock;
       case ErrorType.image:
       case ErrorType.fileFormat:
         backgroundColor = Colors.orange;
         icon = Icons.image_not_supported;
+      case ErrorType.cloudFunctions:
+        backgroundColor = Colors.red;
+        icon = Icons.cloud_off;
       default:
         backgroundColor = Theme.of(context).colorScheme.error;
         icon = Icons.error;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(icon, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(icon, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
+          backgroundColor: backgroundColor,
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
+            label: l10n.close,
+            textColor: Colors.white,
+            onPressed: () {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              }
+            },
+          ),
         ),
-        backgroundColor: backgroundColor,
-        behavior: SnackBarBehavior.floating,
-        action: SnackBarAction(
-          label: l10n.close,
-          textColor: Colors.white,
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          },
-        ),
-      ),
-    );
+      );
+    }
   }
 
   /// エラーをダイアログで表示
@@ -326,6 +428,7 @@ class ErrorHandler {
         iconColor = Colors.orange;
       case ErrorType.database:
       case ErrorType.server:
+      case ErrorType.cloudFunctions:
         icon = Icons.error;
         iconColor = Colors.red;
       default:
@@ -357,19 +460,45 @@ class ErrorHandler {
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                 ],
+                // FirebaseFunctionsExceptionの場合は詳細情報を表示
+                if (error is FirebaseFunctionsException) ...[
+                  const SizedBox(height: 16),
+                  const Text(
+                    '詳細情報:',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'エラーコード: ${error.code}',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                  if (error.details != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      'エラー詳細: ${error.details}',
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                  ],
+                ],
               ],
             ),
             actions: [
               if (onRetry != null)
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    if (context.mounted) Navigator.of(context).pop();
                     onRetry();
                   },
                   child: Text(l10n.retry),
                 ),
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  if (context.mounted) Navigator.of(context).pop();
+                },
                 child: Text(l10n.close),
               ),
             ],
@@ -378,8 +507,12 @@ class ErrorHandler {
   }
 
   /// 成功メッセージをスナックバーで表示
-  static void showSuccessSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  static Future<SnackBarClosedReason> showSuccessSnackBar(
+    BuildContext context,
+    String message,
+  ) {
+    if (!context.mounted) return Future.value(SnackBarClosedReason.remove);
+    final controller = ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
           children: [
@@ -390,44 +523,49 @@ class ErrorHandler {
         ),
         backgroundColor: Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
+        duration: const Duration(seconds: 5),
       ),
     );
+    return controller.closed;
   }
 
   /// 情報メッセージをスナックバーで表示
   static void showInfoSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.info, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.info, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
+          backgroundColor: Colors.blue,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 3),
         ),
-        backgroundColor: Colors.blue,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 3),
-      ),
-    );
+      );
+    }
   }
 
   /// 警告メッセージをスナックバーで表示
   static void showWarningSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.warning, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(child: Text(message)),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.warning, color: Colors.white, size: 20),
+              const SizedBox(width: 8),
+              Expanded(child: Text(message)),
+            ],
+          ),
+          backgroundColor: Colors.orange,
+          behavior: SnackBarBehavior.floating,
         ),
-        backgroundColor: Colors.orange,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+      );
+    }
   }
 }
 
@@ -441,8 +579,41 @@ mixin ErrorHandlingMixin {
     VoidCallback? onRetry,
     bool showLoading = true,
     required AppLocalizations l10n,
+    required WidgetRef ref,
   }) async {
-    final loadingController = GlobalLoadingController();
+    // テスト環境ではローディングを無効化
+    if (const bool.fromEnvironment('FLUTTER_TEST')) {
+      try {
+        final result = await operation();
+        return result;
+      } on AppException catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: errorContext,
+            onRetry: onRetry,
+          );
+        }
+        return null;
+      } on Exception catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(
+            context,
+            e,
+            l10n,
+            errorContext: errorContext,
+            onRetry: onRetry,
+          );
+        }
+        return null;
+      }
+    }
+
+    final loadingController = ref.read(
+      globalLoadingControllerProvider.notifier,
+    );
 
     try {
       if (showLoading) {
@@ -456,31 +627,37 @@ mixin ErrorHandlingMixin {
       }
 
       return result;
-    } on AppException catch (e, st) {
+    } on AppException catch (e) {
       if (showLoading) {
         loadingController.stopLoading();
       }
 
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
-    } on Exception catch (e, st) {
+    } on Exception catch (e) {
       if (showLoading) {
         loadingController.stopLoading();
       }
 
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
     }
   }
@@ -677,25 +854,31 @@ class ErrorHandlerController {
       final result = await operation();
       loadingController.stopLoading();
       return result;
-    } on AppException catch (e, st) {
+    } on AppException catch (e) {
       loadingController.stopLoading();
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
-    } on Exception catch (e, st) {
+    } on Exception catch (e) {
       loadingController.stopLoading();
-      ErrorHandler.showError(
-        context,
-        e,
-        l10n,
-        errorContext: errorContext,
-        onRetry: onRetry,
-      );
+      // Check if the widget is still mounted before using BuildContext
+      if (context.mounted) {
+        ErrorHandler.showError(
+          context,
+          e,
+          l10n,
+          errorContext: errorContext,
+          onRetry: onRetry,
+        );
+      }
       return null;
     }
   }

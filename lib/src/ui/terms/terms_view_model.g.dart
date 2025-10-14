@@ -8,7 +8,7 @@ part of 'terms_view_model.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$termsViewModelHash() => r'170db5fa563fff16ff3863129dcdd9df3a80811c';
+String _$termsViewModelHash() => r'9b0a379bef096a4ac82ebaa97f905ef596e2ecf4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,7 +35,9 @@ abstract class _$TermsViewModel
     extends BuildlessAutoDisposeAsyncNotifier<User> {
   late final String uid;
 
-  FutureOr<User> build(String uid);
+  FutureOr<User> build(
+    String uid,
+  );
 }
 
 /// See also [TermsViewModel].
@@ -48,15 +50,21 @@ class TermsViewModelFamily extends Family<AsyncValue<User>> {
   const TermsViewModelFamily();
 
   /// See also [TermsViewModel].
-  TermsViewModelProvider call(String uid) {
-    return TermsViewModelProvider(uid);
+  TermsViewModelProvider call(
+    String uid,
+  ) {
+    return TermsViewModelProvider(
+      uid,
+    );
   }
 
   @override
   TermsViewModelProvider getProviderOverride(
     covariant TermsViewModelProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -78,20 +86,21 @@ class TermsViewModelFamily extends Family<AsyncValue<User>> {
 class TermsViewModelProvider
     extends AutoDisposeAsyncNotifierProviderImpl<TermsViewModel, User> {
   /// See also [TermsViewModel].
-  TermsViewModelProvider(String uid)
-    : this._internal(
-        () => TermsViewModel()..uid = uid,
-        from: termsViewModelProvider,
-        name: r'termsViewModelProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$termsViewModelHash,
-        dependencies: TermsViewModelFamily._dependencies,
-        allTransitiveDependencies:
-            TermsViewModelFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  TermsViewModelProvider(
+    String uid,
+  ) : this._internal(
+          () => TermsViewModel()..uid = uid,
+          from: termsViewModelProvider,
+          name: r'termsViewModelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$termsViewModelHash,
+          dependencies: TermsViewModelFamily._dependencies,
+          allTransitiveDependencies:
+              TermsViewModelFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   TermsViewModelProvider._internal(
     super._createNotifier, {
@@ -106,8 +115,12 @@ class TermsViewModelProvider
   final String uid;
 
   @override
-  FutureOr<User> runNotifierBuild(covariant TermsViewModel notifier) {
-    return notifier.build(uid);
+  FutureOr<User> runNotifierBuild(
+    covariant TermsViewModel notifier,
+  ) {
+    return notifier.build(
+      uid,
+    );
   }
 
   @override
@@ -128,7 +141,7 @@ class TermsViewModelProvider
 
   @override
   AutoDisposeAsyncNotifierProviderElement<TermsViewModel, User>
-  createElement() {
+      createElement() {
     return _TermsViewModelProviderElement(this);
   }
 
@@ -146,8 +159,6 @@ class TermsViewModelProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin TermsViewModelRef on AutoDisposeAsyncNotifierProviderRef<User> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -161,6 +172,5 @@ class _TermsViewModelProviderElement
   @override
   String get uid => (origin as TermsViewModelProvider).uid;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

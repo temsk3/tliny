@@ -21,7 +21,7 @@ class UserEditForm extends HookConsumerWidget {
   });
 
   final User user;
-  final VoidCallback onSave;
+  final Future<void> Function(User updatedUser) onSave;
   final VoidCallback? onCancel;
   final bool isLoading;
 
@@ -354,9 +354,23 @@ class UserEditForm extends HookConsumerWidget {
         onPressed:
             isLoading
                 ? null
-                : () {
+                : () async {
                   if (formKey.currentState!.validate()) {
-                    onSave();
+                    // フォームの値から更新されたユーザー情報を作成
+                    final updatedUser = user.copyWith(
+                      displayName: displayNameController.text.trim(),
+                      name: nameController.text.trim(),
+                      phoneNumber: phoneNumberController.text.trim(),
+                    );
+
+                    try {
+                      await onSave(updatedUser);
+                    } catch (e) {
+                      logger.e('Failed to save user: $e');
+                      if (context.mounted) {
+                        ErrorHandler.showErrorSnackBar(context, e, l10n);
+                      }
+                    }
                   }
                 },
         icon:

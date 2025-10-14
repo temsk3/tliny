@@ -207,6 +207,7 @@
   "insufficientStock": "商品の在庫が不足しています。数量を調整してから再度お試しください。",
   "networkError": "ネットワークエラーが発生しました。インターネット接続を確認してから再度お試しください。",
   "authenticationError": "認証エラーが発生しました。再度ログインしてください。",
+  "pleaseLogin": "ログインしてください",
   "paymentError": "決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。",
   "serverError": "サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。",
   "timeoutError": "処理がタイムアウトしました。しばらく時間をおいてから再度お試しください。",
@@ -333,5 +334,88 @@
   "passwordMismatch": "新しいパスワードが一致しません",
   "passwordTooWeak": "パスワードが弱すぎます。6文字以上の英数字で入力してください",
   "passwordChangeInProgress": "パスワード変更処理中...",
-  "passwordChangeCompleted": "パスワード変更が完了しました"
+  "passwordChangeCompleted": "パスワード変更が完了しました",
+  "scanQrCodes": "QRコードをスキャン",
+  "scannedTickets": "スキャンしたチケット",
+  "scannedTicketsCount": "スキャンしたチケット ({count})",
+  "@scannedTicketsCount": {
+    "description": "スキャンしたチケット数",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "usedTickets": "{count} 使用済み",
+  "@usedTickets": {
+    "description": "使用済みチケット数",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noTicketsScannedYet": "まだチケットがスキャンされていません",
+  "scanQrCodesToSeeTickets": "QRコードをスキャンしてチケットを表示",
+  "unknownTicket": "不明なチケット",
+  "used": "使用済み",
+  "unused": "未使用",
+  "invalidQrCodeFormat": "無効なQRコード形式です",
+  "failedToDecryptQrCode": "QRコードの復号に失敗しました: {error}",
+  "@failedToDecryptQrCode": {
+    "description": "QRコード復号失敗メッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "accessDeniedWrongEvent": "アクセス拒否: イベントが異なります",
+  "ticketScannedSuccessfully": "チケットが正常にスキャンされました",
+  "failedToProcessQrCode": "QRコードの処理に失敗しました: {error}",
+  "@failedToProcessQrCode": {
+    "description": "QRコード処理失敗メッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "scannedTicketsTitle": "スキャンしたチケット",
+  "confirmAction": "アクションの確認",
+  "markTicketsAsUsed": "スキャンしたチケットを使用済みとしてマークしますか？",
+  "ticketsUpdatedSuccessfully": "チケットが正常に更新されました",
+  "ticketUpdateError": "チケット更新エラー",
+  "qrScannerOperationError": "QRスキャナー操作エラー",
+  "terms": "利用規約",
+  "sellerRegistration": "出品者登録",
+  "sellerFeature": "出品者機能",
+  "sellerDescription": "出品者として商品を販売するには、以下の手続きが必要です。",
+  "registerUpdateSeller": "出品者登録・更新",
+  "manageSite": "管理サイト",
+  "manageSiteDescription": "販売情報を確認したい場合は以下のボタンから管理サイトに遷移してください",
+  "pleasePurchaseNewTicket": "新しいチケットを購入してください",
+  "showExpiredOrPurchaseNewTicket": "期限切れチケットを表示するか、\n新しいチケットを購入してください",
+  "noCode": "コードなし",
+  "noName": "名前なし",
+  "noGenre": "ジャンルなし",
+  "noDesc": "説明なし",
+  "validationError": "入力内容に誤りがあります。確認してから再度お試しください。",
+  "permissionError": "権限が不足しています。管理者にお問い合わせください。",
+  "databaseError": "データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。",
+  "searchEvent": "イベント検索",
+  "createEvent": "イベント作成",
+  "searchText": "検索テキスト",
+  "noTickets": "チケットがありません",
+  "noAvailableTickets": "使用可能なチケットがありません",
+  "purchasedTicketsDisplayedHere": "購入したチケットがここに表示されます",
+  "hideExpired": "期限切れを非表示",
+  "showExpired": "期限切れを表示",
+  "sortByEventName": "イベント名でソート",
+  "sortByEventDate": "イベント日でソート",
+  "generatePdf": "PDFを生成",
+  "displayQrCode": "QRコードを表示",
+  "expiredTicket": "期限切れチケット",
+  "myEvent": "マイイベント",
+  "non": "なし"
 }

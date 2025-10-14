@@ -3,33 +3,71 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tliny/src/data/model/exception/app_exception.dart';
 import 'package:tliny/src/data/model/product_model.dart';
 import 'package:tliny/src/data/model/program_model.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
 import 'package:tliny/src/data/repository/product_repository.dart';
+import 'package:tliny/src/data/repository/staff_repository.dart';
 import 'package:tliny/src/ui/product/product_view_model.dart';
 
 import 'product_view_model_test.mocks.dart';
 
-@GenerateMocks([ProductRepository, AuthRepository, firebase_auth.User])
+@GenerateMocks([
+  ProductRepository,
+  AuthRepository,
+  StaffRepository,
+  firebase_auth.User,
+])
 void main() {
   group('ProductViewModel Tests', () {
     late MockProductRepository mockProductRepository;
     late MockAuthRepository mockAuthRepository;
+    late MockStaffRepository mockStaffRepository;
     late ProviderContainer container;
     late MockUser mockUser;
+
+    setUpAll(() async {
+      // Firebase setup is not needed for unit tests with mocked dependencies
+      // Skip Firebase initialization for unit tests
+    });
 
     setUp(() {
       mockProductRepository = MockProductRepository();
       mockAuthRepository = MockAuthRepository();
+      mockStaffRepository = MockStaffRepository();
       mockUser = MockUser();
+
+      // Reset all mocks before each test
+      reset(mockProductRepository);
+      reset(mockAuthRepository);
+      reset(mockStaffRepository);
+      reset(mockUser);
+      
+      // Clear any existing interactions
+      clearInteractions(mockProductRepository);
+      clearInteractions(mockAuthRepository);
+      clearInteractions(mockStaffRepository);
+      clearInteractions(mockUser);
+
+      // Mock the userId method on the auth repository
       when(
         mockAuthRepository.userId,
       ).thenAnswer((_) => Stream.value('test-user-id'));
+
+      // Mock readProducts by default to return empty list
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => <Product>[]);
+
       container = ProviderContainer(
         overrides: [
           productRepositoryProvider.overrideWithValue(mockProductRepository),
           authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          staffRepositoryProvider.overrideWithValue(mockStaffRepository),
+          userIdProvider.overrideWith((ref) async* {
+            yield 'test-user-id';
+          }),
         ],
       );
     });
@@ -117,11 +155,20 @@ void main() {
         price: 1500,
       );
 
+      // 認証されたユーザーをモック
       when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
       when(mockUser.uid).thenReturn('test-user-id');
       when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
+      when(
         mockProductRepository.createProduct(any),
       ).thenAnswer((_) async => 'new-product-id');
+
+      // Container is already set up in setUp method
 
       final viewModel = container.read(productViewModelProvider.notifier);
       await viewModel.addProduct(testProgram, testProduct);
@@ -132,13 +179,31 @@ void main() {
     });
 
     test('addProduct should handle null user ID', () async {
-      final testProgram = Program.empty();
+      final testProgram = Program.empty().copyWith(id: 'test-program-id');
       final testProduct = Product.empty();
 
-      when(mockAuthRepository.userId).thenAnswer((_) => Stream.value(null));
+      // Override userIdProvider to return null
+      container = ProviderContainer(
+        overrides: [
+          productRepositoryProvider.overrideWithValue(mockProductRepository),
+          authRepositoryProvider.overrideWithValue(mockAuthRepository),
+          staffRepositoryProvider.overrideWithValue(mockStaffRepository),
+          userIdProvider.overrideWith((ref) async* {
+            yield null;
+          }),
+        ],
+      );
+
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
 
       final viewModel = container.read(productViewModelProvider.notifier);
-      await viewModel.addProduct(testProgram, testProduct);
+
+      await expectLater(
+        () => viewModel.addProduct(testProgram, testProduct),
+        throwsA(isA<AuthenticationException>()),
+      );
 
       verifyNever(mockProductRepository.createProduct(any));
     });
@@ -150,9 +215,20 @@ void main() {
         price: 2500,
       );
 
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
       when(
         mockProductRepository.updateProduct(testProduct),
       ).thenAnswer((_) async => 'product-1');
+
+      // Container is already set up in setUp method
 
       final viewModel = container.read(productViewModelProvider.notifier);
       await viewModel.updateProduct(testProduct);
@@ -168,9 +244,20 @@ void main() {
         name: 'Updated Product',
       );
 
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
       when(
         mockProductRepository.updateProduct(testProduct),
       ).thenThrow(Exception('Update failed'));
+
+      // Container is already set up in setUp method
 
       final viewModel = container.read(productViewModelProvider.notifier);
 
@@ -186,9 +273,23 @@ void main() {
     test('deleteProduct should delete product successfully', () async {
       final testProduct = Product.empty().copyWith(id: 'product-1');
 
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => [testProduct]);
       when(
         mockProductRepository.deleteProduct('product-1'),
       ).thenAnswer((_) async {});
+
+      // Container is already set up in setUp method
 
       final viewModel = container.read(productViewModelProvider.notifier);
       await viewModel.deleteProduct(testProduct.id!);
@@ -201,9 +302,33 @@ void main() {
     test('deleteProduct should handle errors', () async {
       final testProduct = Product.empty().copyWith(id: 'product-1');
 
+      // Reset and clear all mocks before setting up this test
+      reset(mockProductRepository);
+      reset(mockAuthRepository);
+      reset(mockStaffRepository);
+      reset(mockUser);
+      clearInteractions(mockProductRepository);
+      clearInteractions(mockAuthRepository);
+      clearInteractions(mockStaffRepository);
+      clearInteractions(mockUser);
+
+      // 認証されたユーザーをモック
+      when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+      when(mockUser.uid).thenReturn('test-user-id');
+      when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
+      when(
+        mockProductRepository.readProducts(),
+      ).thenAnswer((_) async => [testProduct]);
       when(
         mockProductRepository.deleteProduct('product-1'),
       ).thenThrow(Exception('Delete failed'));
+
+      // Container is already set up in setUp method
 
       final viewModel = container.read(productViewModelProvider.notifier);
 
@@ -227,11 +352,20 @@ void main() {
         price: 1500,
       );
 
+      // 認証されたユーザーをモック
       when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
       when(mockUser.uid).thenReturn('test-user-id');
       when(
+        mockAuthRepository.userId,
+      ).thenAnswer((_) => Stream.value('test-user-id'));
+      when(
+        mockStaffRepository.checkExistenceStaff(any, any),
+      ).thenAnswer((_) async => true);
+      when(
         mockProductRepository.createProduct(any),
       ).thenAnswer((_) async => 'new-product-id');
+
+      // Container is already set up in setUp method
 
       final viewModel = container.read(productViewModelProvider.notifier);
       final result = await viewModel.registerProduct(testProgram, testProduct);
@@ -252,9 +386,30 @@ void main() {
           price: 2500,
         );
 
+        // 認証されたユーザーをモック
+        when(mockAuthRepository.getCurrentUser()).thenReturn(mockUser);
+        when(mockUser.uid).thenReturn('test-user-id');
+        when(
+          mockAuthRepository.userId,
+        ).thenAnswer((_) => Stream.value('test-user-id'));
+        when(
+          mockStaffRepository.checkExistenceStaff(any, any),
+        ).thenAnswer((_) async => true);
         when(
           mockProductRepository.updateProduct(testProduct),
         ).thenAnswer((_) async => 'product-1');
+
+        // userIdProviderを正しくオーバーライド
+        container = ProviderContainer(
+          overrides: [
+            productRepositoryProvider.overrideWithValue(mockProductRepository),
+            authRepositoryProvider.overrideWithValue(mockAuthRepository),
+            staffRepositoryProvider.overrideWithValue(mockStaffRepository),
+            userIdProvider.overrideWith((ref) async* {
+              yield 'test-user-id';
+            }),
+          ],
+        );
 
         final viewModel = container.read(productViewModelProvider.notifier);
         final result = await viewModel.registerProduct(

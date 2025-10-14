@@ -35,7 +35,9 @@ abstract class _$StaffViewModel
     extends BuildlessAutoDisposeAsyncNotifier<List<Staff>> {
   late final String programId;
 
-  FutureOr<List<Staff>> build(String programId);
+  FutureOr<List<Staff>> build(
+    String programId,
+  );
 }
 
 /// See also [StaffViewModel].
@@ -48,15 +50,21 @@ class StaffViewModelFamily extends Family<AsyncValue<List<Staff>>> {
   const StaffViewModelFamily();
 
   /// See also [StaffViewModel].
-  StaffViewModelProvider call(String programId) {
-    return StaffViewModelProvider(programId);
+  StaffViewModelProvider call(
+    String programId,
+  ) {
+    return StaffViewModelProvider(
+      programId,
+    );
   }
 
   @override
   StaffViewModelProvider getProviderOverride(
     covariant StaffViewModelProvider provider,
   ) {
-    return call(provider.programId);
+    return call(
+      provider.programId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -78,20 +86,21 @@ class StaffViewModelFamily extends Family<AsyncValue<List<Staff>>> {
 class StaffViewModelProvider
     extends AutoDisposeAsyncNotifierProviderImpl<StaffViewModel, List<Staff>> {
   /// See also [StaffViewModel].
-  StaffViewModelProvider(String programId)
-    : this._internal(
-        () => StaffViewModel()..programId = programId,
-        from: staffViewModelProvider,
-        name: r'staffViewModelProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$staffViewModelHash,
-        dependencies: StaffViewModelFamily._dependencies,
-        allTransitiveDependencies:
-            StaffViewModelFamily._allTransitiveDependencies,
-        programId: programId,
-      );
+  StaffViewModelProvider(
+    String programId,
+  ) : this._internal(
+          () => StaffViewModel()..programId = programId,
+          from: staffViewModelProvider,
+          name: r'staffViewModelProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$staffViewModelHash,
+          dependencies: StaffViewModelFamily._dependencies,
+          allTransitiveDependencies:
+              StaffViewModelFamily._allTransitiveDependencies,
+          programId: programId,
+        );
 
   StaffViewModelProvider._internal(
     super._createNotifier, {
@@ -106,8 +115,12 @@ class StaffViewModelProvider
   final String programId;
 
   @override
-  FutureOr<List<Staff>> runNotifierBuild(covariant StaffViewModel notifier) {
-    return notifier.build(programId);
+  FutureOr<List<Staff>> runNotifierBuild(
+    covariant StaffViewModel notifier,
+  ) {
+    return notifier.build(
+      programId,
+    );
   }
 
   @override
@@ -128,7 +141,7 @@ class StaffViewModelProvider
 
   @override
   AutoDisposeAsyncNotifierProviderElement<StaffViewModel, List<Staff>>
-  createElement() {
+      createElement() {
     return _StaffViewModelProviderElement(this);
   }
 
@@ -146,8 +159,6 @@ class StaffViewModelProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin StaffViewModelRef on AutoDisposeAsyncNotifierProviderRef<List<Staff>> {
   /// The parameter `programId` of this provider.
   String get programId;
@@ -161,6 +172,5 @@ class _StaffViewModelProviderElement
   @override
   String get programId => (origin as StaffViewModelProvider).programId;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

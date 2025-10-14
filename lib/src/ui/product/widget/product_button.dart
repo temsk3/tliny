@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tliny/src/data/repository/auth_repository.dart';
+import 'package:tliny/src/data/repository/user_repository.dart';
 
 import '../../../data/model/product_model.dart';
 import '../../../data/model/program_model.dart';
@@ -36,16 +37,14 @@ class AddProductFloatingActionButton extends HookWidget {
       builder: (context, ref, _) {
         return AsyncValueButtonWidget(
           value: ref.watch(addProductButtonStateProvider(program)),
-          data:
-              (visible) =>
-                  visible
-                      ? BaseFloatingActionButton(
-                        heroTag: 'add_product_fab_${program.id}',
-                        onPressed: onPressed,
-                        l10n: l10n,
-                        child: child ?? const Icon(Icons.add),
-                      )
-                      : Container(),
+          data: (visible) => visible
+              ? BaseFloatingActionButton(
+                  heroTag: 'add_product_fab_${program.id}',
+                  onPressed: onPressed,
+                  l10n: l10n,
+                  child: child ?? const Icon(Icons.add),
+                )
+              : Container(),
         );
       },
     );
@@ -148,15 +147,14 @@ class GenreDropdownButton extends HookWidget {
       child: DropdownButtonFormField<GenreType>(
         alignment: Alignment.center,
         focusNode: focusNode,
-        items:
-            GenreType.values
-                .map(
-                  (GenreType genre) => DropdownMenuItem<GenreType>(
-                    value: genre,
-                    child: Text(genre.name),
-                  ),
-                )
-                .toList(),
+        items: GenreType.values
+            .map(
+              (GenreType genre) => DropdownMenuItem<GenreType>(
+                value: genre,
+                child: Text(genre.name),
+              ),
+            )
+            .toList(),
         value: value,
         validator: (value) {
           if (value == null) {
@@ -227,40 +225,109 @@ class InCartElevatedButton extends HookWidget {
     final stateIndicate = isOpened && product.stock != 0;
     return Consumer(
       builder: (innerContext, ref, child) {
-        final auth = ref.watch(authStateChangesProvider).value;
-        return BaseElevatedButton(
-          l10n: l10n,
-          onPressed:
-              stateIndicate && auth != null && product.id != null
+        final authState = ref.watch(authStateChangesProvider);
+        final auth = authState.value;
+        logger.d(
+          'InCartElevatedButton: authState=$authState, authState.hasValue=${authState.hasValue}, authState.isLoading=${authState.isLoading}, authState.hasError=${authState.hasError}, auth=$auth, product.stock=${product.stock}',
+          time: DateTime.now(),
+        );
+        logger.d(
+          'InCartElevatedButton: stateIndicate=$stateIndicate, auth=$auth, product.id=${product.id}',
+          time: DateTime.now(),
+        );
+        // AsyncValueの状態を考慮して認証状態を判定
+        final isAuthenticated = authState.hasValue && auth == true;
+        // final isZeroOrFree = product.price == 0;
+        return StreamBuilder<bool>(
+          stream: ref
+              .read(userRepositoryProvider)
+              .streamCheckAccountStatus(program.organizerId!),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return BaseElevatedButton(
+                l10n: l10n,
+                onPressed: null,
+                child: const CircularProgressIndicator(strokeWidth: 2),
+              );
+            }
+            final isOrganizerStripeRegistered = snapshot.data == true;
+            // ボタン有効条件
+            final isButtonEnabled =
+                stateIndicate &&
+                isAuthenticated &&
+                product.id != null &&
+                ((isOrganizerStripeRegistered &&
+                        (product.price == 0 || product.price >= 50)) ||
+                    (!isOrganizerStripeRegistered && product.price == 0));
+            // Stripe未登録かつ0円以外は無効
+            if (!isOrganizerStripeRegistered && product.price != 0) {
+              return Column(
+                children: [
+                  BaseElevatedButton(
+                    l10n: l10n,
+                    onPressed: null,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        product.stock > 0
+                            ? (isAuthenticated
+                                  ? l10n.addToCart
+                                  : l10n.pleaseLogin)
+                            : l10n.outOfStock,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    '主催者が販売者登録未登録のため0円商品しか購入できません',
+                    style: TextStyle(color: Colors.grey, fontSize: 13),
+                  ),
+                ],
+              );
+            }
+            return BaseElevatedButton(
+              l10n: l10n,
+              onPressed: isButtonEnabled
                   ? () async {
-                    try {
-                      const result = true;
-                      if (result) {
-                        logger.d('inCart');
-                        await ref
-                            .watch(cartViewModelProvider.notifier)
-                            .cart(quantity, product.id!, program.id!);
-                        logger.d('showFluttertoast: start');
-                        errorHandler.showSuccessSnackBar(
-                          '${product.name!} ${l10n.addedToCart}',
+                      try {
+                        const result = true;
+                        if (result) {
+                          logger.d('inCart');
+                          await ref
+                              .watch(cartViewModelProvider.notifier)
+                              .cart(quantity, product.id!, program.id!);
+                          logger.d('showFluttertoast: start');
+                          errorHandler.showSuccessSnackBar(
+                            '${product.name!} ${l10n.addedToCart}',
+                          );
+                          logger.d('showFluttertoast: end');
+                          // SnackBarが閉じられた後にpop
+                          logger.d('pop');
+                          if (context.mounted) {
+                            RouterUtils.safePop(context);
+                          }
+                        }
+                      } on Exception catch (e, st) {
+                        logger.e(
+                          'Error',
+                          time: DateTime.now(),
+                          error: e,
+                          stackTrace: st,
                         );
-                        logger.d('showFluttertoast: end');
-                        logger.d('pop');
-                        // await appRoute.pop();
-                        RouterUtils.safePop(context);
+                        errorHandler.showError(e, errorContext: 'カート追加');
                       }
-                    } on Exception catch (e, st) {
-                      logger.e(
-                        'Error',
-                        time: DateTime.now(),
-                        error: e,
-                        stackTrace: st,
-                      );
-                      errorHandler.showError(e, errorContext: 'カート追加');
                     }
-                  }
                   : null,
-          child: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.addToCart)),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  product.stock > 0
+                      ? (isAuthenticated ? l10n.addToCart : l10n.pleaseLogin)
+                      : l10n.outOfStock,
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -340,7 +407,9 @@ class DeleteProductElevatedButton extends HookWidget {
                       await ref
                           .watch(productViewModelProvider.notifier)
                           .deleteProduct(product.id.toString());
-                      context.pop();
+                      if (context.mounted) {
+                        context.pop();
+                      }
                     }
                   } catch (e) {
                     errorHandler.showError(e, errorContext: '商品削除');

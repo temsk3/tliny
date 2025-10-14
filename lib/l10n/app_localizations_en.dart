@@ -179,8 +179,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String decimalPattern(int value) {
-    final intl.NumberFormat valueNumberFormat = intl
-        .NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -188,8 +188,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String currency(int value) {
-    final intl.NumberFormat valueNumberFormat = intl
-        .NumberFormat.simpleCurrency(locale: localeName);
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.simpleCurrency(locale: localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -396,6 +396,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get authenticationError =>
       'Authentication error occurred. Please log in again.';
+
+  @override
+  String get pleaseLogin => 'Please log in';
 
   @override
   String get paymentError =>
@@ -673,4 +676,170 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordChangeCompleted => 'Password change completed';
+
+  @override
+  String get scanQrCodes => 'Scan QR Codes';
+
+  @override
+  String get scannedTickets => 'Scanned Tickets';
+
+  @override
+  String scannedTicketsCount(int count) {
+    return 'Scanned Tickets ($count)';
+  }
+
+  @override
+  String usedTickets(int count) {
+    return '$count Used';
+  }
+
+  @override
+  String get noTicketsScannedYet => 'No tickets scanned yet';
+
+  @override
+  String get scanQrCodesToSeeTickets => 'Scan QR codes to see tickets here';
+
+  @override
+  String get unknownTicket => 'Unknown Ticket';
+
+  @override
+  String get used => 'Used';
+
+  @override
+  String get unused => 'Unused';
+
+  @override
+  String get invalidQrCodeFormat => 'Invalid QR code format.';
+
+  @override
+  String failedToDecryptQrCode(String error) {
+    return 'Failed to decrypt QR code: $error';
+  }
+
+  @override
+  String get accessDeniedWrongEvent => 'Access denied: Wrong event.';
+
+  @override
+  String get ticketScannedSuccessfully => 'Ticket scanned successfully.';
+
+  @override
+  String failedToProcessQrCode(String error) {
+    return 'Failed to process QR code: $error';
+  }
+
+  @override
+  String get scannedTicketsTitle => 'Scanned Tickets';
+
+  @override
+  String get confirmAction => 'Confirm Action';
+
+  @override
+  String get markTicketsAsUsed =>
+      'Do you want to mark the scanned ticket as used?';
+
+  @override
+  String get ticketsUpdatedSuccessfully => 'Tickets updated successfully.';
+
+  @override
+  String get ticketUpdateError => 'Ticket Update Error';
+
+  @override
+  String get qrScannerOperationError => 'QR Scanner Operation Error';
+
+  @override
+  String get terms => 'Terms of Service';
+
+  @override
+  String get sellerRegistration => 'Seller Registration';
+
+  @override
+  String get sellerFeature => 'Seller Feature';
+
+  @override
+  String get sellerDescription =>
+      'To sell products as a seller, please complete the following steps.';
+
+  @override
+  String get registerUpdateSeller => 'Register/Update Seller';
+
+  @override
+  String get manageSite => 'Management Site';
+
+  @override
+  String get manageSiteDescription =>
+      'If you want to check sales information, please use the button below to go to the management site.';
+
+  @override
+  String get pleasePurchaseNewTicket => 'Please purchase a new ticket';
+
+  @override
+  String get showExpiredOrPurchaseNewTicket =>
+      'Show expired tickets or purchase a new ticket';
+
+  @override
+  String get noCode => 'No code';
+
+  @override
+  String get noGenre => 'No Genre';
+
+  @override
+  String get noDesc => 'No Description';
+
+  @override
+  String get validationError =>
+      'There is an error in the input. Please check and try again.';
+
+  @override
+  String get permissionError =>
+      'You do not have sufficient permissions. Please contact the administrator.';
+
+  @override
+  String get databaseError =>
+      'A database error has occurred. Please try again later.';
+
+  @override
+  String get searchEvent => 'Search Event';
+
+  @override
+  String get createEvent => 'Create Event';
+
+  @override
+  String get searchText => 'Search Text';
+
+  @override
+  String get noTickets => 'No tickets available';
+
+  @override
+  String get noAvailableTickets => 'No available tickets';
+
+  @override
+  String get purchasedTicketsDisplayedHere =>
+      'Purchased tickets will be displayed here';
+
+  @override
+  String get hideExpired => 'Hide expired';
+
+  @override
+  String get showExpired => 'Show expired';
+
+  @override
+  String get sortByEventName => 'Sort by Event Name';
+
+  @override
+  String get sortByEventDate => 'Sort by Event Date';
+
+  @override
+  String get generatePdf => 'Generate PDF';
+
+  @override
+  String get displayQrCode => 'Display QR Code';
+
+  @override
+  String get expiredTicket => 'Expired Ticket';
+
+  @override
+  String get myEvent => 'My Event';
+
+  @override
+  String get non => 'None';
 }

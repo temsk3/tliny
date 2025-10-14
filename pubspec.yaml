@@ -3,10 +3,10 @@ description: bazaar project.
 
 publish_to: 'none'
 
-version: 0.2.0
+version: 0.3.0
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.8.0
 
 dependencies:
   flutter:
@@ -23,16 +23,16 @@ dependencies:
   logger:
   collection:
 
-  hooks_riverpod:
+  hooks_riverpod: ^2.6.1
   flutter_hooks:
-  riverpod_annotation:
-  riverpod:
+  riverpod_annotation: ^2.6.1
+  riverpod: ^2.6.1
 
-  json_annotation: ^4.9.0
-  freezed_annotation:
+  json_annotation: ^4.8.1
+  freezed_annotation: ^2.4.1
 
   google_fonts:
-  google_sign_in:
+  google_sign_in: ^6.2.1
   firebase_core:
   firebase_auth:
   cloud_firestore:
@@ -82,26 +82,27 @@ dependencies:
   pdf:
   printing:
   flutter_native_splash:
-  go_router:
+  go_router: ^14.8.1
   flutter_gen:
-  pedantic_mono:
 
+  flutter_riverpod: ^2.6.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints:
   custom_lint:
-  riverpod_lint:
-  build_runner:
-  json_serializable: ^6.9.5
-  freezed:
-  riverpod_generator:
+  riverpod_lint: ^2.6.1
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+  freezed: ^2.4.7
+  riverpod_generator: ^2.6.1
   retrofit_generator:
   dependency_validator:
-  go_router_builder:
+  go_router_builder: ^2.7.1
   mockito:
   fake_cloud_firestore:
 
+  firebase_auth_platform_interface:
 flutter:
   generate: true
   uses-material-design: true

@@ -5,13 +5,22 @@ import '../../data/model/program_model.dart';
 import '../../data/repository/auth_repository.dart';
 import '../../data/repository/program_repository.dart';
 import '../../data/repository/staff_repository.dart';
-import '../../data/repository/user_repository.dart';
 
 part 'program_state.g.dart';
 
 @riverpod
 Stream<List<Program>> programsState(Ref ref) {
   return ref.watch(programRepositoryProvider).watchEventList();
+}
+
+@riverpod
+Future<List<Program>> programsStateAsync(Ref ref) async {
+  final asyncValue = ref.watch(programsStateProvider);
+  return asyncValue.when(
+    data: (programs) => programs,
+    loading: () => <Program>[],
+    error: (error, stack) => throw error,
+  );
 }
 
 @riverpod
@@ -48,8 +57,8 @@ final AutoDisposeStreamProvider<bool> addProgramButtonStateProvider =
         return Stream<bool>.value(false);
       }
 
-      // 販売者登録のステータスをチェック（chargesEnabledがtrueかどうか）
-      return ref.read(userRepositoryProvider).streamCheckAccountStatus(uid);
+      // Stripe登録状況に関係なく、認証済みユーザーなら作成可能
+      return Stream<bool>.value(true);
     });
 
 final AutoDisposeStreamProviderFamily<bool, Program>

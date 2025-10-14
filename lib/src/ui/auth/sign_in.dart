@@ -95,7 +95,9 @@ class SignInPage extends HookConsumerWidget {
                               emailController.text,
                               passwordController.text,
                             );
-                            context.go(AppRoutes.topPage);
+                            if (context.mounted) {
+                              context.go(AppRoutes.topPage);
+                            }
                           } catch (e) {
                             errorHandler.showError(e, errorContext: 'サインイン');
                             logger.e('signInButton: error=$e');
@@ -130,7 +132,9 @@ class SignInPage extends HookConsumerWidget {
                         onPressed: () async {
                           try {
                             await viewModel.signInWithGoogle();
-                            context.go(AppRoutes.topPage);
+                            if (context.mounted) {
+                              context.go(AppRoutes.topPage);
+                            }
                           } catch (e) {
                             errorHandler.showError(
                               e,
@@ -161,9 +165,22 @@ class SignInPage extends HookConsumerWidget {
                       TextButton(
                         onPressed: () async {
                           try {
-                            await viewModel.sendPasswordResetEmail(
-                              emailController.text,
-                            );
+                            // メールアドレスのバリデーションを実行
+                            final email = emailController.text.trim();
+                            if (email.isEmpty) {
+                              errorHandler.showWarningSnackBar(
+                                'メールアドレスを入力してください',
+                              );
+                              return;
+                            }
+
+                            final emailError = validateEmail(email);
+                            if (emailError != null) {
+                              errorHandler.showWarningSnackBar(emailError);
+                              return;
+                            }
+
+                            await viewModel.sendPasswordResetEmail(email);
                             errorHandler.showSuccessSnackBar(
                               'パスワードリセット用のメールを送信しました',
                             );

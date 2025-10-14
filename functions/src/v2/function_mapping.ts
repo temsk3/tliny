@@ -136,4 +136,7 @@ export const functionMapping = {
 
   // Business Clone Customer
   'v1-method-cloneCustomer': 'v2-business-cloneCustomer',
+
+  // Auth User Repair
+  'v1-auth-user-repairStripeCustomer': 'repairUserStripeCustomer',
 }

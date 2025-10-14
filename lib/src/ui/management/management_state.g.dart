@@ -41,15 +41,21 @@ class ManagementStateFamily extends Family<AsyncValue<List<Order>>> {
   const ManagementStateFamily();
 
   /// See also [managementState].
-  ManagementStateProvider call(String eventId) {
-    return ManagementStateProvider(eventId);
+  ManagementStateProvider call(
+    String eventId,
+  ) {
+    return ManagementStateProvider(
+      eventId,
+    );
   }
 
   @override
   ManagementStateProvider getProviderOverride(
     covariant ManagementStateProvider provider,
   ) {
-    return call(provider.eventId);
+    return call(
+      provider.eventId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -70,20 +76,24 @@ class ManagementStateFamily extends Family<AsyncValue<List<Order>>> {
 /// See also [managementState].
 class ManagementStateProvider extends AutoDisposeStreamProvider<List<Order>> {
   /// See also [managementState].
-  ManagementStateProvider(String eventId)
-    : this._internal(
-        (ref) => managementState(ref as ManagementStateRef, eventId),
-        from: managementStateProvider,
-        name: r'managementStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$managementStateHash,
-        dependencies: ManagementStateFamily._dependencies,
-        allTransitiveDependencies:
-            ManagementStateFamily._allTransitiveDependencies,
-        eventId: eventId,
-      );
+  ManagementStateProvider(
+    String eventId,
+  ) : this._internal(
+          (ref) => managementState(
+            ref as ManagementStateRef,
+            eventId,
+          ),
+          from: managementStateProvider,
+          name: r'managementStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$managementStateHash,
+          dependencies: ManagementStateFamily._dependencies,
+          allTransitiveDependencies:
+              ManagementStateFamily._allTransitiveDependencies,
+          eventId: eventId,
+        );
 
   ManagementStateProvider._internal(
     super._createNotifier, {
@@ -134,8 +144,6 @@ class ManagementStateProvider extends AutoDisposeStreamProvider<List<Order>> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ManagementStateRef on AutoDisposeStreamProviderRef<List<Order>> {
   /// The parameter `eventId` of this provider.
   String get eventId;
@@ -151,7 +159,7 @@ class _ManagementStateProviderElement
 }
 
 String _$productsManagementStateHash() =>
-    r'15ecf795cc2671ec8a6b5a9107f249f0b592084b';
+    r'2cac642211350595b0edb0285895fc782ec9ef73';
 
 /// See also [productsManagementState].
 @ProviderFor(productsManagementState)
@@ -163,15 +171,21 @@ class ProductsManagementStateFamily extends Family<AsyncValue<List<Product>>> {
   const ProductsManagementStateFamily();
 
   /// See also [productsManagementState].
-  ProductsManagementStateProvider call(String eventId) {
-    return ProductsManagementStateProvider(eventId);
+  ProductsManagementStateProvider call(
+    String eventId,
+  ) {
+    return ProductsManagementStateProvider(
+      eventId,
+    );
   }
 
   @override
   ProductsManagementStateProvider getProviderOverride(
     covariant ProductsManagementStateProvider provider,
   ) {
-    return call(provider.eventId);
+    return call(
+      provider.eventId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -193,21 +207,24 @@ class ProductsManagementStateFamily extends Family<AsyncValue<List<Product>>> {
 class ProductsManagementStateProvider
     extends AutoDisposeStreamProvider<List<Product>> {
   /// See also [productsManagementState].
-  ProductsManagementStateProvider(String eventId)
-    : this._internal(
-        (ref) =>
-            productsManagementState(ref as ProductsManagementStateRef, eventId),
-        from: productsManagementStateProvider,
-        name: r'productsManagementStateProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$productsManagementStateHash,
-        dependencies: ProductsManagementStateFamily._dependencies,
-        allTransitiveDependencies:
-            ProductsManagementStateFamily._allTransitiveDependencies,
-        eventId: eventId,
-      );
+  ProductsManagementStateProvider(
+    String eventId,
+  ) : this._internal(
+          (ref) => productsManagementState(
+            ref as ProductsManagementStateRef,
+            eventId,
+          ),
+          from: productsManagementStateProvider,
+          name: r'productsManagementStateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$productsManagementStateHash,
+          dependencies: ProductsManagementStateFamily._dependencies,
+          allTransitiveDependencies:
+              ProductsManagementStateFamily._allTransitiveDependencies,
+          eventId: eventId,
+        );
 
   ProductsManagementStateProvider._internal(
     super._createNotifier, {
@@ -258,8 +275,6 @@ class ProductsManagementStateProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin ProductsManagementStateRef
     on AutoDisposeStreamProviderRef<List<Product>> {
   /// The parameter `eventId` of this provider.
@@ -282,16 +297,13 @@ String _$allTicketStateHash() => r'70d949bdae1d80c6a258002e058c8541c4395ff7';
 final allTicketStateProvider = AutoDisposeStreamProvider<List<Ticket>>.internal(
   allTicketState,
   name: r'allTicketStateProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$allTicketStateHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$allTicketStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef AllTicketStateRef = AutoDisposeStreamProviderRef<List<Ticket>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

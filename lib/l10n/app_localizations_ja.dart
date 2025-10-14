@@ -178,8 +178,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String decimalPattern(int value) {
-    final intl.NumberFormat valueNumberFormat = intl
-        .NumberFormat.decimalPattern(localeName);
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -187,8 +187,8 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String currency(int value) {
-    final intl.NumberFormat valueNumberFormat = intl
-        .NumberFormat.simpleCurrency(locale: localeName);
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.simpleCurrency(locale: localeName);
     final String valueString = valueNumberFormat.format(value);
 
     return '$valueString';
@@ -388,6 +388,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get authenticationError => '認証エラーが発生しました。再度ログインしてください。';
+
+  @override
+  String get pleaseLogin => 'ログインしてください';
 
   @override
   String get paymentError => '決済処理でエラーが発生しました。しばらく時間をおいてから再度お試しください。';
@@ -652,4 +655,163 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get passwordChangeCompleted => 'パスワード変更が完了しました';
+
+  @override
+  String get scanQrCodes => 'QRコードをスキャン';
+
+  @override
+  String get scannedTickets => 'スキャンしたチケット';
+
+  @override
+  String scannedTicketsCount(int count) {
+    return 'スキャンしたチケット ($count)';
+  }
+
+  @override
+  String usedTickets(int count) {
+    return '$count 使用済み';
+  }
+
+  @override
+  String get noTicketsScannedYet => 'まだチケットがスキャンされていません';
+
+  @override
+  String get scanQrCodesToSeeTickets => 'QRコードをスキャンしてチケットを表示';
+
+  @override
+  String get unknownTicket => '不明なチケット';
+
+  @override
+  String get used => '使用済み';
+
+  @override
+  String get unused => '未使用';
+
+  @override
+  String get invalidQrCodeFormat => '無効なQRコード形式です';
+
+  @override
+  String failedToDecryptQrCode(String error) {
+    return 'QRコードの復号に失敗しました: $error';
+  }
+
+  @override
+  String get accessDeniedWrongEvent => 'アクセス拒否: イベントが異なります';
+
+  @override
+  String get ticketScannedSuccessfully => 'チケットが正常にスキャンされました';
+
+  @override
+  String failedToProcessQrCode(String error) {
+    return 'QRコードの処理に失敗しました: $error';
+  }
+
+  @override
+  String get scannedTicketsTitle => 'スキャンしたチケット';
+
+  @override
+  String get confirmAction => 'アクションの確認';
+
+  @override
+  String get markTicketsAsUsed => 'スキャンしたチケットを使用済みとしてマークしますか？';
+
+  @override
+  String get ticketsUpdatedSuccessfully => 'チケットが正常に更新されました';
+
+  @override
+  String get ticketUpdateError => 'チケット更新エラー';
+
+  @override
+  String get qrScannerOperationError => 'QRスキャナー操作エラー';
+
+  @override
+  String get terms => '利用規約';
+
+  @override
+  String get sellerRegistration => '出品者登録';
+
+  @override
+  String get sellerFeature => '出品者機能';
+
+  @override
+  String get sellerDescription => '出品者として商品を販売するには、以下の手続きが必要です。';
+
+  @override
+  String get registerUpdateSeller => '出品者登録・更新';
+
+  @override
+  String get manageSite => '管理サイト';
+
+  @override
+  String get manageSiteDescription => '販売情報を確認したい場合は以下のボタンから管理サイトに遷移してください';
+
+  @override
+  String get pleasePurchaseNewTicket => '新しいチケットを購入してください';
+
+  @override
+  String get showExpiredOrPurchaseNewTicket =>
+      '期限切れチケットを表示するか、\n新しいチケットを購入してください';
+
+  @override
+  String get noCode => 'コードなし';
+
+  @override
+  String get noGenre => 'ジャンルなし';
+
+  @override
+  String get noDesc => '説明なし';
+
+  @override
+  String get validationError => '入力内容に誤りがあります。確認してから再度お試しください。';
+
+  @override
+  String get permissionError => '権限が不足しています。管理者にお問い合わせください。';
+
+  @override
+  String get databaseError => 'データベースエラーが発生しました。しばらく時間をおいてから再度お試しください。';
+
+  @override
+  String get searchEvent => 'イベント検索';
+
+  @override
+  String get createEvent => 'イベント作成';
+
+  @override
+  String get searchText => '検索テキスト';
+
+  @override
+  String get noTickets => 'チケットがありません';
+
+  @override
+  String get noAvailableTickets => '使用可能なチケットがありません';
+
+  @override
+  String get purchasedTicketsDisplayedHere => '購入したチケットがここに表示されます';
+
+  @override
+  String get hideExpired => '期限切れを非表示';
+
+  @override
+  String get showExpired => '期限切れを表示';
+
+  @override
+  String get sortByEventName => 'イベント名でソート';
+
+  @override
+  String get sortByEventDate => 'イベント日でソート';
+
+  @override
+  String get generatePdf => 'PDFを生成';
+
+  @override
+  String get displayQrCode => 'QRコードを表示';
+
+  @override
+  String get expiredTicket => '期限切れチケット';
+
+  @override
+  String get myEvent => 'マイイベント';
+
+  @override
+  String get non => 'なし';
 }

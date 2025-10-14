@@ -12,8 +12,7 @@ part of 'document_reference_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 DocRefModel _$DocRefModelFromJson(Map<String, dynamic> json) {
   return _DocRefModel.fromJson(json);
@@ -24,12 +23,8 @@ mixin _$DocRefModel {
   @DocumentReferenceNullStringConverter()
   String? get docRef => throw _privateConstructorUsedError;
 
-  /// Serializes this DocRefModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of DocRefModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $DocRefModelCopyWith<DocRefModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -37,9 +32,8 @@ mixin _$DocRefModel {
 /// @nodoc
 abstract class $DocRefModelCopyWith<$Res> {
   factory $DocRefModelCopyWith(
-    DocRefModel value,
-    $Res Function(DocRefModel) then,
-  ) = _$DocRefModelCopyWithImpl<$Res, DocRefModel>;
+          DocRefModel value, $Res Function(DocRefModel) then) =
+      _$DocRefModelCopyWithImpl<$Res, DocRefModel>;
   @useResult
   $Res call({@DocumentReferenceNullStringConverter() String? docRef});
 }
@@ -54,21 +48,17 @@ class _$DocRefModelCopyWithImpl<$Res, $Val extends DocRefModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DocRefModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? docRef = freezed}) {
-    return _then(
-      _value.copyWith(
-            docRef:
-                freezed == docRef
-                    ? _value.docRef
-                    : docRef // ignore: cast_nullable_to_non_nullable
-                        as String?,
-          )
-          as $Val,
-    );
+  $Res call({
+    Object? docRef = freezed,
+  }) {
+    return _then(_value.copyWith(
+      docRef: freezed == docRef
+          ? _value.docRef
+          : docRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
   }
 }
 
@@ -76,9 +66,8 @@ class _$DocRefModelCopyWithImpl<$Res, $Val extends DocRefModel>
 abstract class _$$DocRefModelImplCopyWith<$Res>
     implements $DocRefModelCopyWith<$Res> {
   factory _$$DocRefModelImplCopyWith(
-    _$DocRefModelImpl value,
-    $Res Function(_$DocRefModelImpl) then,
-  ) = __$$DocRefModelImplCopyWithImpl<$Res>;
+          _$DocRefModelImpl value, $Res Function(_$DocRefModelImpl) then) =
+      __$$DocRefModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@DocumentReferenceNullStringConverter() String? docRef});
@@ -89,23 +78,20 @@ class __$$DocRefModelImplCopyWithImpl<$Res>
     extends _$DocRefModelCopyWithImpl<$Res, _$DocRefModelImpl>
     implements _$$DocRefModelImplCopyWith<$Res> {
   __$$DocRefModelImplCopyWithImpl(
-    _$DocRefModelImpl _value,
-    $Res Function(_$DocRefModelImpl) _then,
-  ) : super(_value, _then);
+      _$DocRefModelImpl _value, $Res Function(_$DocRefModelImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of DocRefModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? docRef = freezed}) {
-    return _then(
-      _$DocRefModelImpl(
-        freezed == docRef
-            ? _value.docRef
-            : docRef // ignore: cast_nullable_to_non_nullable
-                as String?,
-      ),
-    );
+  $Res call({
+    Object? docRef = freezed,
+  }) {
+    return _then(_$DocRefModelImpl(
+      freezed == docRef
+          ? _value.docRef
+          : docRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
@@ -134,13 +120,11 @@ class _$DocRefModelImpl implements _DocRefModel {
             (identical(other.docRef, docRef) || other.docRef == docRef));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, docRef);
 
-  /// Create a copy of DocRefModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$DocRefModelImplCopyWith<_$DocRefModelImpl> get copyWith =>
@@ -148,14 +132,16 @@ class _$DocRefModelImpl implements _DocRefModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$DocRefModelImplToJson(this);
+    return _$$DocRefModelImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _DocRefModel implements DocRefModel {
   factory _DocRefModel(
-    @DocumentReferenceNullStringConverter() final String? docRef,
-  ) = _$DocRefModelImpl;
+          @DocumentReferenceNullStringConverter() final String? docRef) =
+      _$DocRefModelImpl;
 
   factory _DocRefModel.fromJson(Map<String, dynamic> json) =
       _$DocRefModelImpl.fromJson;
@@ -163,11 +149,8 @@ abstract class _DocRefModel implements DocRefModel {
   @override
   @DocumentReferenceNullStringConverter()
   String? get docRef;
-
-  /// Create a copy of DocRefModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$DocRefModelImplCopyWith<_$DocRefModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

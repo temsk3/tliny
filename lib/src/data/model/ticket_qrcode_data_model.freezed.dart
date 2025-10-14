@@ -12,12 +12,10 @@ part of 'ticket_qrcode_data_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TicketQRCodeDataModel _$TicketQRCodeDataModelFromJson(
-  Map<String, dynamic> json,
-) {
+    Map<String, dynamic> json) {
   return _TicketQRCodeDataModel.fromJson(json);
 }
 
@@ -33,38 +31,30 @@ mixin _$TicketQRCodeDataModel {
   @TimestampConverter()
   DateTime? get deletedAt => throw _privateConstructorUsedError;
 
-  /// Serializes this TicketQRCodeDataModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-
-  /// Create a copy of TicketQRCodeDataModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TicketQRCodeDataModelCopyWith<TicketQRCodeDataModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TicketQRCodeDataModelCopyWith<$Res> {
-  factory $TicketQRCodeDataModelCopyWith(
-    TicketQRCodeDataModel value,
-    $Res Function(TicketQRCodeDataModel) then,
-  ) = _$TicketQRCodeDataModelCopyWithImpl<$Res, TicketQRCodeDataModel>;
+  factory $TicketQRCodeDataModelCopyWith(TicketQRCodeDataModel value,
+          $Res Function(TicketQRCodeDataModel) then) =
+      _$TicketQRCodeDataModelCopyWithImpl<$Res, TicketQRCodeDataModel>;
   @useResult
-  $Res call({
-    String? id,
-    String codeData,
-    bool isActive,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      String codeData,
+      bool isActive,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt,
+      @TimestampConverter() DateTime? deletedAt});
 }
 
 /// @nodoc
-class _$TicketQRCodeDataModelCopyWithImpl<
-  $Res,
-  $Val extends TicketQRCodeDataModel
->
+class _$TicketQRCodeDataModelCopyWithImpl<$Res,
+        $Val extends TicketQRCodeDataModel>
     implements $TicketQRCodeDataModelCopyWith<$Res> {
   _$TicketQRCodeDataModelCopyWithImpl(this._value, this._then);
 
@@ -73,8 +63,6 @@ class _$TicketQRCodeDataModelCopyWithImpl<
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TicketQRCodeDataModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -85,41 +73,32 @@ class _$TicketQRCodeDataModelCopyWithImpl<
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _value.copyWith(
-            id:
-                freezed == id
-                    ? _value.id
-                    : id // ignore: cast_nullable_to_non_nullable
-                        as String?,
-            codeData:
-                null == codeData
-                    ? _value.codeData
-                    : codeData // ignore: cast_nullable_to_non_nullable
-                        as String,
-            isActive:
-                null == isActive
-                    ? _value.isActive
-                    : isActive // ignore: cast_nullable_to_non_nullable
-                        as bool,
-            createdAt:
-                freezed == createdAt
-                    ? _value.createdAt
-                    : createdAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            updatedAt:
-                freezed == updatedAt
-                    ? _value.updatedAt
-                    : updatedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-            deletedAt:
-                freezed == deletedAt
-                    ? _value.deletedAt
-                    : deletedAt // ignore: cast_nullable_to_non_nullable
-                        as DateTime?,
-          )
-          as $Val,
-    );
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      codeData: null == codeData
+          ? _value.codeData
+          : codeData // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ) as $Val);
   }
 }
 
@@ -127,33 +106,29 @@ class _$TicketQRCodeDataModelCopyWithImpl<
 abstract class _$$TicketQRCodeDataModelImplCopyWith<$Res>
     implements $TicketQRCodeDataModelCopyWith<$Res> {
   factory _$$TicketQRCodeDataModelImplCopyWith(
-    _$TicketQRCodeDataModelImpl value,
-    $Res Function(_$TicketQRCodeDataModelImpl) then,
-  ) = __$$TicketQRCodeDataModelImplCopyWithImpl<$Res>;
+          _$TicketQRCodeDataModelImpl value,
+          $Res Function(_$TicketQRCodeDataModelImpl) then) =
+      __$$TicketQRCodeDataModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String? id,
-    String codeData,
-    bool isActive,
-    @TimestampConverter() DateTime? createdAt,
-    @TimestampConverter() DateTime? updatedAt,
-    @TimestampConverter() DateTime? deletedAt,
-  });
+  $Res call(
+      {String? id,
+      String codeData,
+      bool isActive,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt,
+      @TimestampConverter() DateTime? deletedAt});
 }
 
 /// @nodoc
 class __$$TicketQRCodeDataModelImplCopyWithImpl<$Res>
-    extends
-        _$TicketQRCodeDataModelCopyWithImpl<$Res, _$TicketQRCodeDataModelImpl>
+    extends _$TicketQRCodeDataModelCopyWithImpl<$Res,
+        _$TicketQRCodeDataModelImpl>
     implements _$$TicketQRCodeDataModelImplCopyWith<$Res> {
-  __$$TicketQRCodeDataModelImplCopyWithImpl(
-    _$TicketQRCodeDataModelImpl _value,
-    $Res Function(_$TicketQRCodeDataModelImpl) _then,
-  ) : super(_value, _then);
+  __$$TicketQRCodeDataModelImplCopyWithImpl(_$TicketQRCodeDataModelImpl _value,
+      $Res Function(_$TicketQRCodeDataModelImpl) _then)
+      : super(_value, _then);
 
-  /// Create a copy of TicketQRCodeDataModel
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,54 +139,45 @@ class __$$TicketQRCodeDataModelImplCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? deletedAt = freezed,
   }) {
-    return _then(
-      _$TicketQRCodeDataModelImpl(
-        id:
-            freezed == id
-                ? _value.id
-                : id // ignore: cast_nullable_to_non_nullable
-                    as String?,
-        codeData:
-            null == codeData
-                ? _value.codeData
-                : codeData // ignore: cast_nullable_to_non_nullable
-                    as String,
-        isActive:
-            null == isActive
-                ? _value.isActive
-                : isActive // ignore: cast_nullable_to_non_nullable
-                    as bool,
-        createdAt:
-            freezed == createdAt
-                ? _value.createdAt
-                : createdAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        updatedAt:
-            freezed == updatedAt
-                ? _value.updatedAt
-                : updatedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-        deletedAt:
-            freezed == deletedAt
-                ? _value.deletedAt
-                : deletedAt // ignore: cast_nullable_to_non_nullable
-                    as DateTime?,
-      ),
-    );
+    return _then(_$TicketQRCodeDataModelImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      codeData: null == codeData
+          ? _value.codeData
+          : codeData // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      deletedAt: freezed == deletedAt
+          ? _value.deletedAt
+          : deletedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+    ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
 class _$TicketQRCodeDataModelImpl implements _TicketQRCodeDataModel {
-  _$TicketQRCodeDataModelImpl({
-    this.id,
-    required this.codeData,
-    this.isActive = true,
-    @TimestampConverter() this.createdAt,
-    @TimestampConverter() this.updatedAt,
-    @TimestampConverter() this.deletedAt,
-  });
+  _$TicketQRCodeDataModelImpl(
+      {this.id,
+      required this.codeData,
+      this.isActive = true,
+      @TimestampConverter() this.createdAt,
+      @TimestampConverter() this.updatedAt,
+      @TimestampConverter() this.deletedAt});
 
   factory _$TicketQRCodeDataModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$TicketQRCodeDataModelImplFromJson(json);
@@ -256,45 +222,35 @@ class _$TicketQRCodeDataModelImpl implements _TicketQRCodeDataModel {
                 other.deletedAt == deletedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-    runtimeType,
-    id,
-    codeData,
-    isActive,
-    createdAt,
-    updatedAt,
-    deletedAt,
-  );
+      runtimeType, id, codeData, isActive, createdAt, updatedAt, deletedAt);
 
-  /// Create a copy of TicketQRCodeDataModel
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TicketQRCodeDataModelImplCopyWith<_$TicketQRCodeDataModelImpl>
-  get copyWith =>
-      __$$TicketQRCodeDataModelImplCopyWithImpl<_$TicketQRCodeDataModelImpl>(
-        this,
-        _$identity,
-      );
+      get copyWith => __$$TicketQRCodeDataModelImplCopyWithImpl<
+          _$TicketQRCodeDataModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$TicketQRCodeDataModelImplToJson(this);
+    return _$$TicketQRCodeDataModelImplToJson(
+      this,
+    );
   }
 }
 
 abstract class _TicketQRCodeDataModel implements TicketQRCodeDataModel {
-  factory _TicketQRCodeDataModel({
-    final String? id,
-    required final String codeData,
-    final bool isActive,
-    @TimestampConverter() final DateTime? createdAt,
-    @TimestampConverter() final DateTime? updatedAt,
-    @TimestampConverter() final DateTime? deletedAt,
-  }) = _$TicketQRCodeDataModelImpl;
+  factory _TicketQRCodeDataModel(
+          {final String? id,
+          required final String codeData,
+          final bool isActive,
+          @TimestampConverter() final DateTime? createdAt,
+          @TimestampConverter() final DateTime? updatedAt,
+          @TimestampConverter() final DateTime? deletedAt}) =
+      _$TicketQRCodeDataModelImpl;
 
   factory _TicketQRCodeDataModel.fromJson(Map<String, dynamic> json) =
       _$TicketQRCodeDataModelImpl.fromJson;
@@ -314,11 +270,8 @@ abstract class _TicketQRCodeDataModel implements TicketQRCodeDataModel {
   @override
   @TimestampConverter()
   DateTime? get deletedAt;
-
-  /// Create a copy of TicketQRCodeDataModel
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TicketQRCodeDataModelImplCopyWith<_$TicketQRCodeDataModelImpl>
-  get copyWith => throw _privateConstructorUsedError;
+      get copyWith => throw _privateConstructorUsedError;
 }

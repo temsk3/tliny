@@ -1,8 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tliny/src/data/model/ticket_model.dart';
+import '../utils/firebase_test_setup.dart';
 
 void main() {
   group('チケット使用済み処理 統合テスト', () {
+    setUpAll(() async {
+      await setupFirebaseForTesting();
+    });
+    
     group('使用済み処理の流れ', () {
       test('正常な使用済み処理の流れ', () {
         // Arrange - 初期チケットデータ

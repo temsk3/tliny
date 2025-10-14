@@ -9,8 +9,10 @@ class Result<T> with _$Result<T> {
 
   const factory Result.success({required T data}) = Success<T>;
 
-  const factory Result.failure(
-      {required Exception error, required StackTrace stackTrace,}) = Failure<T>;
+  const factory Result.failure({
+    required Exception error,
+    required StackTrace stackTrace,
+  }) = Failure<T>;
   // 同期のビジネスロジック用
   static Result<T> guard<T>(T Function() body) {
     try {
@@ -39,7 +41,7 @@ class Result<T> with _$Result<T> {
       success: (data) => data,
       failure: (e, st) {
         if (kDebugMode) {
-          print('$e\n$st');
+          debugPrint('Result error: $e\n$st');
         }
         return throw e;
       }, // => throw e,

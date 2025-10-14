@@ -16,16 +16,13 @@ String _$favoriteRepositoryHash() =>
 final favoriteRepositoryProvider = Provider<FavoriteRepository>.internal(
   favoriteRepository,
   name: r'favoriteRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$favoriteRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$favoriteRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef FavoriteRepositoryRef = ProviderRef<FavoriteRepository>;
 String _$favoriteCheckExistenceHash() =>
     r'e4d94062278b3778d7acdba5a1d88d6618a133ee';
@@ -61,15 +58,21 @@ class FavoriteCheckExistenceFamily extends Family<AsyncValue<bool>> {
   const FavoriteCheckExistenceFamily();
 
   /// See also [favoriteCheckExistence].
-  FavoriteCheckExistenceProvider call(String favoriteId) {
-    return FavoriteCheckExistenceProvider(favoriteId);
+  FavoriteCheckExistenceProvider call(
+    String favoriteId,
+  ) {
+    return FavoriteCheckExistenceProvider(
+      favoriteId,
+    );
   }
 
   @override
   FavoriteCheckExistenceProvider getProviderOverride(
     covariant FavoriteCheckExistenceProvider provider,
   ) {
-    return call(provider.favoriteId);
+    return call(
+      provider.favoriteId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -90,23 +93,24 @@ class FavoriteCheckExistenceFamily extends Family<AsyncValue<bool>> {
 /// See also [favoriteCheckExistence].
 class FavoriteCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
   /// See also [favoriteCheckExistence].
-  FavoriteCheckExistenceProvider(String favoriteId)
-    : this._internal(
-        (ref) => favoriteCheckExistence(
-          ref as FavoriteCheckExistenceRef,
-          favoriteId,
-        ),
-        from: favoriteCheckExistenceProvider,
-        name: r'favoriteCheckExistenceProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$favoriteCheckExistenceHash,
-        dependencies: FavoriteCheckExistenceFamily._dependencies,
-        allTransitiveDependencies:
-            FavoriteCheckExistenceFamily._allTransitiveDependencies,
-        favoriteId: favoriteId,
-      );
+  FavoriteCheckExistenceProvider(
+    String favoriteId,
+  ) : this._internal(
+          (ref) => favoriteCheckExistence(
+            ref as FavoriteCheckExistenceRef,
+            favoriteId,
+          ),
+          from: favoriteCheckExistenceProvider,
+          name: r'favoriteCheckExistenceProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$favoriteCheckExistenceHash,
+          dependencies: FavoriteCheckExistenceFamily._dependencies,
+          allTransitiveDependencies:
+              FavoriteCheckExistenceFamily._allTransitiveDependencies,
+          favoriteId: favoriteId,
+        );
 
   FavoriteCheckExistenceProvider._internal(
     super._createNotifier, {
@@ -158,8 +162,6 @@ class FavoriteCheckExistenceProvider extends AutoDisposeStreamProvider<bool> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin FavoriteCheckExistenceRef on AutoDisposeStreamProviderRef<bool> {
   /// The parameter `favoriteId` of this provider.
   String get favoriteId;
@@ -174,6 +176,5 @@ class _FavoriteCheckExistenceProviderElement
   String get favoriteId =>
       (origin as FavoriteCheckExistenceProvider).favoriteId;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

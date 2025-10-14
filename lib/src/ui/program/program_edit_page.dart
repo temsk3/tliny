@@ -27,17 +27,17 @@ class ProgramEditPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final context = useContext();
-    // final theme = ref.watch(appThemeProvider);
+    // // final theme = ref.watch(appThemeProvider);
     final l10n = useL10n();
     // final appRoute = useRouter();
-    // final appMediaQuery = useMediaQuery();
+    // // final appMediaQuery = useMediaQuery();
 
-    // final viewModel = ref.watch(programViewModelProvider.notifier);
+    // // final viewModel = ref.watch(programViewModelProvider.notifier);
     final imageViewModel = ref.watch(tempImageListViewModelProvider.notifier);
     final errorHandler = useErrorHandler();
 
     final form = GlobalKey<FormState>();
-    final focusNode = FocusNode();
+    // final focusNode = FocusNode();
     final isPublishFocusNode = FocusNode();
     final nameFocusNode = FocusNode();
     final messageFocusNode = FocusNode();

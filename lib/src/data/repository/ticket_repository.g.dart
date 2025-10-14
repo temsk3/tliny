@@ -15,16 +15,13 @@ String _$ticketRepositoryHash() => r'e69d8f9efb6fbb3f6efdc35edf45a6100348a945';
 final ticketRepositoryProvider = Provider<TicketRepository>.internal(
   ticketRepository,
   name: r'ticketRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$ticketRepositoryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$ticketRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef TicketRepositoryRef = ProviderRef<TicketRepository>;
 String _$allTicketStreamHash() => r'6cd33a8e6239bd79380a2a6075d4380241f46a46';
 
@@ -32,18 +29,15 @@ String _$allTicketStreamHash() => r'6cd33a8e6239bd79380a2a6075d4380241f46a46';
 @ProviderFor(allTicketStream)
 final allTicketStreamProvider =
     AutoDisposeStreamProvider<List<Ticket>>.internal(
-      allTicketStream,
-      name: r'allTicketStreamProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$allTicketStreamHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  allTicketStream,
+  name: r'allTicketStreamProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$allTicketStreamHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef AllTicketStreamRef = AutoDisposeStreamProviderRef<List<Ticket>>;
 String _$ticketsStreamHash() => r'320c7a59f4e104495f5847f887f88581c4067596';
 
@@ -78,15 +72,21 @@ class TicketsStreamFamily extends Family<AsyncValue<List<Ticket>>> {
   const TicketsStreamFamily();
 
   /// See also [ticketsStream].
-  TicketsStreamProvider call(String uid) {
-    return TicketsStreamProvider(uid);
+  TicketsStreamProvider call(
+    String uid,
+  ) {
+    return TicketsStreamProvider(
+      uid,
+    );
   }
 
   @override
   TicketsStreamProvider getProviderOverride(
     covariant TicketsStreamProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -107,20 +107,24 @@ class TicketsStreamFamily extends Family<AsyncValue<List<Ticket>>> {
 /// See also [ticketsStream].
 class TicketsStreamProvider extends AutoDisposeStreamProvider<List<Ticket>> {
   /// See also [ticketsStream].
-  TicketsStreamProvider(String uid)
-    : this._internal(
-        (ref) => ticketsStream(ref as TicketsStreamRef, uid),
-        from: ticketsStreamProvider,
-        name: r'ticketsStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$ticketsStreamHash,
-        dependencies: TicketsStreamFamily._dependencies,
-        allTransitiveDependencies:
-            TicketsStreamFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  TicketsStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => ticketsStream(
+            ref as TicketsStreamRef,
+            uid,
+          ),
+          from: ticketsStreamProvider,
+          name: r'ticketsStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ticketsStreamHash,
+          dependencies: TicketsStreamFamily._dependencies,
+          allTransitiveDependencies:
+              TicketsStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   TicketsStreamProvider._internal(
     super._createNotifier, {
@@ -171,8 +175,6 @@ class TicketsStreamProvider extends AutoDisposeStreamProvider<List<Ticket>> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin TicketsStreamRef on AutoDisposeStreamProviderRef<List<Ticket>> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -199,15 +201,24 @@ class TicketStreamFamily extends Family<AsyncValue<Ticket>> {
   const TicketStreamFamily();
 
   /// See also [ticketStream].
-  TicketStreamProvider call(String uid, String ticketId) {
-    return TicketStreamProvider(uid, ticketId);
+  TicketStreamProvider call(
+    String uid,
+    String ticketId,
+  ) {
+    return TicketStreamProvider(
+      uid,
+      ticketId,
+    );
   }
 
   @override
   TicketStreamProvider getProviderOverride(
     covariant TicketStreamProvider provider,
   ) {
-    return call(provider.uid, provider.ticketId);
+    return call(
+      provider.uid,
+      provider.ticketId,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -228,21 +239,27 @@ class TicketStreamFamily extends Family<AsyncValue<Ticket>> {
 /// See also [ticketStream].
 class TicketStreamProvider extends AutoDisposeStreamProvider<Ticket> {
   /// See also [ticketStream].
-  TicketStreamProvider(String uid, String ticketId)
-    : this._internal(
-        (ref) => ticketStream(ref as TicketStreamRef, uid, ticketId),
-        from: ticketStreamProvider,
-        name: r'ticketStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$ticketStreamHash,
-        dependencies: TicketStreamFamily._dependencies,
-        allTransitiveDependencies:
-            TicketStreamFamily._allTransitiveDependencies,
-        uid: uid,
-        ticketId: ticketId,
-      );
+  TicketStreamProvider(
+    String uid,
+    String ticketId,
+  ) : this._internal(
+          (ref) => ticketStream(
+            ref as TicketStreamRef,
+            uid,
+            ticketId,
+          ),
+          from: ticketStreamProvider,
+          name: r'ticketStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$ticketStreamHash,
+          dependencies: TicketStreamFamily._dependencies,
+          allTransitiveDependencies:
+              TicketStreamFamily._allTransitiveDependencies,
+          uid: uid,
+          ticketId: ticketId,
+        );
 
   TicketStreamProvider._internal(
     super._createNotifier, {
@@ -299,8 +316,6 @@ class TicketStreamProvider extends AutoDisposeStreamProvider<Ticket> {
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin TicketStreamRef on AutoDisposeStreamProviderRef<Ticket> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -310,8 +325,7 @@ mixin TicketStreamRef on AutoDisposeStreamProviderRef<Ticket> {
 }
 
 class _TicketStreamProviderElement
-    extends AutoDisposeStreamProviderElement<Ticket>
-    with TicketStreamRef {
+    extends AutoDisposeStreamProviderElement<Ticket> with TicketStreamRef {
   _TicketStreamProviderElement(super.provider);
 
   @override
@@ -327,18 +341,15 @@ String _$usageHistoryRepositoryHash() =>
 @ProviderFor(usageHistoryRepository)
 final usageHistoryRepositoryProvider =
     Provider<UsageHistoryRepository>.internal(
-      usageHistoryRepository,
-      name: r'usageHistoryRepositoryProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$usageHistoryRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  usageHistoryRepository,
+  name: r'usageHistoryRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$usageHistoryRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 typedef UsageHistoryRepositoryRef = ProviderRef<UsageHistoryRepository>;
 String _$usageHistoryListStreamHash() =>
     r'bf5da019fb6055c7b32b06d5945120b68bd17d3b';
@@ -354,15 +365,21 @@ class UsageHistoryListStreamFamily
   const UsageHistoryListStreamFamily();
 
   /// See also [usageHistoryListStream].
-  UsageHistoryListStreamProvider call(String uid) {
-    return UsageHistoryListStreamProvider(uid);
+  UsageHistoryListStreamProvider call(
+    String uid,
+  ) {
+    return UsageHistoryListStreamProvider(
+      uid,
+    );
   }
 
   @override
   UsageHistoryListStreamProvider getProviderOverride(
     covariant UsageHistoryListStreamProvider provider,
   ) {
-    return call(provider.uid);
+    return call(
+      provider.uid,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -384,20 +401,24 @@ class UsageHistoryListStreamFamily
 class UsageHistoryListStreamProvider
     extends AutoDisposeStreamProvider<List<UsageHistory>> {
   /// See also [usageHistoryListStream].
-  UsageHistoryListStreamProvider(String uid)
-    : this._internal(
-        (ref) => usageHistoryListStream(ref as UsageHistoryListStreamRef, uid),
-        from: usageHistoryListStreamProvider,
-        name: r'usageHistoryListStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$usageHistoryListStreamHash,
-        dependencies: UsageHistoryListStreamFamily._dependencies,
-        allTransitiveDependencies:
-            UsageHistoryListStreamFamily._allTransitiveDependencies,
-        uid: uid,
-      );
+  UsageHistoryListStreamProvider(
+    String uid,
+  ) : this._internal(
+          (ref) => usageHistoryListStream(
+            ref as UsageHistoryListStreamRef,
+            uid,
+          ),
+          from: usageHistoryListStreamProvider,
+          name: r'usageHistoryListStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$usageHistoryListStreamHash,
+          dependencies: UsageHistoryListStreamFamily._dependencies,
+          allTransitiveDependencies:
+              UsageHistoryListStreamFamily._allTransitiveDependencies,
+          uid: uid,
+        );
 
   UsageHistoryListStreamProvider._internal(
     super._createNotifier, {
@@ -414,7 +435,7 @@ class UsageHistoryListStreamProvider
   @override
   Override overrideWith(
     Stream<List<UsageHistory>> Function(UsageHistoryListStreamRef provider)
-    create,
+        create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -449,8 +470,6 @@ class UsageHistoryListStreamProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin UsageHistoryListStreamRef
     on AutoDisposeStreamProviderRef<List<UsageHistory>> {
   /// The parameter `uid` of this provider.
@@ -479,15 +498,24 @@ class UsageHistoryStreamFamily extends Family<AsyncValue<UsageHistory>> {
   const UsageHistoryStreamFamily();
 
   /// See also [usageHistoryStream].
-  UsageHistoryStreamProvider call(String uid, String id) {
-    return UsageHistoryStreamProvider(uid, id);
+  UsageHistoryStreamProvider call(
+    String uid,
+    String id,
+  ) {
+    return UsageHistoryStreamProvider(
+      uid,
+      id,
+    );
   }
 
   @override
   UsageHistoryStreamProvider getProviderOverride(
     covariant UsageHistoryStreamProvider provider,
   ) {
-    return call(provider.uid, provider.id);
+    return call(
+      provider.uid,
+      provider.id,
+    );
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -509,21 +537,27 @@ class UsageHistoryStreamFamily extends Family<AsyncValue<UsageHistory>> {
 class UsageHistoryStreamProvider
     extends AutoDisposeStreamProvider<UsageHistory> {
   /// See also [usageHistoryStream].
-  UsageHistoryStreamProvider(String uid, String id)
-    : this._internal(
-        (ref) => usageHistoryStream(ref as UsageHistoryStreamRef, uid, id),
-        from: usageHistoryStreamProvider,
-        name: r'usageHistoryStreamProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$usageHistoryStreamHash,
-        dependencies: UsageHistoryStreamFamily._dependencies,
-        allTransitiveDependencies:
-            UsageHistoryStreamFamily._allTransitiveDependencies,
-        uid: uid,
-        id: id,
-      );
+  UsageHistoryStreamProvider(
+    String uid,
+    String id,
+  ) : this._internal(
+          (ref) => usageHistoryStream(
+            ref as UsageHistoryStreamRef,
+            uid,
+            id,
+          ),
+          from: usageHistoryStreamProvider,
+          name: r'usageHistoryStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$usageHistoryStreamHash,
+          dependencies: UsageHistoryStreamFamily._dependencies,
+          allTransitiveDependencies:
+              UsageHistoryStreamFamily._allTransitiveDependencies,
+          uid: uid,
+          id: id,
+        );
 
   UsageHistoryStreamProvider._internal(
     super._createNotifier, {
@@ -580,8 +614,6 @@ class UsageHistoryStreamProvider
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
 mixin UsageHistoryStreamRef on AutoDisposeStreamProviderRef<UsageHistory> {
   /// The parameter `uid` of this provider.
   String get uid;
@@ -600,6 +632,5 @@ class _UsageHistoryStreamProviderElement
   @override
   String get id => (origin as UsageHistoryStreamProvider).id;
 }
-
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

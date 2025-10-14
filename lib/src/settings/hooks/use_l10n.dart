@@ -3,5 +3,9 @@ import 'package:tliny/l10n/app_localizations.dart';
 
 AppLocalizations useL10n() {
   final context = useContext();
-  return AppLocalizations.of(context)!;
+  final l10n = AppLocalizations.of(context);
+  if (l10n == null) {
+    throw StateError('AppLocalizations not found. Make sure MaterialApp has proper localization setup.');
+  }
+  return l10n;
 }

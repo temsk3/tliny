@@ -52,7 +52,7 @@ class SellerActionButtons extends HookConsumerWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  '出品者機能',
+                  l10n.sellerFeature,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -64,7 +64,7 @@ class SellerActionButtons extends HookConsumerWidget {
 
           // 説明テキスト
           Text(
-            '出品者として商品を販売するには、以下の手続きが必要です。',
+            l10n.sellerDescription,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
@@ -79,7 +79,7 @@ class SellerActionButtons extends HookConsumerWidget {
                 child: ElevatedButton.icon(
                   onPressed: onAccountLinkPressed,
                   icon: const Icon(Icons.storefront_outlined),
-                  label: const Text('出品者登録・更新'),
+                  label: Text(l10n.registerUpdateSeller),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
@@ -111,7 +111,7 @@ class SellerActionButtons extends HookConsumerWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        '販売情報を確認したい場合は以下のボタンから管理サイトに遷移してください',
+                        l10n.manageSiteDescription,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurface.withValues(
                             alpha: 0.8,
@@ -129,7 +129,7 @@ class SellerActionButtons extends HookConsumerWidget {
                 child: OutlinedButton.icon(
                   onPressed: onAdminSitePressed,
                   icon: const Icon(Icons.admin_panel_settings_outlined),
-                  label: const Text('管理サイト'),
+                  label: Text(l10n.manageSite),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(

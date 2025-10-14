@@ -29,6 +29,12 @@ import '../../ui/product/product_page.dart';
 import '../../ui/program/program_details_page.dart';
 import '../../ui/program/program_edit_page.dart';
 import '../../ui/program/program_page.dart';
+import '../../ui/secret_event/secret_event_page.dart';
+import '../../ui/sns/chat/sns_chat_page.dart';
+import '../../ui/sns/feed/sns_feed_page.dart';
+import '../../ui/sns/messages/sns_messages_page.dart';
+import '../../ui/sns/profile/profile_page.dart';
+import '../../ui/sns/search/search_page.dart';
 import '../../ui/terms/terms_page.dart';
 import '../../ui/ticket/qr_code_display_page.dart';
 import '../../ui/ticket/qr_code_scanner_page.dart';
@@ -63,6 +69,11 @@ class AppRoutes {
   static const scanPage = '/scan';
   static const cartPage = '/cart';
   static const ticketPage = '/ticket';
+  static const snsPage = '/sns';
+  static const snsMessagesPage = '/sns/messages';
+  static const snsChatPage = '/sns/chat';
+  static const snsProfilePage = '/sns/profile';
+  static const snsSearchPage = '/sns/search';
   static const qRCodeDisplayPage = '/qr-code';
   static const ticketPrintPage = '/ticket-print';
   static const checkoutSuccessPage = '/checkout-success';
@@ -103,6 +114,8 @@ final _managementNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'management',
 );
 
+final _snsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'sns');
+
 // ********************************************************
 // *
 // *
@@ -134,6 +147,11 @@ class ManagementShellBranchData extends StatefulShellBranchData {
       _managementNavigatorKey;
 }
 
+class SnsShellBranchData extends StatefulShellBranchData {
+  const SnsShellBranchData();
+  static final GlobalKey<NavigatorState> $navigatorKey = _snsNavigatorKey;
+}
+
 // ********************************************************
 // * RouteData
 // * GoRouteDataをそれぞれ設定
@@ -159,6 +177,11 @@ class ManagementShellBranchData extends StatefulShellBranchData {
         TypedGoRoute<TicketRoute>(path: AppRoutes.ticketPage),
       ],
     ),
+    TypedStatefulShellBranch<SnsShellBranchData>(
+      routes: <TypedRoute<RouteData>>[
+        TypedGoRoute<SnsRoute>(path: AppRoutes.snsPage),
+      ],
+    ),
   ],
 )
 class AppShellRoute extends StatefulShellRouteData {
@@ -170,9 +193,9 @@ class AppShellRoute extends StatefulShellRouteData {
   Widget builder(
     BuildContext context,
     GoRouterState state,
-    StatefulNavigationShell navigatorShell,
+    StatefulNavigationShell navigationShell,
   ) {
-    return HomePage(navigationShell: navigatorShell);
+    return HomePage(navigationShell: navigationShell);
   }
 }
 
@@ -216,6 +239,71 @@ class TicketRoute extends GoRouteData {
       const TicketListPage();
 }
 
+class SnsRoute extends GoRouteData {
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SnsFeedPage();
+}
+
+@TypedGoRoute<SnsMessagesRoute>(path: AppRoutes.snsMessagesPage)
+class SnsMessagesRoute extends GoRouteData {
+  const SnsMessagesRoute();
+
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SnsMessagesPage();
+}
+
+@TypedGoRoute<SnsChatRoute>(path: AppRoutes.snsChatPage)
+class SnsChatRoute extends GoRouteData {
+  const SnsChatRoute({
+    required this.conversationId,
+    required this.otherUserId,
+    required this.otherUserName,
+    this.otherUserPhotoUrl,
+  });
+
+  final String conversationId;
+  final String otherUserId;
+  final String otherUserName;
+  final String? otherUserPhotoUrl;
+
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => SnsChatPage(
+    conversationId: conversationId,
+    otherUserId: otherUserId,
+    otherUserName: otherUserName,
+    otherUserPhotoUrl: otherUserPhotoUrl,
+  );
+}
+
+@TypedGoRoute<SnsProfileRoute>(path: AppRoutes.snsProfilePage)
+class SnsProfileRoute extends GoRouteData {
+  const SnsProfileRoute({required this.userId});
+
+  final String userId;
+
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      ProfilePage(userId: userId);
+}
+
+@TypedGoRoute<SnsSearchRoute>(path: AppRoutes.snsSearchPage)
+class SnsSearchRoute extends GoRouteData {
+  const SnsSearchRoute();
+
+  static final GlobalKey<NavigatorState> $navigatorKey = _shellNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const SearchPage();
+}
+
 @TypedGoRoute<SignInRoute>(
   path: AppRoutes.signInPage,
   // routes: [
@@ -256,6 +344,18 @@ class CheckoutCancelRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) {
     final sessionId = state.uri.queryParameters['session_id'];
     return CheckoutCancelPage(sessionId: sessionId);
+  }
+}
+
+@TypedGoRoute<SecretEventRoute>(path: '/secret/:secretUrl')
+class SecretEventRoute extends GoRouteData {
+  const SecretEventRoute({required this.secretUrl});
+
+  final String secretUrl;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SecretEventPage(secretUrl: secretUrl);
   }
 }
 
@@ -331,28 +431,19 @@ class ProductDetailsRoute extends GoRouteData {
         final productAsync = ref.watch(productStreamProvider(productId));
 
         return programAsync.when(
-          data:
-              (program) => productAsync.when(
-                data:
-                    (product) =>
-                        ProductDetailsPage(program: program, product: product),
-                loading:
-                    () => const Scaffold(
-                      body: Center(child: CircularProgressIndicator()),
-                    ),
-                error:
-                    (error, stack) => Scaffold(
-                      body: Center(child: Text('商品の読み込みに失敗しました: $error')),
-                    ),
-              ),
-          loading:
-              () => const Scaffold(
-                body: Center(child: CircularProgressIndicator()),
-              ),
-          error:
-              (error, stack) => Scaffold(
-                body: Center(child: Text('プログラムの読み込みに失敗しました: $error')),
-              ),
+          data: (program) => productAsync.when(
+            data: (product) =>
+                ProductDetailsPage(program: program, product: product),
+            loading: () => const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
+            error: (error, stack) =>
+                Scaffold(body: Center(child: Text('商品の読み込みに失敗しました: $error'))),
+          ),
+          loading: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+          error: (error, stack) =>
+              Scaffold(body: Center(child: Text('プログラムの読み込みに失敗しました: $error'))),
         );
       },
     );
@@ -425,7 +516,8 @@ class UsageHistoryRoute extends GoRouteData {
 }
 
 @immutable
-class UsageHistoryDetailsRoute extends GoRouteData {
+class UsageHistoryDetailsRoute extends GoRouteData
+ {
   const UsageHistoryDetailsRoute({required this.$extra});
   final List<String> $extra;
 
