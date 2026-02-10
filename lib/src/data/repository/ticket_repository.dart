@@ -42,13 +42,16 @@ class TicketRepository {
   final FirebaseFirestore _db;
   final CollectionReference<Ticket> _ticketRef;
 
-  // 全チケットを取得するストリーム
-  Stream<List<Ticket>> watchAllTicket() {
-    logger.d('watchAllTicket');
+  // 全チケットを取得するストリーム（organizerIdで絞り込み）
+  Stream<List<Ticket>> watchAllTicket(String organizerId) {
+    logger.d('watchAllTicket: organizerId=$organizerId');
     try {
-      final list = _ticketRef.snapshots().map(
-        (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
-      );
+      final list = _ticketRef
+          .where('organizerId', isEqualTo: organizerId)
+          .snapshots()
+          .map(
+            (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+          );
       return list;
     } on Exception catch (e, st) {
       logger.e('watchAllTicket: error=$e, stackTrace=$st');
@@ -210,12 +213,12 @@ class TicketRepository {
   }
 }
 
-// Stream
+// Stream (organizerIdで絞り込み)
 @riverpod
-Stream<List<Ticket>> allTicketStream(Ref ref) {
-  logger.d('allTicketStream');
+Stream<List<Ticket>> allTicketStream(Ref ref, String organizerId) {
+  logger.d('allTicketStream: organizerId=$organizerId');
   try {
-    return ref.watch(ticketRepositoryProvider).watchAllTicket();
+    return ref.watch(ticketRepositoryProvider).watchAllTicket(organizerId);
   } on Exception catch (e, st) {
     logger.e('allTicketStream: error=$e, stackTrace=$st');
     rethrow;

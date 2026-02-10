@@ -18,7 +18,7 @@ Stream<List<Order>> managementState(Ref ref, String eventId) {
 
 @riverpod
 Stream<List<Product>> productsManagementState(Ref ref, String eventId) {
-  return ref.watch(productRepositoryProvider).watchProducts();
+  return ref.watch(productRepositoryProvider).watchProducts(eventId);
 }
 
 @riverpod
@@ -26,8 +26,7 @@ Stream<List<Ticket>> allTicketState(Ref ref) {
   final uidAsyncValue = ref.watch(userIdProvider);
   final uid = uidAsyncValue.value;
   if (uid == null) {
-    // throw Error();
     return Stream.value([]);
   }
-  return ref.watch(ticketRepositoryProvider).watchAllTicket();
+  return ref.watch(ticketRepositoryProvider).watchAllTicket(uid);
 }
