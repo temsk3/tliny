@@ -127,11 +127,15 @@ class ProductRepository {
     }
   }
 
-  /// 商品一覧を取得するストリーム
-  Stream<List<Product>> watchProducts() {
-    logger.i('watchProducts: 商品一覧を取得するストリームを開始します');
+  /// 商品一覧を取得するストリーム（eventIdで絞り込み）
+  Stream<List<Product>> watchProducts(String eventId) {
+    logger.i('watchProducts: 商品一覧を取得するストリームを開始します eventId=$eventId');
     try {
-      return _collectionRef.orderBy('name').snapshots().map((snapshot) {
+      return _collectionRef
+          .where('eventId', isEqualTo: eventId)
+          .orderBy('name')
+          .snapshots()
+          .map((snapshot) {
         logger.i('watchProducts: 商品一覧を取得しました count=${snapshot.docs.length}');
         return snapshot.docs.map((doc) => doc.data()).toList();
       });
@@ -452,12 +456,12 @@ class ProductRepository {
   }
 }
 
-// Stream
+// Stream (管理画面以外からの呼び出し用 - eventId指定あり版はproductsManagementStateを使うこと)
 @riverpod
-Stream<List<Product>> productsStream(Ref ref) {
-  logger.i('productsStream: 商品一覧ストリームを開始します');
+Stream<List<Product>> productsStream(Ref ref, String eventId) {
+  logger.i('productsStream: 商品一覧ストリームを開始します eventId=$eventId');
   try {
-    return ref.watch(productRepositoryProvider).watchProducts();
+    return ref.watch(productRepositoryProvider).watchProducts(eventId);
   } on Exception catch (e, st) {
     logger.e('productsStream: 商品一覧ストリームエラー', error: e, stackTrace: st);
     throw GeneralException(message: '商品一覧の取得に失敗しました', stackTrace: st);
